@@ -2,6 +2,19 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle S23STARTUPGATE - S23 Startup Audit Gate
+
+- Feature/runtime worked on: live-runtime phase/completion audit coverage for managed S23 server-backed startup.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `scripts/report_odds_api_live_runtime_phase_audit.ts`
+  - `scripts/report_holiwyn_live_runtime_completion_audit.ts`
+  - `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`
+- User/runtime interactions supported: phase and completion audits now fail if `scripts/manage_holiwyn_internal_tester_runtime.ps1` no longer starts manager-owned Expo with server-backed mobile env, hides order book, configures S23 ADB reverse, and treats S23 reverse failure as a readiness blocker.
+- State transitions: none. This is a read-only audit gate. It does not start/stop runtime loops, call The Odds API, spend quota, mutate markets, place orders, approve settlement, or execute settlement.
+- API/data dependencies: no new route dependency. The gate protects the existing phone path to `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` through the local backend base URL.
+- Known limitations: this audit gates source contract and existing runtime evidence. It intentionally does not restart Expo during the audit because S23 proof/manual testing may already be in progress.
+
 ## Cycle S23SERVERMODESTART - Managed Expo Server-Mode Startup
 
 - Feature/runtime worked on: local internal tester runtime startup for S23 mobile trading.

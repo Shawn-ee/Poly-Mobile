@@ -2,6 +2,12 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle S23STARTUPGATE - S23 Startup Audit Gate
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Audit-gated S23 server-backed startup | Existing audit commands `npm run mobile:one-event-phase-audit` and `npm run mobile:live-runtime-completion-audit`; protected runtime path later consumes `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history` | Local read-only audit commands plus existing HTTP routes | Local dev runtime only. No provider key and no mobile auth are required for audit. Existing mobile order routes keep their existing local API key/session behavior. | None for audit. The audit reads `scripts/manage_holiwyn_internal_tester_runtime.ps1` source contract and existing runtime evidence. | Audit checks `managedS23ServerModeStartupKnown`; completion `runtimeLaunch` now includes the managed server-mode startup contract | No schema change. No database writes from this gate. | None. The audit prevents the internal tester launch path from silently drifting back to mock/default mobile mode. | None for local runtime gate. Production service ownership remains P1 and is still not claimed by this source-contract check. |
+
 ## Cycle S23SERVERMODESTART - Managed Expo Server-Mode Startup
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |

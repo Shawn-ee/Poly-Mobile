@@ -16,6 +16,8 @@ describe("The Odds API single-event temporary provider", () => {
   const script = () => readFileSync("scripts/seed_the_odds_api_single_event.ts", "utf8");
   const liveRuntimeScript = () => readFileSync("scripts/start_holiwyn_one_event_live_runtime.ps1", "utf8");
   const internalTesterRuntimeScript = () => readFileSync("scripts/manage_holiwyn_internal_tester_runtime.ps1", "utf8");
+  const phaseAuditScript = () => readFileSync("scripts/report_odds_api_live_runtime_phase_audit.ts", "utf8");
+  const completionAuditScript = () => readFileSync("scripts/report_holiwyn_live_runtime_completion_audit.ts", "utf8");
   const internalEnvScript = () => readFileSync("scripts/prove_mobile_odds_api_internal_environment.ts", "utf8");
   const service = () => readFileSync("src/server/services/theOddsApiSingleEventProvider.ts", "utf8");
 
@@ -55,6 +57,13 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("adb -s $Device.deviceId reverse \"tcp:$port\" \"tcp:$port\"");
     expect(source).toContain("s23_adb_reverse_failed");
     expect(source).toContain("managerStartedExpoUsesServerMode");
+  });
+
+  it("gates live-runtime audits on managed S23 server-backed startup", () => {
+    expect(phaseAuditScript()).toContain('id: "managed-s23-server-mode-startup"');
+    expect(phaseAuditScript()).toContain("managedS23ServerModeStartupKnown");
+    expect(completionAuditScript()).toContain("managedS23ServerModeStartupKnown");
+    expect(completionAuditScript()).toContain("scripts/manage_holiwyn_internal_tester_runtime.ps1");
   });
 
   it("limits discovery to preferred active soccer sport keys", () => {

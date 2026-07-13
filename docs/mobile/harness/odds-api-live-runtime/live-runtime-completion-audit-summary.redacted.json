@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T05:46:11.567Z",
+  "generatedAt": "2026-07-13T06:10:00.795Z",
   "scope": "holiwyn-live-runtime-completion-audit",
   "pass": true,
   "providerQuotaUsed": false,
@@ -26,9 +26,9 @@
       "oneEventOnly": true
     },
     "freshness": {
-      "liveProofAgeHours": 5.36,
+      "liveProofAgeHours": 5.41,
       "maxLiveProofAgeHours": 24,
-      "watchdogAgeHours": 14.44,
+      "watchdogAgeHours": 14.84,
       "maxWatchdogAgeHours": 24
     },
     "staleHandling": "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",
@@ -110,7 +110,8 @@
     "mobileS23EndToEndTradeProofPass": true,
     "launchProfileKnown": true,
     "internalTesterWatchdogKnown": true,
-    "internalTesterWatchdogFresh": true
+    "internalTesterWatchdogFresh": true,
+    "managedS23ServerModeStartupKnown": true
   },
   "completionRequirements": {
     "marketMakerContinuity": {
@@ -171,12 +172,13 @@
     },
     "runtimeLaunch": {
       "pass": true,
-      "answer": "Local runtime can be launched through documented no-quota commands, observed warm with supervisor and result poller running, exposes explicit foreground-vs-installed service ownership plus read-only operator-control boundaries, and cleans up after proof.",
+      "answer": "Local runtime can be launched through documented no-quota commands, observed warm with supervisor and result poller running, starts managed Expo in server-backed S23 mode, exposes explicit foreground-vs-installed service ownership plus read-only operator-control boundaries, and cleans up after proof.",
       "evidence": [
         "docs/mobile/harness/odds-api-live-runtime/local-runtime-launch-profile-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/current-runtime-state-proof-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-summary.redacted.json",
+        "scripts/manage_holiwyn_internal_tester_runtime.ps1",
         "localRuntimeStatus.operatorControlBoundary"
       ]
     }

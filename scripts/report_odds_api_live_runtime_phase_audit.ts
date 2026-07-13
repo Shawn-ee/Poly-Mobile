@@ -208,6 +208,17 @@ async function main() {
   const entries = Object.fromEntries(
     await Promise.all(Object.entries(PATHS).map(async ([key, filePath]) => [key, await readJson(filePath)])),
   ) as Record<keyof typeof PATHS, JsonObject | null>;
+  const internalTesterRuntimeScript = await fs.readFile("scripts/manage_holiwyn_internal_tester_runtime.ps1", "utf8");
+  const managedS23ServerModeStartupKnown =
+    internalTesterRuntimeScript.includes("EXPO_PUBLIC_API_BASE_URL = '$BackendBaseUrl'") &&
+    internalTesterRuntimeScript.includes("EXPO_PUBLIC_GOOGLE_AUTH_BASE_URL = '$BackendBaseUrl'") &&
+    internalTesterRuntimeScript.includes("EXPO_PUBLIC_ORDER_MODE = 'server'") &&
+    internalTesterRuntimeScript.includes("EXPO_PUBLIC_MARKET_DATA_MODE = 'server'") &&
+    internalTesterRuntimeScript.includes("EXPO_PUBLIC_SHOW_ORDERBOOK = '0'") &&
+    internalTesterRuntimeScript.includes("npm --prefix mobile run start -- --host localhost --port $ExpoPort") &&
+    internalTesterRuntimeScript.includes('adb -s $Device.deviceId reverse "tcp:$port" "tcp:$port"') &&
+    internalTesterRuntimeScript.includes("s23_adb_reverse_failed") &&
+    internalTesterRuntimeScript.includes("managerStartedExpoUsesServerMode");
   const health = await fetchJson(`${baseUrl}/api/health`);
   const selectedMarketId = text(getPath(entries.liveProof, ["selectedMarket", "id"]));
   const quote = selectedMarketId
@@ -1524,6 +1535,16 @@ async function main() {
       evidence: [PATHS.internalTesterRuntime],
       notes:
         "This proves local operator visibility/control for internal testing. It reuses external backend/Expo listeners when present and only stops manager-owned backend/Expo processes.",
+    }),
+    requirement({
+      id: "managed-s23-server-mode-startup",
+      priority: "P0",
+      requirement:
+        "Manager-owned Expo startup must use server-backed mobile settings and configure S23 ADB reverse so internal tester phones can reach backend events.",
+      achieved: managedS23ServerModeStartupKnown,
+      evidence: ["scripts/manage_holiwyn_internal_tester_runtime.ps1"],
+      notes:
+        "This gates the source contract without restarting the active S23 proof session: manager-owned Expo sets API/auth base URLs to the backend, enables server order/market data mode, hides order book, and fails readiness if S23 port forwarding fails.",
     }),
     requirement({
       id: "internal-tester-result-poller-control",
