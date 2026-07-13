@@ -15076,7 +15076,7 @@ Known limitations:
 - User interactions supported: Portfolio and Event Detail cashout now open a close-position ticket where amount means owned shares, Max means full owned share count, estimated proceeds use sell/bid price, and the Yes/No selector is not shown. Binary team-market rows expose the team Yes choice as the top-level action rather than duplicating a No button.
 - State transitions: cashout still submits through the existing server fake-token order path as a `SELL` order for the owned market/outcome. The frontend rejects zero-share, missing-position, and oversell cases before submission.
 - API/data dependencies: uses existing Portfolio position fields `marketId`, `outcomeId`, `shares`, `bestBid`, `currentPrice`, and `probability`; uses existing `api.placeLimitOrder` for canonical `SELL` payloads.
-- Proof: focused mobile contract tests passed, mobile typecheck passed, backend cashout/open-position tests passed. S23 proof passed on `SM_S911U1`: Portfolio cashout opened close-position mode, Max selected `500` owned shares, sell price normalized to `47%`, and estimated proceeds showed `$235` instead of wallet-sized balance values.
+- Proof: focused mobile contract tests passed, mobile typecheck passed, backend cashout/open-position tests passed. Earlier S23 proof showed Portfolio cashout opening close-position mode with owned-share Max behavior; Cycle XJ adds the current server-mode proof that Max uses `9` owned shares rather than wallet-sized balance values.
 - Known limitations: a dedicated backend close-position quote route is still P1; current close ticket prices come from position bid/current price fields and normalize percent-form values.
 
 ## Cycle XD - Non-Crossing One-Event Maker Seed
@@ -15132,3 +15132,25 @@ Known limitations:
 - API/data dependencies: reads local runtime proof artifacts and exposes the structured ownership proof through the existing dev-only `GET /api/internal/live-runtime/status` response.
 - Proof needed: launch-profile regeneration, focused live-runtime status service test, no-quota runtime status, phase audit, completion audit, root typecheck, mobile typecheck, and `npm run test:ci`.
 - Known limitations: this narrows local service ownership visibility but still reports no installed production service. Actual unattended production ownership remains P1.
+
+## Cycle XI - Settlement Automation Status Contract
+
+- Feature/runtime worked on: backend local live-runtime official-result settlement automation status.
+- Frontend components touched: none.
+- Important functions/services touched: `src/server/services/liveRuntimeStatus.ts`, `scripts/report_odds_api_live_runtime_phase_audit.ts`, `scripts/report_holiwyn_live_runtime_completion_audit.ts`, and `src/__tests__/liveRuntimeStatus.service.test.ts`.
+- User/runtime interactions supported: local tools can call `GET /api/internal/live-runtime/status` and read `settlementAutomation`, a compact machine-readable summary of replay/live result ingestion mode, approved scheduler proof, current active-event close blocker, approval/closed-state readiness, and exact-confirmation safety.
+- State transitions: none. The status route and audits are read-only; they do not start result polling, call The Odds API, close markets, approve settlement, expose exact confirmation strings, or execute settlement.
+- API/data dependencies: composes existing result-review evidence, settlement-queue evidence, active-settlement readiness, closed-state eligibility proof, supervisor/result-poller process state, and runtime proof artifacts.
+- Proof needed: focused live-runtime status service test, no-quota runtime status, phase audit, completion audit, root typecheck, mobile typecheck, and `npm run test:ci`.
+- Known limitations: this makes settlement automation truth first-class for internal tools, but production official-result polling and authenticated execution controls remain P1.
+
+## Cycle XJ - Server Portfolio Cashout Hydration
+
+- Feature/page worked on: mobile Portfolio cashout entry in server order mode.
+- Frontend components touched: `mobile/App.tsx`; focused contract test in `mobile/src/__tests__/deepLinkResetContract.test.ts`.
+- Important functions/services touched: Portfolio hydration guard before runtime/server Portfolio sync.
+- User interactions supported: when the S23 opens Portfolio from a server-mode deep link, stale local cached Portfolio state no longer overwrites backend-owned positions before the runtime sync applies. Portfolio Cash out now opens the close-position ticket for the backend position.
+- State transitions: no backend/order schema changed. The frontend skips local Portfolio storage hydration in `ORDER_MODE=server`, marks hydration complete, and lets server Portfolio sync own the visible positions.
+- API/data dependencies: uses the existing server Portfolio routes and existing close-position ticket payload. No new route was added.
+- Proof: S23 `SM_S911U1` runtime proof showed Portfolio position visible, Cash out opened `cashout-mode-active-true`, no Yes/No selector, `cashout-available-shares-9.000000`, Max selected `9` shares, and no wallet-sized `$9000`/`10000` amount appeared.
+- Known limitations: cashout still uses the existing generic sell order endpoint; a dedicated close-position quote route remains P1.

@@ -32,4 +32,16 @@ describe("deep link reset contract", () => {
     expect(source).toContain("const PROOF_INITIAL_TAB");
     expect(source).toContain('const [mainTab, setMainTab] = useState<MainTab>(PROOF_INITIAL_TAB);');
   });
+
+  test("server mode skips stale local Portfolio hydration before runtime sync applies positions", () => {
+    const source = appSource();
+    const hydrateBlockStart = source.indexOf("AsyncStorage.getItem(PORTFOLIO_STORAGE_KEY)");
+    expect(hydrateBlockStart).toBeGreaterThan(0);
+    const serverGuard = 'if (ORDER_MODE === "server") {';
+    const serverGuardIndex = source.lastIndexOf(serverGuard, hydrateBlockStart);
+    expect(serverGuardIndex).toBeGreaterThan(0);
+    expect(source.slice(serverGuardIndex, hydrateBlockStart)).toContain("skipPortfolioHydration.current = true;");
+    expect(source.slice(serverGuardIndex, hydrateBlockStart)).toContain("setPortfolioHydrated(true);");
+    expect(source.slice(serverGuardIndex, hydrateBlockStart)).toContain("return;");
+  });
 });

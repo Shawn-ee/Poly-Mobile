@@ -490,6 +490,11 @@ export default function App() {
   }, [locale, localeHydrated]);
 
   useEffect(() => {
+    if (ORDER_MODE === "server") {
+      skipPortfolioHydration.current = true;
+      setPortfolioHydrated(true);
+      return;
+    }
     AsyncStorage.getItem(PORTFOLIO_STORAGE_KEY)
       .then((stored) => {
         if (skipPortfolioHydration.current) return;

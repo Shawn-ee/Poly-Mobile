@@ -10675,3 +10675,21 @@ Future migration concern:
 - Schema mismatch: none. Production should eventually store service ownership and operator job state as durable authenticated records rather than local JSON proof projections.
 - Temporary mock/static data: none added. The profile reads existing proof artifacts and spends no provider quota.
 - Remaining gaps: installed unattended production service ownership and authenticated production operator controls remain P1/P2.
+
+## Cycle XI - Settlement Automation Status Contract
+
+- Closed or narrowed: local runtime status now exposes `settlementAutomation`, a single machine-readable contract for official-result replay/live ingestion mode, approved settlement scheduler proof, active-event close blocker, closed-state eligibility, and exact-confirmation safety.
+- Fields required by local runtime tooling: `settlementAutomation.resultPolling.defaultModeSpendsProviderQuota=false`, `liveResultIngestionRequiresExplicitFlag=true`, `liveResultIngestionRequiresProviderKey=true`, `approvedScheduler.supervisorWaitModeProven=true`, `approvedScheduler.activeEventSettlementExecuted=false`, `activeEvent.approvedReview=true`, `activeEvent.closedStateEligibilityProven=true`, `safety.exactConfirmationStored=false`, `safety.exactConfirmationRedacted=true`, `safety.requiresClosedMarket=true`, `safety.requiresApproval=true`, and `safety.requiresExactConfirmation=true`.
+- Route mismatch: this remains a local/dev-only read-only status contract. It does not poll live official results by default, close markets, expose exact confirmation strings, or execute settlement.
+- Schema mismatch: none. Production should eventually store official-result polling state, operator approvals, settlement execution jobs, and audit trails as authenticated durable records.
+- Temporary mock/static data: none added. The status block composes existing proof artifacts and durable review/audit evidence.
+- Remaining gaps: installed official-result polling, authenticated operator UI, and production execution controls remain P1/P2.
+
+## Cycle XJ - Server Portfolio Cashout Hydration
+
+- Closed or narrowed: server order mode no longer allows stale local Portfolio storage to overwrite backend-owned positions before cashout. The mobile-visible position source is the backend Portfolio sync.
+- Fields required by mobile: Portfolio sync must provide owned position `shares`, stable `marketId`, `outcomeId`, and sell-price fields before Cash out opens.
+- Route mismatch: none added. Existing Portfolio and order routes remain the source of truth in server mode.
+- Schema mismatch: none. This is a frontend hydration ownership fix.
+- Temporary mock/static data: none added. Server mode intentionally bypasses local Portfolio hydration.
+- Remaining gaps: a dedicated backend close-position quote/cashout availability route remains P1.

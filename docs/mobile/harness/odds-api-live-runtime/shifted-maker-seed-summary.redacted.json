@@ -1,7 +1,7 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-13T00:29:11.529Z",
-  "startedAt": "2026-07-13T00:29:11.332Z",
+  "generatedAt": "2026-07-13T02:18:48.711Z",
+  "startedAt": "2026-07-13T02:18:48.443Z",
   "scope": "odds-api-one-event-shifted-maker-seed",
   "mode": "seed-resting-shifted-maker-quotes",
   "event": {
@@ -23,7 +23,7 @@
   },
   "providerSnapshot": {
     "fetchedAt": "2026-07-13T00:24:19.924Z",
-    "ageMs": 291431,
+    "ageMs": 6868541,
     "maxSnapshotAgeMs": 86400000,
     "allowStale": false,
     "source": "sportsbook-odds",
@@ -32,8 +32,8 @@
     "outcomePrice": 0.5
   },
   "maker": {
-    "id": "9daa3d15-3c06-4645-893a-82135ba954f9",
-    "username": "odds_live_runtime_shifted_maker_c885c79f"
+    "id": "93f7a7d2-e50d-4c04-9256-64503ea59b9f",
+    "username": "odds_live_runtime_shifted_maker_0751a506"
   },
   "plan": {
     "quoteOffsetTicks": 2,
@@ -66,7 +66,7 @@
   },
   "canceledPreviousOrders": [
     {
-      "orderId": "a69c2bbf-a3d8-45a0-9d52-9f327b6e75d1",
+      "orderId": "bbfa0f52-466a-40d4-8682-4305221a2626",
       "side": "BUY",
       "price": "0.46",
       "remaining": "200",
@@ -74,7 +74,7 @@
       "canceled": true
     },
     {
-      "orderId": "83afb957-79bb-4090-8e91-0472df77a45b",
+      "orderId": "7f0fa452-d29f-494a-8732-9c1648ef5a27",
       "side": "SELL",
       "price": "0.56",
       "remaining": "200",
@@ -84,16 +84,16 @@
   ],
   "restingOrders": [
     {
-      "id": "d3b50745-041d-421c-903c-cb366d06c870",
-      "username": "odds_live_runtime_shifted_maker_c885c79f",
+      "id": "bf507322-e390-45f9-baee-6f73ab7d035c",
+      "username": "odds_live_runtime_shifted_maker_0751a506",
       "side": "BUY",
       "price": "0.46",
       "remaining": "200",
       "status": "OPEN"
     },
     {
-      "id": "e01d7b00-fbf3-4b97-b8b6-8675d179652c",
-      "username": "odds_live_runtime_shifted_maker_c885c79f",
+      "id": "cb317f70-395a-4bf8-86a7-90be9ee89036",
+      "username": "odds_live_runtime_shifted_maker_0751a506",
       "side": "SELL",
       "price": "0.56",
       "remaining": "200",

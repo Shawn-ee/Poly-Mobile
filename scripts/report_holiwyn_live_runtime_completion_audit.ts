@@ -597,6 +597,161 @@ async function main() {
       Array.isArray(getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "providerRefreshLoop", "p0"])) &&
       (getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "providerRefreshLoop", "p0"]) as unknown[]).length ===
         0,
+    settlementAutomationKnown:
+      pass(entries.phaseAudit) &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "settlementAutomation", "checked"]) === true &&
+      typeof getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "settlementAutomation", "mode"]) ===
+        "string" &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "settlementAutomation",
+        "resultPolling",
+        "defaultModeSpendsProviderQuota",
+      ]) === false &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "settlementAutomation",
+        "resultPolling",
+        "liveResultIngestionRequiresExplicitFlag",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "settlementAutomation",
+        "resultPolling",
+        "liveResultIngestionRequiresProviderKey",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "settlementAutomation",
+        "resultPolling",
+        "provenBackgroundPolling",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "settlementAutomation",
+        "resultPolling",
+        "settlementSchedulerWhilePollerRuns",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "settlementAutomation",
+        "approvedScheduler",
+        "supervisorWaitModeProven",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "settlementAutomation",
+        "approvedScheduler",
+        "schedulerWhileSupervisorRuns",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "settlementAutomation",
+        "approvedScheduler",
+        "activeEventExecutionAttempted",
+      ]) === false &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "settlementAutomation",
+        "approvedScheduler",
+        "activeEventSettlementExecuted",
+      ]) === false &&
+      typeof getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "settlementAutomation",
+        "activeEvent",
+        "marketStatus",
+      ]) === "string" &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "settlementAutomation",
+        "activeEvent",
+        "approvedReview",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "settlementAutomation",
+        "activeEvent",
+        "closedStateEligibilityProven",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "settlementAutomation",
+        "safety",
+        "providerQuotaUsedByStatus",
+      ]) === false &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "settlementAutomation",
+        "safety",
+        "providerQuotaRequiredForExecutionPlan",
+      ]) === false &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "settlementAutomation",
+        "safety",
+        "exactConfirmationRequiredKnown",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "settlementAutomation",
+        "safety",
+        "exactConfirmationStored",
+      ]) === false &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "settlementAutomation",
+        "safety",
+        "exactConfirmationRedacted",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "settlementAutomation",
+        "safety",
+        "exactConfirmationExposed",
+      ]) === false &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "settlementAutomation",
+        "safety",
+        "requiresClosedMarket",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "settlementAutomation",
+        "safety",
+        "requiresApproval",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "settlementAutomation",
+        "safety",
+        "requiresExactConfirmation",
+      ]) === true &&
+      Array.isArray(getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "settlementAutomation", "p0"])) &&
+      (getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "settlementAutomation", "p0"]) as unknown[])
+        .length === 0,
     currentRuntimeWarmStateProofKnown:
       pass(entries.currentRuntimeStateProof) &&
       getPath(entries.currentRuntimeStateProof, ["runtimeTruth", "warmNoQuotaRuntimeObserved"]) === true &&

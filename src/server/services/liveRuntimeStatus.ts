@@ -1259,6 +1259,100 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
         : null,
     p0: asStringArray(getPath(phaseAudit, ["localSettlementQueue", "body", "gaps", "p0"])),
   };
+  const settlementAutomation = {
+    checked: true,
+    mode: settlementDecision.executionEligibleNow
+      ? "closed_market_exact_confirmation_required"
+      : resultReview.settlementAlreadyExecuted
+        ? "already_executed_repeat_blocked"
+        : "approved_waiting_for_closed_market",
+    resultPolling: {
+      replayIngestionAvailable: true,
+      liveResultIngestionRequiresExplicitFlag: true,
+      liveResultIngestionRequiresProviderKey: true,
+      defaultModeSpendsProviderQuota: false,
+      currentPollerRunning: resultPollerProcess.running,
+      currentPollerUsesProviderQuota: resultPollerProcess.usesProviderQuota,
+      provenBackgroundPolling:
+        getPath(runtimeStatus, ["provenCapabilities", "resultPollingBackgroundProof"]) === true &&
+        getPath(runtimeStatus, ["provenCapabilities", "resultPollingContinuousWhileRunnerRuns"]) === true,
+      settlementSchedulerWhilePollerRuns:
+        getPath(runtimeStatus, ["provenCapabilities", "resultSettlementSchedulerWhilePollerRuns"]) === true,
+    },
+    approvedScheduler: {
+      supervisorWaitModeProven: settlementDecision.supervisorApprovedSettlementWaitProven,
+      schedulerWhileSupervisorRuns:
+        getPath(runtimeStatus, ["provenCapabilities", "resultSettlementSchedulerWhileSupervisorRuns"]) === true,
+      approvedAutoExecutionSupportedOnClosedReviewedMarkets: true,
+      activeEventExecutionAttempted: settlementDecision.activeMarketExecutionAttempted,
+      activeEventSettlementExecuted:
+        settlementDecision.closedStateEligibility.activeEventSettlementExecuted ||
+        settlementQueue.activeMarketExecutionAttempted ||
+        resultReview.activeMarketExecutionAttemptedByRoute,
+    },
+    activeEvent: {
+      eventStatus: settlementDecision.activeEventStatus ?? null,
+      marketStatus: settlementDecision.activeMarketStatus ?? settlementQueue.firstItem?.marketStatus ?? null,
+      approvalStatus: settlementQueue.firstItem?.approvalStatus ?? null,
+      approvedReview: settlementQueue.firstItem?.approvalEvidence.status === "approved",
+      executionAllowedNow: settlementDecision.executionEligibleNow,
+      blockedWaitingForClose:
+        settlementDecision.marketMustBeClosed &&
+        settlementDecision.executionEligibleNow === false &&
+        settlementQueue.firstItem?.marketStatus !== "CLOSED",
+      blockers: settlementDecision.blockers,
+      queueBlockerKeys: settlementQueue.firstItem?.operatorExecutionPlan.blockerKeys ?? [],
+      closedStateEligibilityProven: settlementDecision.closedStateEligibilityProven,
+      operatorDecisionWhenClosed: settlementDecision.closedStateEligibility.operatorDecisionWhenClosed,
+      nextSafeAction: settlementDecision.nextSafeAction,
+    },
+    safety: {
+      providerQuotaUsedByStatus: false,
+      providerQuotaRequiredForExecutionPlan:
+        settlementQueue.firstItem?.operatorExecutionPlan.providerQuotaRequired === true,
+      exactConfirmationRequiredKnown: settlementDecision.exactConfirmationRequiredKnown,
+      exactConfirmationStored:
+        resultReview.officialResultReview.exactConfirmationStored ||
+        settlementQueue.exactConfirmationStored ||
+        settlementQueue.firstItem?.operatorExecutionPlan.exactConfirmationStored === true,
+      exactConfirmationRedacted:
+        resultReview.exactConfirmationRedacted &&
+        settlementQueue.firstItem?.approvalEvidence.exactConfirmationRedacted === true &&
+        settlementQueue.firstItem?.executionEvidence.exactConfirmationRedacted === true,
+      exactConfirmationExposed:
+        settlementQueue.exactConfirmationStringsExposed ||
+        settlementQueue.firstItem?.operatorAction.exactConfirmationExposed === true ||
+        settlementQueue.firstItem?.operatorExecutionPlan.exactConfirmationExposed === true,
+      requiresClosedMarket:
+        settlementDecision.marketMustBeClosed &&
+        settlementQueue.firstItem?.operatorAction.activeExecutionRequiresClosedMarket === true,
+      requiresApproval: settlementQueue.firstItem?.operatorAction.activeExecutionRequiresApproval === true,
+      requiresExactConfirmation:
+        settlementQueue.firstItem?.operatorAction.activeExecutionRequiresExactConfirmation === true,
+      repeatExecutionBlocked: resultReview.repeatExecutionBlocked || resultReview.repeatSettlementExecutionBlocked,
+    },
+    p0:
+      settlementQueue.pass &&
+      resultReview.pass &&
+      settlementDecision.closedStateEligibilityProven &&
+      settlementQueue.firstItem?.approvalEvidence.status === "approved" &&
+      settlementQueue.firstItem?.operatorExecutionPlan.providerQuotaRequired === false &&
+      settlementQueue.firstItem?.operatorExecutionPlan.exactConfirmationExposed === false &&
+      settlementQueue.firstItem?.operatorExecutionPlan.exactConfirmationStored === false &&
+      settlementDecision.closedStateEligibility.activeEventSettlementExecuted === false &&
+      settlementQueue.activeMarketExecutionAttempted === false &&
+      resultReview.activeMarketExecutionAttemptedByRoute === false
+        ? []
+        : ["settlement_automation_status_incomplete_or_unsafe"],
+    p1: [
+      ...(resultPollerProcess.running ? [] : ["result_poller_not_running_now"]),
+      ...(supervisorProcess.running ? [] : ["supervisor_not_running_now"]),
+      "installed_official_result_polling_not_present",
+      "production_operator_ui_not_present",
+    ],
+    note:
+      "This block summarizes local official-result automation truth. It is read-only status: replay result ingestion and approved settlement scheduling are proven locally, live result ingestion is explicit/key-gated, and active-event execution remains guarded by CLOSED market status plus exact approval.",
+  };
   const serviceOwnership = buildServiceOwnership({
     localCapabilityReady: ready,
     runtimeStatus,
@@ -1353,6 +1447,7 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     checks: completionAudit?.checks ?? null,
     serviceOwnership,
     providerRefreshLoop,
+    settlementAutomation,
     gaps: {
       p0: statusP0Gaps,
       p1: asStringArray(getPath(completionAudit, ["gaps", "p1"])),

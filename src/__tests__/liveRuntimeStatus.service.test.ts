@@ -1067,6 +1067,50 @@ describe("live runtime status service", () => {
       p0: [],
     });
     expect(JSON.stringify(status.settlementQueue)).not.toContain("SETTLE_FROM_RESULT:");
+    expect(status.settlementAutomation).toMatchObject({
+      checked: true,
+      mode: "approved_waiting_for_closed_market",
+      resultPolling: {
+        replayIngestionAvailable: true,
+        liveResultIngestionRequiresExplicitFlag: true,
+        liveResultIngestionRequiresProviderKey: true,
+        defaultModeSpendsProviderQuota: false,
+        currentPollerRunning: false,
+        currentPollerUsesProviderQuota: false,
+        provenBackgroundPolling: true,
+        settlementSchedulerWhilePollerRuns: true,
+      },
+      approvedScheduler: {
+        supervisorWaitModeProven: true,
+        schedulerWhileSupervisorRuns: true,
+        approvedAutoExecutionSupportedOnClosedReviewedMarkets: true,
+        activeEventExecutionAttempted: false,
+        activeEventSettlementExecuted: false,
+      },
+      activeEvent: {
+        eventStatus: "ACTIVE",
+        marketStatus: "LIVE",
+        approvalStatus: "approved",
+        approvedReview: true,
+        executionAllowedNow: false,
+        blockedWaitingForClose: true,
+        closedStateEligibilityProven: true,
+        operatorDecisionWhenClosed: "eligible_for_exact_confirmation_execution_after_market_close",
+      },
+      safety: {
+        providerQuotaUsedByStatus: false,
+        providerQuotaRequiredForExecutionPlan: false,
+        exactConfirmationRequiredKnown: true,
+        exactConfirmationStored: false,
+        exactConfirmationRedacted: true,
+        exactConfirmationExposed: false,
+        requiresClosedMarket: true,
+        requiresApproval: true,
+        requiresExactConfirmation: true,
+        repeatExecutionBlocked: false,
+      },
+      p0: [],
+    });
     expect(status.runtimeCapabilities).toMatchObject({
       latestRunProfileOnly: true,
       latestSupervisorProfile: {

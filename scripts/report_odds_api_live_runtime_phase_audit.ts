@@ -716,6 +716,73 @@ async function main() {
         getPath(localRuntimeStatusBody, ["providerRefreshLoop", "mobileFreshness", "staleAfterSeconds"]) === 90 &&
         Array.isArray(getPath(localRuntimeStatusBody, ["providerRefreshLoop", "p0"])) &&
         (getPath(localRuntimeStatusBody, ["providerRefreshLoop", "p0"]) as unknown[]).length === 0 &&
+        getPath(localRuntimeStatusBody, ["settlementAutomation", "checked"]) === true &&
+        typeof getPath(localRuntimeStatusBody, ["settlementAutomation", "mode"]) === "string" &&
+        getPath(localRuntimeStatusBody, ["settlementAutomation", "resultPolling", "defaultModeSpendsProviderQuota"]) ===
+          false &&
+        getPath(localRuntimeStatusBody, [
+          "settlementAutomation",
+          "resultPolling",
+          "liveResultIngestionRequiresExplicitFlag",
+        ]) === true &&
+        getPath(localRuntimeStatusBody, [
+          "settlementAutomation",
+          "resultPolling",
+          "liveResultIngestionRequiresProviderKey",
+        ]) === true &&
+        getPath(localRuntimeStatusBody, ["settlementAutomation", "resultPolling", "provenBackgroundPolling"]) ===
+          true &&
+        getPath(localRuntimeStatusBody, [
+          "settlementAutomation",
+          "resultPolling",
+          "settlementSchedulerWhilePollerRuns",
+        ]) === true &&
+        getPath(localRuntimeStatusBody, [
+          "settlementAutomation",
+          "approvedScheduler",
+          "supervisorWaitModeProven",
+        ]) === true &&
+        getPath(localRuntimeStatusBody, [
+          "settlementAutomation",
+          "approvedScheduler",
+          "schedulerWhileSupervisorRuns",
+        ]) === true &&
+        getPath(localRuntimeStatusBody, [
+          "settlementAutomation",
+          "approvedScheduler",
+          "activeEventExecutionAttempted",
+        ]) === false &&
+        getPath(localRuntimeStatusBody, [
+          "settlementAutomation",
+          "approvedScheduler",
+          "activeEventSettlementExecuted",
+        ]) === false &&
+        typeof getPath(localRuntimeStatusBody, ["settlementAutomation", "activeEvent", "marketStatus"]) ===
+          "string" &&
+        getPath(localRuntimeStatusBody, ["settlementAutomation", "activeEvent", "approvedReview"]) === true &&
+        typeof getPath(localRuntimeStatusBody, ["settlementAutomation", "activeEvent", "executionAllowedNow"]) ===
+          "boolean" &&
+        getPath(localRuntimeStatusBody, [
+          "settlementAutomation",
+          "activeEvent",
+          "closedStateEligibilityProven",
+        ]) === true &&
+        getPath(localRuntimeStatusBody, ["settlementAutomation", "safety", "providerQuotaUsedByStatus"]) === false &&
+        getPath(localRuntimeStatusBody, [
+          "settlementAutomation",
+          "safety",
+          "providerQuotaRequiredForExecutionPlan",
+        ]) === false &&
+        getPath(localRuntimeStatusBody, ["settlementAutomation", "safety", "exactConfirmationRequiredKnown"]) ===
+          true &&
+        getPath(localRuntimeStatusBody, ["settlementAutomation", "safety", "exactConfirmationStored"]) === false &&
+        getPath(localRuntimeStatusBody, ["settlementAutomation", "safety", "exactConfirmationRedacted"]) === true &&
+        getPath(localRuntimeStatusBody, ["settlementAutomation", "safety", "exactConfirmationExposed"]) === false &&
+        getPath(localRuntimeStatusBody, ["settlementAutomation", "safety", "requiresClosedMarket"]) === true &&
+        getPath(localRuntimeStatusBody, ["settlementAutomation", "safety", "requiresApproval"]) === true &&
+        getPath(localRuntimeStatusBody, ["settlementAutomation", "safety", "requiresExactConfirmation"]) === true &&
+        Array.isArray(getPath(localRuntimeStatusBody, ["settlementAutomation", "p0"])) &&
+        (getPath(localRuntimeStatusBody, ["settlementAutomation", "p0"]) as unknown[]).length === 0 &&
         getPath(localRuntimeStatusBody, ["managedProcesses", "supervisor", "checked"]) === true &&
         getPath(localRuntimeStatusBody, ["managedProcesses", "resultPoller", "checked"]) === true &&
         getPath(localRuntimeStatusBody, ["managedProcesses", "quotaSpendingLoopRunning"]) === false &&
