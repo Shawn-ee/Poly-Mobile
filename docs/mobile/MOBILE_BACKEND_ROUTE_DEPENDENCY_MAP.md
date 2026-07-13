@@ -2,6 +2,12 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle SETTLEMENTSTATUSGUARD - Status Projection for Repeat-Execution Safety
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Local status repeat-execution guard projection | `/api/internal/live-runtime/status`; source evidence from `/api/internal/live-runtime/result-review` inside phase audit | `GET` | Local/dev only; route returns 404 in production or when internal status is disabled; no mobile auth and no provider key | Optional `phaseAuditInProgress=1` for audit bootstrap | `resultReview.settlementAlreadyExecuted`, `resultReview.repeatExecutionBlocked`, `resultReview.repeatSettlementExecutionBlocked`, existing exact-confirmation redaction flags, and P0 status | Reads redacted phase-audit evidence backed by `OfficialResultReview`, `CanonicalEvent`, `Market`, and `Event`; no schema change and no writes from status route | None. The route projects existing runtime evidence and spends no provider quota. | Production still needs authenticated operator action endpoints, installed official-result polling, and durable execution-attempt ownership. |
+
 ## Cycle SETTLEMENTIDEMPOTENCY - Result Review Repeat-Execution Guard
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |

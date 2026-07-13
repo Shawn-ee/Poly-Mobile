@@ -2,6 +2,18 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle SETTLEMENTSTATUSGUARD - Status Projection for Repeat-Execution Safety
+
+- Feature/runtime worked on: backend local live-runtime status projection.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `src/server/services/liveRuntimeStatus.ts`
+  - `src/__tests__/liveRuntimeStatus.service.test.ts`
+- User/runtime interactions supported: local tools can call `GET /api/internal/live-runtime/status` and see whether the result-review evidence says settlement already executed, whether repeat execution is blocked, and whether the canonical execution guard is active, without opening the dedicated result-review route separately.
+- State transitions: none. This is read-only status projection and does not call The Odds API, spend quota, start loops, mutate markets, approve settlement, or execute settlement.
+- API/data dependencies: reads the phase-audit snapshot of `/api/internal/live-runtime/result-review`, including `executionDecision.settlementAlreadyExecuted`, `executionDecision.repeatExecutionBlocked`, and `runtimeTruth.repeatSettlementExecutionBlocked`.
+- Known limitations: active tester settlement remains guarded by `CLOSED` market status plus exact approval/confirmation evidence. Production still needs authenticated operator controls and installed official-result polling.
+
 ## Cycle SETTLEMENTIDEMPOTENCY - Result Review Repeat-Execution Guard
 
 - Feature/runtime worked on: backend local official-result review and settlement execution safety.

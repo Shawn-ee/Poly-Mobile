@@ -1,5 +1,13 @@
 # Mobile Data Contract Gaps
 
+## Cycle SETTLEMENTSTATUSGUARD - Status Projection for Repeat-Execution Safety
+
+- Closed or narrowed: `/api/internal/live-runtime/status` now projects result-review repeat-execution guard fields, so the single operator status endpoint can show whether settlement is already executed and whether repeat execution is blocked.
+- Backend-supported fields used: phase-audit `localResultReview.body.executionDecision.settlementAlreadyExecuted`, `repeatExecutionBlocked`, and `runtimeTruth.repeatSettlementExecutionBlocked`, backed by canonical settlement execution evidence and `OfficialResultReview`.
+- Route mismatch: none for public mobile APIs. This remains a local/dev-only runtime status route and does not execute settlement.
+- Temporary mock/static data: none added.
+- Future migration concern: production operator status should read durable execution-attempt/settlement-run records directly instead of local phase-audit artifacts.
+
 ## Cycle SETTLEMENTIDEMPOTENCY - Result Review Repeat-Execution Guard
 
 - Closed or narrowed: `/api/internal/live-runtime/result-review` now treats canonical `settlement.trusted_result.executed` evidence as terminal and persists `OfficialResultReview.executionDecision="already_executed"` with `executionEligibleNow=false`.

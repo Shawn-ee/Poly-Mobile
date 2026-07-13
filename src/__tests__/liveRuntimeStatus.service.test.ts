@@ -332,6 +332,7 @@ const makePhaseAudit = (generatedAt = nowIso()) => ({
         canonicalSettlementPreflightAuditAvailable: true,
         canonicalSettlementApprovalAuditAvailable: true,
         durableOfficialResultReviewRecordAvailable: true,
+        repeatSettlementExecutionBlocked: false,
       },
       officialResultReview: {
         reviewKey: "odds-api-single-soccer-test:phase-market:result-digest",
@@ -342,6 +343,8 @@ const makePhaseAudit = (generatedAt = nowIso()) => ({
       executionDecision: {
         exactConfirmationRequiredKnown: true,
         exactConfirmationRedacted: true,
+        settlementAlreadyExecuted: false,
+        repeatExecutionBlocked: false,
         activeMarketExecutionAttemptedByThisRoute: false,
         executionEligibleNow: false,
       },
@@ -938,6 +941,9 @@ describe("live runtime status service", () => {
       },
       exactConfirmationRequiredKnown: true,
       exactConfirmationRedacted: true,
+      settlementAlreadyExecuted: false,
+      repeatExecutionBlocked: false,
+      repeatSettlementExecutionBlocked: false,
       activeMarketExecutionAttemptedByRoute: false,
       p0: [],
       nextSafeAction: "wait_for_or_apply_market_close_before_execution",

@@ -961,6 +961,10 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     getPath(phaseAudit, ["localResultReview", "body", "officialResultReview", "activeMarketExecutionAttempted"]) === false &&
     getPath(phaseAudit, ["localResultReview", "body", "executionDecision", "exactConfirmationRequiredKnown"]) === true &&
     getPath(phaseAudit, ["localResultReview", "body", "executionDecision", "exactConfirmationRedacted"]) === true &&
+    typeof getPath(phaseAudit, ["localResultReview", "body", "executionDecision", "settlementAlreadyExecuted"]) ===
+      "boolean" &&
+    typeof getPath(phaseAudit, ["localResultReview", "body", "executionDecision", "repeatExecutionBlocked"]) ===
+      "boolean" &&
     getPath(phaseAudit, ["localResultReview", "body", "executionDecision", "activeMarketExecutionAttemptedByThisRoute"]) === false &&
     Array.isArray(getPath(phaseAudit, ["localResultReview", "body", "gaps", "p0"])) &&
     (getPath(phaseAudit, ["localResultReview", "body", "gaps", "p0"]) as unknown[]).length === 0;
@@ -1096,6 +1100,12 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
       getPath(phaseAudit, ["localResultReview", "body", "executionDecision", "exactConfirmationRequiredKnown"]) === true,
     exactConfirmationRedacted:
       getPath(phaseAudit, ["localResultReview", "body", "executionDecision", "exactConfirmationRedacted"]) === true,
+    settlementAlreadyExecuted:
+      getPath(phaseAudit, ["localResultReview", "body", "executionDecision", "settlementAlreadyExecuted"]) === true,
+    repeatExecutionBlocked:
+      getPath(phaseAudit, ["localResultReview", "body", "executionDecision", "repeatExecutionBlocked"]) === true,
+    repeatSettlementExecutionBlocked:
+      getPath(phaseAudit, ["localResultReview", "body", "runtimeTruth", "repeatSettlementExecutionBlocked"]) === true,
     activeMarketExecutionAttemptedByRoute:
       getPath(phaseAudit, ["localResultReview", "body", "executionDecision", "activeMarketExecutionAttemptedByThisRoute"]) === true,
     p0: asStringArray(getPath(phaseAudit, ["localResultReview", "body", "gaps", "p0"])),
