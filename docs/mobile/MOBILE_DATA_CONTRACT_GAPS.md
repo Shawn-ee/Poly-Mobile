@@ -1,5 +1,13 @@
 # Mobile Data Contract Gaps
 
+## Cycle ZL - One-Command Onboarding Aliases
+
+- Closed or narrowed: one-event onboarding now has explicit cached-runtime and live-provider-runtime package scripts, so operators do not need to remember the runtime-loop proof flags.
+- Backend-supported fields used: no new fields. The aliases reuse existing onboarding summaries, runtime status fields, provider refresh policy fields, and runtime loop proof summaries.
+- Route mismatch: none. Public mobile APIs are unchanged.
+- Temporary mock/static data: none added. Cached mode uses existing provider-shaped proof evidence and no provider quota.
+- Future migration concern: this remains local-process orchestration. Production still needs durable service/job ownership, alerting, and a production operator workflow before replacing local commands with real operations.
+
 ## Cycle ODDSAPIS23CASHOUTFRESH - Spain vs. France Cashout and Event Restore
 
 - Closed or narrowed: cached one-event restore now writes normalized soccer metadata consumed by Home/Event Detail read models, so the Spain vs. France knockout event reports `resultMode=must_advance` and `primaryMarketProfile=advance` instead of exposing Draw as a primary top action.

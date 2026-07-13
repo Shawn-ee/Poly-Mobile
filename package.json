@@ -161,6 +161,8 @@
     "mobile:one-event-result-settlement-execution-proof": "tsx scripts/prove_odds_api_trusted_result_settlement_scheduler_execution.ts",
     "mobile:one-event-active-settlement-clone-proof": "tsx scripts/prove_odds_api_active_event_settlement_clone.ts",
     "mobile:one-event-onboarding": "powershell -ExecutionPolicy Bypass -File scripts/onboard_holiwyn_one_event_live_runtime.ps1",
+    "mobile:one-event-onboarding:cached-runtime": "powershell -ExecutionPolicy Bypass -File scripts/onboard_holiwyn_one_event_live_runtime.ps1 -AllowDisconnectedS23 -StartRuntimeLoops -StopRuntimeLoopsAfterProof",
+    "mobile:one-event-onboarding:live-provider-runtime": "powershell -ExecutionPolicy Bypass -File scripts/onboard_holiwyn_one_event_live_runtime.ps1 -RunProviderRefresh -StartRuntimeLoops -StopRuntimeLoopsAfterProof",
     "mobile:one-event-runtime-status": "tsx scripts/report_odds_api_one_event_runtime_status.ts",
     "mobile:one-event-phase-audit": "tsx scripts/report_odds_api_live_runtime_phase_audit.ts",
     "mobile:live-runtime-completion-audit": "tsx scripts/report_holiwyn_live_runtime_completion_audit.ts",

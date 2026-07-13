@@ -65,6 +65,15 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("$canonicalLiveProofSummaryPath");
   });
 
+  it("exposes explicit one-command onboarding aliases for cached and live-provider runtime proof", () => {
+    const pkg = packageJson();
+    expect(pkg).toContain("mobile:one-event-onboarding:cached-runtime");
+    expect(pkg).toContain("mobile:one-event-onboarding:live-provider-runtime");
+    expect(pkg).toContain("-AllowDisconnectedS23 -StartRuntimeLoops -StopRuntimeLoopsAfterProof");
+    expect(pkg).toContain("-RunProviderRefresh -StartRuntimeLoops -StopRuntimeLoopsAfterProof");
+    expect(pkg).not.toContain("mobile:one-event-onboarding:cached-runtime\": \"powershell -ExecutionPolicy Bypass -File scripts/onboard_holiwyn_one_event_live_runtime.ps1 -RunProviderRefresh");
+  });
+
   it("starts managed Expo in server-backed S23 tester mode", () => {
     const source = internalTesterRuntimeScript();
     expect(source).toContain("EXPO_PUBLIC_API_BASE_URL = '$BackendBaseUrl'");

@@ -2,6 +2,13 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle ZL - One-Command Onboarding Aliases
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Cached runtime onboarding shortcut | `npm run mobile:one-event-onboarding:cached-runtime`; child checks use `/api/health`, `/api/internal/live-runtime/status`, event/detail/quote routes, order/portfolio proof routes, and settlement readiness commands | Local CLI plus local `GET`/`POST` child proofs | Local development runtime and generated proof credential for order/portfolio child proof; no provider key | No direct request body. Alias passes `-AllowDisconnectedS23 -StartRuntimeLoops -StopRuntimeLoopsAfterProof` to the existing onboarding wrapper | Onboarding pass/fail, backend health, selected event/market, runtime loop start/status/stop summaries, settlement readiness, and no-quota runtime truth | Existing `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, `Order`, `Trade`, `Position`, `ApiCredential`, `UserBalance`, `RuntimeServiceHeartbeat`, `RuntimeServiceRun` | Cached mode restores/uses committed provider-shaped evidence and does not call The Odds API | Installed unattended service ownership remains P1. |
+| Live-provider runtime onboarding shortcut | `npm run mobile:one-event-onboarding:live-provider-runtime`; child provider calls stay inside the existing `-RunProviderRefresh` path | Local CLI plus provider `GET` when explicitly run | Local `THE_ODDS_API_KEY` required in the caller environment; no committed key | Alias passes `-RunProviderRefresh -StartRuntimeLoops -StopRuntimeLoopsAfterProof` | Live provider quota/cadence summary, ready-after-refresh provider snapshots, runtime loop proof, settlement readiness | Existing provider-backed event/market/outcome/snapshot models and durable proof rows | None. This path is intentionally not default because it may spend quota | Multi-event onboarding and installed provider daemon remain future work. |
+
 ## Cycle ODDSAPIS23CASHOUTFRESH - Spain vs. France Cashout and Event Restore
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |

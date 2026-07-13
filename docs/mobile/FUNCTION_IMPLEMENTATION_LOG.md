@@ -2,6 +2,18 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ZL - One-Command Onboarding Aliases
+
+- Feature/runtime worked on: one-event live runtime onboarding operator commands.
+- Frontend components touched: none.
+- Important functions/services touched:
+  - `package.json`
+  - `scripts/onboard_holiwyn_one_event_live_runtime.ps1` through existing npm aliases only
+  - `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`
+- User/runtime interactions supported: local operators can now run `npm run mobile:one-event-onboarding:cached-runtime` for no-quota onboarding plus supervisor/result-poller startup/status/cleanup proof, or `npm run mobile:one-event-onboarding:live-provider-runtime` when intentionally refreshing provider odds.
+- State transitions: no app or DB transition changed. The aliases reuse the existing onboarding flow: cached/live event restore/import -> readiness/status/settlement checks -> optional runtime loop start/status/stop proof.
+- Known limitations: these are local proof/operator shortcuts, not installed unattended services. Live-provider mode still requires local `THE_ODDS_API_KEY` and intentional quota spend.
+
 ## Cycle ODDSAPIS23CASHOUTFRESH - Spain vs. France Cashout and Event Restore
 
 - Feature/runtime worked on: internal tester S23 trading flow for `Spain vs. France`, plus cached one-event restore semantics.
