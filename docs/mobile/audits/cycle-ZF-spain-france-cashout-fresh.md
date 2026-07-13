@@ -1,49 +1,70 @@
-# Cycle ZF - Spain vs. France Fresh S23 Cashout Proof
+# Cycle ZF - Fresh Spain vs France Cashout Proof
 
 ## Scope
 
-- Current `main` internal tester flow for the backend-owned Odds API event `Spain vs. France`.
-- Device: Samsung S23 `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`, model `SM-S911U1`.
-- Required path: Home -> Event Detail -> Total 2.5 -> Buy ticket -> fake-token order -> Portfolio position -> Cash out -> Max -> Sell -> Portfolio History.
+Fresh S23 proof from current `main` for the internal tester mobile trading flow:
 
-## Result
+Home -> Spain vs. France -> Event Detail -> Total Goals 2.5 -> Buy Over -> Portfolio position -> Cash out -> Max -> Sell -> Portfolio History.
 
-Pass on 2026-07-13.
+No source code changes were required. This cycle specifically rechecked the reported real-phone bug where Portfolio Cash out -> Max could use wallet balance instead of owned position shares.
 
-The first proof attempt exposed an Expo Go overlay/onboarding state. The product path was not changed; the S23 proof harness was tightened so it dismisses Expo's first-run developer overlay by tapping the explicit Continue/close controls instead of using Android Back, which can throw the phone into Samsung search.
+## Device And Runtime
+
+- Device: Samsung S23 `SM-S911U1`
+- ADB id: `adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp`
+- Backend: `http://127.0.0.1:3002`
+- Mobile API from phone: `http://172.16.200.14:3002`
+- Expo port: `8291`
+- Event: `Spain vs. France`
+- Event slug: `odds-api-single-soccer-test`
+- Selected market: `Total Goals`, line `2.5`, outcome `Over 2.5`
 
 ## Evidence
 
 - Summary: `docs/mobile/harness/cycle-ZF-spain-france-cashout-fresh/cycle-ZF-SPAIN-FRANCE-CASHOUT-FRESH-odds-api-s23-visible-flow.json`
-- Home: `docs/mobile/screenshots/cycle-ZF-spain-france-cashout-fresh/cycle-ZF-SPAIN-FRANCE-CASHOUT-FRESH-home.png`
-- Event Detail: `docs/mobile/screenshots/cycle-ZF-spain-france-cashout-fresh/cycle-ZF-SPAIN-FRANCE-CASHOUT-FRESH-detail-top.png`
-- Line market: `docs/mobile/screenshots/cycle-ZF-spain-france-cashout-fresh/cycle-ZF-SPAIN-FRANCE-CASHOUT-FRESH-line-market.png`
-- Buy ticket: `docs/mobile/screenshots/cycle-ZF-spain-france-cashout-fresh/cycle-ZF-SPAIN-FRANCE-CASHOUT-FRESH-ticket-ready.png`
-- Portfolio after buy: `docs/mobile/screenshots/cycle-ZF-spain-france-cashout-fresh/cycle-ZF-SPAIN-FRANCE-CASHOUT-FRESH-after-submit.png`
-- Cashout Max: `docs/mobile/screenshots/cycle-ZF-spain-france-cashout-fresh/cycle-ZF-SPAIN-FRANCE-CASHOUT-FRESH-cashout-ticket-ready.png`
-- Portfolio History: `docs/mobile/screenshots/cycle-ZF-spain-france-cashout-fresh/cycle-ZF-SPAIN-FRANCE-CASHOUT-FRESH-portfolio-history.png`
+- Cashout ticket XML: `docs/mobile/harness/cycle-ZF-spain-france-cashout-fresh/cycle-ZF-SPAIN-FRANCE-CASHOUT-FRESH-cashout-ticket.xml`
+- Cashout ready XML after Max: `docs/mobile/harness/cycle-ZF-spain-france-cashout-fresh/cycle-ZF-SPAIN-FRANCE-CASHOUT-FRESH-cashout-ticket-ready.xml`
+- Cashout ready screenshot: `docs/mobile/screenshots/cycle-ZF-spain-france-cashout-fresh/cycle-ZF-SPAIN-FRANCE-CASHOUT-FRESH-cashout-ticket-ready.png`
+- Portfolio history screenshot: `docs/mobile/screenshots/cycle-ZF-spain-france-cashout-fresh/cycle-ZF-SPAIN-FRANCE-CASHOUT-FRESH-portfolio-history.png`
 
-## Cashout Contract Evidence
+## Result
 
-- `cashoutTicketIsClosePositionMode = true`
-- `cashoutMaxUsesOwnedShares = true`
-- `cashoutTicketHidesYesNoSelector = true`
-- `cashoutSellSubmitted = true`
-- `cashoutHistoryVisible = true`
-- Cashout ready XML includes `cashout-mode-active-true`, `cashout-source-position-present`, `cashout-effective-side-sell`, `cashout-available-shares-43.100000`, `cashout-max-owned-shares`, and `cashout-share-quantity-display`.
-- Max displayed `43.1` shares, with `43.1 shares available at 58%`.
-- The proof rejects wallet-sized cashout values including `9,000 USDT`, `9000 USDT`, `10,000 USDT`, and `10000 USDT`.
+Pass.
 
-## Route and Runtime Dependencies
+The real S23 cashout ticket entered close-position mode. The XML shows:
 
-- Home/Event Detail: `GET /api/events`, `GET /api/mobile/events/:slug/live-detail`
-- Quote/ticket identity: `GET /api/markets/:marketId/quote`
-- Buy/Sell: `POST /api/orders`
-- Portfolio/history: `GET /api/portfolio`, `GET /api/portfolio/history`
-- Counterparty liquidity: proof-only seeding via `scripts/seed_mobile_route_spread_counterparty.ts`
+- `cashout-mode-active-true`
+- `cashout-source-position-present`
+- `cashout-effective-side-sell`
+- `cashout-available-shares-43.100000`
+- `cashout-sell-price-0.58`
+- `cashout-max-owned-shares`
+- `cashout-share-quantity-display`
+- `cashout-ticket-no-yes-no-selector`
 
-## Gaps
+After tapping Max, the active ticket displayed `43.1` shares and `shares` copy. It did not display wallet-sized values such as `9000`, `9,000`, `10000`, or `10,000`.
 
-- P0: none for the tested Spain vs. France buy -> Portfolio -> cashout Max -> sell -> History path.
-- P1: cashout proceeds still depend on current bid/seeded local liquidity; a dedicated preview route would make proceeds clearer to users.
-- P2: Expo Go first-run overlay can still interrupt manual sessions, but the automated proof now handles it without using Android Back.
+The proof summary assertions passed:
+
+- Home shows the temporary sportsbook event.
+- Event detail shows game lines.
+- Ticket preserves sportsbook line identity.
+- Buy submits and reaches Portfolio.
+- Portfolio preserves sportsbook line identity.
+- Cashout ticket opens in close-position mode.
+- Cashout Max uses owned shares.
+- Cashout ticket hides Yes/No selector.
+- Cashout sell submits.
+- Portfolio History updates.
+
+## Validation
+
+- Backend focused tests: `npx jest --runInBand src/__tests__/portfolio.history.route.test.ts src/__tests__/portfolio.open-orders.route.test.ts src/__tests__/orders.cancel.route.test.ts src/__tests__/order_ticket_logic.test.ts` passed, 23 tests.
+- Mobile focused tests: `npx vitest run src/__tests__/cashoutGenericSellOnlyContract.test.ts src/__tests__/positionTradeTicketService.test.ts src/__tests__/portfolioPositionTradeContract.test.ts src/__tests__/portfolioHistoryService.test.ts src/__tests__/orderService.test.ts` passed, 31 tests.
+- Mobile typecheck: `npm --prefix mobile run typecheck` passed.
+
+## Remaining Gaps
+
+- P0: none for the tested Spain vs. France buy -> Portfolio -> cashout Max -> sell -> History flow.
+- P1: dedicated backend cashout quote/preview fields remain useful so the mobile client does not have to assemble all close-ticket display state.
+- P2: cashout copy can be polished further for tester readability.

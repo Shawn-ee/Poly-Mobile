@@ -19,7 +19,7 @@
     "conditionId": "odds-api-00c86ad8b5e6561e27f78508"
   },
   "outcome": {
-    "id": "24515f22-3717-4b61-82a2-c072febc8f5b",
+    "id": "4afc49b4-69cd-4b35-8ffe-68533c787949",
     "name": "Over 2.5",
     "side": "over",
     "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e",
@@ -27,17 +27,17 @@
   },
   "cleanupOnly": false,
   "maker": {
-    "id": "230a3184-4893-48fc-ae3e-49c6489e7f10",
-    "username": "mobile_route_fill_maker_bb6ffc18"
+    "id": "1539f66f-328e-42ef-bac7-0db5f52f6841",
+    "username": "mobile_route_fill_maker_e79f0478"
   },
   "cleanup": {
     "resetSelectedMarketState": {
       "requested": true,
       "canonicalEventsPreserved": true,
-      "deletedFills": 0,
-      "deletedTrades": 0,
-      "deletedOrders": 1,
-      "deletedPositions": 2,
+      "deletedFills": 4,
+      "deletedTrades": 8,
+      "deletedOrders": 20,
+      "deletedPositions": 18,
       "collateralReset": true
     },
     "enabled": true,
@@ -54,9 +54,9 @@
     "canceledBlockingAsks": []
   },
   "makerOrder": {
-    "id": "a9fabba2-cf3c-4be2-b5b1-5eba033e5773",
+    "id": "c89ca7a6-e2b3-4d73-b624-c1af0b0d28f4",
     "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-    "outcomeId": "24515f22-3717-4b61-82a2-c072febc8f5b",
+    "outcomeId": "4afc49b4-69cd-4b35-8ffe-68533c787949",
     "side": "SELL",
     "price": "0.58",
     "size": "100",
