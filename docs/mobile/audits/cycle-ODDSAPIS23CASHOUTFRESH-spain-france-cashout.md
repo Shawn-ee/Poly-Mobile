@@ -201,6 +201,7 @@ Fresh evidence artifacts:
 Fresh validation:
 
 - Mobile typecheck: `npm --prefix mobile run typecheck` - pass.
+- Focused mobile cashout/portfolio tests: `.\mobile\node_modules\.bin\vitest.cmd run --config mobile/vitest.config.ts --root "C:\Users\hecto\Desktop\projects\PolyProj\worktrees\poly-mobile-main-s23-cashout" mobile/src/__tests__/cashoutGenericSellOnlyContract.test.ts mobile/src/__tests__/portfolioPositionTradeContract.test.ts mobile/src/__tests__/eventDetailPositionTradeContract.test.ts mobile/src/__tests__/orderService.test.ts mobile/src/__tests__/positionCloseService.test.ts mobile/src/__tests__/tradeTicketModeClarityContract.test.ts mobile/src/__tests__/tradeTicketUnavailableReadonlyContract.test.ts` - pass, 7 files / 37 tests.
 - Backend cashout route proof: `npx tsx -r dotenv/config scripts/prove_mobile_cashout_route_sell_safety.ts --output=docs/mobile/harness/cycle-ZS-spain-france-cashout-s23/cycle-ZS-cashout-route-sell-safety.json` - pass; no-position sell and oversell rejected, valid owned-position sell accepted.
 - S23 proof: `powershell -ExecutionPolicy Bypass -File scripts\prove_mobile_odds_api_s23_visible_flow.ps1 -Device 172.16.200.27:44029 -Cycle ZS -OutputDir docs\mobile\screenshots\cycle-ZS-spain-france-cashout-s23 -HierarchyOutputDir docs\mobile\harness\cycle-ZS-spain-france-cashout-s23 -Port 8291` - pass.
 - Previous pushed cleanup CI: `https://github.com/Shawn-ee/Poly-Mobile/actions/runs/29270721168` - pass.
