@@ -15201,3 +15201,14 @@ Known limitations:
 - API/data dependencies: uses the existing `requireAdmin()` session/dev-admin path and `User.isAdmin` as the current role source. `GET /api/internal/live-runtime/status` now reports the operator session route as `implemented_read_only` while preserving missing approval/execution routes as P1.
 - Proof needed: operator session route tests, operator session service test, focused live-runtime status test, phase audit, completion audit, root typecheck, mobile typecheck, and `npm run test:ci`.
 - Known limitations: dedicated settlement-operator roles, two-person approval, durable operator audit events, approval endpoint, execution endpoint, and production operator UI remain P1.
+
+## Cycle XN - Operator Settlement Approval Route
+
+- Feature/runtime worked on: backend internal operator approval evidence for official-result settlement review.
+- Frontend components touched: none.
+- Important functions/services touched: `src/app/api/internal/live-runtime/settlement-queue/[reviewId]/approve/route.ts`, `src/server/services/liveRuntimeSettlementApproval.ts`, `src/server/services/liveRuntimeStatus.ts`, operator session/status tests, phase audit, and completion audit.
+- User/runtime interactions supported: an authenticated admin can call `POST /api/internal/live-runtime/settlement-queue/:reviewId/approve` to attach durable canonical approval evidence to an `OfficialResultReview`. The route is idempotent when approval evidence already exists.
+- State transitions: writes only approval evidence and review approval status. It does not execute settlement, close markets, resolve markets, call provider APIs, spend quota, store exact confirmation, or expose exact confirmation strings.
+- API/data dependencies: reads `OfficialResultReview`, `Market`, and existing admin session identity; writes `CanonicalEvent` with `eventType=settlement.trusted_result.approved` and `userId=<operatorUserId>`, then updates `OfficialResultReview.approvalStatus`, `settlementApprovalCanonicalId`, `executionDecision`, and redacted review snapshot metadata.
+- Proof needed: focused approval service/route tests, operator session/status tests, phase audit, completion audit, root typecheck, mobile typecheck, and `npm run test:ci`.
+- Known limitations: execution remains blocked behind the missing guarded execution endpoint, exact confirmation remains outside status/API responses, dedicated operator role model and two-person/admin approval workflow remain P1.

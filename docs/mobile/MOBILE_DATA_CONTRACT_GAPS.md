@@ -10728,3 +10728,12 @@ Future migration concern:
 - Schema mismatch: `User.isAdmin` is the current role source. Production needs a dedicated operator role/permission model, durable operator identity fields on approval/execution, and an `OperatorAuditEvent` or equivalent audit table.
 - Temporary mock/static data: none added. The route returns the authenticated admin user and does not fabricate approvals, executions, or exact confirmation strings.
 - Remaining gaps: settlement approval route, settlement execution route, two-person/admin approval workflow, production operator UI, installed official-result polling, and production service ownership remain P1.
+
+## Cycle XN - Operator Settlement Approval Route
+
+- Closed or narrowed: `POST /api/internal/live-runtime/settlement-queue/:reviewId/approve` now records authenticated approval evidence for an existing durable `OfficialResultReview`.
+- Fields added/confirmed for local runtime tooling: route response includes `review.approvalStatus=approved`, `review.settlementApprovalCanonicalId`, `approvalEvidence.canonicalApprovalEventId`, `approvalEvidence.userId`, `operator.roles`, `operator.durableIdentityRecorded`, `providerQuotaUsed=false`, `exactConfirmationExposed=false`, `exactConfirmationStored=false`, and `activeMarketExecutionAttempted=false`.
+- Route mismatch: execution is still intentionally missing. Approval does not make an active `LIVE` market executable and does not return an exact confirmation string.
+- Schema mismatch: approval currently records operator identity through `CanonicalEvent.userId` and redacted `OfficialResultReview.reviewSnapshot.operatorApproval`. Production still needs first-class `approvedByUserId`, `approvedAt`, role snapshots, request ids, and an `OperatorAuditEvent` or equivalent audit table.
+- Temporary mock/static data: none added. The route requires an existing review/preflight row and authenticated admin operator.
+- Remaining gaps: settlement execution route, exact-confirmation execution handoff, two-person/admin approval policy, dedicated operator roles, production operator UI, installed official-result polling, and production service ownership remain P1.

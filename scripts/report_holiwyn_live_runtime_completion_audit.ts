@@ -936,6 +936,23 @@ async function main() {
         (route) =>
           route &&
           typeof route === "object" &&
+          getPath(route, ["id"]) === "settlement_approval" &&
+          getPath(route, ["method"]) === "POST" &&
+          getPath(route, ["mutatesState"]) === true &&
+          getPath(route, ["implementationStatus"]) === "implemented_guarded_no_execution" &&
+          getPath(route, ["exactConfirmationStored"]) === false &&
+          getPath(route, ["activeSettlementExecution"]) === false,
+      ) &&
+      (getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "productionAuthRequirements",
+        "requiredRoutes",
+      ]) as unknown[]).some(
+        (route) =>
+          route &&
+          typeof route === "object" &&
           getPath(route, ["id"]) === "settlement_execution" &&
           getPath(route, ["requiresClosedMarket"]) === true &&
           getPath(route, ["requiresExactConfirmation"]) === true &&
@@ -994,6 +1011,30 @@ async function main() {
         "localControls",
         "operatorSessionRoute",
         "mutatesState",
+      ]) === false &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "localControls",
+        "settlementApprovalRoute",
+        "available",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "localControls",
+        "settlementApprovalRoute",
+        "mutationScope",
+      ]) === "approval_evidence_only" &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "localControls",
+        "settlementApprovalRoute",
+        "exactConfirmationStored",
       ]) === false &&
       getPath(entries.phaseAudit, [
         "localRuntimeStatus",

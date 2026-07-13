@@ -13,11 +13,10 @@ describe("live runtime operator session service", () => {
     expect(status.operator.roles).toEqual(["admin", "settlement_operator"]);
     expect(status.operator.durableIdentityAvailable).toBe(true);
     expect(status.capabilities.canReviewSettlementQueue).toBe(true);
-    expect(status.capabilities.canApproveSettlement).toBe(false);
+    expect(status.capabilities.canApproveSettlement).toBe(true);
     expect(status.capabilities.canExecuteSettlement).toBe(false);
     expect(status.p1).toEqual(
       expect.arrayContaining([
-        "settlement_approval_route_missing",
         "settlement_execution_route_missing",
       ]),
     );

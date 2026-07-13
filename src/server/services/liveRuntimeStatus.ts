@@ -976,7 +976,7 @@ function buildOperatorControlBoundary(params: {
       roleChecksAvailable: true,
       durableOperatorIdentityAvailable: true,
       twoPersonApprovalAvailable: false,
-      reason: "Authenticated operator session discovery exists, but approval and execution controls are still missing.",
+      reason: "Authenticated operator session and approval evidence routes exist, but execution controls remain missing.",
     },
     productionAuthRequirements: {
       version: 1,
@@ -1012,7 +1012,9 @@ function buildOperatorControlBoundary(params: {
           requiredRoles: ["admin", "settlement_operator"],
           mutatesState: true,
           requiresTwoPersonApproval: true,
-          implementationStatus: "missing",
+          implementationStatus: "implemented_guarded_no_execution",
+          exactConfirmationStored: false,
+          activeSettlementExecution: false,
         },
         {
           id: "settlement_execution",
@@ -1070,6 +1072,17 @@ function buildOperatorControlBoundary(params: {
         providerQuotaRequired: false,
         publicMobileRoute: false,
         exactConfirmationExposed: false,
+      },
+      settlementApprovalRoute: {
+        route: "POST /api/internal/live-runtime/settlement-queue/:reviewId/approve",
+        available: true,
+        mutatesState: true,
+        mutationScope: "approval_evidence_only",
+        providerQuotaRequired: false,
+        publicMobileRoute: false,
+        exactConfirmationExposed: false,
+        exactConfirmationStored: false,
+        activeSettlementExecution: false,
       },
       resultReviewRoute: {
         route: "GET /api/internal/live-runtime/result-review",

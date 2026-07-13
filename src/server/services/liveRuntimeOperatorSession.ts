@@ -26,21 +26,20 @@ export function buildLocalLiveRuntimeOperatorSession(user: OperatorUser) {
     },
     capabilities: {
       canReviewSettlementQueue: roles.includes("admin") || roles.includes("settlement_operator"),
-      canApproveSettlement: false,
+      canApproveSettlement: roles.includes("admin") || roles.includes("settlement_operator"),
       canExecuteSettlement: false,
       canViewExactConfirmation: false,
     },
     productionBoundary: {
       authenticatedSessionRouteAvailable: roles.length > 0,
-      approvalRouteAvailable: false,
+      approvalRouteAvailable: true,
       executionRouteAvailable: false,
       twoPersonApprovalAvailable: false,
       note:
-        "This route proves authenticated operator identity for internal settlement review. Approval and execution controls remain disabled until dedicated guarded routes exist.",
+        "This route proves authenticated operator identity for internal settlement review and approval. Execution controls remain disabled until a dedicated guarded route exists.",
     },
     p0: [],
     p1: [
-      "settlement_approval_route_missing",
       "settlement_execution_route_missing",
       "two_person_or_admin_approval_workflow_missing",
       "dedicated_operator_role_model_missing",

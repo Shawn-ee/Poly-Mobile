@@ -880,6 +880,21 @@ async function main() {
           (route) =>
             route &&
             typeof route === "object" &&
+            getPath(route, ["id"]) === "settlement_approval" &&
+            getPath(route, ["method"]) === "POST" &&
+            getPath(route, ["mutatesState"]) === true &&
+            getPath(route, ["implementationStatus"]) === "implemented_guarded_no_execution" &&
+            getPath(route, ["exactConfirmationStored"]) === false &&
+            getPath(route, ["activeSettlementExecution"]) === false,
+        ) &&
+        (getPath(localRuntimeStatusBody, [
+          "operatorControlBoundary",
+          "productionAuthRequirements",
+          "requiredRoutes",
+        ]) as unknown[]).some(
+          (route) =>
+            route &&
+            typeof route === "object" &&
             getPath(route, ["id"]) === "settlement_execution" &&
             getPath(route, ["method"]) === "POST" &&
             getPath(route, ["mutatesState"]) === true &&
@@ -910,6 +925,16 @@ async function main() {
         getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "operatorSessionRoute", "mutatesState"]) ===
           false &&
         getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "operatorSessionRoute", "publicMobileRoute"]) ===
+          false &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementApprovalRoute", "available"]) ===
+          true &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementApprovalRoute", "mutatesState"]) ===
+          true &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementApprovalRoute", "mutationScope"]) ===
+          "approval_evidence_only" &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementApprovalRoute", "exactConfirmationStored"]) ===
+          false &&
+        getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "settlementApprovalRoute", "activeSettlementExecution"]) ===
           false &&
         getPath(localRuntimeStatusBody, ["operatorControlBoundary", "localControls", "resultReviewRoute", "available"]) ===
           true &&

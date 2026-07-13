@@ -45,7 +45,7 @@ describe("internal operator session route", () => {
       },
       capabilities: {
         canReviewSettlementQueue: true,
-        canApproveSettlement: false,
+        canApproveSettlement: true,
         canExecuteSettlement: false,
         canViewExactConfirmation: false,
       },
