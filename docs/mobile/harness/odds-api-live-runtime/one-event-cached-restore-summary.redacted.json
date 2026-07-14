@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-07-14T05:48:33.901Z",
+  "generatedAt": "2026-07-14T12:52:38.529Z",
   "scope": "odds-api-one-event-cached-live-restore",
   "pass": true,
   "sourceSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
   "event": {
-    "id": "3722a197-6584-41e8-ab71-bfede8eedbf0",
+    "id": "bdd748d4-8784-459d-a612-a54903892c89",
     "slug": "odds-api-single-soccer-test",
     "title": "Spain vs. France",
     "startTime": "2026-07-14T19:00:00.000Z",
