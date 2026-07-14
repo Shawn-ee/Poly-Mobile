@@ -10998,3 +10998,12 @@ Future migration concern:
 - Schema mismatch: none. No Prisma model or migration change. The new fields are generated evidence/reporting fields in redacted summaries.
 - Temporary mock/static data: none added. Current trading readiness is based on durable local backend/maker/order/portfolio proof and the fresh S23 cashout evidence.
 - Remaining gaps: live odds freshness is intentionally false until the explicit provider-secret refresh runs. Installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1.
+
+## Cycle ZAZ - Tester Readiness Next Action Clarity
+
+- Fields confirmed for mobile/runtime: `internal-tester-readiness-gate-summary.redacted.json` now separates `testerReady.operatorNextAction` from `testerReady.runtimeNextAction`; `testerReady.nextAction` is the tester-facing action and follows the operator recommendation when cached trading is ready.
+- Closed or narrowed: green cached-trading readiness no longer displays the low-level runtime recovery action (`rerun_batch_readiness_and_phase_audit`) as the primary tester action.
+- Route mismatch: none. `/api/internal/live-runtime/status` remains unchanged; this is a local summary contract clarification.
+- Schema mismatch: none. No Prisma schema or migration change.
+- Temporary mock/static data: none added. The fields are derived from existing operator snapshot/status evidence.
+- Remaining gaps: the low-level runtime next action can still report loop/process recovery when loops are stopped; that is preserved as `runtimeNextAction`. Installed unattended service ownership and production official-result auto-settlement remain P1.

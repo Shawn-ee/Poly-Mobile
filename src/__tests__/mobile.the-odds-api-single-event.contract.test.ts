@@ -255,6 +255,8 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("cachedTradingReady");
     expect(source).toContain("liveOddsReady");
     expect(source).toContain("liveOddsAction");
+    expect(source).toContain("operatorNextAction");
+    expect(source).toContain("runtimeNextAction");
     expect(source).toContain("warmNoQuotaRuntime");
     expect(source).toContain("providerSnapshotFresh");
     expect(source).toContain("quotaSpendingLoopRunning");

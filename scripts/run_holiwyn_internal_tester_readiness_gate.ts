@@ -137,6 +137,9 @@ async function main() {
       getPath(operatorSnapshot, ["operatorNextActions", "recommendedFirstAction"]) === "cached_internal_testing" &&
       allLoopsRunning &&
       !quotaSpendingLoopRunning);
+  const runtimeNextAction = getPath(operatorSnapshot, ["runtime", "currentRuntimeState", "nextAction"]) ?? null;
+  const operatorNextAction = getPath(operatorSnapshot, ["operatorNextActions", "recommendedFirstAction"]) ?? null;
+  const testerNextAction = pass && cachedInternalTestingReady ? operatorNextAction : runtimeNextAction;
 
   const summary = {
     generatedAt: new Date().toISOString(),
@@ -163,7 +166,9 @@ async function main() {
       allLoopsRunning,
       quotaSpendingLoopRunning,
       providerSnapshotFresh,
-      nextAction: getPath(operatorSnapshot, ["runtime", "currentRuntimeState", "nextAction"]) ?? null,
+      nextAction: testerNextAction,
+      operatorNextAction,
+      runtimeNextAction,
       cachedTradingAction: cachedAction
         ? {
             id: getPath(cachedAction, ["id"]),

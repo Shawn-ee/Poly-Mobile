@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T10:41:11.037Z",
+  "generatedAt": "2026-07-14T11:02:33.862Z",
   "scope": "odds-api-one-event-runtime-status",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -204,7 +204,7 @@
         "status": "ok",
         "db": "connected",
         "env": "development",
-        "timestamp": "2026-07-14T10:41:11.036Z"
+        "timestamp": "2026-07-14T11:02:33.861Z"
       },
       "error": null
     }
@@ -212,7 +212,7 @@
   "provider": {
     "liveProofPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
     "liveProofGeneratedAt": "2026-07-14T06:03:35.211Z",
-    "liveProofAgeHours": 4.63,
+    "liveProofAgeHours": 4.98,
     "maxLiveProofAgeHours": 24,
     "quota": {
       "totalLastCost": 13,
@@ -236,7 +236,7 @@
   "maker": {
     "makerSeedPath": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
     "makerSeedGeneratedAt": "2026-07-14T10:40:36.517Z",
-    "makerSeedAgeHours": 0.01,
+    "makerSeedAgeHours": 0.37,
     "quoteRoute": {
       "ok": true,
       "status": 200,
@@ -249,11 +249,11 @@
             "referenceOutcomeLabel": "Over 2.5",
             "bestBid": "0.58",
             "bestAsk": "0.6",
-            "bestBidSize": 36.9,
-            "bestAskSize": 200,
+            "bestBidSize": 236.9,
+            "bestAskSize": 158.33,
             "midPrice": "0.59",
-            "lastPrice": "0.58",
-            "lastTradeAt": "2026-07-14T10:30:28.155Z"
+            "lastPrice": "0.6",
+            "lastTradeAt": "2026-07-14T10:55:54.154Z"
           },
           {
             "outcomeId": "2387e796-ccf1-4939-b79d-302c172c50f1",
@@ -283,7 +283,7 @@
   "lifecycle": {
     "schedulerRunPath": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
     "schedulerGeneratedAt": "2026-07-14T09:45:48.983Z",
-    "schedulerAgeHours": 0.92,
+    "schedulerAgeHours": 1.28,
     "schedulerAction": "none",
     "schedulerReason": "Event is not inside the suspend/close window.",
     "schedulerCandidateMarketCount": 3
@@ -292,9 +292,9 @@
     "resultSettlementExecutionPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
     "resultSettlementLiveBlockedPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json",
     "resultSettlementExecutionGeneratedAt": "2026-07-13T12:32:50.663Z",
-    "resultSettlementExecutionAgeHours": 22.14,
+    "resultSettlementExecutionAgeHours": 22.5,
     "resultSettlementLiveBlockedGeneratedAt": "2026-07-13T12:32:49.154Z",
-    "resultSettlementLiveBlockedAgeHours": 22.14,
+    "resultSettlementLiveBlockedAgeHours": 22.5,
     "maxSettlementProofAgeHours": 24,
     "resultSettlementExecutionFresh": true,
     "resultSettlementLiveBlockedFresh": true,

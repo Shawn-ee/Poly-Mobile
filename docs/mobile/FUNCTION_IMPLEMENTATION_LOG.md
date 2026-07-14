@@ -16580,3 +16580,16 @@ Known limitations:
   - `npm run test:ci`
   - `docs/mobile/audits/cycle-ZAY-graceful-runtime-worker-stop.md`
 - Known limitations: installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1. Multi-event provider polling/dashboard remains P2.
+
+## Cycle ZAZ - Tester Readiness Next Action Clarity
+
+- Feature/runtime worked on: no-quota internal tester readiness summary for the Spain vs. France one-event runtime.
+- Frontend components touched: none.
+- Backend/routes touched: no HTTP route, Prisma schema, order, portfolio, or mobile UI changes.
+- Important functions/services touched: `scripts/run_holiwyn_internal_tester_readiness_gate.ts` now reports `testerReady.nextAction` from the operator-level recommendation when cached trading is ready, while preserving the lower-level `runtimeNextAction` separately.
+- User/runtime interactions supported: testers see the actionable cached-runtime command (`cached_internal_testing` / `npm run mobile:one-event-onboarding`) instead of being sent to rerun broad batch audits when the local trading gate is already green.
+- State transitions: none. The command remains read-only, no-quota, and does not start loops, refresh providers, place orders, execute settlement, or read provider secrets.
+- API/data dependencies: reads existing `internal-tester-operator-snapshot.redacted.json`, including `operatorNextActions.recommendedFirstAction` and `runtime.currentRuntimeState.nextAction`; writes the redacted readiness summary.
+- Proof:
+  - `npm run mobile:internal-tester-readiness-gate`
+- Known limitations: this clarifies operator/tester guidance only. Installed unattended service ownership and production official-result auto-settlement remain P1; live mobile odds freshness still requires explicit quota-gated provider refresh.
