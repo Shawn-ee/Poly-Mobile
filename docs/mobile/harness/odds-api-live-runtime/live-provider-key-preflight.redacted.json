@@ -1,12 +1,14 @@
 {
-    "generatedAt":  "2026-07-14T06:03:38.1452557Z",
+    "generatedAt":  "2026-07-14T07:31:51.4477123Z",
     "scope":  "holiwyn-live-provider-secret-preflight",
     "pass":  true,
     "providerQuotaUsedByPreflight":  false,
-    "providerProofRan":  true,
-    "providerProofMayHaveUsedQuota":  true,
-    "providerProofExitCode":  0,
+    "providerProofRan":  false,
+    "providerProofMayHaveUsedQuota":  false,
+    "providerProofExitCode":  null,
     "providerProofError":  null,
+    "providerBlockedReason":  null,
+    "runtimePreflight":  null,
     "secret":  {
                    "checked":  true,
                    "source":  "runtime_secret_file",
@@ -25,7 +27,10 @@
                    "minRemaining":  2,
                    "liveProofSummaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-live-runtime-summary.redacted.json",
                    "commandLineContainsSecret":  false,
-                   "defaultModeSpendsQuota":  false
+                   "defaultModeSpendsQuota":  false,
+                   "checksNoQuotaRuntimePreflightBeforeProviderRefresh":  true,
+                   "refusesConcurrentQuotaSpendingLoop":  true,
+                   "forceProviderRefreshAvailable":  true
                },
     "nextAction":  "run_provider_secret_refresh_when_live_mobile_odds_refresh_is_intentional",
     "p0":  [
@@ -34,5 +39,5 @@
     "p1":  [
 
            ],
-    "note":  "Preflight is local-only and redacted. It never prints the provider key. The secret file path is under .runtime, which is ignored by git. Passing -RunProviderProof may spend provider quota under the existing one-event caps."
+    "note":  "Preflight is local-only and redacted. It never prints the provider key. The secret file path is under .runtime, which is ignored by git. Passing -RunProviderProof may spend provider quota under the existing one-event caps after a no-quota runtime preflight confirms no quota-spending loop is already running."
 }

@@ -6,6 +6,7 @@ param(
   [int]$MaxCredits = 16,
   [int]$MinRemaining = 2,
   [switch]$RunProviderProof,
+  [switch]$ForceProviderRefresh,
   [switch]$SkipSleep
 )
 
@@ -59,9 +60,12 @@ function Get-SecretStatus {
 $resolvedSecretPath = Resolve-RepoPath $SecretPath
 $resolvedSummaryPath = Resolve-RepoPath $SummaryPath
 $secretStatus = Get-SecretStatus $resolvedSecretPath
+$runtimePreflightPath = Resolve-RepoPath ".runtime\live-odds-refresh-preflight.redacted.json"
+$runtimePreflight = $null
 $providerExitCode = $null
 $providerRan = $false
 $providerError = $null
+$providerBlockedReason = $null
 
 if ($RunProviderProof) {
   $previousKey = $env:THE_ODDS_API_KEY
@@ -71,6 +75,20 @@ if ($RunProviderProof) {
         throw "Live provider refresh requires THE_ODDS_API_KEY in the process environment or an ignored local secret file at $SecretPath."
       }
       $env:THE_ODDS_API_KEY = (Get-Content -Raw -LiteralPath $resolvedSecretPath).Trim()
+    }
+
+    & npm.cmd run mobile:live-odds-refresh-preflight -- "--summaryPath=$(ConvertTo-RepoPath $runtimePreflightPath)" | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+      throw "Live odds refresh preflight failed; refusing to spend provider quota."
+    }
+    $runtimePreflight = Get-Content -Raw -LiteralPath $runtimePreflightPath | ConvertFrom-Json
+    if ($runtimePreflight.readiness.quotaSpendingLoopRunning -eq $true) {
+      $providerBlockedReason = "quota_spending_loop_already_running"
+      throw "A quota-spending loop is already reported running; refusing to start another live provider refresh."
+    }
+    if ($runtimePreflight.canRunLiveRefreshNow -ne $true -and -not $ForceProviderRefresh) {
+      $providerBlockedReason = "live_refresh_preflight_not_ready"
+      throw "Live odds refresh preflight did not mark refresh as runnable; rerun with -ForceProviderRefresh only for an intentional quota-spending override."
     }
 
     $providerRan = $true
@@ -119,6 +137,22 @@ $summary = [ordered]@{
   providerProofMayHaveUsedQuota = [bool]$providerRan
   providerProofExitCode = $providerExitCode
   providerProofError = $providerError
+  providerBlockedReason = $providerBlockedReason
+  runtimePreflight = if ($runtimePreflight) {
+    [ordered]@{
+      path = ConvertTo-RepoPath $runtimePreflightPath
+      pass = [bool]$runtimePreflight.pass
+      canRunLiveRefreshNow = [bool]$runtimePreflight.canRunLiveRefreshNow
+      liveOddsReady = [bool]$runtimePreflight.readiness.liveOddsReady
+      providerSnapshotFresh = [bool]$runtimePreflight.readiness.providerSnapshotFresh
+      quotaSpendingLoopRunning = [bool]$runtimePreflight.readiness.quotaSpendingLoopRunning
+      providerKeyConfigured = [bool]$runtimePreflight.providerKeyConfigured
+      providerKeyValuePrinted = [bool]$runtimePreflight.providerKeyValuePrinted
+      commandLineContainsSecret = [bool]$runtimePreflight.commandLineContainsSecret
+    }
+  } else {
+    $null
+  }
   secret = [ordered]@{
     checked = $true
     source = $secretStatus.source
@@ -138,6 +172,9 @@ $summary = [ordered]@{
     liveProofSummaryPath = $LiveProofSummaryPath
     commandLineContainsSecret = $false
     defaultModeSpendsQuota = $false
+    checksNoQuotaRuntimePreflightBeforeProviderRefresh = $true
+    refusesConcurrentQuotaSpendingLoop = $true
+    forceProviderRefreshAvailable = $true
   }
   nextAction = if ($secretStatus.envPresent -or $secretStatus.fileHasValue) {
     "run_provider_secret_refresh_when_live_mobile_odds_refresh_is_intentional"
@@ -146,7 +183,7 @@ $summary = [ordered]@{
   }
   p0 = @()
   p1 = @($p1.ToArray())
-  note = "Preflight is local-only and redacted. It never prints the provider key. The secret file path is under .runtime, which is ignored by git. Passing -RunProviderProof may spend provider quota under the existing one-event caps."
+  note = "Preflight is local-only and redacted. It never prints the provider key. The secret file path is under .runtime, which is ignored by git. Passing -RunProviderProof may spend provider quota under the existing one-event caps after a no-quota runtime preflight confirms no quota-spending loop is already running."
 }
 
 Write-JsonFile -Value $summary -Path $resolvedSummaryPath

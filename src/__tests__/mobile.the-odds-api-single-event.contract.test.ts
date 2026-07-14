@@ -143,6 +143,12 @@ describe("The Odds API single-event temporary provider", () => {
     expect(onboarding).toContain("commandLineContainsSecret = $false");
     expect(onboarding).toContain("Remove-Item Env:\\THE_ODDS_API_KEY");
     expect(source).toContain("providerQuotaUsedByPreflight = $false");
+    expect(source).toContain("mobile:live-odds-refresh-preflight");
+    expect(source).toContain("quota_spending_loop_already_running");
+    expect(source).toContain("refusing to start another live provider refresh");
+    expect(source).toContain("ForceProviderRefresh");
+    expect(source).toContain("checksNoQuotaRuntimePreflightBeforeProviderRefresh = $true");
+    expect(source).toContain("refusesConcurrentQuotaSpendingLoop = $true");
     expect(source).toContain("valuePrinted = $false");
     expect(source).toContain("commandLineContainsSecret = $false");
     expect(source).toContain("start_holiwyn_one_event_live_runtime.ps1");
