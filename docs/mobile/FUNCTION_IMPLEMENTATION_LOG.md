@@ -16593,3 +16593,20 @@ Known limitations:
 - Proof:
   - `npm run mobile:internal-tester-readiness-gate`
 - Known limitations: this clarifies operator/tester guidance only. Installed unattended service ownership and production official-result auto-settlement remain P1; live mobile odds freshness still requires explicit quota-gated provider refresh.
+
+## Cycle ZBA - No-Quota Live Runtime Readiness Refresh
+
+- Feature/runtime worked on: current Backend Live Runtime Survey + One Event Live Pipeline evidence for the Spain vs. France internal tester event.
+- Frontend components touched: none.
+- Backend/routes touched: no HTTP route, Prisma schema, order, portfolio, or mobile UI changes.
+- Important functions/services touched: no source changes. This cycle re-ran the existing no-quota runtime status, phase audit, completion audit, and internal tester readiness gate against the current local backend.
+- User/runtime interactions supported: operators have a fresh confirmation that cached internal testing remains the recommended no-quota action for the current event, while live mobile odds freshness remains an explicit quota-gated refresh path.
+- State transitions: none. No provider calls, runtime loop starts, order placement, settlement execution, or secret reads. Generated timestamp-only JSON churn was restored instead of committed.
+- API/data dependencies: reads `/api/health`, `/api/internal/live-runtime/status?phaseAuditInProgress=1`, `/api/markets/:marketId/quote`, existing proof artifacts, durable runtime/proof rows, and local `.runtime` worker state.
+- Proof:
+  - `npm run mobile:one-event-runtime-status`
+  - `npm run mobile:one-event-phase-audit`
+  - `npm run mobile:live-runtime-completion-audit`
+  - `npm run mobile:internal-tester-readiness-gate`
+- Result: all gates passed with no provider quota and no open P0 gaps. Current truth remains: cached trading is ready; supervisor/result-poller loops are not running right now; live odds are stale under the short mobile freshness window until `npm run mobile:one-event-live-runtime:provider-secret` is intentionally run.
+- Known limitations: installed unattended service ownership and production official-result auto-settlement remain P1. Multi-event provider polling/dashboard remains P2.

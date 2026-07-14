@@ -11007,3 +11007,12 @@ Future migration concern:
 - Schema mismatch: none. No Prisma schema or migration change.
 - Temporary mock/static data: none added. The fields are derived from existing operator snapshot/status evidence.
 - Remaining gaps: the low-level runtime next action can still report loop/process recovery when loops are stopped; that is preserved as `runtimeNextAction`. Installed unattended service ownership and production official-result auto-settlement remain P1.
+
+## Cycle ZBA - No-Quota Live Runtime Readiness Refresh
+
+- Fields confirmed for mobile/runtime: the current gates still report `cachedTradingReady=true`, `liveOddsReady=false`, `providerSnapshotFresh=false`, `quotaSpendingLoopRunning=false`, `recommendedFirstAction=cached_internal_testing`, and selected Spain vs. France market/outcome identity for `Over 2.5`.
+- Closed or narrowed: current runtime readiness was rechecked without spending provider quota or committing timestamp-only summary churn. Cached local trading remains a valid internal tester mode, while fresh mobile-visible odds remain an explicit provider-refresh action.
+- Route mismatch: none. `/api/internal/live-runtime/status`, quote, and health routes supplied the current proof inputs.
+- Schema mismatch: none. No Prisma schema or migration change.
+- Temporary mock/static data: none added. The proof reads stored provider evidence, maker quote evidence, S23 proof, and local process state; it does not invent provider freshness.
+- Remaining gaps: supervisor/result-poller loops are not running right now unless started by the runtime manager/onboarding command. Live mobile odds are stale under the route freshness window until the key-gated provider refresh runs. Installed unattended service ownership and production official-result auto-settlement remain P1; multi-event polling/dashboard remains P2.
