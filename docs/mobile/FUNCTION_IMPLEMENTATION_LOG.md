@@ -2,6 +2,19 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ZI - Cached vs Live Odds Tester Readiness
+
+- Feature/runtime worked on: internal tester readiness summary now separates cached trading readiness from live-odds readiness.
+- Frontend components touched: none.
+- Backend/API routes touched: none directly; readiness still reads existing local status/audit evidence.
+- Important functions/services touched:
+  - `scripts/run_holiwyn_internal_tester_readiness_gate.ts`
+  - `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`
+- User/runtime interactions supported: operators can see `cachedTradingReady`, `liveOddsReady`, the no-quota cached command, and the explicit live-odds refresh command without opening the broad status JSON.
+- State transitions: none. This is a read-only no-quota report and does not start loops, call providers, mutate markets, place orders, or execute settlement.
+- Known limitations: live-odds readiness remains false in cached/no-quota mode until mobile provider snapshots are refreshed by the explicit quota-capped provider path.
+- Proof: `docs/mobile/harness/odds-api-live-runtime/internal-tester-readiness-gate-summary.redacted.json`.
+
 ## Cycle ZH - Warm Runtime Readiness Gate Proof
 
 - Feature/runtime worked on: warm no-quota internal tester runtime proof now runs the internal tester readiness gate while supervisor and result-poller loops are active.

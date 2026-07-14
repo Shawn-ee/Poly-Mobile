@@ -83,6 +83,23 @@ function selectAction(statusBody: JsonObject) {
   };
 }
 
+function summarizeActions(statusBody: JsonObject) {
+  const operatorNextActions = objectValue(statusBody.operatorNextActions);
+  const actions = Array.isArray(operatorNextActions.actions) ? operatorNextActions.actions : [];
+  return actions
+    .map((entry) => objectValue(entry))
+    .filter((entry): entry is JsonObject => entry !== null)
+    .map((entry) => ({
+      id: getPath(entry, ["id"]),
+      priority: getPath(entry, ["priority"]),
+      label: getPath(entry, ["label"]),
+      command: getPath(entry, ["command"]),
+      requiresProviderKey: getPath(entry, ["requiresProviderKey"]) === true,
+      spendsProviderQuota: getPath(entry, ["spendsProviderQuota"]) === true,
+      reason: getPath(entry, ["reason"]),
+    }));
+}
+
 function buildTesterChecklist(params: {
   statusBody: JsonObject;
   backendOk: boolean;
@@ -216,6 +233,7 @@ async function main() {
   const status = await fetchJson(`${baseUrl}/api/internal/live-runtime/status`);
   const statusBody = objectValue(status.body);
   const selectedAction = selectAction(statusBody);
+  const actions = summarizeActions(statusBody);
   const recommendedCommand = stringValue(getPath(selectedAction.action, ["command"]));
   const testerLaunchChecklist = buildTesterChecklist({
     statusBody,
@@ -272,6 +290,7 @@ async function main() {
       eventLifecycleOperatorAction: getPath(statusBody, ["operatorNextActions", "eventLifecycleOperatorAction"]),
       actionCount: selectedAction.actionCount,
       selectedAction: selectedAction.action,
+      actions,
       safety: getPath(statusBody, ["operatorNextActions", "safety"]),
     },
     selectedEventLifecycle: statusBody.selectedEventLifecycle ?? null,

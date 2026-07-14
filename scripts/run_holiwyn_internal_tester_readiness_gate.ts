@@ -52,6 +52,16 @@ function stringArray(value: unknown) {
   return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
 }
 
+function objectValue(value: unknown): JsonObject | null {
+  return value && typeof value === "object" && !Array.isArray(value) ? (value as JsonObject) : null;
+}
+
+function findAction(operatorSnapshot: JsonObject | null, id: string) {
+  const actions = getPath(operatorSnapshot, ["operatorNextActions", "actions"]);
+  if (!Array.isArray(actions)) return null;
+  return objectValue(actions.find((entry) => getPath(entry, ["id"]) === id));
+}
+
 function runStage(stage: (typeof STAGES)[number]) {
   const startedAt = new Date().toISOString();
   const executable = process.platform === "win32" ? "cmd" : stage.command[0];
@@ -111,6 +121,15 @@ async function main() {
     auditGate?.pass === true &&
     operatorSnapshot?.pass === true &&
     p0.length === 0;
+  const cachedActionId = getPath(operatorSnapshot, ["operatorNextActions", "defaultNoQuotaAction"]);
+  const liveOddsActionId = getPath(operatorSnapshot, ["operatorNextActions", "liveOddsAction"]);
+  const cachedAction = typeof cachedActionId === "string" ? findAction(operatorSnapshot, cachedActionId) : null;
+  const liveOddsAction = typeof liveOddsActionId === "string" ? findAction(operatorSnapshot, liveOddsActionId) : null;
+  const providerSnapshotFresh = getPath(operatorSnapshot, ["runtime", "currentRuntimeState", "providerSnapshotFresh"]) === true;
+  const warmNoQuotaRuntime = getPath(operatorSnapshot, ["runtime", "currentRuntimeState", "warmNoQuotaRuntime"]) === true;
+  const allLoopsRunning = getPath(operatorSnapshot, ["runtime", "currentRuntimeState", "allLoopsRunning"]) === true;
+  const quotaSpendingLoopRunning =
+    getPath(operatorSnapshot, ["runtime", "currentRuntimeState", "quotaSpendingLoopRunning"]) === true;
 
   const summary = {
     generatedAt: new Date().toISOString(),
@@ -129,12 +148,29 @@ async function main() {
       recommendedFirstAction: getPath(operatorSnapshot, ["operatorNextActions", "recommendedFirstAction"]) ?? null,
       recommendedCommand: getPath(operatorSnapshot, ["operatorNextActions", "recommendedCommand"]) ?? null,
       localTesterReadyRightNow: getPath(operatorSnapshot, ["runtime", "localTesterReadyRightNow"]) === true,
-      warmNoQuotaRuntime: getPath(operatorSnapshot, ["runtime", "currentRuntimeState", "warmNoQuotaRuntime"]) === true,
-      allLoopsRunning: getPath(operatorSnapshot, ["runtime", "currentRuntimeState", "allLoopsRunning"]) === true,
-      quotaSpendingLoopRunning:
-        getPath(operatorSnapshot, ["runtime", "currentRuntimeState", "quotaSpendingLoopRunning"]) === true,
-      providerSnapshotFresh: getPath(operatorSnapshot, ["runtime", "currentRuntimeState", "providerSnapshotFresh"]) === true,
+      cachedTradingReady: pass && getPath(operatorSnapshot, ["runtime", "localInternalRuntimeReady"]) === true,
+      liveOddsReady: pass && warmNoQuotaRuntime && providerSnapshotFresh && !quotaSpendingLoopRunning,
+      warmNoQuotaRuntime,
+      allLoopsRunning,
+      quotaSpendingLoopRunning,
+      providerSnapshotFresh,
       nextAction: getPath(operatorSnapshot, ["runtime", "currentRuntimeState", "nextAction"]) ?? null,
+      cachedTradingAction: cachedAction
+        ? {
+            id: getPath(cachedAction, ["id"]),
+            command: getPath(cachedAction, ["command"]),
+            requiresProviderKey: getPath(cachedAction, ["requiresProviderKey"]) === true,
+            spendsProviderQuota: getPath(cachedAction, ["spendsProviderQuota"]) === true,
+          }
+        : null,
+      liveOddsAction: liveOddsAction
+        ? {
+            id: getPath(liveOddsAction, ["id"]),
+            command: getPath(liveOddsAction, ["command"]),
+            requiresProviderKey: getPath(liveOddsAction, ["requiresProviderKey"]) === true,
+            spendsProviderQuota: getPath(liveOddsAction, ["spendsProviderQuota"]) === true,
+          }
+        : null,
       launchChecklist: getPath(operatorSnapshot, ["testerLaunchChecklist", "launch"]) ?? [],
       manualTradingFlow: getPath(operatorSnapshot, ["testerLaunchChecklist", "manualTradingFlow"]) ?? [],
       lifecycleChecks: getPath(operatorSnapshot, ["testerLaunchChecklist", "lifecycleChecks"]) ?? [],
@@ -149,6 +185,9 @@ async function main() {
       noOpenP0: p0.length === 0,
       hasRecommendedCommand: typeof getPath(operatorSnapshot, ["operatorNextActions", "recommendedCommand"]) === "string",
       hasManualTradingFlow: Array.isArray(getPath(operatorSnapshot, ["testerLaunchChecklist", "manualTradingFlow"])),
+      cachedTradingReady: pass && getPath(operatorSnapshot, ["runtime", "localInternalRuntimeReady"]) === true,
+      liveOddsReady: pass && warmNoQuotaRuntime && providerSnapshotFresh && !quotaSpendingLoopRunning,
+      liveOddsActionKnown: liveOddsAction !== null,
     },
     gaps: { p0, p1: Array.from(new Set(p1)), p2: Array.from(new Set(p2)) },
     note:

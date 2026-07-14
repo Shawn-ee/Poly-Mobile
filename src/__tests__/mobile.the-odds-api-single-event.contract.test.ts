@@ -121,6 +121,10 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("eventLifecycleAction");
     expect(source).toContain("eventLifecycleWindow");
     expect(source).toContain("eventLifecycleOperatorAction");
+    expect(source).toContain("summarizeActions");
+    expect(source).toContain("requiresProviderKey");
+    expect(source).toContain("spendsProviderQuota");
+    expect(source).toContain("actions");
     expect(source).toContain("Event lifecycle timing");
     expect(source).toContain("next lifecycle action");
     expect(source).toContain("Cashout/sell");
@@ -171,6 +175,9 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("providerQuotaUsedByThisGate: false");
     expect(source).toContain("manualTradingFlow");
     expect(source).toContain("recommendedCommand");
+    expect(source).toContain("cachedTradingReady");
+    expect(source).toContain("liveOddsReady");
+    expect(source).toContain("liveOddsAction");
     expect(source).toContain("warmNoQuotaRuntime");
     expect(source).toContain("providerSnapshotFresh");
     expect(source).toContain("quotaSpendingLoopRunning");

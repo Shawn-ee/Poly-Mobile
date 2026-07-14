@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T23:59:39.066Z",
+  "generatedAt": "2026-07-14T00:06:20.204Z",
   "scope": "holiwyn-internal-tester-operator-snapshot",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -29,7 +29,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-13T23:59:37.852Z"
+      "timestamp": "2026-07-14T00:06:19.150Z"
     },
     "error": null
   },
@@ -125,8 +125,8 @@
     "reason": null,
     "snapshotCount": 4,
     "latestFetchedAt": "2026-07-13T21:38:09.297Z",
-    "latestAgeHours": 2.36,
-    "latestAgeSeconds": 8490,
+    "latestAgeHours": 2.47,
+    "latestAgeSeconds": 8891,
     "maxAgeHours": 24,
     "sources": [
       "sportsbook-odds"
@@ -164,6 +164,71 @@
       "spendsProviderQuota": false,
       "reason": "Replays/restores the selected one-event runtime and verifies readiness without provider quota."
     },
+    "actions": [
+      {
+        "id": "cached_internal_testing",
+        "priority": "P0",
+        "label": "Keep cached local internal testing mode",
+        "command": "npm run mobile:one-event-onboarding",
+        "requiresProviderKey": false,
+        "spendsProviderQuota": false,
+        "reason": "Replays/restores the selected one-event runtime and verifies readiness without provider quota."
+      },
+      {
+        "id": "start_full_internal_tester_runtime",
+        "priority": "P1",
+        "label": "Start full local internal tester runtime",
+        "command": "npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady",
+        "requiresProviderKey": false,
+        "spendsProviderQuota": false,
+        "reason": "Starts or reuses local backend/Expo, then starts the cached supervisor and result-poller with result ingestion and approved-settlement wait mode."
+      },
+      {
+        "id": "prove_one_command_runtime_loops",
+        "priority": "P0",
+        "label": "Prove one-command local runtime loops",
+        "command": "npm run mobile:one-event-onboarding -- -AllowDisconnectedS23 -StartRuntimeLoops -StopRuntimeLoopsAfterProof",
+        "requiresProviderKey": false,
+        "spendsProviderQuota": false,
+        "reason": "Starts the local supervisor/result-poller through onboarding, proves both are running, then stops them without provider quota."
+      },
+      {
+        "id": "refresh_mobile_live_odds",
+        "priority": "P0",
+        "label": "Refresh mobile-visible live odds",
+        "command": "npm run mobile:one-event-live-runtime:provider",
+        "requiresProviderKey": true,
+        "spendsProviderQuota": true,
+        "reason": "Selected market provider snapshots are stale under the mobile 90-second live-display window."
+      },
+      {
+        "id": "start_cached_supervisor",
+        "priority": "P1",
+        "label": "Start local cached supervisor loop",
+        "command": "npm run mobile:one-event-live-supervisor:process -- -Action start -Continuous -MaxIterations 0",
+        "requiresProviderKey": false,
+        "spendsProviderQuota": false,
+        "reason": "Keeps local maker/lifecycle/result dry-run checks warm in cached no-quota mode while the process is running."
+      },
+      {
+        "id": "start_cached_result_poller",
+        "priority": "P1",
+        "label": "Start local cached result poller",
+        "command": "npm run mobile:one-event-result-poller:process -- -Action start -Continuous -MaxIterations 0",
+        "requiresProviderKey": false,
+        "spendsProviderQuota": false,
+        "reason": "Repeats provider-shaped result ingestion and settlement scheduling dry-runs without provider quota."
+      },
+      {
+        "id": "settlement_wait_for_closed_market",
+        "priority": "P1",
+        "label": "Wait for closed market before settlement",
+        "command": "npm run mobile:one-event-active-settlement-readiness",
+        "requiresProviderKey": false,
+        "spendsProviderQuota": false,
+        "reason": "Active-event trusted-result settlement is intentionally blocked while the selected market is not CLOSED."
+      }
+    ],
     "safety": "Commands are local-only. Provider-refresh commands require THE_ODDS_API_KEY in the environment and remain quota-capped by the underlying proof scripts; the status route never returns or reads the key."
   },
   "selectedEventLifecycle": {
@@ -179,9 +244,9 @@
     "source": "the-odds-api",
     "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
     "sourceUpdatedAt": "2026-07-13T21:38:09.297Z",
-    "now": "2026-07-13T23:59:39.060Z",
+    "now": "2026-07-14T00:06:20.197Z",
     "startTime": "2026-07-14T19:00:00.000Z",
-    "secondsUntilStart": 68421,
+    "secondsUntilStart": 68020,
     "startAgeSeconds": 0,
     "suspendBeforeStartSeconds": 300,
     "insideSuspendWindow": false,
