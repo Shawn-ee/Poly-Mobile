@@ -34,6 +34,28 @@ function assert(condition: unknown, message: string): asserts condition {
 
 const dec = (value: Prisma.Decimal.Value) => new Prisma.Decimal(value);
 
+function cleanLineLabel(value: Prisma.Decimal | null | undefined) {
+  if (value == null) return null;
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) return value.toString();
+  return Number.isInteger(parsed) ? parsed.toFixed(0) : parsed.toString();
+}
+
+function mobileOutcomeDisplayLabel(params: {
+  market: Awaited<ReturnType<typeof loadMarket>>["market"];
+  outcome: Awaited<ReturnType<typeof loadMarket>>["outcome"];
+}) {
+  const line = cleanLineLabel(params.market.line);
+  const side = params.outcome.side?.trim().toLowerCase();
+  if (params.market.marketType === "total_goals" && line) {
+    if (side === "over") return `Over ${line}`;
+    if (side === "under") return `Under ${line}`;
+  }
+  const existing = params.outcome.label?.trim();
+  if (existing) return existing;
+  return params.outcome.name;
+}
+
 const decimalToNumber = (value: Prisma.Decimal | null | undefined) => {
   if (value == null) return null;
   const parsed = Number(value);
@@ -396,7 +418,8 @@ async function main() {
       marketGroupKey: selected.market.marketGroupKey,
       line: selected.market.line?.toString() ?? null,
       outcomeId: selected.outcome.id,
-      outcomeName: selected.outcome.name,
+      outcomeName: mobileOutcomeDisplayLabel({ market: selected.market, outcome: selected.outcome }),
+      referenceOutcomeLabel: selected.outcome.referenceOutcomeLabel ?? selected.outcome.name,
       referenceTokenId: selected.outcome.referenceTokenId,
     },
     providerSnapshot: {

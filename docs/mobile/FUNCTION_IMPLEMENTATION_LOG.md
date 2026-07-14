@@ -16340,3 +16340,20 @@ Known limitations:
   - `docs/mobile/harness/cycle-ZAI-warm-runtime-s23/cycle-ZAI-warm-runtime-s23-odds-api-s23-visible-flow.json`
   - `docs/mobile/audits/cycle-ZAI-warm-runtime-s23-flow.md`
 - Known limitations: provider odds freshness still requires explicit quota-capped refresh; unattended provider/maker/lifecycle service ownership remains P1.
+
+## Cycle ZAJ - Live Provider Refresh Display Label Proof
+
+- Feature/runtime worked on: bounded live-provider refresh proof and tester-facing selected-market evidence cleanup for the current Spain vs. France internal tester runtime.
+- Frontend components touched: none.
+- Backend/routes touched: no route implementation changes. Existing live-runtime, quote, order, portfolio, and audit routes were exercised.
+- Important functions/services touched: `scripts/prove_odds_api_one_event_live_runtime.ts` and `scripts/seed_odds_api_live_shifted_maker.ts` now report clean mobile display labels such as `Over 2.5` while preserving raw provider labels such as `Over +2.5` as `referenceOutcomeLabel`.
+- User/runtime interactions supported: internal testers see clean prediction-market totals labels in the mobile-facing proof trail, matching the Event Detail route instead of raw sportsbook plus-sign labels.
+- State transitions: explicit live provider refresh moved the selected event from stale/refresh-due back to ready, then local maker reseed restored quote-visible shifted liquidity. The provider secret was read from the ignored runtime secret file and was not printed or committed.
+- API/data dependencies: `GET /api/mobile/events/:slug/live-detail`, `GET /api/markets/:marketId/quote`, `GET /api/internal/live-runtime/status`, and audit summary routes/files remain the source of runtime proof. Proof scripts now separate mobile display label from raw provider reference label.
+- Proof:
+  - `npm run mobile:live-odds-refresh-preflight`
+  - `npm run mobile:one-event-live-runtime:provider-secret`
+  - `npm run mobile:one-event-live-maker-seed`
+  - `npm run mobile:live-runtime-audit-gate`
+  - `docs/mobile/audits/cycle-ZAJ-live-provider-refresh-display-label-proof.md`
+- Known limitations: installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1. Multi-event polling remains P2.

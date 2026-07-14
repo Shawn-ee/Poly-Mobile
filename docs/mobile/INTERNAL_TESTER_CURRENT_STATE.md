@@ -17,12 +17,13 @@ This is not production readiness. It is a local internal tester runtime with bac
 - Current selected proof market: Total Goals 2.5
 - Current visible selected outcome: `Over 2.5`
 - Current selected market id: `78ea76f1-fc8f-419b-ac21-2554d79093f6`
-- Current selected outcome id: `cf189c8a-cadc-4742-9f1f-e64a4911f228`
+- Current selected outcome id: `30fbc915-74ca-4809-a0c4-cd54c3236aa4`
 
 ## Runtime Truth
 
 - Market maker: continuous only while the local supervisor is running; latest no-quota proof reseeded local shifted maker liquidity successfully.
 - Provider odds refresh: cached/replay by default; live provider refresh is explicit, key-gated, quota-capped, and recorded as durable `ProviderRefreshRun` evidence.
+- Latest live provider refresh: Cycle ZAJ refreshed Spain vs. France with bounded quota, spent 13 credits, left 268 requests remaining, and kept the provider secret out of committed artifacts.
 - Provider quota: status/audit/readiness commands do not call The Odds API. Only explicit live-provider commands may spend quota.
 - Stale handling: mobile routes classify snapshots as `ready`, `refresh_due`, `stale`, or `unavailable`; stale guard can pause stale markets and order placement rejects unavailable markets.
 - Lifecycle: open, paused, closed, and settlement mechanics are proven locally. Active-event execution remains guarded until the selected market is `CLOSED` and exact approval evidence matches.
@@ -35,6 +36,7 @@ This is not production readiness. It is a local internal tester runtime with bac
 - Completion audit: `docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json`
 - S23 proof: `docs/mobile/harness/cycle-ZAI-warm-runtime-s23/cycle-ZAI-warm-runtime-s23-odds-api-s23-visible-flow.json`
 - ZAI audit note: `docs/mobile/audits/cycle-ZAI-warm-runtime-s23-flow.md`
+- Latest live refresh audit note: `docs/mobile/audits/cycle-ZAJ-live-provider-refresh-display-label-proof.md`
 
 Latest local audit result:
 

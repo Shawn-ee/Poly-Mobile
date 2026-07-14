@@ -59,6 +59,28 @@ function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(message);
 }
 
+function cleanLineLabel(value: Prisma.Decimal | null | undefined) {
+  if (value == null) return null;
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) return value.toString();
+  return Number.isInteger(parsed) ? parsed.toFixed(0) : parsed.toString();
+}
+
+function mobileOutcomeDisplayLabel(params: {
+  market: SelectedMarket["market"];
+  outcome: SelectedMarket["outcome"];
+}) {
+  const line = cleanLineLabel(params.market.line);
+  const side = params.outcome.side?.trim().toLowerCase();
+  if (params.market.marketType === "total_goals" && line) {
+    if (side === "over") return `Over ${line}`;
+    if (side === "under") return `Under ${line}`;
+  }
+  const existing = params.outcome.label?.trim();
+  if (existing) return existing;
+  return params.outcome.name;
+}
+
 async function loadRuntimeDependencies() {
   loadLocalEnvForScript(["DATABASE_URL"]);
   ({ prisma } = await import("@/lib/db"));
@@ -473,6 +495,7 @@ function orderBody(params: {
   price: number;
   size: string | number;
 }) {
+  const displayLabel = mobileOutcomeDisplayLabel(params);
   return {
     marketId: params.market.id,
     outcomeId: params.outcome.id,
@@ -489,7 +512,7 @@ function orderBody(params: {
       line: params.market.line?.toString() ?? undefined,
       period: params.market.period ?? undefined,
       side: params.outcome.side ?? undefined,
-      displayLabel: params.outcome.label ?? params.outcome.name,
+      displayLabel,
       contractSide: "yes",
       referenceSource: params.market.referenceSource ?? undefined,
       externalSlug: params.market.externalSlug ?? undefined,
@@ -803,7 +826,8 @@ async function main() {
       marketGroupKey: selectedMarket.market.marketGroupKey,
       line: selectedMarket.market.line?.toString() ?? null,
       outcomeId: selectedMarket.outcome.id,
-      outcomeName: selectedMarket.outcome.name,
+      outcomeName: mobileOutcomeDisplayLabel({ market: selectedMarket.market, outcome: selectedMarket.outcome }),
+      referenceOutcomeLabel: selectedMarket.outcome.referenceOutcomeLabel ?? selectedMarket.outcome.name,
       referenceTokenId: selectedMarket.outcome.referenceTokenId,
     },
     lifecycle: {

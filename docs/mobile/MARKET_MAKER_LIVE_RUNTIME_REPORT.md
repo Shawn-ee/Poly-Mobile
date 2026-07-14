@@ -105,9 +105,9 @@ For a selected binary sportsbook market:
 - Result: pass.
 - Provider event: Spain vs. France, `soccer_fifa_world_cup`, starts `2026-07-14T19:00:00Z`.
 - Selected local market: Total Goals 2.5, normalized visible outcome `Over 2.5`.
-- Provider reference: latest selected-outcome snapshot reports bid `0.54`, ask `0.58`.
-- Local maker quote: latest no-quota seed placed shifted resting maker orders at bid `0.52`, ask `0.60`, shifted worse than provider by two ticks.
-- Reusable maker seed proof: quote route returned best bid `0.58` and best ask `0.60` for the selected provider-backed market after `-SeedMaker`. The best bid is an existing tester/user bid that is better than the maker bid; the maker bid still rests at `0.52`.
+- Provider reference: latest selected-outcome snapshot reports bid `0.4839`, ask `0.5239`.
+- Local maker quote: latest no-quota seed placed shifted resting maker orders at bid `0.46`, ask `0.54`, shifted worse than the provider reference by two ticks.
+- Reusable maker seed proof: quote route returned best bid `0.46` and best ask `0.54` for the selected provider-backed market after `-SeedMaker`.
 - Trading proof: fake-token buy filled, Portfolio position appeared, sell/cashout filled, History contained both trades.
 - Settlement readiness proof: both selected outcomes preview successfully without mutation, payout conservation passes, and automatic official-result settlement remains a separate P1 gap.
 - Settlement execution proof: a fresh disposable local market settles with payout conservation passing, collateral zero after settlement, finalized positions, no negative balances, and no stuck locks. The active tester event is not mutated by this proof.
@@ -125,7 +125,8 @@ For a selected binary sportsbook market:
 - Warm runtime limitation: stopped loops remain acceptable for cached internal testing when capability proof is fresh, but they are no longer described as warm right now. Use `npm run mobile:current-runtime-state-proof` or the internal tester runtime manager when you need proof of actively running loops.
 - Settlement split: warm result polling does not run settlement by default. Use the existing settlement readiness/execution proof commands for guarded settlement behavior; do not keep active-event settlement execution in the default warm tester loop.
 - Provider-to-maker handoff proof: the latest selected-event `ProviderRefreshRun` is followed by shifted local `MarketMakerQuoteRun` evidence for the same event, market, and outcome without spending provider quota.
-- Non-crossing reseed proof: after a test/user bid existed on the selected Over 2.5 outcome, `npm run mobile:one-event-live-maker-seed` adjusted the planned maker ask above the existing bid, left both maker orders resting, and the latest quote route reported bid `0.58` / ask `0.60`.
+- Non-crossing reseed proof: after earlier test/user bid pressure on the selected Over 2.5 outcome, `npm run mobile:one-event-live-maker-seed` adjusted planned prices so maker orders rest instead of crossing. The latest clean reseed reports bid `0.46` / ask `0.54`.
+- Latest explicit live provider refresh proof: Cycle ZAJ ran `npm run mobile:one-event-live-runtime:provider-secret`, spent 13 credits under a 16-credit cap, left 268 provider requests remaining, and refreshed the selected event back to ready. The no-quota maker/status summaries now report clean mobile label `Over 2.5` and retain raw provider label `Over +2.5` as reference metadata.
 - One-command onboarding proof: quota-free replay/import, readiness, runtime status, settlement readiness, and settlement dry-run all passed with S23 connected.
 - Supervisor stale monitor proof: one supervisor cycle ran data hygiene, runtime/maker seed, dry-run stale guard, and safe lifecycle scheduler. It reported 19 cached markets that would pause under the 90-second stale threshold and did not mutate markets.
 - Continuous local supervisor proof: the repeated local supervisor proof emits heartbeat evidence and keeps shifted maker reseeding, lifecycle checks, provider-shaped result ingestion, and trusted-result settlement dry-run scheduling active across cycles without leaving proof-owned supervisor or backend processes running.
