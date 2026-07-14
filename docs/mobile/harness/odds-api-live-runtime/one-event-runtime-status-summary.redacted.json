@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T05:37:10.673Z",
+  "generatedAt": "2026-07-14T05:41:56.338Z",
   "scope": "odds-api-one-event-runtime-status",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -61,9 +61,9 @@
       "checked": true,
       "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json",
       "known": true,
-      "pid": 4836,
-      "running": false,
-      "startedAt": "2026-07-14T04:43:37.7739263Z",
+      "pid": 7852,
+      "running": true,
+      "startedAt": "2026-07-14T05:41:26.0935551Z",
       "continuous": true,
       "maxIterations": 0,
       "intervalSeconds": 15,
@@ -73,7 +73,7 @@
         "staleGuard": false,
         "staleGuardEnforced": false,
         "liveResultIngestion": false,
-        "approvedResultSettlement": true
+        "approvedResultSettlement": false
       }
     },
     "resultPoller": {
@@ -81,26 +81,26 @@
       "checked": true,
       "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json",
       "known": true,
-      "pid": 24848,
-      "running": false,
-      "startedAt": "2026-07-14T04:43:38.3700616Z",
+      "pid": 46276,
+      "running": true,
+      "startedAt": "2026-07-14T05:41:26.8631126Z",
       "continuous": true,
       "maxIterations": 0,
-      "intervalSeconds": 1,
+      "intervalSeconds": 15,
       "usesProviderQuota": false,
       "modes": {
         "liveResultIngestion": false,
-        "approvedResultSettlement": true
+        "approvedResultSettlement": false
       }
     },
-    "allLoopsRunning": false,
+    "allLoopsRunning": true,
     "quotaSpendingLoopRunning": false,
-    "localTesterReadyRightNow": false,
+    "localTesterReadyRightNow": true,
     "source": "local .runtime process state plus OS pid check"
   },
   "continuityAnswer": {
     "latestSupervisorRunProfileOnly": true,
-    "currentLoopsRunningNow": false,
+    "currentLoopsRunningNow": true,
     "currentLoopsQuotaSpending": false,
     "marketMakerContinuousWhileSupervisorRuns": true,
     "lifecycleSchedulerContinuousWhileSupervisorRuns": true,
@@ -201,7 +201,7 @@
         "status": "ok",
         "db": "connected",
         "env": "development",
-        "timestamp": "2026-07-14T05:37:10.671Z"
+        "timestamp": "2026-07-14T05:41:56.336Z"
       },
       "error": null
     }
@@ -209,7 +209,7 @@
   "provider": {
     "liveProofPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
     "liveProofGeneratedAt": "2026-07-14T04:49:11.043Z",
-    "liveProofAgeHours": 0.8,
+    "liveProofAgeHours": 0.88,
     "maxLiveProofAgeHours": 24,
     "quota": {
       "totalLastCost": 13,
@@ -233,7 +233,7 @@
   "maker": {
     "makerSeedPath": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
     "makerSeedGeneratedAt": "2026-07-14T05:24:36.794Z",
-    "makerSeedAgeHours": 0.21,
+    "makerSeedAgeHours": 0.29,
     "quoteRoute": {
       "ok": true,
       "status": 200,
@@ -278,7 +278,7 @@
   "lifecycle": {
     "schedulerRunPath": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
     "schedulerGeneratedAt": "2026-07-14T04:43:47.682Z",
-    "schedulerAgeHours": 0.89,
+    "schedulerAgeHours": 0.97,
     "schedulerAction": "none",
     "schedulerReason": "Event is not inside the suspend/close window.",
     "schedulerCandidateMarketCount": 3
@@ -287,9 +287,9 @@
     "resultSettlementExecutionPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
     "resultSettlementLiveBlockedPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json",
     "resultSettlementExecutionGeneratedAt": "2026-07-13T12:32:50.663Z",
-    "resultSettlementExecutionAgeHours": 17.07,
+    "resultSettlementExecutionAgeHours": 17.15,
     "resultSettlementLiveBlockedGeneratedAt": "2026-07-13T12:32:49.154Z",
-    "resultSettlementLiveBlockedAgeHours": 17.07,
+    "resultSettlementLiveBlockedAgeHours": 17.15,
     "maxSettlementProofAgeHours": 24,
     "resultSettlementExecutionFresh": true,
     "resultSettlementLiveBlockedFresh": true,
