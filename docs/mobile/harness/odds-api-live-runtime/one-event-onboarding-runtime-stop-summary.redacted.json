@@ -1,10 +1,10 @@
 {
-    "generatedAt":  "2026-07-13T22:16:07.4625410Z",
+    "generatedAt":  "2026-07-14T01:36:46.6344284Z",
     "scope":  "holiwyn-internal-tester-runtime-manager",
     "pass":  true,
     "action":  "stop",
-    "startedAt":  "2026-07-13T22:15:58.2843078Z",
-    "completedAt":  "2026-07-13T22:16:07.4645887Z",
+    "startedAt":  "2026-07-14T01:36:34.0057667Z",
+    "completedAt":  "2026-07-14T01:36:46.6364344Z",
     "operations":  [
                        {
                            "target":  "supervisor",
@@ -34,7 +34,7 @@
                                    "status":  "ok",
                                    "db":  "connected",
                                    "env":  "development",
-                                   "timestamp":  "2026-07-13T22:16:07.455Z",
+                                   "timestamp":  "2026-07-14T01:36:46.626Z",
                                    "error":  null
                                },
                     "portOwner":  {
@@ -59,12 +59,12 @@
                            "status":  "poly_postgres|Up 9 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
                        },
     "s23":  {
-                "connected":  true,
-                "deviceId":  "172.16.200.27:44029",
-                "model":  "SM_S911U1",
-                "raw":  "172.16.200.27:44029    device product:dm1quew model:SM_S911U1 device:dm1q transport_id:2",
-                "adbTimedOut":  false,
-                "error":  null
+                "connected":  false,
+                "deviceId":  null,
+                "model":  null,
+                "raw":  null,
+                "adbTimedOut":  true,
+                "error":  "adb timed out after 5s"
             },
     "supervisor":  {
                        "startRequested":  false,
@@ -78,11 +78,11 @@
                                                             },
                                               "process":  {
                                                               "before":  {
-                                                                             "pid":  72060,
+                                                                             "pid":  1848,
                                                                              "running":  false
                                                                          },
                                                               "after":  {
-                                                                            "pid":  72060,
+                                                                            "pid":  1848,
                                                                             "running":  false
                                                                         }
                                                           }
@@ -100,11 +100,11 @@
                                                               },
                                                 "process":  {
                                                                 "before":  {
-                                                                               "pid":  83088,
+                                                                               "pid":  3648,
                                                                                "running":  false
                                                                            },
                                                                 "after":  {
-                                                                              "pid":  83088,
+                                                                              "pid":  3648,
                                                                               "running":  false
                                                                           }
                                                             }
@@ -115,36 +115,18 @@
                       "backendReady":  true,
                       "expoReady":  false,
                       "postgresReady":  true,
-                      "s23Connected":  true
+                      "s23Connected":  false
                   },
     "liveRuntimeStatus":  {
                               "checked":  true,
                               "warmRuntimeRequired":  false,
                               "warmRuntimeObserved":  false,
                               "statusDigest":  {
-                                                   "ok":  true,
-                                                   "status":  200,
-                                                   "currentRuntimeState":  {
-                                                                               "mode":  "proven_capability_loops_stopped",
-                                                                               "localCapabilityReady":  true,
-                                                                               "allLoopsRunning":  false,
-                                                                               "supervisorRunning":  false,
-                                                                               "resultPollerRunning":  false,
-                                                                               "quotaSpendingLoopRunning":  false,
-                                                                               "providerSnapshotFresh":  false,
-                                                                               "testerReadyRightNow":  false,
-                                                                               "p0":  [
-
-                                                                                      ],
-                                                                               "p1":  [
-                                                                                          "supervisor_loop_not_running_now",
-                                                                                          "result_poller_loop_not_running_now",
-                                                                                          "mobile_provider_snapshot_not_fresh"
-                                                                                      ],
-                                                                               "nextAction":  "start_internal_tester_runtime_with_supervisor_and_result_poller"
-                                                                           },
-                                                   "providerQuotaUsedByStatus":  false,
-                                                   "error":  null
+                                                   "ok":  false,
+                                                   "status":  null,
+                                                   "currentRuntimeState":  null,
+                                                   "providerQuotaUsedByStatus":  null,
+                                                   "error":  "The request was aborted: The connection was closed unexpectedly."
                                                }
                           },
     "runtimeTruth":  {

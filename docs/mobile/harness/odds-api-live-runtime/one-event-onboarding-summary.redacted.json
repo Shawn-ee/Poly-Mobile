@@ -1,9 +1,9 @@
 {
-    "generatedAt":  "2026-07-13T22:16:07.7995074Z",
+    "generatedAt":  "2026-07-14T01:36:51.9221203Z",
     "scope":  "holiwyn-one-event-live-onboarding",
     "pass":  true,
-    "startedAt":  "2026-07-13T22:15:01.5890494Z",
-    "completedAt":  "2026-07-13T22:16:07.8005349Z",
+    "startedAt":  "2026-07-14T01:34:57.5569782Z",
+    "completedAt":  "2026-07-14T01:36:51.9231202Z",
     "mode":  "quota-free-replay",
     "providerPolicy":  {
                            "providerSource":  "the-odds-api",
@@ -19,7 +19,11 @@
                            "skippedPastReplay":  true,
                            "replayEventStartTime":  "2026-07-12T01:00:00.0000000+00:00",
                            "existingLiveRuntimeStartTime":  "2026-07-14T19:00:00.0000000+00:00",
-                           "keySource":  "THE_ODDS_API_KEY process environment only"
+                           "keySource":  "not_required",
+                           "secretFilePath":  ".runtime/secrets/the-odds-api-key.txt",
+                           "secretFileSupported":  true,
+                           "keyValuePrinted":  false,
+                           "commandLineContainsSecret":  false
                        },
     "event":  {
                   "providerEventId":  "f9aa13a662d1658e5a02cfc06d6a2d73",
@@ -35,9 +39,9 @@
                            "marketType":  "total_goals",
                            "marketGroupKey":  "totals",
                            "line":  "2.5",
-                           "outcomeId":  "be4cfe8b-fa1e-4109-a627-2c13189a92a0",
-                           "outcomeName":  "Over +2.5",
-                           "referenceTokenId":  "odds-api-88263b2c42d6b2f5c6dbbda4"
+                           "outcomeId":  "8720dab4-70ff-44d0-8d74-5fcff36f8420",
+                           "outcomeName":  "Over 2.5",
+                           "referenceTokenId":  "odds-api-6ec5620aa25c4fcd08f1d70e"
                        },
     "commands":  [
                      {
@@ -47,8 +51,8 @@
                          "pass":  true,
                          "skipped":  true,
                          "reason":  "Redacted replay fixture is older than current UTC and a newer live-runtime event summary exists; pass -AllowPastReplay to intentionally overwrite local one-event state with the replay fixture.",
-                         "startedAt":  "2026-07-13T22:15:01.6249081Z",
-                         "finishedAt":  "2026-07-13T22:15:01.6249081Z"
+                         "startedAt":  "2026-07-14T01:34:57.5919900Z",
+                         "finishedAt":  "2026-07-14T01:34:57.5919900Z"
                      },
                      {
                          "label":  "cached-live-runtime-restore",
@@ -57,8 +61,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T22:15:01.6327358Z",
-                         "finishedAt":  "2026-07-13T22:15:03.2180920Z"
+                         "startedAt":  "2026-07-14T01:34:57.6005074Z",
+                         "finishedAt":  "2026-07-14T01:34:58.7909125Z"
                      },
                      {
                          "label":  "one-event-live-readiness",
@@ -67,8 +71,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T22:15:03.2180920Z",
-                         "finishedAt":  "2026-07-13T22:15:21.6053922Z"
+                         "startedAt":  "2026-07-14T01:34:58.7914214Z",
+                         "finishedAt":  "2026-07-14T01:35:18.0081904Z"
                      },
                      {
                          "label":  "one-event-runtime-status",
@@ -77,8 +81,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T22:15:21.6063914Z",
-                         "finishedAt":  "2026-07-13T22:15:24.2452287Z"
+                         "startedAt":  "2026-07-14T01:35:18.0081904Z",
+                         "finishedAt":  "2026-07-14T01:35:19.7779600Z"
                      },
                      {
                          "label":  "one-event-settlement-readiness",
@@ -87,8 +91,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T22:15:24.2467324Z",
-                         "finishedAt":  "2026-07-13T22:15:27.5321930Z"
+                         "startedAt":  "2026-07-14T01:35:19.7784981Z",
+                         "finishedAt":  "2026-07-14T01:35:20.5423170Z"
                      },
                      {
                          "label":  "one-event-result-ingestion",
@@ -97,8 +101,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T22:15:27.5321930Z",
-                         "finishedAt":  "2026-07-13T22:15:28.7269807Z"
+                         "startedAt":  "2026-07-14T01:35:20.5423170Z",
+                         "finishedAt":  "2026-07-14T01:35:21.4165713Z"
                      },
                      {
                          "label":  "one-event-result-settlement-dry-run",
@@ -107,8 +111,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T22:15:28.7279818Z",
-                         "finishedAt":  "2026-07-13T22:15:31.7115796Z"
+                         "startedAt":  "2026-07-14T01:35:21.4175691Z",
+                         "finishedAt":  "2026-07-14T01:35:22.8246822Z"
                      },
                      {
                          "label":  "one-event-settlement-dry-run",
@@ -117,8 +121,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T22:15:31.7115796Z",
-                         "finishedAt":  "2026-07-13T22:15:34.4039665Z"
+                         "startedAt":  "2026-07-14T01:35:22.8256829Z",
+                         "finishedAt":  "2026-07-14T01:35:23.5974278Z"
                      },
                      {
                          "label":  "start-local-runtime-loops",
@@ -127,8 +131,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T22:15:34.4039665Z",
-                         "finishedAt":  "2026-07-13T22:15:47.2219858Z"
+                         "startedAt":  "2026-07-14T01:35:23.5984319Z",
+                         "finishedAt":  "2026-07-14T01:36:28.2639575Z"
                      },
                      {
                          "label":  "status-local-runtime-loops",
@@ -137,8 +141,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T22:15:47.2219858Z",
-                         "finishedAt":  "2026-07-13T22:15:55.7430176Z"
+                         "startedAt":  "2026-07-14T01:36:28.2639575Z",
+                         "finishedAt":  "2026-07-14T01:36:33.5218821Z"
                      },
                      {
                          "label":  "stop-local-runtime-loops-after-proof",
@@ -147,8 +151,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-13T22:15:55.7430176Z",
-                         "finishedAt":  "2026-07-13T22:16:07.5671123Z"
+                         "startedAt":  "2026-07-14T01:36:33.5218821Z",
+                         "finishedAt":  "2026-07-14T01:36:46.7158149Z"
                      }
                  ],
     "backend":  {
@@ -159,7 +163,7 @@
                                                 "status":  "ok",
                                                 "db":  "connected",
                                                 "env":  "development",
-                                                "timestamp":  "2026-07-13T22:16:07.601Z"
+                                                "timestamp":  "2026-07-14T01:36:46.758Z"
                                             },
                                    "error":  null
                                }
@@ -172,11 +176,12 @@
                                    ]
                        },
     "s23":  {
-                "connected":  true,
-                "deviceId":  "172.16.200.27:44029",
-                "model":  "SM_S911U1",
-                "raw":  "172.16.200.27:44029    device product:dm1quew model:SM_S911U1 device:dm1q transport_id:2",
-                "adbTimedOut":  false
+                "connected":  false,
+                "deviceId":  null,
+                "model":  null,
+                "raw":  "",
+                "adbTimedOut":  true,
+                "error":  "adb timed out after 5s"
             },
     "checks":  {
                    "seedOrReplayPass":  true,

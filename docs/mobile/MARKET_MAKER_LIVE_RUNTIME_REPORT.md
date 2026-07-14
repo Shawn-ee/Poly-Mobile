@@ -42,6 +42,7 @@ For a selected binary sportsbook market:
 - If only a midpoint exists, the proof builds a small local spread around it.
 - The proof cancels its own previous local maker quotes before placing replacements.
 - The reusable seed checks the current selected-outcome book after cleanup and adjusts planned maker prices away from existing user/test orders so the new maker bid/ask rest instead of crossing and filling immediately.
+- The reusable seed also performs a local proof-only collateral reconciliation before minting complete sets. It is limited to non-production public `sportsbook-odds` orderbook markets and only updates `Market.collateralUSDC` when active outcome shares are balanced; imbalanced positions still fail the proof.
 - The proof does not start a permanent unattended bot by default.
 
 ## Remaining Gaps

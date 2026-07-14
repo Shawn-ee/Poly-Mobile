@@ -16040,3 +16040,21 @@ Known limitations:
 - API/data dependencies: existing `/api/internal/live-runtime/status.operatorNextActions` fields. Action entries still expose command, provider-key requirement, quota-spend flag, priority, label, and reason.
 - Proof needed: focused live-runtime status tests, Odds API contract tests, no-quota readiness gate refresh, root/mobile typecheck, `npm run test:ci`, secret scan, GitHub CI.
 - Known limitations: the live odds refresh action may still spend provider quota when intentionally run; cached internal testing remains the safe default.
+
+## Cycle ZZJ - Onboarding Secret File and Maker Collateral Recovery
+
+- Feature/runtime worked on: one-command live event onboarding and reusable shifted maker seeding for the `Spain vs. France` internal tester event.
+- Frontend components touched: none.
+- Backend/routes touched: no route implementation changes. Existing `GET /api/health`, `GET /api/markets/:marketId/quote`, runtime status, settlement dry-run, and lifecycle proof routes/scripts were exercised.
+- Important functions/services touched: `scripts/onboard_holiwyn_one_event_live_runtime.ps1`, `scripts/seed_odds_api_live_shifted_maker.ts`, Odds API contract tests, provider refresh policy docs, and event lifecycle runbook.
+- User/runtime interactions supported: local operators can run the quota-spending one-command onboarding path with the provider key in either the process environment or ignored `.runtime/secrets/the-odds-api-key.txt`. Reusable maker seeding now recovers local proof collateral when previous tester trades/cashouts leave balanced outcome shares but stale `Market.collateralUSDC`, so internal tester quotes can be reseeded without a full DB reset.
+- State transitions: no provider quota is spent by the cached proof path. The maker seed may update `Market.collateralUSDC` only for local non-production `sportsbook-odds` public orderbook markets, and only when active outcome shares are balanced. It still fails on truly imbalanced positions.
+- API/data dependencies: current event and outcome IDs come from the backend DB; maker seed writes local fake-token maker orders, quote evidence, `MarketMakerQuoteRun`, and redacted harness summaries. Secret-file support reads only ignored local runtime secret presence/value into the child process and never prints or commits the key.
+- Proof:
+  - `npx jest --runInBand src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`
+  - `npm run mobile:one-event-live-readiness -- -BackendPort 3002 -AllowDisconnectedS23`
+  - `npm run mobile:one-event-result-settlement-run -- --result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json`
+  - `npm run mobile:one-event-settlement -- --winningOutcome=over`
+  - `npm run mobile:one-event-live-supervisor -- -MaxIterations 1 -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement`
+  - `npm run mobile:one-event-runtime-status`
+- Known limitations: default cached onboarding does not install an unattended production daemon. Official-result auto-settlement remains guarded P1 and requires closed-market confirmation before execution.

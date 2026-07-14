@@ -180,6 +180,74 @@ async function currentOutcomeBook(marketId: string, outcomeId: string) {
   };
 }
 
+async function reconcileLocalProofCollateral(marketId: string) {
+  assert(process.env.NODE_ENV !== "production", "Refusing to reconcile proof collateral in production.");
+
+  const market = await prisma.market.findUnique({
+    where: { id: marketId },
+    select: {
+      id: true,
+      mechanism: true,
+      visibility: true,
+      collateralUSDC: true,
+      referenceSource: true,
+    },
+  });
+  assert(market, `Missing market ${marketId}.`);
+  assert(
+    market.mechanism === "ORDERBOOK" && market.visibility === "PUBLIC" && market.referenceSource === "sportsbook-odds",
+    "Proof collateral reconciliation only supports public sportsbook-odds orderbook markets.",
+  );
+
+  const outcomes = await prisma.outcome.findMany({
+    where: { marketId, isActive: true },
+    select: { id: true, code: true },
+    orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }],
+  });
+  assert(outcomes.length >= 2, "Proof collateral reconciliation requires at least two active outcomes.");
+
+  const grouped = await prisma.position.groupBy({
+    by: ["outcomeId"],
+    where: {
+      marketId,
+      outcomeId: { in: outcomes.map((outcome) => outcome.id) },
+      shares: { gt: dec(0) },
+    },
+    _sum: { shares: true },
+  });
+  const outstanding = new Map(grouped.map((row) => [row.outcomeId, row._sum.shares ?? dec(0)]));
+  const byOutcome = outcomes.map((outcome) => ({
+    outcomeId: outcome.id,
+    code: outcome.code,
+    shares: (outstanding.get(outcome.id) ?? dec(0)).toString(),
+  }));
+  const expectedCollateral = dec(byOutcome[0]?.shares ?? 0);
+  const imbalanced = byOutcome.some((outcome) => !dec(outcome.shares).equals(expectedCollateral));
+  assert(!imbalanced, `Cannot reconcile imbalanced proof market positions: ${JSON.stringify(byOutcome)}`);
+
+  const before = dec(market.collateralUSDC);
+  if (before.equals(expectedCollateral)) {
+    return {
+      repaired: false,
+      before: before.toString(),
+      after: before.toString(),
+      byOutcome,
+    };
+  }
+
+  await prisma.market.update({
+    where: { id: marketId },
+    data: { collateralUSDC: expectedCollateral },
+  });
+
+  return {
+    repaired: true,
+    before: before.toString(),
+    after: expectedCollateral.toString(),
+    byOutcome,
+  };
+}
+
 function avoidCrossingOpenBook(plan: ReturnType<typeof pricePlan>, book: Awaited<ReturnType<typeof currentOutcomeBook>>) {
   let plannedBid = plan.plannedBid;
   let plannedAsk = plan.plannedAsk;
@@ -236,6 +304,7 @@ async function main() {
     `Provider snapshot is stale (${Math.round(snapshotAgeMs / 1000)}s old). Refresh provider odds first or pass --allowStale for a local diagnostic.`,
   );
 
+  const collateralRepair = await reconcileLocalProofCollateral(selected.market.id);
   const canceled = await cleanupPreviousMakerOrders(selected.market.id);
   const preSeedBook = await currentOutcomeBook(selected.market.id, selected.outcome.id);
   const plan = avoidCrossingOpenBook(pricePlan(selected.snapshot, quoteOffsetTicks), preSeedBook);
@@ -341,6 +410,7 @@ async function main() {
       outcomePrice: plan.outcomePrice,
     },
     maker: maker ? { id: maker.id, username: maker.username } : null,
+    collateralRepair,
     plan: {
       quoteOffsetTicks,
       plannedBid: plan.plannedBid,
@@ -412,6 +482,7 @@ async function main() {
       localOnly: true,
       summaryPath: outputPath,
       selectedMarket: summary.selectedMarket,
+      collateralRepair: summary.collateralRepair,
       checks,
       gaps: summary.gaps,
     },

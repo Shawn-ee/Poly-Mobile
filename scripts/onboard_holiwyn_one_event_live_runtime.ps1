@@ -2,6 +2,7 @@ param(
   [int]$BackendPort = 3002,
   [string]$SummaryPath = "docs\mobile\harness\odds-api-live-runtime\one-event-onboarding-summary.redacted.json",
   [string]$ReplayOddsPath = "docs\mobile\harness\the-odds-api-single-event\event-odds.redacted.json",
+  [string]$ProviderSecretPath = ".runtime\secrets\the-odds-api-key.txt",
   [string]$WinningOutcome = "over",
   [switch]$RunProviderRefresh,
   [switch]$AllowPastReplay,
@@ -249,8 +250,36 @@ function Get-S23Status {
   }
 }
 
-if ($RunProviderRefresh -and [string]::IsNullOrWhiteSpace($env:THE_ODDS_API_KEY)) {
-  throw "RunProviderRefresh requires THE_ODDS_API_KEY in the process environment. The key is not read from files or printed."
+function Get-ProviderSecretStatus {
+  param([string]$ResolvedSecretPath)
+  $envPresent = -not [string]::IsNullOrWhiteSpace($env:THE_ODDS_API_KEY)
+  $filePresent = Test-Path -LiteralPath $ResolvedSecretPath
+  $fileHasValue = $false
+  if ($filePresent) {
+    $fileHasValue = -not [string]::IsNullOrWhiteSpace((Get-Content -Raw -LiteralPath $ResolvedSecretPath))
+  }
+  return [ordered]@{
+    envPresent = [bool]$envPresent
+    filePresent = [bool]$filePresent
+    fileHasValue = [bool]$fileHasValue
+    source = if ($envPresent) { "process_env" } elseif ($fileHasValue) { "runtime_secret_file" } else { "missing" }
+    filePath = ConvertTo-RepoPath $ResolvedSecretPath
+  }
+}
+
+$resolvedProviderSecretPath = Resolve-RepoPath $ProviderSecretPath
+$providerSecretStatus = Get-ProviderSecretStatus $resolvedProviderSecretPath
+$previousProviderKey = $env:THE_ODDS_API_KEY
+$providerKeyLoadedFromFile = $false
+
+if ($RunProviderRefresh) {
+  if (-not $providerSecretStatus.envPresent) {
+    if (-not $providerSecretStatus.fileHasValue) {
+      throw "RunProviderRefresh requires THE_ODDS_API_KEY in the process environment or an ignored local secret file at $ProviderSecretPath. The key is not printed."
+    }
+    $env:THE_ODDS_API_KEY = (Get-Content -Raw -LiteralPath $resolvedProviderSecretPath).Trim()
+    $providerKeyLoadedFromFile = $true
+  }
 }
 if (-not $RunProviderRefresh -and -not (Test-Path -LiteralPath (Resolve-RepoPath $ReplayOddsPath))) {
   throw "Replay odds file was not found at $ReplayOddsPath. Run live provider refresh intentionally or restore the redacted replay fixture."
@@ -383,6 +412,14 @@ try {
   }
 } catch {
   $failed.Add($_.Exception.Message) | Out-Null
+} finally {
+  if ($providerKeyLoadedFromFile) {
+    if ($null -ne $previousProviderKey) {
+      $env:THE_ODDS_API_KEY = $previousProviderKey
+    } else {
+      Remove-Item Env:\THE_ODDS_API_KEY -ErrorAction SilentlyContinue
+    }
+  }
 }
 
 $singleEventSummary = Read-JsonFile (Resolve-RepoPath "docs\mobile\harness\the-odds-api-single-event\single-event-summary.redacted.json")
@@ -480,7 +517,11 @@ $summary = [ordered]@{
     skippedPastReplay = [bool]$skipPastReplay
     replayEventStartTime = if ($replayStart) { $replayStart.ToString("o") } else { $null }
     existingLiveRuntimeStartTime = if ($runtimeStart) { $runtimeStart.ToString("o") } else { $null }
-    keySource = "THE_ODDS_API_KEY process environment only"
+    keySource = if ($RunProviderRefresh) { $providerSecretStatus.source } else { "not_required" }
+    secretFilePath = ConvertTo-RepoPath $resolvedProviderSecretPath
+    secretFileSupported = $true
+    keyValuePrinted = $false
+    commandLineContainsSecret = $false
   }
   event = $event
   selectedMarket = $selectedMarket

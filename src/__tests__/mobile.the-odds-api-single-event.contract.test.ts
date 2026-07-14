@@ -17,6 +17,7 @@ describe("The Odds API single-event temporary provider", () => {
   const liveRuntimeScript = () => readFileSync("scripts/start_holiwyn_one_event_live_runtime.ps1", "utf8");
   const liveRuntimeSecretScript = () =>
     readFileSync("scripts/run_holiwyn_one_event_live_runtime_with_secret.ps1", "utf8");
+  const shiftedMakerSeedScript = () => readFileSync("scripts/seed_odds_api_live_shifted_maker.ts", "utf8");
   const internalTesterRuntimeScript = () => readFileSync("scripts/manage_holiwyn_internal_tester_runtime.ps1", "utf8");
   const oneEventOnboardingScript = () => readFileSync("scripts/onboard_holiwyn_one_event_live_runtime.ps1", "utf8");
   const oneEventSupervisorScript = () => readFileSync("scripts/run_holiwyn_one_event_live_supervisor.ps1", "utf8");
@@ -96,18 +97,38 @@ describe("The Odds API single-event temporary provider", () => {
   it("supports a redacted local secret-file wrapper for live provider refresh", () => {
     const pkg = packageJson();
     const source = liveRuntimeSecretScript();
+    const onboarding = oneEventOnboardingScript();
     const gitignore = readFileSync(".gitignore", "utf8");
     expect(pkg).toContain("mobile:one-event-live-runtime:provider-secret-preflight");
     expect(pkg).toContain("mobile:one-event-live-runtime:provider-secret");
     expect(source).toContain(".runtime\\secrets\\the-odds-api-key.txt");
+    expect(onboarding).toContain(".runtime\\secrets\\the-odds-api-key.txt");
+    expect(onboarding).toContain("Get-ProviderSecretStatus");
+    expect(onboarding).toContain("runtime_secret_file");
+    expect(onboarding).toContain("keyValuePrinted = $false");
+    expect(onboarding).toContain("commandLineContainsSecret = $false");
+    expect(onboarding).toContain("Remove-Item Env:\\THE_ODDS_API_KEY");
     expect(source).toContain("providerQuotaUsedByPreflight = $false");
     expect(source).toContain("valuePrinted = $false");
     expect(source).toContain("commandLineContainsSecret = $false");
     expect(source).toContain("start_holiwyn_one_event_live_runtime.ps1");
     expect(source).toContain("-RunProviderProof");
     expect(source).not.toContain("THE_ODDS_API_KEY=");
+    expect(onboarding).not.toContain("THE_ODDS_API_KEY=");
     expect(source).not.toContain("apiKey:");
+    expect(onboarding).not.toContain("apiKey:");
     expect(gitignore).toContain(".runtime/");
+  });
+
+  it("repairs local proof collateral before shifted maker seeding without hiding imbalanced positions", () => {
+    const source = shiftedMakerSeedScript();
+    expect(source).toContain("async function reconcileLocalProofCollateral");
+    expect(source).toContain("Proof collateral reconciliation only supports public sportsbook-odds orderbook markets.");
+    expect(source).toContain("Cannot reconcile imbalanced proof market positions");
+    expect(source).toContain("collateralRepair");
+    expect(source.indexOf("const collateralRepair = await reconcileLocalProofCollateral(selected.market.id);")).toBeLessThan(
+      source.indexOf("await mintCompleteSetForPublicOrderbook"),
+    );
   });
 
   it("exposes a redacted no-quota internal tester operator snapshot", () => {
