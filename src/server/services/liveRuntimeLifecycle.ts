@@ -107,7 +107,8 @@ export async function getLocalLiveRuntimeLifecycle(params: { eventSlug?: string 
     bool(getPath(entries.trustedResultSettlementExecution, ["checks", "liveMarketExecutionBlocked"])) &&
     bool(getPath(entries.trustedResultSettlementExecution, ["checks", "executeSchedulerPassed"])) &&
     bool(getPath(entries.trustedResultSettlementExecution, ["checks", "disposableMarketResolved"])) &&
-    bool(getPath(entries.trustedResultSettlementExecution, ["checks", "targetTesterEventNotMutated"]));
+    (bool(getPath(entries.trustedResultSettlementExecution, ["checks", "targetTesterEventNotMutated"])) ||
+      bool(getPath(entries.trustedResultSettlementExecution, ["checks", "targetTesterEventSettlementStateNotMutated"])));
   const activeReviewTrailProven =
     bool(getPath(entries.resultReviewTrail, ["checks", "providerResultAuditEventFound"])) &&
     bool(getPath(entries.resultReviewTrail, ["checks", "settlementPreflightAuditEventFound"])) &&

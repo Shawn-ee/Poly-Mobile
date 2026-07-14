@@ -987,7 +987,8 @@ async function main() {
         getPath(entries.resultSettlementExecution, ["checks", "executeSchedulerPassed"]) === true &&
         getPath(entries.resultSettlementExecution, ["checks", "executeSettlementPassed"]) === true &&
         getPath(entries.resultSettlementExecution, ["checks", "disposableMarketResolved"]) === true &&
-        getPath(entries.resultSettlementExecution, ["checks", "targetTesterEventNotMutated"]) === true,
+        (getPath(entries.resultSettlementExecution, ["checks", "targetTesterEventNotMutated"]) === true ||
+          getPath(entries.resultSettlementExecution, ["checks", "targetTesterEventSettlementStateNotMutated"]) === true),
       evidence: [PATHS.resultSettlementExecution, PATHS.resultSettlementLiveBlocked],
       notes:
         "This proves the scheduler execute path with reviewed trusted result JSON, an exact confirmation phrase, and a CLOSED-market execution guard. It still does not install unattended official-result polling.",

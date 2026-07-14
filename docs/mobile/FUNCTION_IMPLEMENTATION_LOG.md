@@ -16645,3 +16645,22 @@ Known limitations:
   - `npm run mobile:live-runtime-audit-gate`
   - `GET /api/internal/live-runtime/status?phaseAuditInProgress=1` returned HTTP 200 with `mode=warm_no_quota_runtime`, `supervisorRunning=true`, `resultPollerRunning=true`, `quotaSpendingLoopRunning=false`, and empty P0 gaps.
 - Known limitations: Expo was reused as an external listener, so server-mode Expo should be replaced with the explicit manager command if S23 shows stale behavior. Live mobile odds freshness remains false until the key-gated provider refresh runs. Installed unattended service ownership and production official-result auto-settlement remain P1.
+
+## Cycle ZBC - Settlement Proof Contract Refresh
+
+- Feature/runtime worked on: one-event trusted-result settlement proof freshness and lifecycle-route audit contract.
+- Frontend components touched: none.
+- Backend/routes touched: `GET /api/internal/live-runtime/lifecycle` through `src/server/services/liveRuntimeLifecycle.ts`.
+- Important functions/services touched: `scripts/prove_odds_api_trusted_result_settlement_scheduler_execution.ts`, `scripts/prove_odds_api_active_event_closed_settlement_eligibility.ts`, `scripts/report_odds_api_one_event_runtime_status.ts`, and `scripts/report_odds_api_live_runtime_phase_audit.ts`.
+- User/runtime interactions supported: internal testers keep a fresh, no-quota proof that trusted-result execution is blocked while the active market is `LIVE`, execution works only on a disposable closed market, and the active Spain vs. France market remains unsettled and tradable.
+- State transitions: a disposable settlement proof market was created and resolved; the active selected market was temporarily closed for eligibility proof and restored to `LIVE`; local shifted maker liquidity was reseeded for the selected `Over 2.5` outcome. No provider refresh, mobile UI change, real-money flow, or active-event settlement execution.
+- API/data dependencies: reads `/api/internal/live-runtime/lifecycle`, `/api/internal/live-runtime/status?phaseAuditInProgress=1`, `/api/markets/:marketId/quote`, `CanonicalEvent`, `OfficialResultReview`, `RuntimeServiceHeartbeat`, `RuntimeServiceRun`, and local redacted proof summaries.
+- Proof:
+  - `npm run mobile:one-event-result-settlement-execution-proof`
+  - `npm run mobile:one-event-active-settlement-closed-eligibility-proof`
+  - `npm run mobile:one-event-live-maker-seed`
+  - `npm run mobile:one-event-runtime-status`
+  - `npm run mobile:one-event-phase-audit`
+  - `npm run mobile:live-runtime-completion-audit`
+- Result: ordered gates passed with zero open P0 gaps, fresh settlement guard evidence, visible selected-outcome bid/ask, and no provider quota.
+- Known limitations: installed unattended service ownership and production official-result auto-settlement remain P1. Multi-event provider polling/dashboard remains P2.

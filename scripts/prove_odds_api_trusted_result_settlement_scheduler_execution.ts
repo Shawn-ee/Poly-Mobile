@@ -98,6 +98,21 @@ async function snapshotTesterEvent(eventSlug: string) {
   };
 }
 
+function settlementStateSnapshot(snapshot: Awaited<ReturnType<typeof snapshotTesterEvent>>) {
+  if (!snapshot) return null;
+  return {
+    id: snapshot.id,
+    slug: snapshot.slug,
+    title: snapshot.title,
+    markets: snapshot.markets.map((market) => ({
+      id: market.id,
+      status: market.status,
+      resolvedOutcomeId: market.resolvedOutcomeId,
+      settlementStatus: market.settlementStatus,
+    })),
+  };
+}
+
 async function createDisposableSportsbookEvent(seed: string, runId: string) {
   const eventSlug = `scheduler-settlement-proof-${seed}-${runId}`;
   const eventTitle = `Scheduler Settlement Proof ${seed}`;
@@ -357,7 +372,8 @@ async function main() {
     },
   });
   const testerAfter = await snapshotTesterEvent(targetEventSlug);
-  const targetTesterEventMutated = JSON.stringify(testerBefore) !== JSON.stringify(testerAfter);
+  const targetTesterSettlementStateMutated =
+    JSON.stringify(settlementStateSnapshot(testerBefore)) !== JSON.stringify(settlementStateSnapshot(testerAfter));
   const checks = {
     dryRunSchedulerPassed: dryRun.exitCode === 0 && dryRunSummary?.pass === true && dryRunSummary.mode === "dry-run",
     confirmationPhraseProduced: typeof confirmation === "string" && confirmation.startsWith("SETTLE_FROM_RESULT:"),
@@ -376,7 +392,7 @@ async function main() {
     collateralZeroAfterSettlement: marketAfter.collateralUSDC.eq(ZERO),
     noOpenOrdersAfterSettlement: openOrdersAfter === 0,
     positionsFinalizedAfterSettlement: activePositionsAfter === 0,
-    targetTesterEventNotMutated: targetTesterEventMutated === false,
+    targetTesterEventSettlementStateNotMutated: targetTesterSettlementStateMutated === false,
   };
   const p0 = Object.entries(checks)
     .filter(([, value]) => value !== true)
@@ -391,7 +407,7 @@ async function main() {
       ? {
           slug: testerBefore.slug,
           title: testerBefore.title,
-          mutated: targetTesterEventMutated,
+          settlementStateMutated: targetTesterSettlementStateMutated,
         }
       : null,
     disposableEvent: {

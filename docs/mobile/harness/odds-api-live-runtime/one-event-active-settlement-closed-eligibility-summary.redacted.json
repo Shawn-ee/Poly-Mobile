@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-12T20:32:54.022Z",
+  "generatedAt": "2026-07-14T11:51:41.349Z",
   "scope": "odds-api-active-event-closed-settlement-eligibility-proof",
   "pass": true,
   "providerQuotaUsed": false,
@@ -21,24 +21,24 @@
   },
   "closedStateDecision": {
     "dryRunOutput": "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-closed-eligibility-dry-run.redacted.json",
-    "winningOutcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+    "winningOutcomeId": "9fa19273-e446-4bec-9d3b-3f80639c9d32",
     "resultDigest": "f3a5743c73f2",
-    "exactConfirmationRequired": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:dd0797bc-e297-4c19-b55c-ccf1bb96dace:f3a5743c73f2",
+    "exactConfirmationRequired": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:9fa19273-e446-4bec-9d3b-3f80639c9d32:f3a5743c73f2",
     "operatorDecisionWhenClosed": "eligible_for_exact_confirmation_execution_after_market_close",
     "executionAttempted": false
   },
   "approvalEvidence": {
-    "id": "180",
+    "id": "9",
     "eventType": "settlement.trusted_result.approved",
     "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-    "outcomeId": "dd0797bc-e297-4c19-b55c-ccf1bb96dace",
+    "outcomeId": "9fa19273-e446-4bec-9d3b-3f80639c9d32",
     "resultDigest": "f3a5743c73f2",
     "exactConfirmationStored": true
   },
   "run": {
     "executable": "C:\\nvm4w\\nodejs\\node.exe",
     "args": [
-      "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\\node_modules\\tsx\\dist\\cli.mjs",
+      "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\node_modules\\tsx\\dist\\cli.mjs",
       "scripts/settle_odds_api_one_event_from_result.ts",
       "--eventSlug=odds-api-single-soccer-test",
       "--marketId=78ea76f1-fc8f-419b-ac21-2554d79093f6",
@@ -53,13 +53,13 @@
       "    \"providerStatus\": \"trusted_external_input\"",
       "  },",
       "  \"auditEvent\": {",
-      "    \"id\": \"423\",",
-      "    \"sequence\": \"423\",",
+      "    \"id\": \"14\",",
+      "    \"sequence\": \"14\",",
       "    \"type\": \"settlement.trusted_result.preflight\",",
       "    \"stream\": \"market\",",
       "    \"marketId\": \"78ea76f1-fc8f-419b-ac21-2554d79093f6\",",
-      "    \"outcomeId\": \"dd0797bc-e297-4c19-b55c-ccf1bb96dace\",",
-      "    \"createdAt\": \"2026-07-12T20:32:53.976Z\"",
+      "    \"outcomeId\": \"9fa19273-e446-4bec-9d3b-3f80639c9d32\",",
+      "    \"createdAt\": \"2026-07-14T11:51:41.308Z\"",
       "  },",
       "  \"gaps\": {",
       "    \"p0\": [],",
@@ -73,7 +73,17 @@
       "  }",
       "}"
     ],
-    "stderrTail": []
+    "stderrTail": [
+      "[config] warnings {",
+      "  env: 'development',",
+      "  warnings: [",
+      "    'ADMIN_EMAILS is not set; admin bootstrap may be limited',",
+      "    'POLYGON_RPC_URL is not set; Polygon deposit monitor is disabled',",
+      "    'POLYGON_USDC_ADDRESS is not set; Polygon deposit monitor is disabled',",
+      "    'DEPOSIT_WALLET_ENCRYPTION_KEY is not set; deposit wallet generation is disabled'",
+      "  ]",
+      "}"
+    ]
   },
   "runtimeTruth": {
     "provesActiveEventClosedStateEligibility": true,

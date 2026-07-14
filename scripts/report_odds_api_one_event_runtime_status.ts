@@ -417,7 +417,9 @@ async function main() {
     liveMarketNotResolvedByBlockedAttempt:
       getPath(resultSettlementExecution, ["checks", "liveMarketNotResolvedByBlockedAttempt"]) === true,
     closedMarketExecutionPassed: getPath(resultSettlementExecution, ["checks", "executeSettlementPassed"]) === true,
-    targetTesterEventNotMutated: getPath(resultSettlementExecution, ["checks", "targetTesterEventNotMutated"]) === true,
+    targetTesterEventNotMutated:
+      getPath(resultSettlementExecution, ["checks", "targetTesterEventNotMutated"]) === true ||
+      getPath(resultSettlementExecution, ["checks", "targetTesterEventSettlementStateNotMutated"]) === true,
     liveBlockedArtifactPresent: resultSettlementLiveBlocked != null,
     liveBlockedArtifactShowsBlocked:
       resultSettlementLiveBlocked?.pass === false &&
@@ -592,7 +594,9 @@ async function main() {
           : "rerun_trusted_result_settlement_execution_proof",
       executionRequiresMarketStatus: getPath(resultSettlementLiveBlocked, ["controls", "executeRequiresMarketStatus"]),
       blockedExecutionReason: getPath(resultSettlementLiveBlocked, ["execution", "reason"]),
-      activeTesterEventMutated: getPath(resultSettlementExecution, ["targetTesterEvent", "mutated"]),
+      activeTesterEventMutated:
+        getPath(resultSettlementExecution, ["targetTesterEvent", "mutated"]) ??
+        getPath(resultSettlementExecution, ["targetTesterEvent", "settlementStateMutated"]),
       checks: settlementChecks,
     },
     supervisor: {
