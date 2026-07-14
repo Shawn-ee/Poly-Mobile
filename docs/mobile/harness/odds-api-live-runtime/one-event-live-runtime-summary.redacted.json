@@ -1,7 +1,7 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-14T03:29:19.428Z",
-  "startedAt": "2026-07-14T03:29:15.780Z",
+  "generatedAt": "2026-07-14T04:49:11.043Z",
+  "startedAt": "2026-07-14T04:49:06.859Z",
   "scope": "odds-api-one-event-live-runtime",
   "policy": {
     "fakeTokenOnly": true,
@@ -29,8 +29,8 @@
         "path": "/v4/sports",
         "status": 200,
         "quota": {
-          "requestsUsed": "186",
-          "requestsRemaining": "314",
+          "requestsUsed": "206",
+          "requestsRemaining": "294",
           "requestsLast": "0"
         }
       },
@@ -40,8 +40,8 @@
         "path": "/v4/sports/soccer_fifa_world_cup/events?dateFormat=iso&commenceTimeFrom=2026-07-14T00%3A00%3A00Z&commenceTimeTo=2026-07-15T00%3A00%3A00Z",
         "status": 200,
         "quota": {
-          "requestsUsed": "186",
-          "requestsRemaining": "314",
+          "requestsUsed": "206",
+          "requestsRemaining": "294",
           "requestsLast": "0"
         }
       },
@@ -51,8 +51,8 @@
         "path": "/v4/sports/soccer_fifa_world_cup/events/f9aa13a662d1658e5a02cfc06d6a2d73/markets?regions=us&dateFormat=iso",
         "status": 200,
         "quota": {
-          "requestsUsed": "187",
-          "requestsRemaining": "313",
+          "requestsUsed": "207",
+          "requestsRemaining": "293",
           "requestsLast": "1"
         }
       },
@@ -62,8 +62,8 @@
         "path": "/v4/sports/soccer_fifa_world_cup/events/f9aa13a662d1658e5a02cfc06d6a2d73/odds?regions=us&markets=h2h%2Cspreads%2Ctotals%2Ch2h_3_way%2Calternate_spreads%2Calternate_totals&oddsFormat=decimal&dateFormat=iso",
         "status": 200,
         "quota": {
-          "requestsUsed": "193",
-          "requestsRemaining": "307",
+          "requestsUsed": "213",
+          "requestsRemaining": "287",
           "requestsLast": "6"
         }
       },
@@ -73,8 +73,8 @@
         "path": "/v4/sports/soccer_fifa_world_cup/events/f9aa13a662d1658e5a02cfc06d6a2d73/odds?regions=us&markets=h2h%2Cspreads%2Ctotals%2Ch2h_3_way%2Calternate_spreads%2Calternate_totals&oddsFormat=decimal&dateFormat=iso",
         "status": 200,
         "quota": {
-          "requestsUsed": "199",
-          "requestsRemaining": "301",
+          "requestsUsed": "219",
+          "requestsRemaining": "281",
           "requestsLast": "6"
         }
       }
@@ -82,8 +82,8 @@
     "quota": {
       "totalLastCost": 13,
       "latest": {
-        "requestsUsed": "199",
-        "requestsRemaining": "301",
+        "requestsUsed": "219",
+        "requestsRemaining": "281",
         "requestsLast": "6"
       }
     },
@@ -296,7 +296,7 @@
     "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4"
   },
   "lifecycle": {
-    "forcedStaleAt": "2026-07-14T03:24:16.116Z",
+    "forcedStaleAt": "2026-07-14T04:44:07.126Z",
     "beforeRefresh": {
       "source": "mobile-live-detail-market",
       "status": "stale",
@@ -312,14 +312,14 @@
       "fallbackApplied": false,
       "fallbackReason": null,
       "reason": "Provider quote snapshot is older than 90 seconds.",
-      "nextRefreshAt": "2026-07-14T03:25:16.116Z",
-      "lastFetchedAt": "2026-07-14T03:24:16.116Z",
+      "nextRefreshAt": "2026-07-14T04:45:07.126Z",
+      "lastFetchedAt": "2026-07-14T04:44:07.126Z",
       "quote": {
         "source": "sportsbook-odds",
         "status": "stale",
         "reason": "Provider quote snapshot is older than 90 seconds.",
-        "nextRefreshAt": "2026-07-14T03:25:16.116Z",
-        "lastFetchedAt": "2026-07-14T03:24:16.116Z",
+        "nextRefreshAt": "2026-07-14T04:45:07.126Z",
+        "lastFetchedAt": "2026-07-14T04:44:07.126Z",
         "stalenessSeconds": 300,
         "shouldRefresh": true,
         "ready": false,
@@ -375,14 +375,14 @@
       "fallbackApplied": false,
       "fallbackReason": null,
       "reason": "No provider orderbook depth snapshot is available.",
-      "nextRefreshAt": "2026-07-14T03:30:17.383Z",
-      "lastFetchedAt": "2026-07-14T03:29:17.383Z",
+      "nextRefreshAt": "2026-07-14T04:50:08.576Z",
+      "lastFetchedAt": "2026-07-14T04:49:08.576Z",
       "quote": {
         "source": "sportsbook-odds",
         "status": "ready",
         "reason": "Provider quote snapshot is fresh.",
-        "nextRefreshAt": "2026-07-14T03:30:17.383Z",
-        "lastFetchedAt": "2026-07-14T03:29:17.383Z",
+        "nextRefreshAt": "2026-07-14T04:50:08.576Z",
+        "lastFetchedAt": "2026-07-14T04:49:08.576Z",
         "stalenessSeconds": 1,
         "shouldRefresh": false,
         "ready": true,
@@ -443,44 +443,31 @@
   "marketMaker": {
     "continuous": false,
     "mode": "bounded-proof-local-shifted-maker",
-    "makerUserId": "24164213-7701-4049-b33b-1b69b540ea10",
-    "bidOrderId": "f7070abb-42f2-4f8b-8761-e82a7780a266",
-    "askOrderId": "c18062b1-ea47-499a-8417-f640a5f3aa48",
+    "makerUserId": "0d309be2-af53-4eb5-abbc-88237bbf2360",
+    "bidOrderId": "8a9e83ca-7862-4d3d-9789-1483e3167004",
+    "askOrderId": "00088703-945b-4227-9f44-393246a08b16",
     "referenceBid": 0.4839,
     "referenceAsk": 0.5239,
     "preSeedBook": {
-      "bestBid": 0.46,
-      "bestAsk": 0.54,
-      "openOrderCount": 2,
-      "orders": [
-        {
-          "side": "BUY",
-          "price": "0.46",
-          "remaining": "200",
-          "username": "odds_live_runtime_shifted_maker_e61e2d01"
-        },
-        {
-          "side": "SELL",
-          "price": "0.54",
-          "remaining": "200",
-          "username": "odds_live_runtime_shifted_maker_e61e2d01"
-        }
-      ]
+      "bestBid": null,
+      "bestAsk": null,
+      "openOrderCount": 0,
+      "orders": []
     },
     "collateralRepair": {
-      "repaired": false,
-      "before": "11800",
-      "after": "11800",
+      "repaired": true,
+      "before": "550",
+      "after": "0",
       "byOutcome": [
         {
           "outcomeId": "30fbc915-74ca-4809-a0c4-cd54c3236aa4",
           "code": "over-2-5",
-          "shares": "11800"
+          "shares": "0"
         },
         {
           "outcomeId": "fe72ef40-ee22-4cc8-9830-bb46a4bf6c15",
           "code": "under-2-5",
-          "shares": "11800"
+          "shares": "0"
         }
       ]
     },
@@ -490,7 +477,7 @@
   },
   "flow": {
     "buyOrder": {
-      "id": "ca58c343-9dbf-4681-88bc-1ff81658a829",
+      "id": "03251929-c233-4b46-b97b-591fe3f2846b",
       "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
       "outcomeId": "30fbc915-74ca-4809-a0c4-cd54c3236aa4",
       "side": "BUY",
@@ -500,7 +487,7 @@
       "reservedNotional": "0",
       "status": "FILLED",
       "type": "LIMIT",
-      "clientOrderId": "odds-live-runtime-buy-3ad03d3c-920b-4c77-9b29-0460223c78eb",
+      "clientOrderId": "odds-live-runtime-buy-78f0895e-4cc5-4e5c-b7ba-d7bac56dca13",
       "apiKeyId": "[redacted]",
       "contractSide": "YES",
       "selection": {
@@ -526,7 +513,7 @@
       }
     },
     "sellOrder": {
-      "id": "c5c3eb39-7137-4662-8a1c-dde79dadde54",
+      "id": "ab40c60c-b6b8-4f1a-9ff1-b1a22fea9974",
       "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
       "outcomeId": "30fbc915-74ca-4809-a0c4-cd54c3236aa4",
       "side": "SELL",
@@ -536,7 +523,7 @@
       "reservedNotional": "0",
       "status": "FILLED",
       "type": "LIMIT",
-      "clientOrderId": "odds-live-runtime-cashout-sell-c1832bd6-84cb-482c-81a8-3fa1aca881ac",
+      "clientOrderId": "odds-live-runtime-cashout-sell-ab92db25-4895-4e5b-b9c3-ce0912f0fab2",
       "apiKeyId": "[redacted]",
       "contractSide": "YES",
       "selection": {
@@ -599,8 +586,8 @@
       "currentPrice": 0.5,
       "bestBid": 0.46,
       "bestAsk": 0.54,
-      "bestBidSize": 400,
-      "bestAskSize": 399,
+      "bestBidSize": 200,
+      "bestAskSize": 199,
       "valueTokens": "[redacted]",
       "costBasisTokens": "[redacted]",
       "totalCostBasisTokens": "[redacted]",

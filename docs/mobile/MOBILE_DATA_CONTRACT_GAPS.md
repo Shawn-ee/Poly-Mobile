@@ -10963,3 +10963,12 @@ Future migration concern:
 - Schema mismatch: none. No Prisma schema or model changes.
 - Temporary mock/static data: none added. The refresh used real The Odds API data for one event; fake-token order/portfolio behavior remains local exchange state.
 - Remaining gaps: mobile route freshness has a short operational window and will naturally age back to refresh-due/stale without another explicit quota-capped refresh. Installed unattended service ownership and production official-result auto-settlement remain P1.
+
+## Cycle ZAG - Live Provider Refresh And Mobile Line Normalization
+
+- Fields confirmed for mobile/runtime: provider proof artifacts can still store raw sportsbook outcome labels such as `Over +2.5`; the mobile live-detail route now exposes the same provider-backed market with user-facing labels `Over 2.5` and `Under 2.5`.
+- Closed or narrowed: raw sportsbook total labels no longer leak into the default mobile prediction-market UI for clean total lines, and duplicate fixture/provider line markets for the same family, period, and line are suppressed in favor of the provider-backed tradable market.
+- Route mismatch: none. `GET /api/mobile/events/:slug/live-detail` remains the mobile contract; it now applies a display-normalization boundary before serialization.
+- Schema mismatch: none. Raw provider labels remain in provider/reference metadata and proof artifacts, so no database migration is required.
+- Temporary mock/static data: none added. The visible market remains provider-backed with local fake-token maker liquidity; the duplicate contract fixture is only hidden from mobile display for the matching line.
+- Remaining gaps: provider proof summaries still use raw provider labels for audit identity, which is acceptable as long as mobile route serialization keeps user-facing labels normalized. Installed unattended service ownership and production official-result auto-settlement remain P1.

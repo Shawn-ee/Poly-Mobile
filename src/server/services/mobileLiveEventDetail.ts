@@ -653,6 +653,18 @@ const marketLineValue = (market: MarketInput) => {
   return Number.isFinite(value) ? value : null;
 };
 
+const isProviderBackedMarket = (market: MarketInput) =>
+  PROVIDER_BACKED_REFERENCE_SOURCES.has(market.referenceSource ?? "") ||
+  hasApprovedLineProviderReady(market);
+
+const mobileDisplayLabelForOutcome = (market: MarketInput, outcome: OutcomeInput) => {
+  const label = outcome.label ?? outcome.name;
+  if (["total_goals", "totals"].includes(market.marketType)) {
+    return label.replace(/\b(Over|Under)\s+\+(\d+(?:\.\d+)?)/i, "$1 $2");
+  }
+  return label;
+};
+
 const compactSelectorKeyForMarket = (market: MarketInput, event: EventInput) => [
   mobileMarketContractForMarket(market, event).marketGroupKey ?? marketFamilyForMarket(market),
   market.period ?? "full-game",
@@ -698,7 +710,7 @@ const selectionContractForMarket = (market: MarketInput, event: EventInput, char
       outcomeId: outcome.id,
       id: outcome.id,
       side: outcome.side,
-      label: outcome.label ?? outcome.name,
+      label: mobileDisplayLabelForOutcome(market, outcome),
       tokenId: outcome.referenceTokenId,
       referenceTokenId: outcome.referenceTokenId,
       referenceOutcomeLabel: outcome.referenceOutcomeLabel,
@@ -812,16 +824,56 @@ const groupRank = (market: MarketInput) => {
   return 5;
 };
 
+const mobileLineDisplayKey = (market: MarketInput) => {
+  const family = marketFamilyForMarket(market);
+  if (!["spread", "total", "team_total"].includes(family ?? "")) return null;
+  const line = marketLineValue(market);
+  if (line == null) return null;
+  return [
+    family,
+    market.period ?? "full-game",
+    line.toFixed(1),
+    market.unit ?? "unitless",
+  ].join(":");
+};
+
+const dedupeMobileLineMarkets = (markets: MarketInput[]) => {
+  const selected: MarketInput[] = [];
+  const byDisplayKey = new Map<string, number>();
+  for (const market of markets) {
+    const key = mobileLineDisplayKey(market);
+    if (!key) {
+      selected.push(market);
+      continue;
+    }
+    const existingIndex = byDisplayKey.get(key);
+    if (existingIndex == null) {
+      byDisplayKey.set(key, selected.length);
+      selected.push(market);
+      continue;
+    }
+    const existing = selected[existingIndex];
+    const existingProviderBacked = isProviderBackedMarket(existing);
+    const nextProviderBacked = isProviderBackedMarket(market);
+    if (!existingProviderBacked && nextProviderBacked) {
+      selected[existingIndex] = market;
+    } else if (!existingProviderBacked && !nextProviderBacked) {
+      selected.push(market);
+    }
+  }
+  return selected;
+};
+
 export const selectCompactLiveMarkets = (markets: MarketInput[]) =>
   {
-    const sorted = [...markets]
+    const sorted = dedupeMobileLineMarkets([...markets]
       .filter((market) => market.outcomes.length > 0)
       .filter(isMobileFacingCompactMarket)
       .sort((left, right) => {
       const rank = groupRank(left) - groupRank(right);
       if (rank !== 0) return rank;
       return left.displayOrder - right.displayOrder;
-      });
+      }));
     const selected: MarketInput[] = [];
     const addFirst = (predicate: (market: MarketInput) => boolean) => {
       const match = sorted.find(predicate);
@@ -1005,10 +1057,11 @@ export async function serializeMobileLiveEventDetail(input: {
           const bestAsk = providerQuote?.bestAsk ?? ask?.price ?? null;
           const providerPrice = displayPriceFromProviderQuote(providerQuote);
           const price = providerPrice ?? (bestBid != null && bestAsk != null ? (bestBid + bestAsk) / 2 : bestAsk ?? bestBid ?? 0.5);
+          const displayLabel = mobileDisplayLabelForOutcome(market, outcome);
           return {
             id: outcome.id,
-            name: outcome.name,
-            label: outcome.label ?? outcome.name,
+            name: displayLabel,
+            label: displayLabel,
             side: outcome.side,
             tokenId: outcome.referenceTokenId,
             referenceTokenId: outcome.referenceTokenId,

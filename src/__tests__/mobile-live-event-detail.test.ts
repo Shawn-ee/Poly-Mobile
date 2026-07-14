@@ -168,25 +168,25 @@ describe("mobile live event detail contract", () => {
       ],
     });
 
-    expect(payload.markets).toHaveLength(14);
+    expect(payload.markets).toHaveLength(20);
     expect(payload.contract).toMatchObject({
       route: "mobile-live-detail",
       primaryMarketId: "market-main",
-      maxMarkets: 14,
+      maxMarkets: 20,
       orderbookDepthSource: "orderbook-route",
       batchedOrderbookDepthSource: "orderbook-route",
-      batchedOrderbookDepthMarketCount: 14,
-      batchedOrderbookDepthRequestedMarketCount: 14,
+      batchedOrderbookDepthMarketCount: 20,
+      batchedOrderbookDepthRequestedMarketCount: 20,
       batchedOrderbookDepthMaxLevels: 24,
       batchedOrderbookDepthCacheTtlSeconds: 3,
       batchedProviderOrderbookDepthSource: "reference-orderbook-depth-snapshot",
-      batchedProviderOrderbookDepthMarketCount: 14,
-      batchedProviderOrderbookDepthReadyCount: 14,
+      batchedProviderOrderbookDepthMarketCount: 20,
+      batchedProviderOrderbookDepthReadyCount: 20,
       batchedProviderOrderbookDepthStaleCount: 0,
       batchedProviderOrderbookDepthRefreshDueCount: 0,
       batchedProviderQuoteSnapshotSource: "reference-quote-snapshot",
-      batchedProviderQuoteSnapshotMarketCount: 14,
-      batchedProviderQuoteSnapshotReadyCount: 14,
+      batchedProviderQuoteSnapshotMarketCount: 20,
+      batchedProviderQuoteSnapshotReadyCount: 20,
       batchedProviderQuoteSnapshotStaleCount: 0,
       batchedProviderQuoteSnapshotRefreshDueCount: 0,
       batchedProviderQuoteSnapshotNextRefreshAt: "2026-07-03T22:01:10.000Z",
@@ -194,7 +194,7 @@ describe("mobile live event detail contract", () => {
       batchedChartHistorySource: "market-outcome-snapshot",
       batchedChartHistoryMarketCount: 2,
       batchedChartHistoryPointCount: 2,
-      batchedChartHistoryRequestedMarketCount: 14,
+      batchedChartHistoryRequestedMarketCount: 20,
       liveDataStatus: "ready",
       providerLifecycle: {
         source: "mobile-live-detail",
@@ -213,11 +213,11 @@ describe("mobile live event detail contract", () => {
     expect(new Date(payload.contract.generatedAt).toString()).not.toBe("Invalid Date");
     expect(payload.contract.batchedOrderbookDepthRequestedMarketIds).toEqual([
       "market-main",
-      ...Array.from({ length: 13 }, (_, index) => `market-${index}`),
+      ...Array.from({ length: 19 }, (_, index) => `market-${index}`),
     ]);
     expect(payload.contract.batchedChartHistoryRequestedMarketIds).toEqual([
       "market-main",
-      ...Array.from({ length: 13 }, (_, index) => `market-${index}`),
+      ...Array.from({ length: 19 }, (_, index) => `market-${index}`),
     ]);
     expect(payload.event.liveDataStatus).toMatchObject({
       source: "provider-feed",
@@ -230,14 +230,14 @@ describe("mobile live event detail contract", () => {
       reason: "Provider heartbeat accepted.",
     });
     expect(payload.event.marketSourceSummary).toMatchObject({
-      totalMarketCount: 14,
-      unknownSourceMarketCount: 14,
+      totalMarketCount: 20,
+      unknownSourceMarketCount: 20,
       regulationWinner: {
         totalCount: 1,
         status: "non-provider",
       },
       lineMarkets: {
-        totalCount: 13,
+        totalCount: 19,
         status: "unknown",
       },
     });
@@ -413,7 +413,7 @@ describe("mobile live event detail contract", () => {
     });
     expect(buildPublicOrderbookSnapshot).toHaveBeenCalledWith({ marketId: "market-main", maxLevels: 24 });
     expect(buildPublicOrderbookSnapshot).toHaveBeenCalledWith({ marketId: "market-0", maxLevels: 24 });
-    expect(buildPublicOrderbookSnapshot).toHaveBeenCalledTimes(14);
+    expect(buildPublicOrderbookSnapshot).toHaveBeenCalledTimes(20);
   });
 
   test("classifies provider-backed regulation winner and fixture line market sources", () => {
@@ -679,6 +679,83 @@ describe("mobile live event detail contract", () => {
         reason: "All expected MVP line market families are provider-backed.",
       },
     });
+  });
+
+  test("dedupes raw sportsbook line markets against clean mobile prediction contracts", async () => {
+    const providerTotal = market({
+      id: "provider-total-25",
+      title: "Spain vs. France: Total Goals 2.5",
+      marketType: "total_goals",
+      marketGroupKey: "totals",
+      marketGroupTitle: "Totals",
+      referenceSource: "sportsbook-odds",
+      displayOrder: 4,
+      line: new Prisma.Decimal(2.5),
+      outcomes: [
+        { id: "provider-over-25", name: "Over +2.5", label: "Over +2.5", side: "over", displayOrder: 0, isTradable: true },
+        { id: "provider-under-25", name: "Under +2.5", label: "Under +2.5", side: "under", displayOrder: 1, isTradable: true },
+      ],
+    });
+    const fixtureTotal = market({
+      id: "fixture-total-25",
+      title: "Spain vs. France: Total goals 2.5",
+      marketType: "total_goals",
+      marketGroupKey: "totals",
+      marketGroupTitle: "Totals",
+      referenceSource: "contract-fixture",
+      displayOrder: 12,
+      line: new Prisma.Decimal(2.5),
+      outcomes: [
+        { id: "fixture-over-25", name: "Over 2.5", label: "Over 2.5", side: "over", displayOrder: 0, isTradable: true },
+        { id: "fixture-under-25", name: "Under 2.5", label: "Under 2.5", side: "under", displayOrder: 1, isTradable: true },
+      ],
+    });
+
+    const payload = await serializeMobileLiveEventDetail({
+      event: {
+        id: "event-1",
+        slug: "odds-api-single-soccer-test",
+        title: "Spain vs. France",
+        description: null,
+        category: "sports",
+        sportKey: "soccer",
+        leagueKey: "world_cup",
+        eventType: "match",
+        homeTeamName: "France",
+        awayTeamName: "Spain",
+        startTime: new Date("2026-07-14T19:00:00.000Z"),
+        status: "LIVE",
+        liveStatus: "pre_match",
+        period: null,
+        clock: null,
+        homeScore: null,
+        awayScore: null,
+        imageUrl: null,
+        metadata: {},
+        markets: [
+          market({ id: "advance", title: "Spain vs. France: Team to advance", marketGroupKey: "to-advance", marketGroupTitle: "To Advance" }),
+          providerTotal,
+          fixtureTotal,
+        ],
+      },
+      chartSnapshots: [],
+    });
+
+    const total25Markets = payload.markets.filter((item) =>
+      item.marketType === "total_goals" &&
+      item.marketGroupKey === "totals" &&
+      item.line === "2.5"
+    );
+    expect(total25Markets).toHaveLength(1);
+    expect(total25Markets[0]).toMatchObject({
+      id: "provider-total-25",
+      referenceSource: "sportsbook-odds",
+      outcomes: [
+        expect.objectContaining({ name: "Over 2.5", label: "Over 2.5" }),
+        expect.objectContaining({ name: "Under 2.5", label: "Under 2.5" }),
+      ],
+    });
+    expect(JSON.stringify(total25Markets[0])).not.toContain("Over +2.5");
   });
 
   test("marks live detail unavailable when no provider timestamp is available", async () => {

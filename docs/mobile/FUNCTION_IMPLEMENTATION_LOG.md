@@ -16290,3 +16290,21 @@ Known limitations:
   - `npm run mobile:live-runtime-audit-gate`
   - `docs/mobile/audits/cycle-ZAF-warm-runtime-continuity-refresh.md`
 - Known limitations: mobile-visible provider snapshots can still be stale in no-quota mode; live odds refresh remains explicit and quota-capped. This proves local foreground process continuity, not an installed OS service.
+
+## Cycle ZAG - Live Provider Refresh And Mobile Line Normalization
+
+- Feature/runtime worked on: explicit one-event live provider refresh plus mobile-facing line market normalization for Spain vs. France.
+- Frontend components touched: none.
+- Backend/routes touched: `src/server/services/mobileLiveEventDetail.ts`.
+- Important functions/services touched: `selectCompactLiveMarkets`, `selectionContractForMarket`, `serializeMobileLiveEventDetail`, `scripts/run_holiwyn_one_event_live_runtime_with_secret.ps1`, `scripts/prove_odds_api_one_event_live_runtime.ts`, and `scripts/seed_odds_api_live_shifted_maker.ts`.
+- User/runtime interactions supported: the Event Detail route now exposes the provider-backed `Total Goals 2.5` market once, with clean prediction-market labels `Over 2.5` and `Under 2.5`, while preserving live provider pricing/liquidity.
+- State transitions: live provider refresh updated the selected event snapshots under quota guard, local maker seed placed shifted bid/ask liquidity, and the ordered audit gate refreshed runtime status, phase audit, and completion audit. No secret was printed or committed.
+- API/data dependencies: `GET /api/mobile/events/odds-api-single-soccer-test/live-detail` uses provider-backed line markets when available, normalizes totals labels for mobile display, and suppresses duplicate fixture lines for the same market family/period/line. Raw provider labels remain available in provider/reference metadata and proof artifacts.
+- Proof:
+  - `npm run mobile:one-event-live-runtime:provider-secret-preflight`
+  - `npm run mobile:one-event-live-runtime:provider-secret`
+  - `npm run mobile:one-event-live-maker-seed`
+  - `npx jest --runInBand src/__tests__/mobile-live-event-detail.test.ts`
+  - `npm run mobile:live-runtime-audit-gate`
+  - `docs/mobile/audits/cycle-ZAG-live-provider-refresh-mobile-line-normalization.md`
+- Known limitations: installed unattended provider/maker/lifecycle service ownership remains P1; production official-result auto-settlement remains P1; multi-event provider polling remains P2.
