@@ -1,9 +1,9 @@
 {
-    "generatedAt":  "2026-07-14T01:36:51.9221203Z",
+    "generatedAt":  "2026-07-14T02:25:41.0794256Z",
     "scope":  "holiwyn-one-event-live-onboarding",
     "pass":  true,
-    "startedAt":  "2026-07-14T01:34:57.5569782Z",
-    "completedAt":  "2026-07-14T01:36:51.9231202Z",
+    "startedAt":  "2026-07-14T02:24:12.1831769Z",
+    "completedAt":  "2026-07-14T02:25:41.0804696Z",
     "mode":  "quota-free-replay",
     "providerPolicy":  {
                            "providerSource":  "the-odds-api",
@@ -39,7 +39,7 @@
                            "marketType":  "total_goals",
                            "marketGroupKey":  "totals",
                            "line":  "2.5",
-                           "outcomeId":  "8720dab4-70ff-44d0-8d74-5fcff36f8420",
+                           "outcomeId":  "cf189c8a-cadc-4742-9f1f-e64a4911f228",
                            "outcomeName":  "Over 2.5",
                            "referenceTokenId":  "odds-api-6ec5620aa25c4fcd08f1d70e"
                        },
@@ -51,8 +51,8 @@
                          "pass":  true,
                          "skipped":  true,
                          "reason":  "Redacted replay fixture is older than current UTC and a newer live-runtime event summary exists; pass -AllowPastReplay to intentionally overwrite local one-event state with the replay fixture.",
-                         "startedAt":  "2026-07-14T01:34:57.5919900Z",
-                         "finishedAt":  "2026-07-14T01:34:57.5919900Z"
+                         "startedAt":  "2026-07-14T02:24:12.2188707Z",
+                         "finishedAt":  "2026-07-14T02:24:12.2188707Z"
                      },
                      {
                          "label":  "cached-live-runtime-restore",
@@ -61,8 +61,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-14T01:34:57.6005074Z",
-                         "finishedAt":  "2026-07-14T01:34:58.7909125Z"
+                         "startedAt":  "2026-07-14T02:24:12.2273789Z",
+                         "finishedAt":  "2026-07-14T02:24:13.5373555Z"
                      },
                      {
                          "label":  "one-event-live-readiness",
@@ -71,8 +71,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-14T01:34:58.7914214Z",
-                         "finishedAt":  "2026-07-14T01:35:18.0081904Z"
+                         "startedAt":  "2026-07-14T02:24:13.5373555Z",
+                         "finishedAt":  "2026-07-14T02:24:23.3163357Z"
                      },
                      {
                          "label":  "one-event-runtime-status",
@@ -81,8 +81,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-14T01:35:18.0081904Z",
-                         "finishedAt":  "2026-07-14T01:35:19.7779600Z"
+                         "startedAt":  "2026-07-14T02:24:23.3163357Z",
+                         "finishedAt":  "2026-07-14T02:24:24.8164960Z"
                      },
                      {
                          "label":  "one-event-settlement-readiness",
@@ -91,8 +91,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-14T01:35:19.7784981Z",
-                         "finishedAt":  "2026-07-14T01:35:20.5423170Z"
+                         "startedAt":  "2026-07-14T02:24:24.8175003Z",
+                         "finishedAt":  "2026-07-14T02:24:25.5751985Z"
                      },
                      {
                          "label":  "one-event-result-ingestion",
@@ -101,8 +101,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-14T01:35:20.5423170Z",
-                         "finishedAt":  "2026-07-14T01:35:21.4165713Z"
+                         "startedAt":  "2026-07-14T02:24:25.5751985Z",
+                         "finishedAt":  "2026-07-14T02:24:26.3122864Z"
                      },
                      {
                          "label":  "one-event-result-settlement-dry-run",
@@ -111,8 +111,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-14T01:35:21.4175691Z",
-                         "finishedAt":  "2026-07-14T01:35:22.8246822Z"
+                         "startedAt":  "2026-07-14T02:24:26.3128584Z",
+                         "finishedAt":  "2026-07-14T02:24:27.4707716Z"
                      },
                      {
                          "label":  "one-event-settlement-dry-run",
@@ -121,18 +121,18 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-14T01:35:22.8256829Z",
-                         "finishedAt":  "2026-07-14T01:35:23.5974278Z"
+                         "startedAt":  "2026-07-14T02:24:27.4707716Z",
+                         "finishedAt":  "2026-07-14T02:24:33.8441871Z"
                      },
                      {
                          "label":  "start-local-runtime-loops",
-                         "command":  "npm run mobile:internal-tester-runtime -- -Action start -BackendPort 3002 -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady -SummaryPath docs\\mobile\\harness\\odds-api-live-runtime\\one-event-onboarding-runtime-start-summary.redacted.json -Force -ReplaceExternalExpo",
+                         "command":  "npm run mobile:internal-tester-runtime -- -Action start -BackendPort 3002 -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -WaitForReady -SummaryPath docs\\mobile\\harness\\odds-api-live-runtime\\one-event-onboarding-runtime-start-summary.redacted.json",
                          "exitCode":  0,
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-14T01:35:23.5984319Z",
-                         "finishedAt":  "2026-07-14T01:36:28.2639575Z"
+                         "startedAt":  "2026-07-14T02:24:33.8451873Z",
+                         "finishedAt":  "2026-07-14T02:25:28.4406752Z"
                      },
                      {
                          "label":  "status-local-runtime-loops",
@@ -141,8 +141,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-14T01:36:28.2639575Z",
-                         "finishedAt":  "2026-07-14T01:36:33.5218821Z"
+                         "startedAt":  "2026-07-14T02:25:28.4416794Z",
+                         "finishedAt":  "2026-07-14T02:25:33.2038627Z"
                      },
                      {
                          "label":  "stop-local-runtime-loops-after-proof",
@@ -151,8 +151,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-14T01:36:33.5218821Z",
-                         "finishedAt":  "2026-07-14T01:36:46.7158149Z"
+                         "startedAt":  "2026-07-14T02:25:33.2038627Z",
+                         "finishedAt":  "2026-07-14T02:25:40.8229925Z"
                      }
                  ],
     "backend":  {
@@ -163,7 +163,7 @@
                                                 "status":  "ok",
                                                 "db":  "connected",
                                                 "env":  "development",
-                                                "timestamp":  "2026-07-14T01:36:46.758Z"
+                                                "timestamp":  "2026-07-14T02:25:40.871Z"
                                             },
                                    "error":  null
                                }
@@ -176,12 +176,11 @@
                                    ]
                        },
     "s23":  {
-                "connected":  false,
-                "deviceId":  null,
-                "model":  null,
-                "raw":  "",
-                "adbTimedOut":  true,
-                "error":  "adb timed out after 5s"
+                "connected":  true,
+                "deviceId":  "172.16.200.27:44029",
+                "model":  "SM_S911U1",
+                "raw":  "172.16.200.27:44029    device product:dm1quew model:SM_S911U1 device:dm1q transport_id:2",
+                "adbTimedOut":  false
             },
     "checks":  {
                    "seedOrReplayPass":  true,
@@ -218,9 +217,9 @@
                          "runtimeLoopsStartedByOnboarding":  true,
                          "runtimeLoopsRunningDuringProof":  true,
                          "runtimeLoopsStoppedAfterProof":  true,
-                         "replaceExternalExpoRequested":  true,
-                         "verifiedServerModeExpoDuringRuntimeStart":  true,
-                         "runtimeLoopMode":  "explicit local supervisor/result-poller proof with manager-owned server-mode Expo replacement",
+                         "replaceExternalExpoRequested":  false,
+                         "verifiedServerModeExpoDuringRuntimeStart":  false,
+                         "runtimeLoopMode":  "explicit local supervisor and result-poller process proof",
                          "providerRefreshMode":  "freshness-guarded cached live restore; stale replay skipped; no provider quota spent",
                          "marketMakerMode":  "shifted local maker seed from readiness command; not an installed daemon",
                          "lifecycleSchedulerMode":  "readiness proof plus local callable scheduler; not installed as a service",

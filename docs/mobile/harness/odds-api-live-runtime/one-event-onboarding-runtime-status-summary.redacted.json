@@ -1,10 +1,10 @@
 {
-    "generatedAt":  "2026-07-14T01:36:33.4334882Z",
+    "generatedAt":  "2026-07-14T02:25:33.1118538Z",
     "scope":  "holiwyn-internal-tester-runtime-manager",
     "pass":  true,
     "action":  "status",
-    "startedAt":  "2026-07-14T01:36:29.1947719Z",
-    "completedAt":  "2026-07-14T01:36:33.4354898Z",
+    "startedAt":  "2026-07-14T02:25:28.9125162Z",
+    "completedAt":  "2026-07-14T02:25:33.1138545Z",
     "operations":  [
 
                    ],
@@ -15,7 +15,7 @@
                                    "status":  "ok",
                                    "db":  "connected",
                                    "env":  "development",
-                                   "timestamp":  "2026-07-14T01:36:32.741Z",
+                                   "timestamp":  "2026-07-14T02:25:33.080Z",
                                    "error":  null
                                },
                     "portOwner":  {
@@ -30,14 +30,14 @@
                  "port":  8081,
                  "portOwner":  {
                                    "port":  8081,
-                                   "pid":  47540,
+                                   "pid":  73524,
                                    "processName":  "node"
                                },
-                 "ownedByManager":  true,
+                 "ownedByManager":  false,
                  "ownedProcessRunning":  true,
-                 "serverModeSource":  "manager_owned_server_env",
-                 "serverModeVerified":  true,
-                 "externalServerModeUnverified":  false
+                 "serverModeSource":  "external_listener_unverified",
+                 "serverModeVerified":  false,
+                 "externalServerModeUnverified":  true
              },
     "dockerPostgres":  {
                            "ok":  true,
@@ -45,9 +45,9 @@
                        },
     "s23":  {
                 "connected":  true,
-                "deviceId":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+                "deviceId":  "172.16.200.27:44029",
                 "model":  "SM_S911U1",
-                "raw":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp device product:dm1quew model:SM_S911U1 device:dm1q transport_id:1",
+                "raw":  "172.16.200.27:44029    device product:dm1quew model:SM_S911U1 device:dm1q transport_id:2",
                 "adbTimedOut":  false,
                 "error":  null
             },
@@ -63,11 +63,11 @@
                                                             },
                                               "process":  {
                                                               "before":  {
-                                                                             "pid":  1848,
+                                                                             "pid":  46624,
                                                                              "running":  true
                                                                          },
                                                               "after":  {
-                                                                            "pid":  1848,
+                                                                            "pid":  46624,
                                                                             "running":  true
                                                                         }
                                                           }
@@ -85,11 +85,11 @@
                                                               },
                                                 "process":  {
                                                                 "before":  {
-                                                                               "pid":  3648,
+                                                                               "pid":  57920,
                                                                                "running":  true
                                                                            },
                                                                 "after":  {
-                                                                              "pid":  3648,
+                                                                              "pid":  57920,
                                                                               "running":  true
                                                                           }
                                                             }
@@ -123,9 +123,9 @@
                          "resultPollerBackgroundProcessRunning":  true,
                          "liveRuntimeStatusWarmObserved":  false,
                          "liveRuntimeStatusWarmRequiredForLoopStart":  false,
-                         "managerStartedExpoUsesServerMode":  true,
-                         "expoServerModeSource":  "manager_owned_server_env",
-                         "externalExpoServerModeUnverified":  false,
+                         "managerStartedExpoUsesServerMode":  false,
+                         "expoServerModeSource":  "external_listener_unverified",
+                         "externalExpoServerModeUnverified":  true,
                          "replaceExternalExpoAvailable":  true,
                          "replaceExternalExpoRequested":  false,
                          "s23AdbReverseConfiguredOnStart":  true,
@@ -141,6 +141,7 @@
 
                         ],
                  "p1":  [
+                            "External Expo listener reused; server-mode env cannot be verified. Use -Force -ReplaceExternalExpo or stop the old Expo server if S23 shows stale, fixture, or non-server behavior.",
                             "Use -Force -ReplaceExternalExpo only when you intentionally want the runtime manager to stop an external Expo/Metro listener on the Expo port and start a verified server-mode listener.",
                             "This is a local process control plane, not an installed OS service.",
                             "Official-result auto-execution still requires trusted operator confirmation."

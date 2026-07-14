@@ -384,7 +384,7 @@ try {
   }
 
   if ($StartRuntimeLoops) {
-    $startRuntimeCommand = "npm run mobile:internal-tester-runtime -- -Action start -BackendPort $BackendPort -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady -SummaryPath $runtimeLoopStartSummaryPath"
+    $startRuntimeCommand = "npm run mobile:internal-tester-runtime -- -Action start -BackendPort $BackendPort -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -WaitForReady -SummaryPath $runtimeLoopStartSummaryPath"
     if ($ReplaceExternalExpo) {
       $startRuntimeCommand += " -Force -ReplaceExternalExpo"
     }

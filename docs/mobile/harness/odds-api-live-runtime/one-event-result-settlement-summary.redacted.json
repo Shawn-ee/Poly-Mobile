@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T01:37:34.861Z",
+  "generatedAt": "2026-07-14T02:25:33.844Z",
   "scope": "odds-api-one-event-result-settlement",
   "pass": true,
   "mode": "dry-run",
@@ -19,7 +19,7 @@
     "recordedAt": "2026-07-15T00:05:00Z"
   },
   "event": {
-    "id": "6a94107f-6513-4131-876d-87018782334f",
+    "id": "3722a197-6584-41e8-ab71-bfede8eedbf0",
     "slug": "odds-api-single-soccer-test",
     "title": "Spain vs. France",
     "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
@@ -34,7 +34,7 @@
     "line": "2.5",
     "statusBefore": "LIVE",
     "resolvedOutcomeIdBefore": null,
-    "collateralUSDCBefore": "2350"
+    "collateralUSDCBefore": "2600"
   },
   "mappedResolution": {
     "rule": "total_goals",
@@ -43,7 +43,7 @@
     "winningSide": "over"
   },
   "winningOutcome": {
-    "id": "8720dab4-70ff-44d0-8d74-5fcff36f8420",
+    "id": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
     "name": "Over 2.5",
     "label": "Over 2.5",
     "side": "over",
@@ -51,10 +51,10 @@
   },
   "preview": {
     "marketStatus": "LIVE",
-    "totalShares": "5500",
-    "totalWinningShares": "2350",
-    "totalPayout": "2350",
-    "collateralUSDC": "2350",
+    "totalShares": "5200",
+    "totalWinningShares": "2600",
+    "totalPayout": "2600",
+    "collateralUSDC": "2600",
     "payoutConservationPass": true,
     "blockers": [],
     "openOrderCleanup": {
@@ -63,40 +63,32 @@
       "sellOrderSharesToRelease": "200"
     },
     "payoutCount": 13,
-    "loserPositionCount": 16,
+    "loserPositionCount": 13,
     "mutation": "none"
   },
   "execution": {
     "attempted": false,
     "reason": "dry_run_default",
-    "requiredConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:8720dab4-70ff-44d0-8d74-5fcff36f8420:f3a5743c73f2"
+    "requiredConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:cf189c8a-cadc-4742-9f1f-e64a4911f228:f3a5743c73f2"
   },
   "postMarket": {
     "status": "LIVE",
     "resolvedOutcomeId": null,
     "settlementStatus": null,
-    "collateralUSDC": "2350"
+    "collateralUSDC": "2600"
   },
   "controls": {
     "dryRunIsDefault": true,
-    "writeAuditEvent": true,
+    "writeAuditEvent": false,
     "executeRequiresFlag": "--execute",
-    "executeRequiresConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:8720dab4-70ff-44d0-8d74-5fcff36f8420:f3a5743c73f2",
+    "executeRequiresConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:cf189c8a-cadc-4742-9f1f-e64a4911f228:f3a5743c73f2",
     "executeRequiresMarketStatus": "CLOSED",
     "currentMarketStatus": "LIVE",
     "resultDigest": "f3a5743c73f2",
     "actorUserId": "holiwyn-local-result-settlement-operator",
     "providerStatus": "trusted_external_input"
   },
-  "auditEvent": {
-    "id": "105",
-    "sequence": "105",
-    "type": "settlement.trusted_result.preflight",
-    "stream": "market",
-    "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-    "outcomeId": "8720dab4-70ff-44d0-8d74-5fcff36f8420",
-    "createdAt": "2026-07-14T01:37:34.857Z"
-  },
+  "auditEvent": null,
   "gaps": {
     "p0": [],
     "p1": [

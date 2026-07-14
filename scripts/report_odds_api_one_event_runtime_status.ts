@@ -23,6 +23,10 @@ const RESULT_SETTLEMENT_EXECUTION_PATH =
   "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json";
 const RESULT_SETTLEMENT_LIVE_BLOCKED_PATH =
   "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json";
+const ONBOARDING_RUNTIME_START_PATH =
+  "docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-runtime-start-summary.redacted.json";
+const ONBOARDING_RUNTIME_STATUS_PATH =
+  "docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-runtime-status-summary.redacted.json";
 const SUPERVISOR_STATE_PATH = ".runtime/one-event-live-supervisor/supervisor-process-state.json";
 const RESULT_POLLER_STATE_PATH = ".runtime/one-event-result-poller/result-poller-process-state.json";
 
@@ -219,6 +223,61 @@ function selectedMarketEvidence(
   };
 }
 
+function processProofRunning(summary: JsonObject | null, key: "supervisor" | "resultPoller") {
+  return (
+    bool(getPath(summary, [key, "processSummary", "pass"])) &&
+    getPath(summary, [key, "processSummary", "operation", "result"]) === "running" &&
+    bool(getPath(summary, [key, "processSummary", "process", "after", "running"]))
+  );
+}
+
+function onboardingLoopProof(
+  runtimeStart: JsonObject | null,
+  runtimeStatus: JsonObject | null,
+) {
+  const startSupervisorRunning = processProofRunning(runtimeStart, "supervisor");
+  const startResultPollerRunning = processProofRunning(runtimeStart, "resultPoller");
+  const statusSupervisorRunning = processProofRunning(runtimeStatus, "supervisor");
+  const statusResultPollerRunning = processProofRunning(runtimeStatus, "resultPoller");
+  const approvedSettlementModeRequested =
+    bool(getPath(runtimeStart, ["runtimeTruth", "approvedSettlementModeRequested"])) ||
+    bool(getPath(runtimeStatus, ["runtimeTruth", "approvedSettlementModeRequested"]));
+  const activeTesterSettlementExecution =
+    bool(getPath(runtimeStart, ["runtimeTruth", "activeTesterSettlementExecution"])) ||
+    bool(getPath(runtimeStatus, ["runtimeTruth", "activeTesterSettlementExecution"]));
+  const known = runtimeStart != null || runtimeStatus != null;
+  const passed =
+    bool(runtimeStart?.pass) &&
+    bool(runtimeStatus?.pass) &&
+    startSupervisorRunning &&
+    startResultPollerRunning &&
+    statusSupervisorRunning &&
+    statusResultPollerRunning &&
+    !approvedSettlementModeRequested &&
+    !activeTesterSettlementExecution;
+
+  return {
+    known,
+    passed,
+    source: {
+      start: ONBOARDING_RUNTIME_START_PATH,
+      status: ONBOARDING_RUNTIME_STATUS_PATH,
+    },
+    generatedAt: {
+      start: runtimeStart?.generatedAt ?? null,
+      status: runtimeStatus?.generatedAt ?? null,
+    },
+    startSupervisorRunning,
+    startResultPollerRunning,
+    statusSupervisorRunning,
+    statusResultPollerRunning,
+    approvedSettlementModeRequested,
+    activeTesterSettlementExecution,
+    note:
+      "Accepted for local internal tester readiness: loops were started and observed running during proof, then may be stopped after proof. This is not an installed daemon.",
+  };
+}
+
 function latestQuota(liveProof: JsonObject | null) {
   const latest = getPath(liveProof, ["provider", "quota", "latest"]);
   const totalLastCost = getPath(liveProof, ["provider", "quota", "totalLastCost"]);
@@ -248,6 +307,8 @@ async function main() {
   const schedulerRun = await readJson(SCHEDULER_RUN_PATH);
   const resultSettlementExecution = await readJson(RESULT_SETTLEMENT_EXECUTION_PATH);
   const resultSettlementLiveBlocked = await readJson(RESULT_SETTLEMENT_LIVE_BLOCKED_PATH);
+  const onboardingRuntimeStart = await readJson(ONBOARDING_RUNTIME_START_PATH);
+  const onboardingRuntimeStatus = await readJson(ONBOARDING_RUNTIME_STATUS_PATH);
   const supervisorProcess = await managedProcessState({
     statePath: SUPERVISOR_STATE_PATH,
     kind: "supervisor",
@@ -300,6 +361,7 @@ async function main() {
     "digest",
     "runtimeTruth",
   ]);
+  const localOnboardingLoopProof = onboardingLoopProof(onboardingRuntimeStart, onboardingRuntimeStatus);
   const provenCapabilities = {
     repeatedSupervisorCycles: bool(getPath(continuousSupervisorTruth, ["repeatedLocalSupervisorCyclesProven"])),
     makerReseedWhileSupervisorRuns: bool(getPath(continuousSupervisorTruth, ["marketMakerReseedWhileRunning"])),
@@ -353,8 +415,8 @@ async function main() {
     selectedOutcomeAskVisible: selectedOutcomeQuoteReady.showsAsk,
     schedulerRunPresent: schedulerRun != null,
     schedulerRunPassed: bool(schedulerRun?.pass),
-    supervisorPresent: supervisor != null,
-    supervisorPassed: bool(supervisor?.pass),
+    supervisorPresent: supervisor != null || localOnboardingLoopProof.known,
+    supervisorPassed: bool(supervisor?.pass) || localOnboardingLoopProof.passed,
     continuousSupervisorProofPresent: continuousSupervisorProof != null,
     continuousSupervisorProofPassed: bool(continuousSupervisorProof?.pass),
     repeatedSupervisorCapabilitiesKnown:
@@ -434,9 +496,11 @@ async function main() {
       notes: [
         "modeTruth reflects only the latest supervisor summary profile.",
         "provenCapabilities reflects previously passing continuous supervisor/result-poller proof artifacts.",
+        "localOnboardingLoopProof can satisfy local tester readiness when a cached/no-quota onboarding command starts the supervisor and result-poller, proves both running, then stops them after proof.",
         "Provider refresh can run under the supervisor only with explicit live-provider flags and quota caps; cached supervisor proof spends no provider quota.",
       ],
     },
+    localOnboardingLoopProof,
     currentManagedProcesses,
     continuityAnswer,
     event: liveProof?.event ?? runtimeLaunch?.provider?.proof?.event ?? null,

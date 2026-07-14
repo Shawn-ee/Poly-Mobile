@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T01:37:44.004Z",
+  "generatedAt": "2026-07-14T02:31:52.688Z",
   "scope": "odds-api-one-event-runtime-status",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -9,8 +9,8 @@
     "latestSupervisorRunProfileOnly": true,
     "liveProviderRefreshContinuousWhileSupervisorRuns": false,
     "liveProviderRefreshQuotaCappedWhileSupervisorRuns": false,
-    "makerRefreshContinuousWhileSupervisorRuns": false,
-    "lifecycleSchedulerContinuousWhileSupervisorRuns": false,
+    "makerRefreshContinuousWhileSupervisorRuns": true,
+    "lifecycleSchedulerContinuousWhileSupervisorRuns": true,
     "unattendedServiceInstalled": false
   },
   "provenCapabilities": {
@@ -31,8 +31,28 @@
     "notes": [
       "modeTruth reflects only the latest supervisor summary profile.",
       "provenCapabilities reflects previously passing continuous supervisor/result-poller proof artifacts.",
+      "localOnboardingLoopProof can satisfy local tester readiness when a cached/no-quota onboarding command starts the supervisor and result-poller, proves both running, then stops them after proof.",
       "Provider refresh can run under the supervisor only with explicit live-provider flags and quota caps; cached supervisor proof spends no provider quota."
     ]
+  },
+  "localOnboardingLoopProof": {
+    "known": true,
+    "passed": true,
+    "source": {
+      "start": "docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-runtime-start-summary.redacted.json",
+      "status": "docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-runtime-status-summary.redacted.json"
+    },
+    "generatedAt": {
+      "start": "2026-07-14T02:25:28.3631345Z",
+      "status": "2026-07-14T02:25:33.1118538Z"
+    },
+    "startSupervisorRunning": true,
+    "startResultPollerRunning": true,
+    "statusSupervisorRunning": true,
+    "statusResultPollerRunning": true,
+    "approvedSettlementModeRequested": false,
+    "activeTesterSettlementExecution": false,
+    "note": "Accepted for local internal tester readiness: loops were started and observed running during proof, then may be stopped after proof. This is not an installed daemon."
   },
   "currentManagedProcesses": {
     "checked": true,
@@ -41,9 +61,9 @@
       "checked": true,
       "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json",
       "known": true,
-      "pid": 1848,
+      "pid": 46624,
       "running": false,
-      "startedAt": "2026-07-14T01:35:31.1680839Z",
+      "startedAt": "2026-07-14T02:24:39.5037764Z",
       "continuous": true,
       "maxIterations": 0,
       "intervalSeconds": 15,
@@ -53,7 +73,7 @@
         "staleGuard": false,
         "staleGuardEnforced": false,
         "liveResultIngestion": false,
-        "approvedResultSettlement": true
+        "approvedResultSettlement": false
       }
     },
     "resultPoller": {
@@ -61,16 +81,16 @@
       "checked": true,
       "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json",
       "known": true,
-      "pid": 3648,
+      "pid": 57920,
       "running": false,
-      "startedAt": "2026-07-14T01:35:31.4597570Z",
+      "startedAt": "2026-07-14T02:24:39.7758025Z",
       "continuous": true,
       "maxIterations": 0,
       "intervalSeconds": 15,
       "usesProviderQuota": false,
       "modes": {
         "liveResultIngestion": false,
-        "approvedResultSettlement": true
+        "approvedResultSettlement": false
       }
     },
     "allLoopsRunning": false,
@@ -102,7 +122,7 @@
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
-    "outcomeId": "8720dab4-70ff-44d0-8d74-5fcff36f8420",
+    "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
     "outcomeName": "Over 2.5",
     "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e"
   },
@@ -114,12 +134,12 @@
       "marketType": "total_goals",
       "marketGroupKey": "totals",
       "line": "2.5",
-      "outcomeId": "8720dab4-70ff-44d0-8d74-5fcff36f8420",
+      "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
       "outcomeName": "Over 2.5",
       "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e"
     },
     "source": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
-    "generatedAt": "2026-07-14T01:36:28.768Z"
+    "generatedAt": "2026-07-14T02:25:30.778Z"
   },
   "backend": {
     "health": {
@@ -129,20 +149,20 @@
         "status": "ok",
         "db": "connected",
         "env": "development",
-        "timestamp": "2026-07-14T01:37:44.003Z"
+        "timestamp": "2026-07-14T02:31:52.686Z"
       },
       "error": null
     }
   },
   "provider": {
     "liveProofPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
-    "liveProofGeneratedAt": "2026-07-14T00:57:10.083Z",
-    "liveProofAgeHours": 0.68,
+    "liveProofGeneratedAt": "2026-07-14T01:56:44.225Z",
+    "liveProofAgeHours": 0.59,
     "maxLiveProofAgeHours": 24,
     "quota": {
       "totalLastCost": 13,
-      "requestsUsed": "160",
-      "requestsRemaining": "340",
+      "requestsUsed": "173",
+      "requestsRemaining": "327",
       "requestsLast": "6"
     },
     "policy": {
@@ -160,8 +180,8 @@
   },
   "maker": {
     "makerSeedPath": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
-    "makerSeedGeneratedAt": "2026-07-14T01:36:28.768Z",
-    "makerSeedAgeHours": 0.02,
+    "makerSeedGeneratedAt": "2026-07-14T02:25:30.778Z",
+    "makerSeedAgeHours": 0.11,
     "quoteRoute": {
       "ok": true,
       "status": 200,
@@ -169,18 +189,18 @@
         "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
         "quotes": [
           {
-            "outcomeId": "8720dab4-70ff-44d0-8d74-5fcff36f8420",
+            "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
             "outcomeName": "Over 2.5",
             "bestBid": "0.52",
             "bestAsk": "0.6",
             "bestBidSize": 200,
             "bestAskSize": 200,
             "midPrice": "0.56",
-            "lastPrice": "0.58",
-            "lastTradeAt": "2026-07-14T00:41:41.645Z"
+            "lastPrice": null,
+            "lastTradeAt": null
           },
           {
-            "outcomeId": "602a03e4-9258-41ae-8660-adb4497c0232",
+            "outcomeId": "2b498cd2-1a06-4b2d-918e-76199969e093",
             "outcomeName": "Under 2.5",
             "bestBid": null,
             "bestAsk": null,
@@ -195,7 +215,7 @@
       "error": null
     },
     "selectedOutcomeQuote": {
-      "outcomeId": "8720dab4-70ff-44d0-8d74-5fcff36f8420",
+      "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
       "quoteFound": true,
       "showsBid": true,
       "showsAsk": true,
@@ -205,8 +225,8 @@
   },
   "lifecycle": {
     "schedulerRunPath": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
-    "schedulerGeneratedAt": "2026-07-14T01:36:32.939Z",
-    "schedulerAgeHours": 0.02,
+    "schedulerGeneratedAt": "2026-07-14T02:25:12.199Z",
+    "schedulerAgeHours": 0.11,
     "schedulerAction": "none",
     "schedulerReason": "Event is not inside the suspend/close window.",
     "schedulerCandidateMarketCount": 3
@@ -215,9 +235,9 @@
     "resultSettlementExecutionPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
     "resultSettlementLiveBlockedPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json",
     "resultSettlementExecutionGeneratedAt": "2026-07-13T12:32:50.663Z",
-    "resultSettlementExecutionAgeHours": 13.08,
+    "resultSettlementExecutionAgeHours": 13.98,
     "resultSettlementLiveBlockedGeneratedAt": "2026-07-13T12:32:49.154Z",
-    "resultSettlementLiveBlockedAgeHours": 13.08,
+    "resultSettlementLiveBlockedAgeHours": 13.98,
     "maxSettlementProofAgeHours": 24,
     "resultSettlementExecutionFresh": true,
     "resultSettlementLiveBlockedFresh": true,
@@ -241,22 +261,22 @@
   },
   "supervisor": {
     "supervisorPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json",
-    "generatedAt": "2026-07-14T01:31:42.6294867Z",
+    "generatedAt": "2026-07-14T02:16:56.5220092Z",
     "completedIterations": 1,
     "runtimeTruth": {
       "backendContinuousWhileSupervisorRuns": true,
       "providerRefreshContinuousWhileSupervisorRuns": false,
       "providerRefreshQuotaCappedWhileSupervisorRuns": false,
-      "dataHygieneContinuousWhileSupervisorRuns": false,
-      "marketMakerRefreshContinuousWhileSupervisorRuns": false,
-      "lifecycleSchedulerContinuousWhileSupervisorRuns": false,
+      "dataHygieneContinuousWhileSupervisorRuns": true,
+      "marketMakerRefreshContinuousWhileSupervisorRuns": true,
+      "lifecycleSchedulerContinuousWhileSupervisorRuns": true,
       "staleGuardContinuousWhileSupervisorRuns": false,
       "staleGuardMode": "disabled",
-      "resultIngestionContinuousWhileSupervisorRuns": false,
+      "resultIngestionContinuousWhileSupervisorRuns": true,
       "resultIngestionMode": "provider-shaped result ingestion replay while supervisor runs; no provider quota spent",
       "liveResultIngestionContinuousWhileSupervisorRuns": false,
       "liveResultIngestionQuotaCappedWhileSupervisorRuns": false,
-      "resultSettlementContinuousWhileSupervisorRuns": false,
+      "resultSettlementContinuousWhileSupervisorRuns": true,
       "resultSettlementMode": "approved trusted-result scheduler; waits until CLOSED before execution",
       "unattendedServiceInstalled": false,
       "providerRefreshMode": "cached provider proof verification; no provider quota spent",

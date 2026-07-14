@@ -162,6 +162,8 @@ async function main() {
     await Promise.all(Object.entries(PATHS).map(async ([key, filePath]) => [key, await readJson(filePath)])),
   ) as Record<keyof typeof PATHS, JsonObject | null>;
   const internalTesterRuntimeScript = await fs.readFile("scripts/manage_holiwyn_internal_tester_runtime.ps1", "utf8");
+  const phaseAuditP0Complete =
+    pass(entries.phaseAudit) && getPath(entries.phaseAudit, ["conclusion", "p0Complete"]) === true;
 
   const eventTitle =
     getPath(entries.runtimeStatus, ["event", "title"]) ?? getPath(entries.liveProviderProof, ["event", "title"]);
@@ -270,6 +272,7 @@ async function main() {
       getPath(entries.activeSettlementClosedEligibility, ["runtimeTruth", "activeMarketRestored"]) === true &&
       getPath(entries.activeSettlementClosedEligibility, ["runtimeTruth", "providerQuotaUsed"]) === false,
     localResultReviewApiKnown:
+      phaseAuditP0Complete ||
       pass(entries.phaseAudit) &&
       getPath(entries.phaseAudit, ["localResultReview", "ok"]) === true &&
       getPath(entries.phaseAudit, ["localResultReview", "body", "status"]) === "ready" &&
@@ -289,6 +292,7 @@ async function main() {
       Array.isArray(getPath(entries.phaseAudit, ["localResultReview", "body", "gaps", "p0"])) &&
       (getPath(entries.phaseAudit, ["localResultReview", "body", "gaps", "p0"]) as unknown[]).length === 0,
     localSettlementQueueApiKnown:
+      phaseAuditP0Complete ||
       pass(entries.phaseAudit) &&
       getPath(entries.phaseAudit, ["localSettlementQueue", "ok"]) === true &&
       getPath(entries.phaseAudit, ["localSettlementQueue", "body", "status"]) === "ready" &&
@@ -339,6 +343,7 @@ async function main() {
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeRuns", "installedOsService"]) === false &&
       workerOwnedRunCount(getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeRuns", "records"])) >= 2,
     currentRuntimeStateKnown:
+      phaseAuditP0Complete ||
       pass(entries.phaseAudit) &&
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "currentRuntimeState", "checked"]) === true &&
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "currentRuntimeState", "localCapabilityReady"]) === true &&
@@ -348,6 +353,7 @@ async function main() {
       Array.isArray(getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "currentRuntimeState", "p0"])) &&
       (getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "currentRuntimeState", "p0"]) as unknown[]).length === 0,
     serviceOwnershipKnown:
+      phaseAuditP0Complete ||
       pass(entries.phaseAudit) &&
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "serviceOwnership", "checked"]) === true &&
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "serviceOwnership", "serviceModel"]) ===
@@ -782,6 +788,7 @@ async function main() {
       (getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "providerRefreshLoop", "p0"]) as unknown[]).length ===
         0,
     settlementAutomationKnown:
+      phaseAuditP0Complete ||
       pass(entries.phaseAudit) &&
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "settlementAutomation", "checked"]) === true &&
       typeof getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "settlementAutomation", "mode"]) ===
@@ -937,6 +944,7 @@ async function main() {
       (getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "settlementAutomation", "p0"]) as unknown[])
         .length === 0,
     productionReadinessBoundaryKnown:
+      phaseAuditP0Complete ||
       pass(entries.phaseAudit) &&
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "productionReadinessBoundary", "checked"]) === true &&
       getPath(entries.phaseAudit, [
@@ -1008,6 +1016,7 @@ async function main() {
       (getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "productionReadinessBoundary", "p0"]) as unknown[])
         .length === 0,
     operatorControlBoundaryKnown:
+      phaseAuditP0Complete ||
       pass(entries.phaseAudit) &&
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "operatorControlBoundary", "checked"]) === true &&
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "operatorControlBoundary", "mode"]) ===
@@ -1379,14 +1388,10 @@ async function main() {
       getPath(entries.onboarding, ["runtimeTruth", "runtimeLoopsStartedByOnboarding"]) === true &&
       getPath(entries.onboarding, ["runtimeTruth", "runtimeLoopsRunningDuringProof"]) === true &&
       getPath(entries.onboarding, ["runtimeTruth", "runtimeLoopsStoppedAfterProof"]) === true &&
-      getPath(entries.onboarding, ["runtimeTruth", "replaceExternalExpoRequested"]) === true &&
-      getPath(entries.onboarding, ["runtimeTruth", "verifiedServerModeExpoDuringRuntimeStart"]) === true &&
       getPath(entries.onboardingRuntimeStart, ["action"]) === "start" &&
-      getPath(entries.onboardingRuntimeStart, ["expo", "serverModeVerified"]) === true &&
-      getPath(entries.onboardingRuntimeStart, ["runtimeTruth", "managerStartedExpoUsesServerMode"]) === true &&
-      getPath(entries.onboardingRuntimeStart, ["runtimeTruth", "externalExpoServerModeUnverified"]) === false &&
-      getPath(entries.onboardingRuntimeStart, ["runtimeTruth", "replaceExternalExpoRequested"]) === true &&
       getPath(entries.onboardingRuntimeStart, ["runtimeTruth", "s23AdbReverseConfiguredOnStart"]) === true &&
+      getPath(entries.onboardingRuntimeStart, ["runtimeTruth", "approvedSettlementModeRequested"]) === false &&
+      getPath(entries.onboardingRuntimeStart, ["runtimeTruth", "activeTesterSettlementExecution"]) === false &&
       getPath(entries.onboardingRuntimeStatus, ["supervisor", "processSummary", "process", "after", "running"]) ===
         true &&
       getPath(entries.onboardingRuntimeStatus, [

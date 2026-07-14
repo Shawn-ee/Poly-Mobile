@@ -94,6 +94,40 @@ describe("The Odds API single-event temporary provider", () => {
     expect(pkg).not.toContain("mobile:one-event-onboarding:cached-runtime\": \"powershell -ExecutionPolicy Bypass -File scripts/onboard_holiwyn_one_event_live_runtime.ps1 -RunProviderRefresh");
   });
 
+  it("keeps cached onboarding runtime loops out of approved settlement mode by default", () => {
+    const onboarding = oneEventOnboardingScript();
+    const startRuntimeCommandIndex = onboarding.indexOf("$startRuntimeCommand =");
+    const startRuntimeCommandBlock = onboarding.slice(startRuntimeCommandIndex, startRuntimeCommandIndex + 360);
+
+    expect(startRuntimeCommandBlock).toContain("-RunResultIngestion -RunResultSettlement -WaitForReady");
+    expect(startRuntimeCommandBlock).not.toContain("-RunApprovedResultSettlement");
+    expect(onboarding).toContain("one-event-result-settlement-dry-run");
+    expect(onboarding).toContain("one-event-settlement-dry-run");
+  });
+
+  it("lets runtime status accept fresh local onboarding loop proof over a stale supervisor summary", () => {
+    const source = runtimeStatusScript();
+    expect(source).toContain("one-event-onboarding-runtime-start-summary.redacted.json");
+    expect(source).toContain("one-event-onboarding-runtime-status-summary.redacted.json");
+    expect(source).toContain("function onboardingLoopProof");
+    expect(source).toContain("bool(supervisor?.pass) || localOnboardingLoopProof.passed");
+    expect(source).toContain("localOnboardingLoopProof can satisfy local tester readiness");
+    expect(source).toContain("This is not an installed daemon.");
+  });
+
+  it("does not require Expo replacement for the one-command local loop proof gate", () => {
+    const source = completionAuditScript();
+    const proofIndex = source.indexOf("oneCommandRuntimeLoopProofKnown:");
+    const proofBlock = source.slice(proofIndex, proofIndex + 1800);
+
+    expect(proofBlock).toContain('getPath(entries.onboardingRuntimeStart, ["action"]) === "start"');
+    expect(proofBlock).toContain('getPath(entries.onboardingRuntimeStart, ["runtimeTruth", "s23AdbReverseConfiguredOnStart"]) === true');
+    expect(proofBlock).toContain('getPath(entries.onboardingRuntimeStart, ["runtimeTruth", "approvedSettlementModeRequested"]) === false');
+    expect(proofBlock).not.toContain("verifiedServerModeExpoDuringRuntimeStart");
+    expect(proofBlock).not.toContain("managerStartedExpoUsesServerMode");
+    expect(source).toContain("managedS23ServerModeStartupKnown");
+  });
+
   it("supports a redacted local secret-file wrapper for live provider refresh", () => {
     const pkg = packageJson();
     const source = liveRuntimeSecretScript();
@@ -312,7 +346,6 @@ describe("The Odds API single-event temporary provider", () => {
     expect(phaseAuditScript()).toContain("serverModeVerified");
     expect(phaseAuditScript()).toContain("managerStartedExpoUsesServerMode");
     expect(phaseAuditScript()).toContain("externalExpoServerModeUnverified");
-    expect(phaseAuditScript()).toContain("verifiedServerModeExpoDuringRuntimeStart");
     expect(phaseAuditScript()).toContain("replaceExternalExpoRequested");
     expect(phaseAuditScript()).toContain("s23AdbReverseConfiguredOnStart");
     expect(phaseAuditScript()).toContain("ReplaceExternalExpo");
@@ -321,7 +354,6 @@ describe("The Odds API single-event temporary provider", () => {
     expect(completionAuditScript()).toContain("serverModeVerified");
     expect(completionAuditScript()).toContain("managerStartedExpoUsesServerMode");
     expect(completionAuditScript()).toContain("externalExpoServerModeUnverified");
-    expect(completionAuditScript()).toContain("verifiedServerModeExpoDuringRuntimeStart");
     expect(completionAuditScript()).toContain("replaceExternalExpoRequested");
     expect(completionAuditScript()).toContain("s23AdbReverseConfiguredOnStart");
     expect(completionAuditScript()).toContain("ReplaceExternalExpo");

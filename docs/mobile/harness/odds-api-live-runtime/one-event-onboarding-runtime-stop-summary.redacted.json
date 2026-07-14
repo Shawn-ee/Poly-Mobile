@@ -1,10 +1,10 @@
 {
-    "generatedAt":  "2026-07-14T01:36:46.6344284Z",
+    "generatedAt":  "2026-07-14T02:25:40.7255565Z",
     "scope":  "holiwyn-internal-tester-runtime-manager",
     "pass":  true,
     "action":  "stop",
-    "startedAt":  "2026-07-14T01:36:34.0057667Z",
-    "completedAt":  "2026-07-14T01:36:46.6364344Z",
+    "startedAt":  "2026-07-14T02:25:33.6749512Z",
+    "completedAt":  "2026-07-14T02:25:40.7270856Z",
     "operations":  [
                        {
                            "target":  "supervisor",
@@ -18,7 +18,7 @@
                        },
                        {
                            "target":  "expo",
-                           "result":  "stopped",
+                           "result":  "not_owned",
                            "pid":  null
                        },
                        {
@@ -34,7 +34,7 @@
                                    "status":  "ok",
                                    "db":  "connected",
                                    "env":  "development",
-                                   "timestamp":  "2026-07-14T01:36:46.626Z",
+                                   "timestamp":  "2026-07-14T02:25:40.717Z",
                                    "error":  null
                                },
                     "portOwner":  {
@@ -47,24 +47,28 @@
                 },
     "expo":  {
                  "port":  8081,
-                 "portOwner":  null,
+                 "portOwner":  {
+                                   "port":  8081,
+                                   "pid":  73524,
+                                   "processName":  "node"
+                               },
                  "ownedByManager":  false,
                  "ownedProcessRunning":  false,
-                 "serverModeSource":  "not_listening",
+                 "serverModeSource":  "external_listener_unverified",
                  "serverModeVerified":  false,
-                 "externalServerModeUnverified":  false
+                 "externalServerModeUnverified":  true
              },
     "dockerPostgres":  {
                            "ok":  true,
                            "status":  "poly_postgres|Up 9 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
                        },
     "s23":  {
-                "connected":  false,
-                "deviceId":  null,
-                "model":  null,
-                "raw":  null,
-                "adbTimedOut":  true,
-                "error":  "adb timed out after 5s"
+                "connected":  true,
+                "deviceId":  "172.16.200.27:44029",
+                "model":  "SM_S911U1",
+                "raw":  "172.16.200.27:44029    device product:dm1quew model:SM_S911U1 device:dm1q transport_id:2",
+                "adbTimedOut":  false,
+                "error":  null
             },
     "supervisor":  {
                        "startRequested":  false,
@@ -78,11 +82,11 @@
                                                             },
                                               "process":  {
                                                               "before":  {
-                                                                             "pid":  1848,
+                                                                             "pid":  46624,
                                                                              "running":  false
                                                                          },
                                                               "after":  {
-                                                                            "pid":  1848,
+                                                                            "pid":  46624,
                                                                             "running":  false
                                                                         }
                                                           }
@@ -100,11 +104,11 @@
                                                               },
                                                 "process":  {
                                                                 "before":  {
-                                                                               "pid":  3648,
+                                                                               "pid":  57920,
                                                                                "running":  false
                                                                            },
                                                                 "after":  {
-                                                                              "pid":  3648,
+                                                                              "pid":  57920,
                                                                               "running":  false
                                                                           }
                                                             }
@@ -113,9 +117,9 @@
     "readiness":  {
                       "waitRequested":  false,
                       "backendReady":  true,
-                      "expoReady":  false,
+                      "expoReady":  true,
                       "postgresReady":  true,
-                      "s23Connected":  false
+                      "s23Connected":  true
                   },
     "liveRuntimeStatus":  {
                               "checked":  true,
@@ -123,10 +127,10 @@
                               "warmRuntimeObserved":  false,
                               "statusDigest":  {
                                                    "ok":  false,
-                                                   "status":  null,
+                                                   "status":  503,
                                                    "currentRuntimeState":  null,
                                                    "providerQuotaUsedByStatus":  null,
-                                                   "error":  "The request was aborted: The connection was closed unexpectedly."
+                                                   "error":  "The remote server returned an error: (503) Server Unavailable."
                                                }
                           },
     "runtimeTruth":  {
@@ -139,8 +143,8 @@
                          "liveRuntimeStatusWarmObserved":  false,
                          "liveRuntimeStatusWarmRequiredForLoopStart":  false,
                          "managerStartedExpoUsesServerMode":  false,
-                         "expoServerModeSource":  "not_listening",
-                         "externalExpoServerModeUnverified":  false,
+                         "expoServerModeSource":  "external_listener_unverified",
+                         "externalExpoServerModeUnverified":  true,
                          "replaceExternalExpoAvailable":  true,
                          "replaceExternalExpoRequested":  false,
                          "s23AdbReverseConfiguredOnStart":  true,
@@ -156,6 +160,7 @@
 
                         ],
                  "p1":  [
+                            "External Expo listener reused; server-mode env cannot be verified. Use -Force -ReplaceExternalExpo or stop the old Expo server if S23 shows stale, fixture, or non-server behavior.",
                             "Use -Force -ReplaceExternalExpo only when you intentionally want the runtime manager to stop an external Expo/Metro listener on the Expo port and start a verified server-mode listener.",
                             "This is a local process control plane, not an installed OS service.",
                             "Official-result auto-execution still requires trusted operator confirmation."

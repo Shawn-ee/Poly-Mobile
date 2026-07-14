@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-07-14T01:35:23.546Z",
+  "generatedAt": "2026-07-14T02:24:33.784Z",
   "scope": "odds-api-one-event-manual-settlement",
   "pass": true,
   "mode": "dry-run",
   "event": {
-    "id": "6a94107f-6513-4131-876d-87018782334f",
+    "id": "3722a197-6584-41e8-ab71-bfede8eedbf0",
     "slug": "odds-api-single-soccer-test",
     "title": "Spain vs. France",
     "startTime": "2026-07-14T19:00:00.000Z",
@@ -20,20 +20,20 @@
     "line": "2.5",
     "statusBefore": "LIVE",
     "resolvedOutcomeIdBefore": null,
-    "collateralUSDCBefore": "1750"
+    "collateralUSDCBefore": "2000"
   },
   "winningOutcome": {
-    "id": "8720dab4-70ff-44d0-8d74-5fcff36f8420",
+    "id": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
     "name": "Over 2.5",
     "label": "Over 2.5",
     "side": "over"
   },
   "preview": {
     "marketStatus": "LIVE",
-    "totalShares": "4300",
-    "totalWinningShares": "1750",
-    "totalPayout": "1750",
-    "collateralUSDC": "1750",
+    "totalShares": "4000",
+    "totalWinningShares": "2000",
+    "totalPayout": "2000",
+    "collateralUSDC": "2000",
     "payoutConservationPass": true,
     "blockers": [],
     "openOrderCleanup": {
@@ -42,24 +42,24 @@
       "sellOrderSharesToRelease": "200"
     },
     "payoutCount": 10,
-    "loserPositionCount": 13,
+    "loserPositionCount": 10,
     "mutation": "none"
   },
   "execution": {
     "attempted": false,
     "reason": "dry_run_default",
-    "requiredConfirm": "SETTLE:78ea76f1-fc8f-419b-ac21-2554d79093f6:8720dab4-70ff-44d0-8d74-5fcff36f8420"
+    "requiredConfirm": "SETTLE:78ea76f1-fc8f-419b-ac21-2554d79093f6:cf189c8a-cadc-4742-9f1f-e64a4911f228"
   },
   "postMarket": {
     "status": "LIVE",
     "resolvedOutcomeId": null,
     "settlementStatus": null,
-    "collateralUSDC": "1750"
+    "collateralUSDC": "2000"
   },
   "controls": {
     "dryRunIsDefault": true,
     "executeRequiresFlag": "--execute",
-    "executeRequiresConfirm": "SETTLE:78ea76f1-fc8f-419b-ac21-2554d79093f6:8720dab4-70ff-44d0-8d74-5fcff36f8420",
+    "executeRequiresConfirm": "SETTLE:78ea76f1-fc8f-419b-ac21-2554d79093f6:cf189c8a-cadc-4742-9f1f-e64a4911f228",
     "actorUserId": "holiwyn-local-settlement-operator",
     "officialResultProvider": null,
     "officialResultProviderStatus": "missing"
