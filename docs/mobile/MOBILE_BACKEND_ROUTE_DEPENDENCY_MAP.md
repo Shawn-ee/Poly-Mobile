@@ -2,6 +2,12 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle ZBZ - Internal Exchange Readiness Gate Integration
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Internal tester readiness gate with sportsbook exchange proof | Local commands `npm run mobile:live-runtime-audit-gate`, `npm run mobile:internal-exchange-readiness`, and `npm run mobile:internal-tester-operator-snapshot`; indirect reads of `/api/health`, `/api/internal/live-runtime/status`, and `/api/markets/:marketId/quote` through existing child commands | Local CLI plus existing `GET` checks | Local development only. No provider key, no mobile auth, and no secret read by the gate. | Optional `--summaryPath`; no HTTP body. The exchange stage passes a redacted summary path. | `pass`, `checks.internalExchangeReady`, `testerReady.exchangeReadiness.referenceSource`, `mobileVisibleProviderEventCount`, `providerMarketCount`, `snapshotReadyCount`, `localMmReadyCount`, `openOrderBackedCount`, and exchange blockers mapped into P0 when not ready | Existing `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, `Order`, runtime proof summaries, `RuntimeServiceHeartbeat`, and `RuntimeServiceRun`; no schema change | Cached provider-shaped snapshots are accepted only by the sportsbook local MVP exchange-readiness stage. They are not labeled as fresh live odds and do not satisfy Polymarket parity. | Live odds freshness still requires the explicit quota-gated provider refresh command. Installed unattended service ownership and production settlement automation remain P1. |
+
 ## Cycle ZAT - Local Runtime Launch Profile Refresh
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |

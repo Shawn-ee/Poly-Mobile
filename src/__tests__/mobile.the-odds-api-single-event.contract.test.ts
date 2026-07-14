@@ -246,7 +246,14 @@ describe("The Odds API single-event temporary provider", () => {
     expect(pkg).toContain("mobile:internal-tester-readiness-gate");
     expect(source).toContain("holiwyn-internal-tester-readiness-gate");
     expect(source).toContain("mobile:live-runtime-audit-gate");
+    expect(source).toContain("mobile:internal-exchange-readiness");
     expect(source).toContain("mobile:internal-tester-operator-snapshot");
+    expect(source.indexOf("mobile:live-runtime-audit-gate")).toBeLessThan(
+      source.indexOf("mobile:internal-exchange-readiness"),
+    );
+    expect(source.indexOf("mobile:internal-exchange-readiness")).toBeLessThan(
+      source.indexOf("mobile:internal-tester-operator-snapshot"),
+    );
     expect(source.indexOf("mobile:live-runtime-audit-gate")).toBeLessThan(
       source.indexOf("mobile:internal-tester-operator-snapshot"),
     );
@@ -262,6 +269,10 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("routeWarmNoQuotaRuntime");
     expect(source).toContain("acceptedWarmNoQuotaRuntime");
     expect(source).toContain("operatorCachedTesterReady");
+    expect(source).toContain("readyForInternalMobileExchange");
+    expect(source).toContain("internalExchangeReady");
+    expect(source).toContain("exchangeReadiness");
+    expect(source).toContain("localMmReadyCount");
     expect(source).toContain("providerSnapshotFresh");
     expect(source).toContain("quotaSpendingLoopRunning");
     expect(source).toContain("cachedInternalTestingReady");

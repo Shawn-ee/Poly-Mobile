@@ -11034,3 +11034,12 @@ Future migration concern:
 - Schema mismatch: none. No Prisma schema or model change. The checker reads existing `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, and `Order` rows.
 - Temporary mock/static data: none added. Cached sportsbook readiness accepts stored provider-shaped snapshots plus real local fake-token maker orders; it does not claim fresh live odds.
 - Remaining gaps: live odds freshness still requires explicit quota-gated provider refresh. Polymarket attach-ready provider parity, installed unattended service ownership, and production official-result auto-settlement remain P1.
+
+## Cycle ZBZ - Internal Exchange Readiness Gate Integration
+
+- Fields confirmed for mobile/runtime: `internal-tester-readiness-gate-summary.redacted.json` now includes `testerReady.exchangeReadiness.readyForInternalMobileExchange`, `referenceSource`, `mobileVisibleProviderEventCount`, `providerMarketCount`, `snapshotReadyCount`, `localMmReadyCount`, `openOrderBackedCount`, and `blockers`.
+- Closed or narrowed: internal tester readiness can no longer pass solely from runtime/operator summaries while skipping the source-aware sportsbook exchange proof.
+- Route mismatch: none. This is a local summary contract change and still reads existing backend/runtime routes plus the exchange readiness command.
+- Schema mismatch: none. No Prisma schema or model change.
+- Temporary mock/static data: none added. Cached provider-shaped snapshots remain explicitly labeled as cached/local MVP evidence, not fresh live odds.
+- Remaining gaps: live odds freshness, installed unattended service ownership, production official-result auto-settlement, and multi-event polling remain outside this no-quota gate change.

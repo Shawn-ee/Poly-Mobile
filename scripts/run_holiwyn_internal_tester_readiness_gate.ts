@@ -4,12 +4,19 @@ import { spawnSync } from "node:child_process";
 
 const DEFAULT_OUTPUT_PATH =
   "docs/mobile/harness/odds-api-live-runtime/internal-tester-readiness-gate-summary.redacted.json";
+const EXCHANGE_READINESS_PATH =
+  "docs/mobile/harness/odds-api-live-runtime/mobile-internal-exchange-readiness-summary.redacted.json";
 
 const STAGES = [
   {
     id: "ordered-live-runtime-audit",
     command: ["npm", "run", "mobile:live-runtime-audit-gate"],
     summaryPath: "docs/mobile/harness/odds-api-live-runtime/live-runtime-audit-gate-summary.redacted.json",
+  },
+  {
+    id: "sportsbook-exchange-readiness",
+    command: ["npm", "run", "mobile:internal-exchange-readiness", "--", "--summaryPath", EXCHANGE_READINESS_PATH],
+    summaryPath: EXCHANGE_READINESS_PATH,
   },
   {
     id: "operator-snapshot",
@@ -46,6 +53,10 @@ function getPath(source: unknown, keys: string[]) {
     cursor = (cursor as JsonObject)[key];
   }
   return cursor;
+}
+
+function numberValue(value: unknown) {
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 
 function stringArray(value: unknown) {
@@ -101,9 +112,13 @@ async function main() {
   }
 
   const auditGate = await readJson(STAGES[0].summaryPath);
-  const operatorSnapshot = await readJson(STAGES[1].summaryPath);
+  const exchangeReadiness = await readJson(EXCHANGE_READINESS_PATH);
+  const operatorSnapshot = await readJson(STAGES[2].summaryPath);
+  const exchangeReady = exchangeReadiness?.readyForInternalMobileExchange === true;
+  const exchangeBlockers = stringArray(getPath(exchangeReadiness, ["blockers"]));
   const p0 = [
     ...stringArray(getPath(auditGate, ["gaps", "p0"])),
+    ...(exchangeReady ? [] : exchangeBlockers.length > 0 ? exchangeBlockers.map((blocker) => `internal_exchange:${blocker}`) : ["internal_exchange:not_ready"]),
     ...stringArray(getPath(operatorSnapshot, ["gaps", "p0"])),
   ];
   const p1 = [
@@ -119,6 +134,7 @@ async function main() {
     stages.length === STAGES.length &&
     stages.every((stage) => stage.pass) &&
     auditGate?.pass === true &&
+    exchangeReady &&
     operatorSnapshot?.pass === true &&
     p0.length === 0;
   const cachedActionId = getPath(operatorSnapshot, ["operatorNextActions", "defaultNoQuotaAction"]);
@@ -193,13 +209,25 @@ async function main() {
       launchChecklist: getPath(operatorSnapshot, ["testerLaunchChecklist", "launch"]) ?? [],
       manualTradingFlow: getPath(operatorSnapshot, ["testerLaunchChecklist", "manualTradingFlow"]) ?? [],
       lifecycleChecks: getPath(operatorSnapshot, ["testerLaunchChecklist", "lifecycleChecks"]) ?? [],
+      exchangeReadiness: {
+        readyForInternalMobileExchange: exchangeReady,
+        referenceSource: getPath(exchangeReadiness, ["providerMarkets", "referenceSource"]),
+        mobileVisibleProviderEventCount: numberValue(getPath(exchangeReadiness, ["mobileExposure", "mobileVisibleProviderEventCount"])),
+        providerMarketCount: numberValue(getPath(exchangeReadiness, ["providerMarkets", "mobileVisibleCount"])),
+        snapshotReadyCount: numberValue(getPath(exchangeReadiness, ["providerMarkets", "snapshotReadyCount"])),
+        localMmReadyCount: numberValue(getPath(exchangeReadiness, ["providerMarkets", "localMmReadyCount"])),
+        openOrderBackedCount: numberValue(getPath(exchangeReadiness, ["providerMarkets", "openOrderBackedCount"])),
+        blockers: exchangeBlockers,
+      },
     },
     evidence: {
       auditGate: STAGES[0].summaryPath,
-      operatorSnapshot: STAGES[1].summaryPath,
+      exchangeReadiness: EXCHANGE_READINESS_PATH,
+      operatorSnapshot: STAGES[2].summaryPath,
     },
     checks: {
       orderedAuditGatePass: auditGate?.pass === true,
+      internalExchangeReady: exchangeReady,
       operatorSnapshotPass: operatorSnapshot?.pass === true,
       noOpenP0: p0.length === 0,
       hasRecommendedCommand: typeof getPath(operatorSnapshot, ["operatorNextActions", "recommendedCommand"]) === "string",
@@ -210,7 +238,7 @@ async function main() {
     },
     gaps: { p0, p1: Array.from(new Set(p1)), p2: Array.from(new Set(p2)) },
     note:
-      "No-quota internal tester readiness gate. It does not call providers, start loops, execute settlement, or read secrets. It only refreshes existing local audit evidence and emits a tester-facing summary.",
+      "No-quota internal tester readiness gate. It does not call providers, start loops, execute settlement, or read secrets. It refreshes ordered runtime audit evidence, verifies source-aware sportsbook exchange readiness, and emits a tester-facing summary.",
   };
 
   await writeJson(outputPath, summary);

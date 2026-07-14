@@ -16729,3 +16729,19 @@ Known limitations:
   - `npm run poly:internal-exchange-readiness -- --summaryPath docs/mobile/harness/odds-api-live-runtime/poly-internal-exchange-readiness-summary.redacted.json`
 - Result: sportsbook local exchange readiness passed with `readyForInternalMobileExchange=true`; Polymarket readiness still fails honestly because no mobile-visible Polymarket provider markets are attached.
 - Known limitations: this does not make live mobile odds fresh and does not install an unattended provider/maker/lifecycle service. Fresh odds remain an explicit quota-gated provider refresh path; Polymarket provider parity remains P1.
+
+## Cycle ZBZ - Internal Exchange Readiness Gate Integration
+
+- Feature/runtime worked on: internal tester readiness gate for the Spain vs. France sportsbook-backed local MVP.
+- Frontend components touched: none.
+- Backend/routes touched: no HTTP route, Prisma schema, mobile UI, order, provider refresh, or settlement execution changes.
+- Important functions/services touched: `scripts/run_holiwyn_internal_tester_readiness_gate.ts` and `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`.
+- User/runtime interactions supported: operators can use one readiness command that now verifies both runtime/operator evidence and source-aware sportsbook exchange readiness before reporting the tester handoff as green.
+- State transitions: none. The new gate stage is read-only and reuses the existing `mobile:internal-exchange-readiness` command.
+- API/data dependencies: reads redacted summaries from `mobile:live-runtime-audit-gate`, `mobile:internal-exchange-readiness`, and `mobile:internal-tester-operator-snapshot`; the exchange check reads `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, and open `Order` rows.
+- Proof target:
+  - `npm run mobile:internal-tester-readiness-gate`
+  - `npx tsc --noEmit --pretty false --incremental false`
+  - `npm run test:ci`
+  - `npm --prefix mobile run typecheck`
+- Known limitations: this does not make live mobile odds fresh, start warm loops, or install unattended runtime services. It only prevents a tester-ready summary from omitting the actual local exchange readiness proof.

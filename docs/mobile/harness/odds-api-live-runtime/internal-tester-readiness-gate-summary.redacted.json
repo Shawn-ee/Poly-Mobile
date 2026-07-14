@@ -1,11 +1,12 @@
 {
-  "generatedAt": "2026-07-14T15:16:06.044Z",
+  "generatedAt": "2026-07-14T15:32:28.766Z",
   "scope": "holiwyn-internal-tester-readiness-gate",
   "pass": true,
   "providerQuotaUsedByThisGate": false,
   "orderInvariant": {
     "requiredOrder": [
       "ordered-live-runtime-audit",
+      "sportsbook-exchange-readiness",
       "operator-snapshot"
     ],
     "reason": "Refresh the ordered runtime audit before generating the tester-facing operator snapshot so tester instructions are based on current backend/runtime evidence."
@@ -15,8 +16,18 @@
       "id": "ordered-live-runtime-audit",
       "command": "npm run mobile:live-runtime-audit-gate",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/live-runtime-audit-gate-summary.redacted.json",
-      "startedAt": "2026-07-14T15:15:55.798Z",
-      "finishedAt": "2026-07-14T15:16:03.884Z",
+      "startedAt": "2026-07-14T15:32:20.715Z",
+      "finishedAt": "2026-07-14T15:32:26.610Z",
+      "exitCode": 0,
+      "pass": true,
+      "providerQuotaUsedByStage": false
+    },
+    {
+      "id": "sportsbook-exchange-readiness",
+      "command": "npm run mobile:internal-exchange-readiness -- --summaryPath docs/mobile/harness/odds-api-live-runtime/mobile-internal-exchange-readiness-summary.redacted.json",
+      "summaryPath": "docs/mobile/harness/odds-api-live-runtime/mobile-internal-exchange-readiness-summary.redacted.json",
+      "startedAt": "2026-07-14T15:32:26.611Z",
+      "finishedAt": "2026-07-14T15:32:27.146Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -25,8 +36,8 @@
       "id": "operator-snapshot",
       "command": "npm run mobile:internal-tester-operator-snapshot",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json",
-      "startedAt": "2026-07-14T15:16:03.885Z",
-      "finishedAt": "2026-07-14T15:16:06.042Z",
+      "startedAt": "2026-07-14T15:32:27.146Z",
+      "finishedAt": "2026-07-14T15:32:28.764Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -60,13 +71,13 @@
     "cachedTradingReady": true,
     "liveOddsReady": false,
     "warmNoQuotaRuntime": true,
-    "routeWarmNoQuotaRuntime": true,
-    "allLoopsRunning": true,
+    "routeWarmNoQuotaRuntime": false,
+    "allLoopsRunning": false,
     "quotaSpendingLoopRunning": false,
     "providerSnapshotFresh": false,
     "nextAction": "cached_internal_testing",
     "operatorNextAction": "cached_internal_testing",
-    "runtimeNextAction": "keep_cached_testing_or_refresh_live_odds",
+    "runtimeNextAction": "start_internal_tester_runtime_with_supervisor_and_result_poller",
     "cachedTradingAction": {
       "id": "cached_internal_testing",
       "command": "npm run mobile:one-event-onboarding",
@@ -84,7 +95,7 @@
         "step": "Start or verify local tester runtime",
         "expected": "npm run mobile:one-event-onboarding",
         "pass": true,
-        "notes": "Runtime loops are currently warm in no-quota mode."
+        "notes": "Runtime capability is proven, but supervisor/result-poller loops are not both running now."
       },
       {
         "step": "Open Holiwyn on Samsung S23",
@@ -152,14 +163,26 @@
         "pass": true,
         "notes": "Active tester settlement must not execute while the selected market is LIVE."
       }
-    ]
+    ],
+    "exchangeReadiness": {
+      "readyForInternalMobileExchange": true,
+      "referenceSource": "sportsbook-odds",
+      "mobileVisibleProviderEventCount": 2,
+      "providerMarketCount": 4,
+      "snapshotReadyCount": 3,
+      "localMmReadyCount": 1,
+      "openOrderBackedCount": 1,
+      "blockers": []
+    }
   },
   "evidence": {
     "auditGate": "docs/mobile/harness/odds-api-live-runtime/live-runtime-audit-gate-summary.redacted.json",
+    "exchangeReadiness": "docs/mobile/harness/odds-api-live-runtime/mobile-internal-exchange-readiness-summary.redacted.json",
     "operatorSnapshot": "docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json"
   },
   "checks": {
     "orderedAuditGatePass": true,
+    "internalExchangeReady": true,
     "operatorSnapshotPass": true,
     "noOpenP0": true,
     "hasRecommendedCommand": true,
@@ -178,5 +201,5 @@
       "Multi-event provider polling and production dashboard/operator UI remain future work."
     ]
   },
-  "note": "No-quota internal tester readiness gate. It does not call providers, start loops, execute settlement, or read secrets. It only refreshes existing local audit evidence and emits a tester-facing summary."
+  "note": "No-quota internal tester readiness gate. It does not call providers, start loops, execute settlement, or read secrets. It refreshes ordered runtime audit evidence, verifies source-aware sportsbook exchange readiness, and emits a tester-facing summary."
 }
