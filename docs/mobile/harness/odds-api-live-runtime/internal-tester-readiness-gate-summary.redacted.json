@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T07:18:43.855Z",
+  "generatedAt": "2026-07-14T08:28:15.776Z",
   "scope": "holiwyn-internal-tester-readiness-gate",
   "pass": true,
   "providerQuotaUsedByThisGate": false,
@@ -15,8 +15,8 @@
       "id": "ordered-live-runtime-audit",
       "command": "npm run mobile:live-runtime-audit-gate",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/live-runtime-audit-gate-summary.redacted.json",
-      "startedAt": "2026-07-14T07:18:35.584Z",
-      "finishedAt": "2026-07-14T07:18:40.141Z",
+      "startedAt": "2026-07-14T08:28:06.119Z",
+      "finishedAt": "2026-07-14T08:28:12.538Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -25,8 +25,8 @@
       "id": "operator-snapshot",
       "command": "npm run mobile:internal-tester-operator-snapshot",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json",
-      "startedAt": "2026-07-14T07:18:40.143Z",
-      "finishedAt": "2026-07-14T07:18:43.851Z",
+      "startedAt": "2026-07-14T08:28:12.539Z",
+      "finishedAt": "2026-07-14T08:28:15.772Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
