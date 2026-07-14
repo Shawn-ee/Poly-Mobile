@@ -288,7 +288,7 @@ function Tap-NodeContainingAll {
 
 function Dismiss-ExpoDeveloperMenu {
   param([string]$NamePrefix)
-  for ($attempt = 1; $attempt -le 5; $attempt++) {
+  for ($attempt = 1; $attempt -le 8; $attempt++) {
     $xmlPath = Save-Hierarchy -Name "$NamePrefix-preflight-$attempt.xml"
     $raw = Get-Content -Raw -Path $xmlPath
     $hasDeveloperIntro = $raw -match [regex]::Escape("This is the developer menu")
@@ -298,11 +298,25 @@ function Dismiss-ExpoDeveloperMenu {
     }
 
     if ($raw -match [regex]::Escape("Continue")) {
-      & $adb -s $Device shell input tap 540 2070 | Out-Null
+      try {
+        Tap-Node -Path $xmlPath -Identifier "Continue"
+      } catch {
+        & $adb -s $Device shell input tap 540 2070 | Out-Null
+      }
     } else {
+      & $adb -s $Device shell input keyevent KEYCODE_BACK | Out-Null
+      Start-Sleep -Milliseconds 500
       & $adb -s $Device shell input tap 1000 780 | Out-Null
     }
     Start-Sleep -Seconds 2
+
+    $afterPath = Save-Hierarchy -Name "$NamePrefix-preflight-after-action-$attempt.xml"
+    $afterRaw = Get-Content -Raw -Path $afterPath
+    if ($afterRaw -notmatch [regex]::Escape("This is the developer menu") -and $afterRaw -notmatch [regex]::Escape("SDK version")) {
+      return $afterPath
+    }
+    & $adb -s $Device shell input keyevent KEYCODE_BACK | Out-Null
+    Start-Sleep -Seconds 1
   }
 
   return Save-Hierarchy -Name "$NamePrefix-preflight-after-dismiss-attempts.xml"

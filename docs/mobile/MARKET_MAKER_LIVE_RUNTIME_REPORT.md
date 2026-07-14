@@ -129,7 +129,7 @@ For a selected binary sportsbook market:
 - One-command onboarding proof: quota-free replay/import, readiness, runtime status, settlement readiness, and settlement dry-run all passed with S23 connected.
 - Supervisor stale monitor proof: one supervisor cycle ran data hygiene, runtime/maker seed, dry-run stale guard, and safe lifecycle scheduler. It reported 19 cached markets that would pause under the 90-second stale threshold and did not mutate markets.
 - Continuous local supervisor proof: the repeated local supervisor proof emits heartbeat evidence and keeps shifted maker reseeding, lifecycle checks, provider-shaped result ingestion, and trusted-result settlement dry-run scheduling active across cycles without leaving proof-owned supervisor or backend processes running.
-- S23 proof: `docs/mobile/harness/cycle-ZAH-live-provider-normalized-s23/cycle-ZAH-odds-api-s23-visible-flow.json`.
+- S23 proof: `docs/mobile/harness/cycle-ZAI-warm-runtime-s23/cycle-ZAI-warm-runtime-s23-odds-api-s23-visible-flow.json`.
 - Continuous status: the supervisor can run repeated local maker reseeds while it is open, but there is still no installed unattended production bot.
 - Internal tester runtime status: the manager reports backend, Expo, Docker/Postgres, S23, and supervisor process state without provider quota. It is a local tester control plane and does not replace an installed production daemon.
 - Local runtime launch profile: the profile recommends the user Startup fallback in this Windows context, records that scheduled-task registration is blocked by permission, lists manual foreground commands, and keeps live-provider mode explicit and quota-capped.

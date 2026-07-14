@@ -16322,4 +16322,21 @@ Known limitations:
   - `npm run mobile:the-odds-api-s23-visible-flow -- -Device 172.16.200.27:44029 -Cycle ZAH -OutputDir docs\mobile\screenshots\cycle-ZAH-live-provider-normalized-s23 -HierarchyOutputDir docs\mobile\harness\cycle-ZAH-live-provider-normalized-s23 -SkipReplaySeed -HomeExpectedTitle "Spain vs. France" -TeamAExpected "France" -TeamBExpected "Spain"`
   - `docs/mobile/harness/cycle-ZAH-live-provider-normalized-s23/cycle-ZAH-odds-api-s23-visible-flow.json`
   - `docs/mobile/audits/cycle-ZAH-live-provider-normalized-s23-flow.md`
+
+## Cycle ZAI - Warm Runtime S23 Trading Proof
+
+- Feature/runtime worked on: fresh S23 end-to-end proof against the warm cached internal tester runtime.
+- Frontend components touched: none.
+- Backend/routes touched: none.
+- Important functions/services touched: `scripts/prove_mobile_odds_api_s23_visible_flow.ps1` now taps the actual Expo Go `Continue` node and falls back to Android Back when the developer menu remains over the app.
+- User/runtime interactions supported: Home -> Event Detail -> Total Goals 2.5 -> Trade Ticket -> fake-token buy -> Portfolio -> close-position Cash out -> Max owned shares -> SELL -> History on Samsung S23.
+- State transitions: the S23 proof created a fake-token position, opened the close-position ticket, sold owned shares only, and confirmed sold activity/history. The follow-up maker seed realigned runtime quote evidence to the current quote-visible `Over 2.5` outcome id.
+- API/data dependencies: `GET /api/health`, `GET /api/events`, `GET /api/mobile/events/:slug/live-detail`, `GET /api/markets/:marketId/quote`, `POST /api/orders`, `GET /api/portfolio`, `GET /api/portfolio/history`, and live-runtime audit summaries.
+- Known limitations: cached runtime stayed no-quota; mobile-visible provider snapshots remain stale under the 90-second live-display threshold unless the explicit provider refresh command is run. This is still a local foreground/background runtime, not an installed OS service.
+- Proof:
+  - `powershell -ExecutionPolicy Bypass -File scripts/prove_mobile_odds_api_s23_visible_flow.ps1 -Device "172.16.200.27:44029" -Cycle "ZAI-warm-runtime-s23" -OutputDir "docs\mobile\screenshots\cycle-ZAI-warm-runtime-s23" -HierarchyOutputDir "docs\mobile\harness\cycle-ZAI-warm-runtime-s23" -LineOutcomeLabel "Over +2.5"`
+  - `npm run mobile:one-event-live-maker-seed`
+  - `npm run mobile:live-runtime-audit-gate`
+  - `docs/mobile/harness/cycle-ZAI-warm-runtime-s23/cycle-ZAI-warm-runtime-s23-odds-api-s23-visible-flow.json`
+  - `docs/mobile/audits/cycle-ZAI-warm-runtime-s23-flow.md`
 - Known limitations: provider odds freshness still requires explicit quota-capped refresh; unattended provider/maker/lifecycle service ownership remains P1.

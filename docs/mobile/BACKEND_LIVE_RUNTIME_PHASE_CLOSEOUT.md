@@ -13,7 +13,7 @@ This phase is complete for local internal testing.
 - Real upcoming test event: Spain vs. France.
 - Mobile proof device: Samsung S23 `SM_S911U1`.
 - Runtime type: local fake-token internal runtime, not production real-money infrastructure.
-- Latest runtime proof refresh: Cycle ZAH normalized S23 trading flow, commit `e400a901`.
+- Latest runtime proof refresh: Cycle ZAI warm-runtime S23 trading flow.
 - Latest operator snapshot refresh: current proof artifacts show the warm cached tester loops are proven restartable, but may be stopped after proof cleanup. Runtime status should be checked before a manual tester session.
 - Latest live-odds freshness pulse: Cycle ZY refreshed the Spain vs. France selected market through the secret-wrapper provider command, moved the mobile quote lifecycle from stale to ready, and left no open P0 gaps.
 
@@ -29,7 +29,7 @@ This phase is complete for local internal testing.
 | Prove stale odds handling | Routes classify `ready`, `refresh_due`, `stale`, and `unavailable`; stale guard can pause markets and order placement rejects stale/paused markets. | `docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-summary.redacted.json`; `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json` |
 | Build/document one-command onboarding | Quota-free cached onboarding and explicit live-provider onboarding are documented. Runtime-loop proof mode starts and stops local loops. Current operator status also reports when the cached supervisor/result-poller loops are already warm, so testers know whether to keep cached mode or intentionally refresh live odds. | `docs/mobile/EVENT_LIFECYCLE_RUNBOOK.md`; `docs/mobile/ODDS_PROVIDER_REFRESH_POLICY.md`; `docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json` |
 | Support one real upcoming soccer event locally | Spain vs. France is imported/restored as the reusable one-event runtime target. | `docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json` |
-| Prove mobile can trade the event end-to-end | S23 proof covers Home -> Event Detail -> line market -> ticket -> buy -> Portfolio -> cashout/sell -> History, including close-position cashout Max using owned shares and no Yes/No selector. | `docs/mobile/harness/cycle-ZAH-live-provider-normalized-s23/cycle-ZAH-odds-api-s23-visible-flow.json` |
+| Prove mobile can trade the event end-to-end | S23 proof covers Home -> Event Detail -> line market -> ticket -> buy -> Portfolio -> cashout/sell -> History, including close-position cashout Max using owned shares and no Yes/No selector. | `docs/mobile/harness/cycle-ZAI-warm-runtime-s23/cycle-ZAI-warm-runtime-s23-odds-api-s23-visible-flow.json` |
 | Document lifecycle open/suspended/closed/settled | Open, paused, closed, and settlement readiness are documented and proven locally. Active event settlement remains guarded. | `docs/mobile/EVENT_LIFECYCLE_RUNBOOK.md`; `docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-matrix-summary.redacted.json` |
 
 ## Current Runtime Truth

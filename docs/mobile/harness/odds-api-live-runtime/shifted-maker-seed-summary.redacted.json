@@ -1,7 +1,7 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-14T05:24:36.794Z",
-  "startedAt": "2026-07-14T05:24:36.589Z",
+  "generatedAt": "2026-07-14T05:51:26.981Z",
+  "startedAt": "2026-07-14T05:51:26.469Z",
   "scope": "odds-api-one-event-shifted-maker-seed",
   "mode": "seed-resting-shifted-maker-quotes",
   "event": {
@@ -17,48 +17,46 @@
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
-    "outcomeId": "30fbc915-74ca-4809-a0c4-cd54c3236aa4",
-    "outcomeName": "Over +2.5",
-    "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4"
+    "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
+    "outcomeName": "Over 2.5",
+    "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e"
   },
   "providerSnapshot": {
-    "fetchedAt": "2026-07-14T04:49:08.576Z",
-    "ageMs": 2128065,
+    "fetchedAt": "2026-07-14T04:49:11.043Z",
+    "ageMs": 3735445,
     "maxSnapshotAgeMs": 86400000,
     "allowStale": false,
     "source": "sportsbook-odds",
-    "referenceBid": 0.4839,
-    "referenceAsk": 0.5239,
-    "outcomePrice": 0.5039
+    "referenceBid": 0.54,
+    "referenceAsk": 0.58,
+    "outcomePrice": 0.56
   },
   "maker": {
-    "id": "5fc93227-c4c6-4b0a-934c-9f7749cf8b96",
-    "username": "odds_live_runtime_shifted_maker_45826e25"
+    "id": "f1df6c41-7702-4741-ae52-d9ce00e3580d",
+    "username": "odds_live_runtime_shifted_maker_41f3a3e7"
   },
   "collateralRepair": {
     "repaired": false,
-    "before": "150",
-    "after": "150",
+    "before": "1350",
+    "after": "1350",
     "byOutcome": [
       {
-        "outcomeId": "30fbc915-74ca-4809-a0c4-cd54c3236aa4",
-        "code": "over-2-5",
-        "shares": "150"
+        "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
+        "code": "OVER",
+        "shares": "1350"
       },
       {
-        "outcomeId": "fe72ef40-ee22-4cc8-9830-bb46a4bf6c15",
-        "code": "under-2-5",
-        "shares": "150"
+        "outcomeId": "2b498cd2-1a06-4b2d-918e-76199969e093",
+        "code": "UNDER",
+        "shares": "1350"
       }
     ]
   },
   "plan": {
     "quoteOffsetTicks": 2,
-    "plannedBid": 0.46,
-    "plannedAsk": 0.59,
-    "adjustments": [
-      "plannedAsk moved above existing best bid 0.58"
-    ],
+    "plannedBid": 0.52,
+    "plannedAsk": 0.6,
+    "adjustments": [],
     "preSeedBook": {
       "bestBid": 0.58,
       "bestAsk": null,
@@ -68,28 +66,45 @@
           "side": "BUY",
           "price": "0.58",
           "remaining": "36.9",
-          "username": "mobile_route_fill_maker_70dca32b"
+          "username": "mobile_route_fill_maker_5fb064af"
         }
       ]
     },
     "size": "200",
     "mintQuantity": "200"
   },
-  "canceledPreviousOrders": [],
+  "canceledPreviousOrders": [
+    {
+      "orderId": "c208fd44-324e-4b46-a5c0-069047e5c79c",
+      "side": "BUY",
+      "price": "0.52",
+      "remaining": "200",
+      "statusBefore": "OPEN",
+      "canceled": true
+    },
+    {
+      "orderId": "b2f88188-de0c-425b-8272-bdd9d6ca9f8b",
+      "side": "SELL",
+      "price": "0.6",
+      "remaining": "200",
+      "statusBefore": "OPEN",
+      "canceled": true
+    }
+  ],
   "restingOrders": [
     {
-      "id": "dda7c641-8e1c-4570-8769-46a27ca9557a",
-      "username": "odds_live_runtime_shifted_maker_45826e25",
+      "id": "d5b9bc23-1fac-4006-afe1-50366314b836",
+      "username": "odds_live_runtime_shifted_maker_41f3a3e7",
       "side": "BUY",
-      "price": "0.46",
+      "price": "0.52",
       "remaining": "200",
       "status": "OPEN"
     },
     {
-      "id": "fcc11b6f-5812-487b-9e76-33eeb92217c1",
-      "username": "odds_live_runtime_shifted_maker_45826e25",
+      "id": "1ef3bb82-1d2e-477a-b2bf-c05639686410",
+      "username": "odds_live_runtime_shifted_maker_41f3a3e7",
       "side": "SELL",
-      "price": "0.59",
+      "price": "0.6",
       "remaining": "200",
       "status": "OPEN"
     }
@@ -99,15 +114,15 @@
     "ok": true,
     "status": 200,
     "selectedOutcomeQuote": {
-      "outcomeId": "30fbc915-74ca-4809-a0c4-cd54c3236aa4",
-      "outcomeName": "Over +2.5",
+      "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
+      "outcomeName": "Over 2.5",
       "bestBid": "0.58",
-      "bestAsk": "0.59",
+      "bestAsk": "0.6",
       "bestBidSize": 36.9,
       "bestAskSize": 200,
-      "midPrice": "0.585",
+      "midPrice": "0.59",
       "lastPrice": "0.58",
-      "lastTradeAt": "2026-07-14T05:22:27.634Z"
+      "lastTradeAt": "2026-07-14T05:50:16.197Z"
     }
   },
   "checks": {
