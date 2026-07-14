@@ -16190,3 +16190,16 @@ Known limitations:
   - `npm run mobile:live-runtime-audit-gate`
   - `npm run mobile:internal-tester-readiness-gate`
 - Known limitations: mobile route freshness is a short operational window; once it ages past the stale threshold, cached trading remains ready but live odds display requires another explicit quota-capped refresh. Installed unattended service ownership and production official-result auto-settlement remain P1.
+
+## Cycle ZZ - Live Odds Preflight Regression Guard
+
+- Feature/runtime worked on: regression coverage for the live-odds refresh preflight contract.
+- Frontend components touched: none.
+- Backend/routes touched: no route implementation changes.
+- Important functions/services touched: `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`.
+- User/runtime interactions supported: prevents the no-quota preflight from drifting back to the older raw provider alias and protects the already-live-ready behavior where preflight should pass without requiring another refresh action.
+- State transitions: none. This cycle does not call providers, mutate markets, run settlement, or restart runtime loops.
+- API/data dependencies: none beyond source-level contract coverage for `scripts/report_holiwyn_live_odds_refresh_preflight.ts`.
+- Proof:
+  - `npx jest --runInBand src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`
+- Known limitations: this is regression coverage only; installed unattended service ownership and production official-result auto-settlement remain P1.

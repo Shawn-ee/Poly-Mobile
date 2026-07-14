@@ -251,11 +251,18 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("holiwyn-live-odds-refresh-preflight");
     expect(source).toContain("providerQuotaUsedByThisReport: false");
     expect(source).toContain("liveOddsRefreshCommand");
-    expect(source).toContain("npm run mobile:one-event-live-runtime:provider");
+    expect(source).toContain(
+      'const LIVE_ODDS_REFRESH_COMMAND = "npm run mobile:one-event-live-runtime:provider-secret"',
+    );
+    expect(source).not.toContain(
+      'const LIVE_ODDS_REFRESH_COMMAND = "npm run mobile:one-event-live-runtime:provider"',
+    );
     expect(source).toContain("liveOddsSecretPreflightCommand");
     expect(source).toContain("npm run mobile:one-event-live-runtime:provider-secret-preflight");
     expect(source).toContain("liveOddsSecretRefreshCommand");
     expect(source).toContain("npm run mobile:one-event-live-runtime:provider-secret");
+    expect(source).toContain("const liveActionKnown = liveOddsReady || liveAction?.command === LIVE_ODDS_REFRESH_COMMAND");
+    expect(source).toContain("canRunLiveRefreshNow: !liveOddsReady && pass && providerKeyConfigured && !quotaSpendingLoopRunning");
     expect(source).toContain(".runtime/secrets/the-odds-api-key.txt");
     expect(source).toContain("providerKeyConfigured");
     expect(source).toContain("providerEnvKeyConfigured");
