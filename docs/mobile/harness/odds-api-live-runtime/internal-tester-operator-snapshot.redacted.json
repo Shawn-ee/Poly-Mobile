@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T09:27:45.261Z",
+  "generatedAt": "2026-07-14T09:38:06.516Z",
   "scope": "holiwyn-internal-tester-operator-snapshot",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -30,38 +30,39 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-14T09:27:44.123Z"
+      "timestamp": "2026-07-14T09:38:05.265Z"
     },
     "error": null
   },
   "runtime": {
     "status": "ready",
     "localInternalRuntimeReady": true,
-    "localTesterReadyRightNow": true,
-    "cachedTesterReadyRightNow": true,
+    "localTesterReadyRightNow": false,
+    "cachedTesterReadyRightNow": false,
     "liveOddsReadyRightNow": false,
     "cachedInternalTestingReady": true,
     "runtimeStatusAcceptedAsCachedInternalTesting": false,
     "currentRuntimeState": {
       "checked": true,
-      "mode": "warm_no_quota_runtime",
+      "mode": "partial_runtime_running",
       "localCapabilityReady": true,
-      "warmNoQuotaRuntime": true,
-      "allLoopsRunning": true,
+      "warmNoQuotaRuntime": false,
+      "allLoopsRunning": false,
       "anyLoopRunning": true,
       "supervisorRunning": true,
-      "resultPollerRunning": true,
+      "resultPollerRunning": false,
       "quotaSpendingLoopRunning": false,
       "backendProofFresh": true,
       "providerSnapshotFresh": false,
-      "cachedTesterReadyRightNow": true,
+      "cachedTesterReadyRightNow": false,
       "liveOddsReadyRightNow": false,
-      "testerReadyRightNow": true,
+      "testerReadyRightNow": false,
       "p0": [],
       "p1": [
+        "result_poller_loop_not_running_now",
         "mobile_provider_snapshot_not_fresh"
       ],
-      "nextAction": "keep_cached_testing_or_refresh_live_odds",
+      "nextAction": "start_missing_local_loop_or_run_watchdog",
       "note": "This separates proven local capability, cached internal tester warmth, and live mobile odds freshness. Cached tester readiness requires warm no-quota loops; live odds readiness additionally requires fresh mobile-visible provider snapshots."
     },
     "managedProcesses": {
@@ -96,7 +97,7 @@
         "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json",
         "known": true,
         "pid": 46276,
-        "running": true,
+        "running": false,
         "startedAt": "2026-07-14T05:41:26.8631126Z",
         "continuous": true,
         "maxIterations": 0,
@@ -130,8 +131,8 @@
     "reason": null,
     "snapshotCount": 2,
     "latestFetchedAt": "2026-07-14T06:03:35.211Z",
-    "latestAgeHours": 3.4,
-    "latestAgeSeconds": 12250,
+    "latestAgeHours": 3.58,
+    "latestAgeSeconds": 12871,
     "maxAgeHours": 24,
     "sources": [
       "sportsbook-odds"
@@ -159,7 +160,7 @@
     "eventLifecycleAction": "none",
     "eventLifecycleWindow": "pre_start_open",
     "eventLifecycleOperatorAction": "keep_trading_available_until_suspend_window",
-    "actionCount": 5,
+    "actionCount": 6,
     "selectedAction": {
       "id": "cached_internal_testing",
       "priority": "P0",
@@ -181,12 +182,12 @@
       },
       {
         "id": "start_full_internal_tester_runtime",
-        "priority": "P2",
+        "priority": "P1",
         "label": "Start full local internal tester runtime",
         "command": "npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady",
         "requiresProviderKey": false,
         "spendsProviderQuota": false,
-        "reason": "The cached supervisor and result-poller are already running; this remains the no-quota restart/recover command."
+        "reason": "Starts or reuses local backend/Expo, then starts the cached supervisor and result-poller with result ingestion and approved-settlement wait mode."
       },
       {
         "id": "prove_one_command_runtime_loops",
@@ -195,7 +196,7 @@
         "command": "npm run mobile:one-event-onboarding -- -AllowDisconnectedS23 -StartRuntimeLoops -StopRuntimeLoopsAfterProof",
         "requiresProviderKey": false,
         "spendsProviderQuota": false,
-        "reason": "Re-proves the local supervisor/result-poller loop lifecycle without provider quota; use when refreshing proof artifacts."
+        "reason": "Starts the local supervisor/result-poller through onboarding, proves both are running, then stops them without provider quota."
       },
       {
         "id": "refresh_mobile_live_odds",
@@ -205,6 +206,15 @@
         "requiresProviderKey": true,
         "spendsProviderQuota": true,
         "reason": "Selected market provider snapshots are stale under the mobile 90-second live-display window; use the secret wrapper so the provider key stays in the process environment or ignored local secret file."
+      },
+      {
+        "id": "start_cached_result_poller",
+        "priority": "P1",
+        "label": "Start local cached result poller",
+        "command": "npm run mobile:one-event-result-poller:process -- -Action start -Continuous -MaxIterations 0",
+        "requiresProviderKey": false,
+        "spendsProviderQuota": false,
+        "reason": "Repeats provider-shaped result ingestion and settlement scheduling dry-runs without provider quota."
       },
       {
         "id": "settlement_wait_for_closed_market",
@@ -231,9 +241,9 @@
     "source": "the-odds-api",
     "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
     "sourceUpdatedAt": "2026-07-14T06:03:35.211Z",
-    "now": "2026-07-14T09:27:45.251Z",
+    "now": "2026-07-14T09:38:06.507Z",
     "startTime": "2026-07-14T19:00:00.000Z",
-    "secondsUntilStart": 34335,
+    "secondsUntilStart": 33713,
     "startAgeSeconds": 0,
     "suspendBeforeStartSeconds": 300,
     "insideSuspendWindow": false,
@@ -257,7 +267,7 @@
         "step": "Start or verify local tester runtime",
         "expected": "npm run mobile:one-event-onboarding",
         "pass": true,
-        "notes": "Runtime loops are currently warm in no-quota mode."
+        "notes": "Runtime capability is proven, but supervisor/result-poller loops are not both running now."
       },
       {
         "step": "Open Holiwyn on Samsung S23",
@@ -332,7 +342,7 @@
       "checked": true,
       "path": "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-readiness-summary.redacted.json",
       "pass": true,
-      "generatedAt": "2026-07-14T09:27:17.814Z",
+      "generatedAt": "2026-07-14T09:31:13.867Z",
       "providerQuotaUsed": false,
       "activeMarketStatus": "LIVE",
       "activeEventStatus": "active",

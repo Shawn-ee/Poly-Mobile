@@ -1,15 +1,15 @@
 {
-    "generatedAt":  "2026-07-14T02:16:52.4676019Z",
+    "generatedAt":  "2026-07-14T09:37:49.0586767Z",
     "scope":  "holiwyn-one-event-result-poller",
-    "pass":  false,
-    "startedAt":  "2026-07-14T02:16:48.0958313Z",
-    "completedAt":  "2026-07-14T02:16:52.4676019Z",
+    "pass":  true,
+    "startedAt":  "2026-07-14T09:37:44.5814818Z",
+    "completedAt":  "2026-07-14T09:37:49.0586767Z",
     "eventSlug":  "odds-api-single-soccer-test",
     "settings":  {
-                     "continuous":  true,
-                     "maxIterations":  0,
-                     "completedIterations":  1,
-                     "intervalSeconds":  15,
+                     "continuous":  false,
+                     "maxIterations":  2,
+                     "completedIterations":  2,
+                     "intervalSeconds":  0,
                      "runLiveResultIngestion":  false,
                      "liveResultIngestionRunsCompleted":  0,
                      "resultIngestionEveryIterations":  0,
@@ -17,9 +17,9 @@
                      "maxCreditsPerResultIngestion":  0,
                      "maxCreditsAcrossResultIngestion":  0,
                      "resultPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
-                     "resultSettlementEnabled":  true,
-                     "resultSettlementApprovedMode":  true,
-                     "resultSettlementApprovalPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
+                     "resultSettlementEnabled":  false,
+                     "resultSettlementApprovedMode":  false,
+                     "resultSettlementApprovalPath":  null,
                      "defaultModeUsesQuota":  false
                  },
     "runtimeTruth":  {
@@ -27,8 +27,8 @@
                          "resultPollingContinuousWhileRunnerRuns":  true,
                          "resultPollingMode":  "provider-shaped replay polling; no provider quota spent",
                          "liveResultIngestionQuotaCappedWhileRunning":  false,
-                         "settlementSchedulerContinuousWhileRunnerRuns":  true,
-                         "settlementSchedulerMode":  "approved trusted-result scheduler; waits until CLOSED before execution",
+                         "settlementSchedulerContinuousWhileRunnerRuns":  false,
+                         "settlementSchedulerMode":  "disabled for warm local polling; run settlement proof separately",
                          "activeTesterSettlementExecution":  false,
                          "installedOsService":  false,
                          "fakeTokenOnly":  true
@@ -36,15 +36,15 @@
     "cycles":  [
                    {
                        "iteration":  1,
-                       "startedAt":  "2026-07-14T02:16:48.0993381Z",
-                       "finishedAt":  "2026-07-14T02:16:50.8714392Z",
+                       "startedAt":  "2026-07-14T09:37:44.5849914Z",
+                       "finishedAt":  "2026-07-14T09:37:45.5777373Z",
                        "resultIngestion":  {
                                                "label":  "poll-1-result-ingestion",
                                                "command":  "npm run mobile:one-event-result-ingest -- --eventSlug=odds-api-single-soccer-test --trustedResultOutput=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json --summaryPath=docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json",
                                                "exitCode":  0,
                                                "pass":  true,
-                                               "startedAt":  "2026-07-14T02:16:48.1040531Z",
-                                               "finishedAt":  "2026-07-14T02:16:49.3160139Z",
+                                               "startedAt":  "2026-07-14T09:37:44.5907676Z",
+                                               "finishedAt":  "2026-07-14T09:37:45.5508942Z",
                                                "outputTail":  [
                                                                   "  },",
                                                                   "  \"auditEvent\": null,",
@@ -73,38 +73,9 @@
                        "liveResultIngestionRan":  false,
                        "liveResultIngestionRunCount":  0,
                        "liveResultIngestionSkippedReason":  null,
-                       "resultSettlement":  {
-                                                "label":  "poll-1-result-settlement",
-                                                "command":  "npm run mobile:one-event-result-settlement-run -- --eventSlug=odds-api-single-soccer-test --result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json --summaryPath=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-run-summary.redacted.json --settlementOutput=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json --autoExecuteApproved --approval=docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json --writeAuditEvent",
-                                                "exitCode":  1,
-                                                "pass":  false,
-                                                "startedAt":  "2026-07-14T02:16:49.3368759Z",
-                                                "finishedAt":  "2026-07-14T02:16:50.8694394Z",
-                                                "outputTail":  [
-                                                                   "    \"unattendedResultPollingInstalled\": false,",
-                                                                   "    \"dryRunDefault\": true,",
-                                                                   "    \"executeRequiresConfirmation\": true,",
-                                                                   "    \"autoExecuteRequiresApprovalFile\": true,",
-                                                                   "    \"autoExecuteRequiresClosedMarket\": true,",
-                                                                   "    \"fakeTokenOnly\": true",
-                                                                   "  },",
-                                                                   "  \"gaps\": {",
-                                                                   "    \"p0\": [",
-                                                                   "      \"No matching trusted-result settlement approval was found.\"",
-                                                                   "    ],",
-                                                                   "    \"p1\": [",
-                                                                   "      \"This scheduler consumes trusted result JSON; provider-shaped result ingestion is available as a separate explicit step.\",",
-                                                                   "      \"Dry-run preview is the default; execution requires either explicit confirmation or an exact local approval file.\"",
-                                                                   "    ],",
-                                                                   "    \"p2\": [",
-                                                                   "      \"Multi-event result queue and operator UI remain future work.\"",
-                                                                   "    ]",
-                                                                   "  }",
-                                                                   "}"
-                                                               ]
-                                            },
-                       "resultSettlementPass":  false,
-                       "resultSettlementAction":  "preview_settlement",
+                       "resultSettlement":  null,
+                       "resultSettlementPass":  true,
+                       "resultSettlementAction":  null,
                        "trustedResult":  {
                                              "source":  "the-odds-api-scores-fixture",
                                              "sourceEventId":  "f9aa13a662d1658e5a02cfc06d6a2d73",
@@ -120,68 +91,71 @@
                                              "evidenceUrl":  null,
                                              "recordedAt":  "2026-07-15T00:05:00Z"
                                          },
-                       "settlementDigest":  {
-                                                "pass":  true,
-                                                "mode":  "dry-run",
-                                                "selectedMarket":  {
-                                                                       "id":  "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-                                                                       "slug":  "odds-api-single-soccer-test-totals-7439c2d603",
-                                                                       "title":  "Spain vs. France: Total Goals 2.5",
-                                                                       "marketType":  "total_goals",
-                                                                       "marketGroupKey":  "totals",
-                                                                       "line":  "2.5",
-                                                                       "statusBefore":  "LIVE",
-                                                                       "resolvedOutcomeIdBefore":  null,
-                                                                       "collateralUSDCBefore":  "600"
-                                                                   },
-                                                "winningOutcome":  {
-                                                                       "id":  "cf189c8a-cadc-4742-9f1f-e64a4911f228",
-                                                                       "name":  "Over 2.5",
-                                                                       "label":  "Over 2.5",
-                                                                       "side":  "over",
-                                                                       "code":  "OVER"
-                                                                   },
-                                                "preview":  {
-                                                                "marketStatus":  "LIVE",
-                                                                "totalShares":  "1200",
-                                                                "totalWinningShares":  "600",
-                                                                "totalPayout":  "600",
-                                                                "collateralUSDC":  "600",
-                                                                "payoutConservationPass":  true,
-                                                                "blockers":  [
-
-                                                                             ],
-                                                                "openOrderCleanup":  {
-                                                                                         "openOrderCount":  2,
-                                                                                         "buyOrderLockedUSDCToRelease":  "104",
-                                                                                         "sellOrderSharesToRelease":  "200"
-                                                                                     },
-                                                                "payoutCount":  3,
-                                                                "loserPositionCount":  3,
-                                                                "mutation":  "none"
-                                                            },
-                                                "execution":  {
-                                                                  "attempted":  false,
-                                                                  "reason":  "dry_run_default",
-                                                                  "requiredConfirm":  "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:cf189c8a-cadc-4742-9f1f-e64a4911f228:f3a5743c73f2"
-                                                              },
-                                                "controls":  {
-                                                                 "dryRunIsDefault":  true,
-                                                                 "writeAuditEvent":  true,
-                                                                 "executeRequiresFlag":  "--execute",
-                                                                 "executeRequiresConfirm":  "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:cf189c8a-cadc-4742-9f1f-e64a4911f228:f3a5743c73f2",
-                                                                 "executeRequiresMarketStatus":  "CLOSED",
-                                                                 "currentMarketStatus":  "LIVE",
-                                                                 "resultDigest":  "f3a5743c73f2",
-                                                                 "actorUserId":  "holiwyn-local-result-settlement-operator",
-                                                                 "providerStatus":  "trusted_external_input"
-                                                             }
-                                            }
+                       "settlementDigest":  null
+                   },
+                   {
+                       "iteration":  2,
+                       "startedAt":  "2026-07-14T09:37:46.6782707Z",
+                       "finishedAt":  "2026-07-14T09:37:48.0303923Z",
+                       "resultIngestion":  {
+                                               "label":  "poll-2-result-ingestion",
+                                               "command":  "npm run mobile:one-event-result-ingest -- --eventSlug=odds-api-single-soccer-test --trustedResultOutput=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json --summaryPath=docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json",
+                                               "exitCode":  0,
+                                               "pass":  true,
+                                               "startedAt":  "2026-07-14T09:37:46.6782707Z",
+                                               "finishedAt":  "2026-07-14T09:37:48.0293941Z",
+                                               "outputTail":  [
+                                                                  "  },",
+                                                                  "  \"auditEvent\": null,",
+                                                                  "  \"runtimeTruth\": {",
+                                                                  "    \"officialResultProviderPathAvailable\": true,",
+                                                                  "    \"liveProviderCallRequiresExplicitFlag\": true,",
+                                                                  "    \"defaultModeUsesQuota\": false,",
+                                                                  "    \"trustedResultContractProduced\": true,",
+                                                                  "    \"durableResultIngestionAuditEventWritten\": false,",
+                                                                  "    \"settlementExecutionAttempted\": false",
+                                                                  "  },",
+                                                                  "  \"gaps\": {",
+                                                                  "    \"p0\": [],",
+                                                                  "    \"p1\": [",
+                                                                  "      \"Default proof uses provider-shaped replay. Run with --live and THE_ODDS_API_KEY to verify a current provider score response.\"",
+                                                                  "    ],",
+                                                                  "    \"p2\": [",
+                                                                  "      \"Multi-event result ingestion and operator UI remain future work.\"",
+                                                                  "    ]",
+                                                                  "  }",
+                                                                  "}"
+                                                              ]
+                                           },
+                       "resultIngestionPass":  true,
+                       "resultIngestionMode":  "fixture-replay",
+                       "liveResultIngestionRan":  false,
+                       "liveResultIngestionRunCount":  0,
+                       "liveResultIngestionSkippedReason":  null,
+                       "resultSettlement":  null,
+                       "resultSettlementPass":  true,
+                       "resultSettlementAction":  null,
+                       "trustedResult":  {
+                                             "source":  "the-odds-api-scores-fixture",
+                                             "sourceEventId":  "f9aa13a662d1658e5a02cfc06d6a2d73",
+                                             "eventSlug":  "odds-api-single-soccer-test",
+                                             "eventTitle":  "Spain vs. France",
+                                             "status":  "final",
+                                             "period":  "full_time",
+                                             "homeTeam":  "France",
+                                             "awayTeam":  "Spain",
+                                             "homeScore":  1,
+                                             "awayScore":  2,
+                                             "advanceTeam":  "Spain",
+                                             "evidenceUrl":  null,
+                                             "recordedAt":  "2026-07-15T00:05:00Z"
+                                         },
+                       "settlementDigest":  null
                    }
                ],
     "gaps":  {
                  "p0":  [
-                            "Result poller cycle 1 failed."
+
                         ],
                  "p1":  [
                             "Result polling runner is a local command/process path, not an installed unattended official-result service."

@@ -16546,3 +16546,18 @@ Known limitations:
   - `npm run mobile:internal-tester-readiness-gate`
   - `docs/mobile/audits/cycle-ZAW-active-settlement-readiness-env-and-evidence.md`
 - Known limitations: active tester settlement remains blocked until the market is `CLOSED` and exact confirmation is used. Installed unattended official-result polling and production operator UI remain P1.
+
+## Cycle ZAX - Durable Result Poller Run Repair
+
+- Feature/runtime worked on: current no-quota internal tester readiness gate after `durableRuntimeRunsKnown` failed.
+- Frontend components touched: none.
+- Backend/routes touched: no HTTP route or schema changes.
+- Important functions/services touched: no source changes. This cycle refreshed durable worker-owned result-poller run evidence by running the existing bounded result-poller proof.
+- User/runtime interactions supported: operators can trust the readiness gate again because the latest durable `RuntimeServiceRun` rows for both local runtime workers pass. The gate still truthfully reports that the supervisor/result-poller loops are not both running right now unless the local tester runtime is started.
+- State transitions: no provider refresh, mobile UI change, order placement, active settlement execution, or schema mutation. A newer passed `RuntimeServiceRun` row was written for `local:one-event-result-poller`.
+- API/data dependencies: reads `GET /api/internal/live-runtime/status?phaseAuditInProgress=1`; writes/reads local `RuntimeServiceRun` evidence through the existing `npm run mobile:one-event-result-poller-proof` path.
+- Proof:
+  - `npm run mobile:one-event-result-poller-proof`
+  - `npm run mobile:internal-tester-readiness-gate`
+  - `docs/mobile/audits/cycle-ZAX-durable-result-poller-run-repair.md`
+- Known limitations: installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1. Multi-event provider polling/dashboard remains P2.

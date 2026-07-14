@@ -2,7 +2,7 @@
 
 This matrix records the current authoritative evidence for the Backend Live Runtime Survey + One Event Live Pipeline phase. It is intentionally scoped to local internal fake-token testing, not production real-money operation.
 
-Last refreshed from `main` evidence after `npm run mobile:internal-tester-readiness-gate` at `2026-07-14T09:11:53.405Z`, with survey reconciliation in `docs/mobile/audits/cycle-ZAV-live-runtime-survey-reconciliation.md`.
+Last refreshed from `main` evidence after `npm run mobile:internal-tester-readiness-gate` at `2026-07-14T09:38:06.583Z`, with survey reconciliation in `docs/mobile/audits/cycle-ZAV-live-runtime-survey-reconciliation.md` and durable result-poller run repair in `docs/mobile/audits/cycle-ZAX-durable-result-poller-run-repair.md`.
 
 ## Phase Verdict
 
@@ -28,7 +28,7 @@ Last refreshed from `main` evidence after `npm run mobile:internal-tester-readin
 | Support one real upcoming soccer event locally | Spain vs. France is the selected one-event runtime target with backend-owned market/outcome identity. | P0 pass | `docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json`; `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json` |
 | Prove mobile can trade that event end-to-end | S23 proof covers Home -> Event Detail -> line market -> ticket -> buy -> Portfolio -> close-position cashout/sell -> History. Cashout Max uses owned shares and does not show Yes/No selector. | P0 pass | `docs/mobile/harness/cycle-ZAN-spain-france-cashout-proof/cycle-ZAN-odds-api-s23-visible-flow.json`; `docs/mobile/audits/cycle-ZAN-spain-france-cashout-proof.md` |
 | Document lifecycle open/suspended/closed/settled | Open/paused/closed lifecycle controls are proven. Settlement mechanics and trusted-result execution are proven on safe disposable/clone markets. Active tester settlement waits for market close plus exact confirmation. | P0 pass for local lifecycle controls; P1 remains for production official-result automation | `docs/mobile/EVENT_LIFECYCLE_RUNBOOK.md`; `docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-matrix-summary.redacted.json`; `docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-readiness-summary.redacted.json` |
-| Give internal testers a current handoff | Readiness gate runs the ordered live-runtime audit first, then emits an operator snapshot/checklist from backend status. It reports cached trading ready, live-display odds stale under the mobile 90-second window, warm no-quota loops running, two-sided selected-market liquidity, and zero P0 gaps. | P0 pass | `docs/mobile/harness/odds-api-live-runtime/internal-tester-readiness-gate-summary.redacted.json`; `docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json`; `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json` |
+| Give internal testers a current handoff | Readiness gate runs the ordered live-runtime audit first, then emits an operator snapshot/checklist from backend status. It reports cached trading ready, live-display odds stale under the mobile 90-second window, whether no-quota loops are warm right now, two-sided selected-market liquidity, and zero P0 gaps. | P0 pass | `docs/mobile/harness/odds-api-live-runtime/internal-tester-readiness-gate-summary.redacted.json`; `docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json`; `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json` |
 | Reconcile stale survey wording | Earlier survey text still described source-aware refresh and continuous maker loops as missing P0s. Current survey now records them as complete for local one-event runtime, with P1 remaining only for installed production service ownership. | P0 pass | `docs/mobile/BACKEND_LIVE_RUNTIME_SURVEY.md`; `docs/mobile/audits/cycle-ZAV-live-runtime-survey-reconciliation.md` |
 
 ## Current Operator Truth
@@ -38,7 +38,7 @@ Last refreshed from `main` evidence after `npm run mobile:internal-tester-readin
 - Current selected outcome: Over 2.5.
 - Current selected outcome id: `5a3f04ff-6efd-42c5-a225-8fae8070b509`.
 - Cached internal trading readiness: ready.
-- Warm no-quota runtime loops: supervisor and result poller observed running.
+- Warm no-quota runtime loops: capability proven; current snapshot says both loops are not running right now and recommends starting the local tester runtime when needed.
 - Provider quota spending loop: none.
 - Selected outcome quote: bid `0.58`, ask `0.60`.
 - Mobile-route live-display odds freshness: stale under the 90-second display window.
