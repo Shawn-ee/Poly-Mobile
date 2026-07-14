@@ -2,6 +2,12 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle ZAT - Local Runtime Launch Profile Refresh
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Local runtime launch-profile handoff | Local command `npm run mobile:local-runtime-launch-profile`; local command `npm run mobile:one-event-runtime-status -- --json`; `/api/health`; `/api/markets/:marketId/quote`; `/api/internal/live-runtime/status` evidence referenced by runtime summaries | Local CLI plus `GET` | Local dev runtime only; no provider key; no mobile auth needed for read-only status/health/quote checks | No request body. Launch profile reads existing proof summaries and current runtime status. | Recommended internal tester profile, foreground manager commands, Startup install/uninstall commands, scheduled-task permission boundary, live-provider opt-in command, selected market quote readiness, current no-quota loop state, and P0/P1/P2 gaps | Existing runtime evidence only; no schema change. Status evidence implies existing `Event`, `Market`, `Outcome`, `Order`, `RuntimeServiceHeartbeat`, `RuntimeServiceRun`, and proof summary artifacts | None. If scheduled task registration is denied, the launch profile reports Startup fallback rather than claiming installed service ownership | Production service installation remains P1. Current proof documents local foreground/user-logon ownership and does not install persistent production infrastructure. |
+
 ## Cycle ZAS - Two-Sided Maker Liquidity Refresh
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |

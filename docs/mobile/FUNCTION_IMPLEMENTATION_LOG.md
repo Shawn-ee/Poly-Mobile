@@ -2,6 +2,21 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ZAT - Local Runtime Launch Profile Refresh
+
+- Feature/runtime worked on: no-quota local runtime launch-profile evidence for the one-event internal tester runtime.
+- Frontend components touched: none.
+- Backend/API routes touched: none.
+- Important functions/services touched: no source code changed. Runtime proof used `scripts/report_holiwyn_local_runtime_launch_profile.ts` and `scripts/report_odds_api_one_event_runtime_status.ts`.
+- User/runtime interactions supported: operators can see the current recommended internal tester launch path, foreground manager commands, Startup fallback install/uninstall commands, scheduled-task permission boundary, and explicit live-provider command.
+- State transitions: none. This cycle is read-only and does not install a Startup launcher, install a scheduled task, start/stop loops, call The Odds API, spend provider quota, mutate markets, place orders, or execute settlement.
+- API/data dependencies: reads existing local runtime artifacts, the current runtime status summary, foreground supervisor/result-poller state, launch proof summaries, and selected market quote readiness.
+- Proof:
+  - `docs/mobile/harness/odds-api-live-runtime/local-runtime-launch-profile-summary.redacted.json`
+  - `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json`
+  - `docs/mobile/audits/cycle-ZAT-local-runtime-launch-profile-refresh.md`
+- Known limitations: the recommended Startup fallback is a local user-logon helper, not a production service. Scheduled-task install remains blocked by current Windows permissions, and production official-result auto-settlement remains guarded/manual.
+
 ## Cycle ZAS - Two-Sided Maker Liquidity Refresh
 
 - Feature/runtime worked on: current internal tester runtime liquidity for `Spain vs. France`, selected market `Total Goals 2.5`.
