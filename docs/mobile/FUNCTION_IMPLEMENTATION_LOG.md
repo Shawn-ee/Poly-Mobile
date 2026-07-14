@@ -2,6 +2,20 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ZAN - Spain vs. France Cashout S23 Proof
+
+- Feature/runtime worked on: internal tester mobile trading flow for `Spain vs. France`, focused on Portfolio cashout/close-position proof.
+- Frontend components touched: no UI component implementation changed. `mobile/src/__tests__/eventDetailPositionTradeContract.test.ts` was updated to assert the current server-estimate-first close-position ticket path.
+- Backend/runtime scripts touched: `scripts/prove_mobile_odds_api_s23_visible_flow.ps1` and `scripts/seed_mobile_route_spread_counterparty.ts`.
+- User interactions proved: Home -> Event Detail -> `Over 2.5` line market -> Buy ticket -> fake-token order -> Portfolio -> Cash out -> Max -> SELL -> Portfolio History.
+- State transitions: BUY creates a server-backed position; cashout opens close-position mode with owned shares; Max uses owned shares; SELL is submitted for the owned market/outcome; History records sold activity.
+- API/data dependencies: Home event feed, Event Detail route, quote route, order route, portfolio route, and cashout estimate/position identity. No schema or product route changes were made in this cycle.
+- Proof:
+  - `docs/mobile/harness/cycle-ZAN-spain-france-cashout-proof/cycle-ZAN-odds-api-s23-visible-flow.json`
+  - `docs/mobile/harness/cycle-ZAN-spain-france-cashout-proof/cycle-ZAN-cashout-route-sell-safety.json`
+  - `docs/mobile/audits/cycle-ZAN-spain-france-cashout-proof.md`
+- Known limitations: repeated phone proof still uses Expo Go. Moving to a development build/APK remains P1 for proof stability.
+
 ## Cycle ZAD - Server Cashout Estimate Contract
 
 - Feature/page worked on: Portfolio/Event Detail cashout ticket reliability for the internal tester flow.

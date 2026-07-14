@@ -123,6 +123,19 @@ function Wait-HierarchyContains {
     $attempt += 1
     $lastPath = Save-Hierarchy -Name "$NamePrefix-attempt-$attempt.xml"
     $raw = Get-Content -Raw -Path $lastPath
+    if ($raw -match [regex]::Escape("This is the developer menu") -or $raw -match [regex]::Escape("SDK version")) {
+      if ($raw -match [regex]::Escape("Continue")) {
+        try {
+          Tap-Node -Path $lastPath -Identifier "Continue"
+        } catch {
+          & $adb -s $Device shell input tap 540 2070 | Out-Null
+        }
+      } else {
+        & $adb -s $Device shell input keyevent KEYCODE_BACK | Out-Null
+      }
+      Start-Sleep -Seconds 2
+      continue
+    }
     $found = $true
     foreach ($item in $Expected) {
       if ($raw -notmatch [regex]::Escape($item)) {
@@ -348,7 +361,9 @@ function Get-JsonField {
 
 function Start-Link {
   param([string]$Url)
-  & $adb -s $Device shell am start -a android.intent.action.VIEW -d "'$Url'" | Out-Null
+  $escapedUrl = $Url.Replace("'", "'\''")
+  & $adb -s $Device shell am force-stop com.android.chrome | Out-Null
+  & $adb -s $Device shell "am start -p host.exp.exponent -a android.intent.action.VIEW -d '$escapedUrl'" | Out-Null
 }
 
 function Write-JsonNoBom {
@@ -429,6 +444,7 @@ try {
   Wait-ExpoReady -TargetPort $Port
   Start-Sleep -Seconds 10
 
+  & $adb -s $Device reverse "tcp:$Port" "tcp:$Port" | Out-Null
   & $adb -s $Device shell pm clear host.exp.exponent | Out-Null
   Start-Sleep -Seconds 2
   $encodedKey = [uri]::EscapeDataString($apiKey)

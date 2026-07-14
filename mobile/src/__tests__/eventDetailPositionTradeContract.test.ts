@@ -18,7 +18,10 @@ describe("Event Detail position trade actions", () => {
     expect(cashOutActionBlock).toContain('openPositionTrade?.(position, "sell")');
     expect(cashOutActionBlock).not.toContain("event-detail-position-cash-out-generic-sell-ticket");
     expect(app).toContain("closePosition:");
-    expect(app).toContain("availableShares: availablePositionShares(position)");
+    expect(app).toContain("serverCashoutAvailableShares");
+    expect(app).toContain("const positionAvailableShares = serverCashoutAvailableShares && serverCashoutAvailableShares > 0");
+    expect(app).toContain(": availablePositionShares(position)");
+    expect(app).toContain("availableShares: positionAvailableShares");
     expect(source).not.toContain("openCashoutPosition");
   });
 });

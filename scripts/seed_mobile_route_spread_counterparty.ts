@@ -55,6 +55,22 @@ const isActiveProofMarket = (market: {
   market.visibility === "PUBLIC" &&
   ACTIVE_MARKET_STATUSES.has(market.status);
 
+async function cancelOrderIfStillOpen(order: { id: string; userId: string }) {
+  try {
+    return await cancelOrderAndUnlock({ orderId: order.id, userId: order.userId });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    if (!message.includes("Order cannot be canceled")) {
+      throw error;
+    }
+    const current = await prisma.order.findUnique({
+      where: { id: order.id },
+      select: { status: true },
+    });
+    return { order: { status: current?.status ?? "NOT_FOUND" } };
+  }
+}
+
 async function createMaker() {
   const suffix = randomUUID().slice(0, 8);
   const user = await prisma.user.create({
@@ -153,7 +169,7 @@ async function main() {
       orderBy: { createdAt: "asc" },
     });
     for (const order of staleProofBids) {
-      const canceled = await cancelOrderAndUnlock({ orderId: order.id, userId: order.userId });
+      const canceled = await cancelOrderIfStillOpen(order);
       canceledProofBids.push({
         id: order.id,
         username: order.user.username,
@@ -179,7 +195,7 @@ async function main() {
       orderBy: { createdAt: "asc" },
     });
     for (const order of blockingBids) {
-      const canceled = await cancelOrderAndUnlock({ orderId: order.id, userId: order.userId });
+      const canceled = await cancelOrderIfStillOpen(order);
       canceledBlockingBids.push({
         id: order.id,
         username: order.user.username,
@@ -203,7 +219,7 @@ async function main() {
       orderBy: { createdAt: "asc" },
     });
     for (const order of blockingMarketBids) {
-      const canceled = await cancelOrderAndUnlock({ orderId: order.id, userId: order.userId });
+      const canceled = await cancelOrderIfStillOpen(order);
       canceledBlockingMarketBids.push({
         id: order.id,
         outcomeId: order.outcomeId,
@@ -231,7 +247,7 @@ async function main() {
       orderBy: { createdAt: "asc" },
     });
     for (const order of staleProofAsks) {
-      const canceled = await cancelOrderAndUnlock({ orderId: order.id, userId: order.userId });
+      const canceled = await cancelOrderIfStillOpen(order);
       canceledProofAsks.push({
         id: order.id,
         username: order.user.username,
@@ -257,7 +273,7 @@ async function main() {
       orderBy: { createdAt: "asc" },
     });
     for (const order of blockingAsks) {
-      const canceled = await cancelOrderAndUnlock({ orderId: order.id, userId: order.userId });
+      const canceled = await cancelOrderIfStillOpen(order);
       canceledBlockingAsks.push({
         id: order.id,
         username: order.user.username,
