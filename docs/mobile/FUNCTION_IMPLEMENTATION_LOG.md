@@ -16702,3 +16702,15 @@ Known limitations:
   - `npm run mobile:internal-tester-readiness-gate`
 - Result: supervisor and result-poller both stopped with `operation.graceful=true`; readiness gate passed with 0 P0 gaps and no provider quota.
 - Known limitations: this improves local worker shutdown only. It does not install an unattended service, productionize official-result settlement, or add multi-event provider polling.
+
+## Cycle S23CASHOUTMAX - S23 Close-Position Max Proof
+
+- Feature/runtime worked on: real S23 Portfolio cashout Max behavior for the Spain vs. France internal tester event.
+- Frontend components touched: none in this cycle. The current runtime was inspected on-device after opening Portfolio cashout and tapping `Max`.
+- Backend/routes touched: none in this cycle.
+- Important functions/services touched: no source changes. This cycle captured current device evidence that the existing close-position ticket path is active on S23.
+- User/runtime interactions supported: Portfolio position `Cash out` opens a close-position sell ticket; `Max` sets the amount to owned shares only; the ticket displays `SHARES`, hides the Yes/No selector, and shows `Swipe to cash out`.
+- State transitions: local proof seeded a small fake-token position before the S23 inspection; no provider refresh, schema change, order route change, or source-code change occurred in this doc-only proof cycle.
+- API/data dependencies: `GET /api/portfolio`, `GET /api/portfolio/cash-out/estimate`, `GET /api/markets/:marketId/quote`, and `POST /api/orders` for the eventual sell submit path.
+- Proof: `docs/mobile/audits/cycle-S23CASHOUTMAX-close-position-max.md`.
+- Known limitations: the current S23 screen is paused at the cashout ticket after `Max` so the user can manually inspect before submitting. Full sell-submit/history proof remains covered by Cycle ZBO and should be repeated if manual proof finds a mismatch.
