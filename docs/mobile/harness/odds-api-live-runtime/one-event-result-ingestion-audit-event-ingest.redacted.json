@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T02:49:20.977Z",
+  "generatedAt": "2026-07-14T09:27:10.688Z",
   "scope": "odds-api-one-event-result-ingestion",
   "pass": true,
   "mode": "fixture-replay",
@@ -43,7 +43,7 @@
     "recordedAt": "2026-07-15T00:05:00Z"
   },
   "auditEvent": {
-    "id": "13",
+    "id": "6",
     "type": "provider.result.ingested",
     "stream": "market",
     "topicKey": "market:provider-result:odds-api-single-soccer-test",

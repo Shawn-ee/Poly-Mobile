@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T09:20:15.199Z",
+  "generatedAt": "2026-07-14T09:27:45.261Z",
   "scope": "holiwyn-internal-tester-operator-snapshot",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -30,23 +30,23 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-14T09:20:14.191Z"
+      "timestamp": "2026-07-14T09:27:44.123Z"
     },
     "error": null
   },
   "runtime": {
-    "status": "needs_attention",
-    "localInternalRuntimeReady": false,
-    "localTesterReadyRightNow": false,
-    "cachedTesterReadyRightNow": false,
+    "status": "ready",
+    "localInternalRuntimeReady": true,
+    "localTesterReadyRightNow": true,
+    "cachedTesterReadyRightNow": true,
     "liveOddsReadyRightNow": false,
     "cachedInternalTestingReady": true,
-    "runtimeStatusAcceptedAsCachedInternalTesting": true,
+    "runtimeStatusAcceptedAsCachedInternalTesting": false,
     "currentRuntimeState": {
       "checked": true,
-      "mode": "not_ready",
-      "localCapabilityReady": false,
-      "warmNoQuotaRuntime": false,
+      "mode": "warm_no_quota_runtime",
+      "localCapabilityReady": true,
+      "warmNoQuotaRuntime": true,
       "allLoopsRunning": true,
       "anyLoopRunning": true,
       "supervisorRunning": true,
@@ -54,16 +54,14 @@
       "quotaSpendingLoopRunning": false,
       "backendProofFresh": true,
       "providerSnapshotFresh": false,
-      "cachedTesterReadyRightNow": false,
+      "cachedTesterReadyRightNow": true,
       "liveOddsReadyRightNow": false,
-      "testerReadyRightNow": false,
-      "p0": [
-        "local_capability_not_ready"
-      ],
+      "testerReadyRightNow": true,
+      "p0": [],
       "p1": [
         "mobile_provider_snapshot_not_fresh"
       ],
-      "nextAction": "rerun_batch_readiness_and_phase_audit",
+      "nextAction": "keep_cached_testing_or_refresh_live_odds",
       "note": "This separates proven local capability, cached internal tester warmth, and live mobile odds freshness. Cached tester readiness requires warm no-quota loops; live odds readiness additionally requires fresh mobile-visible provider snapshots."
     },
     "managedProcesses": {
@@ -132,8 +130,8 @@
     "reason": null,
     "snapshotCount": 2,
     "latestFetchedAt": "2026-07-14T06:03:35.211Z",
-    "latestAgeHours": 3.28,
-    "latestAgeSeconds": 11800,
+    "latestAgeHours": 3.4,
+    "latestAgeSeconds": 12250,
     "maxAgeHours": 24,
     "sources": [
       "sportsbook-odds"
@@ -233,9 +231,9 @@
     "source": "the-odds-api",
     "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
     "sourceUpdatedAt": "2026-07-14T06:03:35.211Z",
-    "now": "2026-07-14T09:20:15.189Z",
+    "now": "2026-07-14T09:27:45.251Z",
     "startTime": "2026-07-14T19:00:00.000Z",
-    "secondsUntilStart": 34785,
+    "secondsUntilStart": 34335,
     "startAgeSeconds": 0,
     "suspendBeforeStartSeconds": 300,
     "insideSuspendWindow": false,
@@ -259,7 +257,7 @@
         "step": "Start or verify local tester runtime",
         "expected": "npm run mobile:one-event-onboarding",
         "pass": true,
-        "notes": "Cached internal testing is accepted; live mobile odds refresh remains explicit and quota-gated."
+        "notes": "Runtime loops are currently warm in no-quota mode."
       },
       {
         "step": "Open Holiwyn on Samsung S23",
@@ -334,10 +332,10 @@
       "checked": true,
       "path": "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-readiness-summary.redacted.json",
       "pass": true,
-      "generatedAt": "2026-07-12T14:57:50.282Z",
+      "generatedAt": "2026-07-14T09:27:17.814Z",
       "providerQuotaUsed": false,
       "activeMarketStatus": "LIVE",
-      "activeEventStatus": "ACTIVE",
+      "activeEventStatus": "active",
       "executionEligibleNow": false,
       "operatorDecision": "wait_for_or_apply_market_close_before_execution",
       "blockers": [

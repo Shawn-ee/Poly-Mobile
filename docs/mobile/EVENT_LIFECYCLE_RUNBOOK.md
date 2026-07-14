@@ -13,6 +13,21 @@
 
 ## Operator Steps For One Local Live Event
 
+### Quick Proof Map
+
+| Need to prove | Command | Provider quota | Active event mutation |
+| --- | --- | --- | --- |
+| Current lifecycle matrix | `npm run mobile:one-event-lifecycle-matrix` | No | No |
+| Canonical result ingestion evidence | `npm run mobile:one-event-result-ingestion-audit-event-proof` | No | No settlement execution |
+| Canonical settlement preflight evidence | `npm run mobile:one-event-settlement-audit-event-proof` | No | No settlement execution |
+| Canonical approval evidence | `npm run mobile:one-event-settlement-approval-audit-event-proof` | No | No settlement execution |
+| Result/preflight/approval trail | `npm run mobile:one-event-result-review-trail` | No | No |
+| Active event execution decision | `npm run mobile:one-event-active-settlement-readiness` | No | No |
+| Ordered live-runtime audit | `npm run mobile:live-runtime-audit-gate` | No | No |
+| Internal tester go/no-go | `npm run mobile:internal-tester-readiness-gate` | No | No |
+
+Run the result-ingestion, settlement-preflight, approval, result-review, and active-readiness commands in that order when the selected outcome identity changes. That keeps canonical DB evidence aligned with the current mobile-tradable market/outcome.
+
 1. Start Postgres and backend.
 2. For a quota-free one-command onboarding pass, run `npm run mobile:one-event-onboarding`. It blocks stale replay by default and restores the cached live-runtime event if the redacted replay fixture is older than the selected upcoming event.
 3. For the same onboarding pass with a live provider refresh, set `THE_ODDS_API_KEY` in the local process environment or store the raw key in ignored `.runtime/secrets/the-odds-api-key.txt`, then run `npm run mobile:one-event-onboarding -- -RunProviderRefresh`.

@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { prisma } from "@/lib/db";
+import { loadLocalEnvForScript } from "./local_env";
 
 const DEFAULT_EVENT_SLUG = "odds-api-single-soccer-test";
 const DEFAULT_OUTPUT_PATH =
@@ -58,6 +59,13 @@ function truthy(value: unknown) {
 async function main() {
   if (process.env.NODE_ENV === "production") {
     throw new Error("Refusing to run local active settlement readiness report in production.");
+  }
+
+  const envLoad = loadLocalEnvForScript(["DATABASE_URL"]);
+  if (envLoad.missingKeys.includes("DATABASE_URL")) {
+    throw new Error(
+      "DATABASE_URL is required for active settlement readiness. Set DATABASE_URL, set DOTENV_CONFIG_PATH, or run from a workspace with a local .env.",
+    );
   }
 
   const eventSlug = argValue("eventSlug") ?? DEFAULT_EVENT_SLUG;

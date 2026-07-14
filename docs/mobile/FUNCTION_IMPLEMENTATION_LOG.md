@@ -16525,3 +16525,24 @@ Known limitations:
   - `docs/mobile/BACKEND_LIVE_RUNTIME_SURVEY.md`
   - `docs/mobile/BACKEND_LIVE_RUNTIME_COMPLETION_AUDIT_MATRIX.md`
 - Known limitations: installed unattended provider/maker/lifecycle service ownership, production official-result auto-settlement, and multi-event provider polling/dashboard remain P1/P2.
+
+## Cycle ZAW - Active Settlement Readiness Env And Evidence
+
+- Feature/runtime worked on: active-event settlement readiness operator command for the current Spain vs. France one-event runtime.
+- Frontend components touched: none.
+- Backend/routes touched: no HTTP route changes. This cycle fixes a local proof/report command that reads backend DB state and canonical settlement evidence.
+- Important functions/services touched: `scripts/report_odds_api_active_event_settlement_readiness.ts` now loads `DATABASE_URL` through `loadLocalEnvForScript(["DATABASE_URL"])` before Prisma access.
+- User/runtime interactions supported: operators can run `npm run mobile:one-event-active-settlement-readiness` from a normal local shell to see whether the active tester event is eligible for settlement execution or still blocked by `LIVE` market status.
+- State transitions: no provider call, mobile UI change, schema change, or active settlement execution. Canonical provider-result, settlement-preflight, and settlement-approval proof evidence was refreshed for current outcome `5a3f04ff-6efd-42c5-a225-8fae8070b509`.
+- API/data dependencies: reads `Market`, linked `Event`, and `CanonicalEvent` records for `provider.result.ingested`, `settlement.trusted_result.preflight`, and `settlement.trusted_result.approved`; reads existing proof summaries under `docs/mobile/harness/odds-api-live-runtime`.
+- Proof:
+  - `npm run mobile:one-event-lifecycle-matrix`
+  - `npm run mobile:one-event-result-ingestion-audit-event-proof`
+  - `npm run mobile:one-event-settlement-audit-event-proof`
+  - `npm run mobile:one-event-settlement-approval-audit-event-proof`
+  - `npm run mobile:one-event-result-review-trail`
+  - `npm run mobile:one-event-active-settlement-readiness`
+  - `npm run mobile:live-runtime-audit-gate`
+  - `npm run mobile:internal-tester-readiness-gate`
+  - `docs/mobile/audits/cycle-ZAW-active-settlement-readiness-env-and-evidence.md`
+- Known limitations: active tester settlement remains blocked until the market is `CLOSED` and exact confirmation is used. Installed unattended official-result polling and production operator UI remain P1.
