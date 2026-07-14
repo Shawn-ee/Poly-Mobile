@@ -16203,3 +16203,15 @@ Known limitations:
 - Proof:
   - `npx jest --runInBand src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`
 - Known limitations: this is regression coverage only; installed unattended service ownership and production official-result auto-settlement remain P1.
+
+## Cycle ZAB - Spain vs. France S23 Cashout Proof
+
+- Feature/page worked on: proof-only refresh for the internal tester mobile trading flow: Home -> Event Detail -> Total Goals 2.5 -> Buy ticket -> Portfolio -> Cash out -> Max -> SELL -> History.
+- Frontend components touched: none.
+- Backend/routes touched: no route implementation changes. Existing event/detail, quote, order, portfolio, and history routes were exercised.
+- Important functions/services touched: no source implementation changes. The proof exercised `openPositionTrade`, `TradeTicket` close-position mode, `submitTicketOrder`, portfolio sync, and history loading.
+- User interactions supported/proved: Home showed `Spain vs. France`; Event Detail loaded backend markets; Over 2.5 opened the Buy ticket; swipe buy reached Portfolio; Portfolio Cash out opened close-position mode; Max used owned shares only; Yes/No was hidden in cashout mode; swipe cashout submitted a SELL; Portfolio History showed sold activity.
+- State transitions: a server-backed fake-token buy created a position, seeded local cashout liquidity let the SELL fill, the position closed or reduced, and history recorded the sell.
+- API/data dependencies: `GET /api/mobile/events/:slug/live-detail`, `GET /api/markets/:marketId/quote`, `POST /api/orders`, `GET /api/portfolio`, and `GET /api/portfolio/history`.
+- Proof: `docs/mobile/harness/cycle-ZAB-spain-france-cashout-s23/cycle-ZAB-odds-api-s23-visible-flow.json`.
+- Known limitations: proof still relies on local seeded counterparty liquidity for the cashout bid. A dedicated close-position preview route remains P1, not a blocker for internal tester trading.
