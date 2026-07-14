@@ -16231,3 +16231,17 @@ Known limitations:
   - `npm run mobile:one-event-phase-audit`
   - `npm run mobile:live-runtime-completion-audit`
 - Known limitations: installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1. Local internal runtime evidence has 0 P0 gaps.
+
+## Cycle ZAD - Internal Tester Current-State Handoff
+
+- Feature/runtime worked on: current-state handoff documentation for the one-event local internal tester runtime.
+- Frontend components touched: none.
+- Backend/routes touched: no route implementation changes.
+- Important functions/services touched: no source implementation changes. Documentation now points to current runtime status, phase audit, completion audit, and ZAB S23 proof evidence.
+- User/runtime interactions supported: internal testers and operators can now read one concise page for the current Spain vs. France event, selected market/outcome, cached-vs-live provider truth, local maker truth, lifecycle/settlement guard truth, exact commands to run, and S23 manual flow.
+- State transitions: none. This cycle does not call The Odds API, mutate markets, run settlement, or start/stop runtime loops.
+- API/data dependencies: documents existing `GET /api/health`, `GET /api/markets/:marketId/quote`, `GET /api/internal/live-runtime/status`, runtime audit summaries, and S23 proof artifacts.
+- Proof:
+  - Documentation references were aligned from older `cycle-ZE`/`cycle-ZL`/`LIVEODDSS23` proof paths to the current `cycle-ZAB-spain-france-cashout-s23` proof and ZAC runtime audit.
+  - `docs/mobile/INTERNAL_TESTER_CURRENT_STATE.md` added as the current tester handoff.
+- Known limitations: documentation hardening only. Installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1.

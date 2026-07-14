@@ -104,14 +104,14 @@ For a selected binary sportsbook market:
 - Local runtime launch profile summary: `docs/mobile/harness/odds-api-live-runtime/local-runtime-launch-profile-summary.redacted.json`
 - Result: pass.
 - Provider event: Spain vs. France, `soccer_fifa_world_cup`, starts `2026-07-14T19:00:00Z`.
-- Selected local market: Total Goals 2.5.
-- Provider reference: bid `0.4891`, ask `0.5291`.
-- Local maker quote: bid `0.47`, ask `0.55`, shifted worse than provider by two ticks.
-- Reusable maker seed proof: quote route returned best bid `0.47` and best ask `0.55` for the selected provider-backed market after `-SeedMaker`.
+- Selected local market: Total Goals 2.5, normalized visible outcome `Over 2.5`.
+- Provider reference: latest selected-outcome snapshot reports bid `0.54`, ask `0.58`.
+- Local maker quote: latest no-quota seed placed shifted resting maker orders at bid `0.52`, ask `0.60`, shifted worse than provider by two ticks.
+- Reusable maker seed proof: quote route returned best bid `0.58` and best ask `0.60` for the selected provider-backed market after `-SeedMaker`. The best bid is an existing tester/user bid that is better than the maker bid; the maker bid still rests at `0.52`.
 - Trading proof: fake-token buy filled, Portfolio position appeared, sell/cashout filled, History contained both trades.
 - Settlement readiness proof: both selected outcomes preview successfully without mutation, payout conservation passes, and automatic official-result settlement remains a separate P1 gap.
 - Settlement execution proof: a fresh disposable local market settles with payout conservation passing, collateral zero after settlement, finalized positions, no negative balances, and no stuck locks. The active tester event is not mutated by this proof.
-- Manual settlement proof: dry-run command selected `Over +2.5`, proved payout conservation, printed the explicit execution confirmation phrase, and left the market unresolved.
+- Manual settlement proof: dry-run command selected the Total Goals 2.5 market outcome, proved payout conservation, printed the explicit execution confirmation phrase, and left the market unresolved. Current mobile/trading proof uses normalized visible outcome `Over 2.5`; older provider proof artifacts may still contain legacy `Over +2.5` labels and are filtered out when not quote-visible.
 - Provider-shaped result ingestion proof: replay mode converts a redacted Odds API scores-shaped payload into trusted result JSON for the selected proof event without spending quota.
 - Live result ingestion supervisor path: available only through explicit `-RunLiveResultIngestion`, with `THE_ODDS_API_KEY`, result-ingestion cadence, max live-result run count, and per-run credit cap. The latest committed proof keeps replay/no-quota mode.
 - Trusted result scheduler proof: dry-run scheduler command reads trusted result JSON and invokes guarded trusted-result settlement without mutating the market.
@@ -125,11 +125,11 @@ For a selected binary sportsbook market:
 - Warm runtime limitation: stopped loops remain acceptable for cached internal testing when capability proof is fresh, but they are no longer described as warm right now. Use `npm run mobile:current-runtime-state-proof` or the internal tester runtime manager when you need proof of actively running loops.
 - Settlement split: warm result polling does not run settlement by default. Use the existing settlement readiness/execution proof commands for guarded settlement behavior; do not keep active-event settlement execution in the default warm tester loop.
 - Provider-to-maker handoff proof: the latest selected-event `ProviderRefreshRun` is followed by shifted local `MarketMakerQuoteRun` evidence for the same event, market, and outcome without spending provider quota.
-- Non-crossing reseed proof: after a test/user bid at `0.55` existed on the selected Over 2.5 outcome, `npm run mobile:one-event-live-maker-seed` adjusted the planned maker ask to `0.56`, left both maker orders resting, and the quote route reported bid `0.55` / ask `0.56`.
+- Non-crossing reseed proof: after a test/user bid existed on the selected Over 2.5 outcome, `npm run mobile:one-event-live-maker-seed` adjusted the planned maker ask above the existing bid, left both maker orders resting, and the latest quote route reported bid `0.58` / ask `0.60`.
 - One-command onboarding proof: quota-free replay/import, readiness, runtime status, settlement readiness, and settlement dry-run all passed with S23 connected.
 - Supervisor stale monitor proof: one supervisor cycle ran data hygiene, runtime/maker seed, dry-run stale guard, and safe lifecycle scheduler. It reported 19 cached markets that would pause under the 90-second stale threshold and did not mutate markets.
 - Continuous local supervisor proof: the repeated local supervisor proof emits heartbeat evidence and keeps shifted maker reseeding, lifecycle checks, provider-shaped result ingestion, and trusted-result settlement dry-run scheduling active across cycles without leaving proof-owned supervisor or backend processes running.
-- S23 proof: `docs/mobile/harness/cycle-LIVEODDSS23-odds-api-live-runtime-s23/cycle-LIVEODDSS23-odds-api-s23-visible-flow.json`.
+- S23 proof: `docs/mobile/harness/cycle-ZAB-spain-france-cashout-s23/cycle-ZAB-odds-api-s23-visible-flow.json`.
 - Continuous status: the supervisor can run repeated local maker reseeds while it is open, but there is still no installed unattended production bot.
 - Internal tester runtime status: the manager reports backend, Expo, Docker/Postgres, S23, and supervisor process state without provider quota. It is a local tester control plane and does not replace an installed production daemon.
 - Local runtime launch profile: the profile recommends the user Startup fallback in this Windows context, records that scheduled-task registration is blocked by permission, lists manual foreground commands, and keeps live-provider mode explicit and quota-capped.
