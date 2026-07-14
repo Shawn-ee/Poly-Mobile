@@ -125,6 +125,7 @@ async function main() {
   const liveOddsActionId = getPath(operatorSnapshot, ["operatorNextActions", "liveOddsAction"]);
   const cachedAction = typeof cachedActionId === "string" ? findAction(operatorSnapshot, cachedActionId) : null;
   const liveOddsAction = typeof liveOddsActionId === "string" ? findAction(operatorSnapshot, liveOddsActionId) : null;
+  const liveOddsActionKnown = liveOddsActionId === "none" || liveOddsAction !== null;
   const providerSnapshotFresh = getPath(operatorSnapshot, ["runtime", "currentRuntimeState", "providerSnapshotFresh"]) === true;
   const warmNoQuotaRuntime = getPath(operatorSnapshot, ["runtime", "currentRuntimeState", "warmNoQuotaRuntime"]) === true;
   const allLoopsRunning = getPath(operatorSnapshot, ["runtime", "currentRuntimeState", "allLoopsRunning"]) === true;
@@ -189,7 +190,7 @@ async function main() {
       hasManualTradingFlow: Array.isArray(getPath(operatorSnapshot, ["testerLaunchChecklist", "manualTradingFlow"])),
       cachedTradingReady: pass && getPath(operatorSnapshot, ["runtime", "localInternalRuntimeReady"]) === true,
       liveOddsReady: pass && warmNoQuotaRuntime && providerSnapshotFresh && !quotaSpendingLoopRunning,
-      liveOddsActionKnown: liveOddsAction !== null,
+      liveOddsActionKnown,
     },
     gaps: { p0, p1: Array.from(new Set(p1)), p2: Array.from(new Set(p2)) },
     note:

@@ -16124,3 +16124,23 @@ Known limitations:
   - `npx jest --runInBand src/__tests__/liveRuntimeStatus.service.test.ts src/__tests__/internal.live-runtime.status.route.test.ts src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`
   - `npm run mobile:internal-tester-readiness-gate`
 - Known limitations: live odds freshness still requires the explicit key-gated provider-refresh command. Installed unattended services and production official-result auto-settlement remain P1.
+
+## Cycle ZW4 - Live Odds Refresh Proof
+
+- Feature/runtime worked on: explicit live odds refresh for the current `Spain vs. France` internal tester event.
+- Frontend components touched: none.
+- Backend/routes touched: no route implementation changes. Existing health, event/detail, quote, order, portfolio/history, runtime status, and readiness routes/scripts were exercised.
+- Important functions/services touched: no source implementation changes. Ran the existing secret wrapper and one-event live provider proof path.
+- User/runtime interactions supported: operators can run a bounded provider refresh that makes mobile-visible provider odds fresh for the selected one-event flow. After the 90-second mobile freshness window ages out, the readiness handoff keeps cached internal testing ready and exposes the explicit key-gated live-odds refresh action again.
+- State transitions: the bounded live proof refreshed the selected provider event/markets, wrote fresh provider quote snapshots, seeded shifted local fake-token maker orders for the selected total-goals outcome, placed a proof buy/sell pair, and verified portfolio/history/no-position/closed-market guards. No settlement executed.
+- API/data dependencies: The Odds API `/sports`, `/events`, event `/markets`, and event `/odds` endpoints; local `GET /api/mobile/events/:slug/live-detail`, `GET /api/markets/:marketId/quote`, `POST /api/orders`, `GET /api/portfolio`, `GET /api/portfolio/history`, and `GET /api/internal/live-runtime/status`.
+- Provider quota: intentional provider refresh used the ignored local runtime secret file, spent within the one-event cap, and reported total last cost `13` with `314` requests remaining.
+- Proof:
+  - `npm run mobile:one-event-live-runtime:provider-secret-preflight`
+  - `npm run mobile:one-event-live-runtime:provider-secret`
+  - `npm run mobile:internal-tester-readiness-gate`
+- Proof summaries:
+  - `docs/mobile/harness/odds-api-live-runtime/live-provider-key-preflight.redacted.json`
+  - `docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json`
+  - `docs/mobile/harness/odds-api-live-runtime/internal-tester-readiness-gate-summary.redacted.json`
+- Known limitations: live refresh is explicit/key-gated, mobile freshness is intentionally short, and this is not an installed unattended daemon. Production official-result auto-settlement remains P1.

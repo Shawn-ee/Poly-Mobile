@@ -10927,3 +10927,12 @@ Future migration concern:
 - Schema mismatch: none. No database schema or model change.
 - Temporary mock/static data: none added. The fields are derived from real local process state, proof freshness, and provider snapshot freshness.
 - Remaining gaps: live mobile odds still require explicit key-gated provider refresh when testers need fresh provider display. Installed unattended service ownership and production official-result auto-settlement remain P1.
+
+## Cycle ZW4 - Live Odds Refresh Proof
+
+- Fields confirmed for mobile/runtime: fresh provider quote snapshots now support `liveOddsReadyRightNow=true`, `providerSnapshotFresh=true`, `mobileLifecycleStatus=ready`, selected market `Total Goals 2.5`, selected outcome `Over +2.5`, and shifted local maker bid/ask `0.46`/`0.54`.
+- Closed or narrowed: explicit one-event live provider refresh is proven from an ignored local secret file through backend normalization, quote refresh, local maker liquidity, order proof, portfolio/history proof, and readiness gate. The final readiness gate may show live odds stale after the 90-second mobile freshness window, but it must keep cached trading ready and expose the key-gated refresh action.
+- Route mismatch: none. Mobile still reads Holiwyn backend routes only; provider access is backend/local proof only.
+- Schema mismatch: none. Existing event/market/outcome/reference quote/order/portfolio models support this proof.
+- Temporary mock/static data: none added. Provider data is real The Odds API data; fake-token liquidity/order flow remains local internal exchange behavior.
+- Remaining gaps: refresh is not an installed unattended provider daemon; production result settlement is not automatic; multi-event polling is intentionally out of scope for quota protection.

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T03:02:12.168Z",
+  "generatedAt": "2026-07-14T03:09:12.650Z",
   "scope": "odds-api-one-event-runtime-status",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -122,9 +122,9 @@
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
-    "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
-    "outcomeName": "Over 2.5",
-    "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e"
+    "outcomeId": "30fbc915-74ca-4809-a0c4-cd54c3236aa4",
+    "outcomeName": "Over +2.5",
+    "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4"
   },
   "selectedMarketSource": {
     "selectedMarket": {
@@ -134,12 +134,12 @@
       "marketType": "total_goals",
       "marketGroupKey": "totals",
       "line": "2.5",
-      "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
-      "outcomeName": "Over 2.5",
-      "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e"
+      "outcomeId": "30fbc915-74ca-4809-a0c4-cd54c3236aa4",
+      "outcomeName": "Over +2.5",
+      "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4"
     },
-    "source": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
-    "generatedAt": "2026-07-14T02:47:12.695Z"
+    "source": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
+    "generatedAt": "2026-07-14T03:07:25.089Z"
   },
   "backend": {
     "health": {
@@ -149,20 +149,20 @@
         "status": "ok",
         "db": "connected",
         "env": "development",
-        "timestamp": "2026-07-14T03:02:12.167Z"
+        "timestamp": "2026-07-14T03:09:12.649Z"
       },
       "error": null
     }
   },
   "provider": {
     "liveProofPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
-    "liveProofGeneratedAt": "2026-07-14T01:56:44.225Z",
-    "liveProofAgeHours": 1.09,
+    "liveProofGeneratedAt": "2026-07-14T03:07:25.089Z",
+    "liveProofAgeHours": 0.03,
     "maxLiveProofAgeHours": 24,
     "quota": {
       "totalLastCost": 13,
-      "requestsUsed": "173",
-      "requestsRemaining": "327",
+      "requestsUsed": "186",
+      "requestsRemaining": "314",
       "requestsLast": "6"
     },
     "policy": {
@@ -181,7 +181,7 @@
   "maker": {
     "makerSeedPath": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
     "makerSeedGeneratedAt": "2026-07-14T02:47:12.695Z",
-    "makerSeedAgeHours": 0.25,
+    "makerSeedAgeHours": 0.37,
     "quoteRoute": {
       "ok": true,
       "status": 200,
@@ -189,19 +189,19 @@
         "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
         "quotes": [
           {
-            "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
-            "outcomeName": "Over 2.5",
-            "bestBid": "0.58",
-            "bestAsk": "0.6",
-            "bestBidSize": 36.9,
+            "outcomeId": "30fbc915-74ca-4809-a0c4-cd54c3236aa4",
+            "outcomeName": "Over +2.5",
+            "bestBid": "0.46",
+            "bestAsk": "0.54",
+            "bestBidSize": 200,
             "bestAskSize": 200,
-            "midPrice": "0.59",
-            "lastPrice": "0.58",
-            "lastTradeAt": "2026-07-14T02:40:35.853Z"
+            "midPrice": "0.5",
+            "lastPrice": "0.46",
+            "lastTradeAt": "2026-07-14T03:07:24.750Z"
           },
           {
-            "outcomeId": "2b498cd2-1a06-4b2d-918e-76199969e093",
-            "outcomeName": "Under 2.5",
+            "outcomeId": "fe72ef40-ee22-4cc8-9830-bb46a4bf6c15",
+            "outcomeName": "Under +2.5",
             "bestBid": null,
             "bestAsk": null,
             "bestBidSize": null,
@@ -215,18 +215,18 @@
       "error": null
     },
     "selectedOutcomeQuote": {
-      "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
+      "outcomeId": "30fbc915-74ca-4809-a0c4-cd54c3236aa4",
       "quoteFound": true,
       "showsBid": true,
       "showsAsk": true,
-      "bid": "0.58",
-      "ask": "0.6"
+      "bid": "0.46",
+      "ask": "0.54"
     }
   },
   "lifecycle": {
     "schedulerRunPath": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
     "schedulerGeneratedAt": "2026-07-14T02:25:12.199Z",
-    "schedulerAgeHours": 0.62,
+    "schedulerAgeHours": 0.73,
     "schedulerAction": "none",
     "schedulerReason": "Event is not inside the suspend/close window.",
     "schedulerCandidateMarketCount": 3
@@ -235,9 +235,9 @@
     "resultSettlementExecutionPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
     "resultSettlementLiveBlockedPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json",
     "resultSettlementExecutionGeneratedAt": "2026-07-13T12:32:50.663Z",
-    "resultSettlementExecutionAgeHours": 14.49,
+    "resultSettlementExecutionAgeHours": 14.61,
     "resultSettlementLiveBlockedGeneratedAt": "2026-07-13T12:32:49.154Z",
-    "resultSettlementLiveBlockedAgeHours": 14.49,
+    "resultSettlementLiveBlockedAgeHours": 14.61,
     "maxSettlementProofAgeHours": 24,
     "resultSettlementExecutionFresh": true,
     "resultSettlementLiveBlockedFresh": true,
