@@ -7,6 +7,8 @@ const COMPLETION_AUDIT_PATH =
   "docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json";
 const RUNTIME_STATUS_PATH =
   "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json";
+const MAKER_SEED_PATH =
+  "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json";
 const PHASE_AUDIT_PATH =
   "docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json";
 const WATCHDOG_PATH =
@@ -52,6 +54,12 @@ const ageHours = (generatedAt: unknown) => {
   const parsed = Date.parse(generatedAt);
   if (!Number.isFinite(parsed)) return null;
   return Number(((Date.now() - parsed) / 3_600_000).toFixed(2));
+};
+
+const timestampMs = (generatedAt: unknown) => {
+  if (typeof generatedAt !== "string") return 0;
+  const parsed = Date.parse(generatedAt);
+  return Number.isFinite(parsed) ? parsed : 0;
 };
 
 const numberValue = (value: unknown) => (typeof value === "number" && Number.isFinite(value) ? value : null);
@@ -412,6 +420,74 @@ async function getRecentMarketMakerQuoteRuns(marketId: string | null) {
     take: 5,
   });
   return rows.map(compactMarketMakerQuoteRunRow);
+}
+
+async function selectCurrentMarketForStatus(
+  candidates: Array<{
+    selectedMarket: unknown;
+    generatedAt: unknown;
+    source: string;
+    sourceRank: number;
+    usable: boolean;
+  }>,
+) {
+  const usableCandidates = candidates
+    .map((candidate) => ({
+      ...candidate,
+      selectedMarket: objectValue(candidate.selectedMarket),
+      marketId:
+        stringValue(getPath(candidate.selectedMarket, ["id"])) ??
+        stringValue(getPath(candidate.selectedMarket, ["marketId"])),
+      outcomeId: stringValue(getPath(candidate.selectedMarket, ["outcomeId"])),
+    }))
+    .filter((candidate) => candidate.usable && candidate.marketId);
+
+  if (usableCandidates.length === 0) return null;
+
+  const marketIds = Array.from(new Set(usableCandidates.map((candidate) => candidate.marketId).filter(Boolean))) as string[];
+  const quoteRuns = await prisma.marketMakerQuoteRun.findMany({
+    where: {
+      marketId: { in: marketIds },
+      providerSource: "sportsbook-odds",
+    },
+    orderBy: { startedAt: "desc" },
+    take: 25,
+  });
+
+  const ranked = usableCandidates
+    .map((candidate) => {
+      const matchingReadyQuoteRun = quoteRuns.find(
+        (run) =>
+          run.marketId === candidate.marketId &&
+          (!candidate.outcomeId || run.outcomeId === candidate.outcomeId) &&
+          run.status === "passed" &&
+          run.quoteRouteStatus === 200 &&
+          run.quoteRouteShowsBid === true &&
+          run.quoteRouteShowsAsk === true,
+      );
+      return {
+        ...candidate,
+        quoteReadyScore: matchingReadyQuoteRun ? 1 : 0,
+        matchingReadyQuoteRunStartedAt: matchingReadyQuoteRun?.startedAt.getTime() ?? 0,
+      };
+    })
+    .sort(
+      (left, right) =>
+        right.quoteReadyScore - left.quoteReadyScore ||
+        right.sourceRank - left.sourceRank ||
+        right.matchingReadyQuoteRunStartedAt - left.matchingReadyQuoteRunStartedAt ||
+        timestampMs(right.generatedAt) - timestampMs(left.generatedAt),
+    );
+
+  const selected = ranked[0];
+  return selected
+    ? {
+        selectedMarket: selected.selectedMarket,
+        marketId: selected.marketId,
+        source: selected.source,
+        quoteReady: selected.quoteReadyScore === 1,
+      }
+    : null;
 }
 
 async function getSelectedEventLifecycle(eventSlug: string | null) {
@@ -1402,6 +1478,7 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
   const [
     completionAudit,
     runtimeStatus,
+    makerSeed,
     phaseAudit,
     watchdog,
     localRuntimeLaunchProfile,
@@ -1412,6 +1489,7 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
   ] = await Promise.all([
     readJson(COMPLETION_AUDIT_PATH),
     readJson(RUNTIME_STATUS_PATH),
+    readJson(MAKER_SEED_PATH),
     readJson(PHASE_AUDIT_PATH),
     readJson(WATCHDOG_PATH),
     readJson(LOCAL_RUNTIME_LAUNCH_PROFILE_PATH),
@@ -1441,14 +1519,38 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     typeof s23ProofAgeAtCompletionHours === "number" && typeof completionAgeHours === "number"
       ? Number((s23ProofAgeAtCompletionHours + completionAgeHours).toFixed(2))
       : null;
-  const selectedMarketForStatus =
-    getPath(phaseAudit, ["currentSelectedMarket"]) ??
-    getPath(phaseAudit, ["selectedMarket"]) ??
-    getPath(completionAudit, ["currentSelectedMarket"]) ??
-    getPath(completionAudit, ["selectedMarket"]);
-  const selectedMarketId =
-    stringValue(getPath(selectedMarketForStatus, ["id"])) ??
-    stringValue(getPath(selectedMarketForStatus, ["marketId"]));
+  const selectedMarketSource = await selectCurrentMarketForStatus([
+    {
+      selectedMarket: getPath(makerSeed, ["selectedMarket"]),
+      generatedAt: makerSeed?.generatedAt,
+      source: MAKER_SEED_PATH,
+      sourceRank: 5,
+      usable: pass(makerSeed),
+    },
+    {
+      selectedMarket: getPath(runtimeStatus, ["currentSelectedMarket"]) ?? getPath(runtimeStatus, ["selectedMarket"]),
+      generatedAt: runtimeStatus?.generatedAt,
+      source: RUNTIME_STATUS_PATH,
+      sourceRank: 4,
+      usable: pass(runtimeStatus),
+    },
+    {
+      selectedMarket: getPath(phaseAudit, ["currentSelectedMarket"]) ?? getPath(phaseAudit, ["selectedMarket"]),
+      generatedAt: phaseAudit?.generatedAt,
+      source: PHASE_AUDIT_PATH,
+      sourceRank: 3,
+      usable: pass(phaseAudit) || options.phaseAuditInProgress === true,
+    },
+    {
+      selectedMarket: getPath(completionAudit, ["currentSelectedMarket"]) ?? getPath(completionAudit, ["selectedMarket"]),
+      generatedAt: completionAudit?.generatedAt,
+      source: COMPLETION_AUDIT_PATH,
+      sourceRank: 2,
+      usable: pass(completionAudit) || options.phaseAuditInProgress === true,
+    },
+  ]);
+  const selectedMarketForStatus = selectedMarketSource?.selectedMarket ?? null;
+  const selectedMarketId = selectedMarketSource?.marketId ?? null;
   const providerSnapshots = await getProviderSnapshotFreshness({
     marketId: selectedMarketId,
     maxAgeHours: maxLiveProofAgeHours,
@@ -1966,6 +2068,12 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     event: completionAudit?.event ?? phaseAudit?.event ?? null,
     selectedEventLifecycle,
     selectedMarket: selectedMarketForStatus ?? null,
+    selectedMarketSource: selectedMarketSource
+      ? {
+          path: selectedMarketSource.source,
+          quoteReady: selectedMarketSource.quoteReady,
+        }
+      : null,
     runtimeTruth: {
       localInternalRuntimeReady: ready,
       localTesterReadyRightNow: currentRuntimeState.testerReadyRightNow,

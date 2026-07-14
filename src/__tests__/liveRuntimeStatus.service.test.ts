@@ -524,6 +524,23 @@ const makeRuntimeStatus = (generatedAt = nowIso()) => ({
   },
 });
 
+const makeMakerSeed = (generatedAt = nowIso()) => ({
+  generatedAt,
+  pass: true,
+  selectedMarket: {
+    id: "phase-market",
+    slug: "spain-vs-france-total-goals-25",
+    title: "Spain vs. France: Total Goals 2.5",
+    marketType: "total_goals",
+    marketGroupKey: "totals",
+    line: "2.5",
+    outcomeId: "phase-outcome",
+    outcomeName: "Over 2.5",
+    referenceOutcomeLabel: "Over 2.5",
+    referenceTokenId: "odds-api-proof-token",
+  },
+});
+
 const makeWatchdog = (generatedAt = nowIso()) => ({
   generatedAt,
   pass: true,
@@ -740,6 +757,7 @@ describe("live runtime status service", () => {
     readFile.mockImplementation(async (filePath: string) => {
       if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
+      if (filePath.includes("shifted-maker-seed")) return JSON.stringify(makeMakerSeed());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
       if (filePath.includes("local-runtime-launch-profile")) return JSON.stringify(makeLaunchProfile());
@@ -1697,6 +1715,7 @@ describe("live runtime status service", () => {
     readFile.mockImplementation(async (filePath: string) => {
       if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
+      if (filePath.includes("shifted-maker-seed")) return JSON.stringify(makeMakerSeed());
       if (filePath.includes("phase-audit")) {
         const phaseAudit = makePhaseAudit();
         phaseAudit.localSettlementQueue.body.runtimeTruth.redactedOperatorExecutionPlanAvailable = false;
@@ -1739,6 +1758,7 @@ describe("live runtime status service", () => {
         return JSON.stringify(completionAudit);
       }
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
+      if (filePath.includes("shifted-maker-seed")) return JSON.stringify(makeMakerSeed());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
       if (filePath.includes("local-runtime-launch-profile")) return JSON.stringify(makeLaunchProfile());
@@ -1770,6 +1790,7 @@ describe("live runtime status service", () => {
     readFile.mockImplementation(async (filePath: string) => {
       if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
+      if (filePath.includes("shifted-maker-seed")) return JSON.stringify(makeMakerSeed());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
       if (filePath.includes("local-runtime-launch-profile")) return JSON.stringify(makeLaunchProfile());
@@ -1800,6 +1821,7 @@ describe("live runtime status service", () => {
     readFile.mockImplementation(async (filePath: string) => {
       if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
+      if (filePath.includes("shifted-maker-seed")) return JSON.stringify(makeMakerSeed());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
       if (filePath.includes("local-runtime-launch-profile")) return JSON.stringify(makeLaunchProfile());
@@ -1840,6 +1862,7 @@ describe("live runtime status service", () => {
     readFile.mockImplementation(async (filePath: string) => {
       if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
+      if (filePath.includes("shifted-maker-seed")) return JSON.stringify(makeMakerSeed());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
       if (filePath.includes("local-runtime-launch-profile")) return JSON.stringify(makeLaunchProfile());
@@ -1879,6 +1902,7 @@ describe("live runtime status service", () => {
     readFile.mockImplementation(async (filePath: string) => {
       if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit(staleIso()));
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
+      if (filePath.includes("shifted-maker-seed")) return JSON.stringify(makeMakerSeed());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
       if (filePath.includes("local-runtime-launch-profile")) return JSON.stringify(makeLaunchProfile());
@@ -1908,6 +1932,7 @@ describe("live runtime status service", () => {
         );
       }
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
+      if (filePath.includes("shifted-maker-seed")) return JSON.stringify(makeMakerSeed());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
       if (filePath.includes("local-runtime-launch-profile")) return JSON.stringify(makeLaunchProfile());
@@ -1937,6 +1962,7 @@ describe("live runtime status service", () => {
         );
       }
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
+      if (filePath.includes("shifted-maker-seed")) return JSON.stringify(makeMakerSeed());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
       if (filePath.includes("local-runtime-launch-profile")) return JSON.stringify(makeLaunchProfile());
@@ -1970,6 +1996,7 @@ describe("live runtime status service", () => {
     readFile.mockImplementation(async (filePath: string) => {
       if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
+      if (filePath.includes("shifted-maker-seed")) return JSON.stringify(makeMakerSeed());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
       if (filePath.includes("local-runtime-launch-profile")) return JSON.stringify(makeLaunchProfile());
@@ -1997,6 +2024,7 @@ describe("live runtime status service", () => {
     readFile.mockImplementation(async (filePath: string) => {
       if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
+      if (filePath.includes("shifted-maker-seed")) return JSON.stringify(makeMakerSeed());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
       if (filePath.includes("local-runtime-launch-profile")) return JSON.stringify(makeLaunchProfile());
@@ -2043,6 +2071,7 @@ describe("live runtime status service", () => {
     readFile.mockImplementation(async (filePath: string) => {
       if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
+      if (filePath.includes("shifted-maker-seed")) return JSON.stringify(makeMakerSeed());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
       if (filePath.includes("local-runtime-launch-profile")) return JSON.stringify(makeLaunchProfile());
@@ -2102,6 +2131,7 @@ describe("live runtime status service", () => {
     readFile.mockImplementation(async (filePath: string) => {
       if (filePath.includes("completion-audit")) return JSON.stringify(makeCompletionAudit());
       if (filePath.includes("runtime-status")) return JSON.stringify(makeRuntimeStatus());
+      if (filePath.includes("shifted-maker-seed")) return JSON.stringify(makeMakerSeed());
       if (filePath.includes("phase-audit")) return JSON.stringify(makePhaseAudit());
       if (filePath.includes("watchdog")) return JSON.stringify(makeWatchdog());
       if (filePath.includes("local-runtime-launch-profile")) return JSON.stringify(makeLaunchProfile());

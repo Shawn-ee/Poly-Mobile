@@ -1,11 +1,11 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-14T09:45:46.346Z",
-  "startedAt": "2026-07-14T09:45:45.652Z",
+  "generatedAt": "2026-07-14T10:15:40.789Z",
+  "startedAt": "2026-07-14T10:15:40.275Z",
   "scope": "odds-api-one-event-shifted-maker-seed",
   "mode": "seed-resting-shifted-maker-quotes",
   "event": {
-    "id": "9a275a56-9b05-4fbc-84f8-ecf6ce6c106a",
+    "id": "599b0903-1bd2-441e-928a-a420b494c1b8",
     "slug": "odds-api-single-soccer-test",
     "title": "Spain vs. France",
     "startTime": "2026-07-14T19:00:00.000Z"
@@ -17,14 +17,14 @@
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
-    "outcomeId": "5a3f04ff-6efd-42c5-a225-8fae8070b509",
+    "outcomeId": "9fa19273-e446-4bec-9d3b-3f80639c9d32",
     "outcomeName": "Over 2.5",
     "referenceOutcomeLabel": "Over 2.5",
     "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e"
   },
   "providerSnapshot": {
     "fetchedAt": "2026-07-14T06:03:35.211Z",
-    "ageMs": 13330491,
+    "ageMs": 15125082,
     "maxSnapshotAgeMs": 86400000,
     "allowStale": false,
     "source": "sportsbook-odds",
@@ -33,23 +33,23 @@
     "outcomePrice": 0.56
   },
   "maker": {
-    "id": "11455425-6a12-4d47-bd65-75082fdc5b79",
-    "username": "odds_live_runtime_shifted_maker_47c8d283"
+    "id": "1e798eb0-ecf4-4187-944d-2f1a1be8d64b",
+    "username": "odds_live_runtime_shifted_maker_1690dfbf"
   },
   "collateralRepair": {
     "repaired": false,
-    "before": "550",
-    "after": "550",
+    "before": "200",
+    "after": "200",
     "byOutcome": [
       {
-        "outcomeId": "5a3f04ff-6efd-42c5-a225-8fae8070b509",
+        "outcomeId": "9fa19273-e446-4bec-9d3b-3f80639c9d32",
         "code": "OVER",
-        "shares": "550"
+        "shares": "200"
       },
       {
-        "outcomeId": "b8f120c1-70d8-4e20-9491-ebdf6a4b8328",
+        "outcomeId": "2387e796-ccf1-4939-b79d-302c172c50f1",
         "code": "UNDER",
-        "shares": "550"
+        "shares": "200"
       }
     ]
   },
@@ -59,24 +59,17 @@
     "plannedAsk": 0.6,
     "adjustments": [],
     "preSeedBook": {
-      "bestBid": 0.58,
+      "bestBid": null,
       "bestAsk": null,
-      "openOrderCount": 1,
-      "orders": [
-        {
-          "side": "BUY",
-          "price": "0.58",
-          "remaining": "36.9",
-          "username": "mobile_route_fill_maker_f2aa489b"
-        }
-      ]
+      "openOrderCount": 0,
+      "orders": []
     },
     "size": "200",
     "mintQuantity": "200"
   },
   "canceledPreviousOrders": [
     {
-      "orderId": "171d21a5-61f9-46ef-a55e-d07985fc0bc9",
+      "orderId": "2373d114-796f-4a3d-8abf-43490b48a3a0",
       "side": "BUY",
       "price": "0.52",
       "remaining": "200",
@@ -84,7 +77,7 @@
       "canceled": true
     },
     {
-      "orderId": "544ff175-9745-424e-bf3c-417f17b8ebf9",
+      "orderId": "afe3e0cb-8008-45a0-9621-89c2488e1812",
       "side": "SELL",
       "price": "0.6",
       "remaining": "200",
@@ -94,16 +87,16 @@
   ],
   "restingOrders": [
     {
-      "id": "84e1918e-4248-4b81-8460-72554cef967a",
-      "username": "odds_live_runtime_shifted_maker_47c8d283",
+      "id": "3b88b979-e11f-48f4-98c7-342b843e6cdd",
+      "username": "odds_live_runtime_shifted_maker_1690dfbf",
       "side": "BUY",
       "price": "0.52",
       "remaining": "200",
       "status": "OPEN"
     },
     {
-      "id": "782cb1ca-b486-4ed5-8d5e-9feb6ee1e955",
-      "username": "odds_live_runtime_shifted_maker_47c8d283",
+      "id": "7977f6b2-cec1-4234-88d6-035746fde79d",
+      "username": "odds_live_runtime_shifted_maker_1690dfbf",
       "side": "SELL",
       "price": "0.6",
       "remaining": "200",
@@ -115,16 +108,16 @@
     "ok": true,
     "status": 200,
     "selectedOutcomeQuote": {
-      "outcomeId": "5a3f04ff-6efd-42c5-a225-8fae8070b509",
+      "outcomeId": "9fa19273-e446-4bec-9d3b-3f80639c9d32",
       "outcomeName": "Over 2.5",
       "referenceOutcomeLabel": "Over 2.5",
-      "bestBid": "0.58",
+      "bestBid": "0.52",
       "bestAsk": "0.6",
-      "bestBidSize": 36.9,
+      "bestBidSize": 200,
       "bestAskSize": 200,
-      "midPrice": "0.59",
-      "lastPrice": "0.58",
-      "lastTradeAt": "2026-07-14T08:48:46.153Z"
+      "midPrice": "0.56",
+      "lastPrice": null,
+      "lastTradeAt": null
     }
   },
   "checks": {

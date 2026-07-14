@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T09:46:24.121Z",
+  "generatedAt": "2026-07-14T10:17:09.911Z",
   "scope": "holiwyn-internal-tester-readiness-gate",
   "pass": true,
   "providerQuotaUsedByThisGate": false,
@@ -15,8 +15,8 @@
       "id": "ordered-live-runtime-audit",
       "command": "npm run mobile:live-runtime-audit-gate",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/live-runtime-audit-gate-summary.redacted.json",
-      "startedAt": "2026-07-14T09:46:17.087Z",
-      "finishedAt": "2026-07-14T09:46:22.078Z",
+      "startedAt": "2026-07-14T10:17:00.590Z",
+      "finishedAt": "2026-07-14T10:17:08.576Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -25,8 +25,8 @@
       "id": "operator-snapshot",
       "command": "npm run mobile:internal-tester-operator-snapshot",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json",
-      "startedAt": "2026-07-14T09:46:22.079Z",
-      "finishedAt": "2026-07-14T09:46:24.118Z",
+      "startedAt": "2026-07-14T10:17:08.578Z",
+      "finishedAt": "2026-07-14T10:17:09.908Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -47,7 +47,7 @@
       "marketType": "total_goals",
       "marketGroupKey": "totals",
       "line": "2.5",
-      "outcomeId": "5a3f04ff-6efd-42c5-a225-8fae8070b509",
+      "outcomeId": "9fa19273-e446-4bec-9d3b-3f80639c9d32",
       "outcomeName": "Over 2.5",
       "referenceOutcomeLabel": "Over 2.5",
       "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e"
@@ -63,7 +63,7 @@
     "allLoopsRunning": false,
     "quotaSpendingLoopRunning": false,
     "providerSnapshotFresh": false,
-    "nextAction": "start_internal_tester_runtime_with_supervisor_and_result_poller",
+    "nextAction": "rerun_batch_readiness_and_phase_audit",
     "cachedTradingAction": {
       "id": "cached_internal_testing",
       "command": "npm run mobile:one-event-onboarding",
@@ -80,7 +80,7 @@
       {
         "step": "Start or verify local tester runtime",
         "expected": "npm run mobile:one-event-onboarding",
-        "pass": true,
+        "pass": false,
         "notes": "Runtime capability is proven, but supervisor/result-poller loops are not both running now."
       },
       {

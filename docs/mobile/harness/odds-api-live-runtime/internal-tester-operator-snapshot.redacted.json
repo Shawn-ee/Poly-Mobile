@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T09:46:24.056Z",
+  "generatedAt": "2026-07-14T10:17:09.832Z",
   "scope": "holiwyn-internal-tester-operator-snapshot",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -18,7 +18,7 @@
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
-    "outcomeId": "5a3f04ff-6efd-42c5-a225-8fae8070b509",
+    "outcomeId": "9fa19273-e446-4bec-9d3b-3f80639c9d32",
     "outcomeName": "Over 2.5",
     "referenceOutcomeLabel": "Over 2.5",
     "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e"
@@ -30,22 +30,22 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-14T09:46:23.174Z"
+      "timestamp": "2026-07-14T10:17:09.028Z"
     },
     "error": null
   },
   "runtime": {
-    "status": "ready",
-    "localInternalRuntimeReady": true,
+    "status": "needs_attention",
+    "localInternalRuntimeReady": false,
     "localTesterReadyRightNow": false,
     "cachedTesterReadyRightNow": false,
     "liveOddsReadyRightNow": false,
     "cachedInternalTestingReady": true,
-    "runtimeStatusAcceptedAsCachedInternalTesting": false,
+    "runtimeStatusAcceptedAsCachedInternalTesting": true,
     "currentRuntimeState": {
       "checked": true,
-      "mode": "proven_capability_loops_stopped",
-      "localCapabilityReady": true,
+      "mode": "not_ready",
+      "localCapabilityReady": false,
       "warmNoQuotaRuntime": false,
       "allLoopsRunning": false,
       "anyLoopRunning": false,
@@ -57,13 +57,13 @@
       "cachedTesterReadyRightNow": false,
       "liveOddsReadyRightNow": false,
       "testerReadyRightNow": false,
-      "p0": [],
+      "p0": [
+        "local_capability_not_ready"
+      ],
       "p1": [
-        "supervisor_loop_not_running_now",
-        "result_poller_loop_not_running_now",
         "mobile_provider_snapshot_not_fresh"
       ],
-      "nextAction": "start_internal_tester_runtime_with_supervisor_and_result_poller",
+      "nextAction": "rerun_batch_readiness_and_phase_audit",
       "note": "This separates proven local capability, cached internal tester warmth, and live mobile odds freshness. Cached tester readiness requires warm no-quota loops; live odds readiness additionally requires fresh mobile-visible provider snapshots."
     },
     "managedProcesses": {
@@ -132,8 +132,8 @@
     "reason": null,
     "snapshotCount": 2,
     "latestFetchedAt": "2026-07-14T06:03:35.211Z",
-    "latestAgeHours": 3.71,
-    "latestAgeSeconds": 13369,
+    "latestAgeHours": 4.23,
+    "latestAgeSeconds": 15215,
     "maxAgeHours": 24,
     "sources": [
       "sportsbook-odds"
@@ -242,7 +242,7 @@
     "checked": true,
     "found": true,
     "eventSlug": "odds-api-single-soccer-test",
-    "eventId": "9a275a56-9b05-4fbc-84f8-ecf6ce6c106a",
+    "eventId": "599b0903-1bd2-441e-928a-a420b494c1b8",
     "title": "Spain vs. France",
     "status": "active",
     "liveStatus": "LIVE",
@@ -251,9 +251,9 @@
     "source": "the-odds-api",
     "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
     "sourceUpdatedAt": "2026-07-14T06:03:35.211Z",
-    "now": "2026-07-14T09:46:24.046Z",
+    "now": "2026-07-14T10:17:09.809Z",
     "startTime": "2026-07-14T19:00:00.000Z",
-    "secondsUntilStart": 33216,
+    "secondsUntilStart": 31370,
     "startAgeSeconds": 0,
     "suspendBeforeStartSeconds": 300,
     "insideSuspendWindow": false,
@@ -276,7 +276,7 @@
       {
         "step": "Start or verify local tester runtime",
         "expected": "npm run mobile:one-event-onboarding",
-        "pass": true,
+        "pass": false,
         "notes": "Runtime capability is proven, but supervisor/result-poller loops are not both running now."
       },
       {
