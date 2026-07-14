@@ -10,6 +10,9 @@ const RUNTIME_STATUS_PATH =
 const AUDIT_GATE_PATH =
   "docs/mobile/harness/odds-api-live-runtime/live-runtime-audit-gate-summary.redacted.json";
 const LIVE_ODDS_REFRESH_COMMAND = "npm run mobile:one-event-live-runtime:provider";
+const LIVE_ODDS_SECRET_PREFLIGHT_COMMAND = "npm run mobile:one-event-live-runtime:provider-secret-preflight";
+const LIVE_ODDS_SECRET_REFRESH_COMMAND = "npm run mobile:one-event-live-runtime:provider-secret";
+const PROVIDER_SECRET_FILE_PATH = ".runtime/secrets/the-odds-api-key.txt";
 const PROVIDER_KEY_ENV_NAME = ["THE", "ODDS", "API", "KEY"].join("_");
 const LIVE_RUNTIME_SCOPE = "holiwyn-live-odds-refresh-preflight";
 
@@ -32,6 +35,18 @@ async function readJson(filePath: string): Promise<JsonObject | null> {
 async function writeJson(outputPath: string, value: unknown) {
   await fs.mkdir(path.dirname(outputPath), { recursive: true });
   await fs.writeFile(outputPath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
+}
+
+async function fileHasNonWhitespaceValue(filePath: string) {
+  try {
+    const stat = await fs.stat(filePath);
+    if (!stat.isFile() || stat.size <= 0) return false;
+    const value = await fs.readFile(filePath, "utf8");
+    return value.trim().length > 0;
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return false;
+    throw error;
+  }
 }
 
 function getPath(source: unknown, keys: string[]) {
@@ -80,7 +95,10 @@ async function main() {
   const runtimeStatus = await readJson(RUNTIME_STATUS_PATH);
   const auditGate = await readJson(AUDIT_GATE_PATH);
   const liveAction = findLiveAction(readiness);
-  const providerKeyConfigured = Boolean(process.env[PROVIDER_KEY_ENV_NAME]);
+  const providerEnvKeyConfigured = Boolean(process.env[PROVIDER_KEY_ENV_NAME]);
+  const providerSecretFilePresent = await fileHasNonWhitespaceValue(PROVIDER_SECRET_FILE_PATH);
+  const providerKeyConfigured = providerEnvKeyConfigured || providerSecretFilePresent;
+  const providerKeySource = providerEnvKeyConfigured ? "environment" : providerSecretFilePresent ? "local-secret-file" : "missing";
   const cachedTradingReady = getPath(readiness, ["testerReady", "cachedTradingReady"]) === true;
   const liveOddsReady = getPath(readiness, ["testerReady", "liveOddsReady"]) === true;
   const providerSnapshotFresh = getPath(readiness, ["testerReady", "providerSnapshotFresh"]) === true;
@@ -100,7 +118,7 @@ async function main() {
     ...stringArray(getPath(auditGate, ["gaps", "p1"])),
   ];
   if (!providerKeyConfigured) {
-    p1.push("Live provider refresh cannot run from this shell until the provider key is configured.");
+    p1.push("Live provider refresh cannot run until the provider key is configured in the shell or ignored local secret file.");
   }
   if (!providerSnapshotFresh) {
     p1.push("Mobile provider snapshots are stale or not proven fresh; run the live provider refresh command when ready to spend quota.");
@@ -116,9 +134,15 @@ async function main() {
     pass,
     providerQuotaUsedByThisReport: false,
     providerKeyConfigured,
+    providerEnvKeyConfigured,
+    providerSecretFilePresent,
+    providerKeySource,
+    providerSecretFilePath: PROVIDER_SECRET_FILE_PATH,
     providerKeyValuePrinted: false,
     commandLineContainsSecret: false,
     liveOddsRefreshCommand: LIVE_ODDS_REFRESH_COMMAND,
+    liveOddsSecretPreflightCommand: LIVE_ODDS_SECRET_PREFLIGHT_COMMAND,
+    liveOddsSecretRefreshCommand: LIVE_ODDS_SECRET_REFRESH_COMMAND,
     canRunLiveRefreshNow: pass && providerKeyConfigured && !quotaSpendingLoopRunning,
     readiness: {
       cachedTradingReady,
@@ -141,7 +165,8 @@ async function main() {
       noBroadProviderScan: true,
       defaultModeSpendsQuota: false,
       liveRefreshSpendsQuota: true,
-      providerKeyEnvConfiguredOnlyAsBoolean: true,
+      providerKeyConfiguredOnlyAsBoolean: true,
+      providerSecretFileCheckedOnlyForPresence: true,
       doNotPrintProviderKey: true,
     },
     checks: {
@@ -151,6 +176,9 @@ async function main() {
       noOpenP0: p0.length === 0,
       liveOddsRefreshCommandKnown: liveActionKnown,
       providerKeyConfigured,
+      providerEnvKeyConfigured,
+      providerSecretFilePresent,
+      providerSecretFilePathKnown: true,
       providerQuotaUsedByThisReport: false,
       secretValuePrinted: false,
     },

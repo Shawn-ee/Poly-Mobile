@@ -15975,3 +15975,14 @@ Known limitations:
 - State transitions: server-backed fake-token BUY filled into a Portfolio position, then server-backed SELL closed the owned outcome position and appended History.
 - Proof: `docs/mobile/harness/cycle-CASHOUTS23D-spain-france-cashout/cycle-CASHOUTS23D-odds-api-s23-visible-flow.json`.
 - Known limitations: proof uses deterministic local maker liquidity for the cashout bid. A dedicated close-position quote endpoint remains P1 polish.
+
+## Cycle ZZF - Live Odds Secret-File Preflight Awareness
+
+- Feature/runtime worked on: no-quota operator preflight for the live provider refresh path.
+- Frontend components touched: none.
+- Backend/routes touched: no route implementation changes. The preflight reads local redacted evidence and checks only whether the ignored local provider-secret file exists with content.
+- Important functions/services touched: `scripts/report_holiwyn_live_odds_refresh_preflight.ts` and `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`.
+- User/runtime interactions supported: local operators can now run `npm run mobile:live-odds-refresh-preflight` and see `providerKeyConfigured=true` when either the shell environment or ignored `.runtime/secrets/the-odds-api-key.txt` is configured. The report includes the secret-wrapper commands for the intentional quota-spending path without printing the provider key.
+- State transitions: read-only reporting only. It spends no provider quota, prints no provider key, starts no loops, imports no markets, places no orders, and executes no settlement.
+- API/data dependencies: reads committed runtime evidence plus local ignored secret-file presence only. It does not call The Odds API.
+- Known limitations: this does not refresh live odds by itself. It only proves the operator can safely distinguish missing provider credentials from configured local credentials before intentionally running the quota-spending refresh.

@@ -1,22 +1,28 @@
 {
-  "generatedAt": "2026-07-14T00:30:46.674Z",
+  "generatedAt": "2026-07-14T00:51:56.329Z",
   "scope": "holiwyn-live-odds-refresh-preflight",
   "pass": true,
   "providerQuotaUsedByThisReport": false,
-  "providerKeyConfigured": false,
+  "providerKeyConfigured": true,
+  "providerEnvKeyConfigured": false,
+  "providerSecretFilePresent": true,
+  "providerKeySource": "local-secret-file",
+  "providerSecretFilePath": ".runtime/secrets/the-odds-api-key.txt",
   "providerKeyValuePrinted": false,
   "commandLineContainsSecret": false,
   "liveOddsRefreshCommand": "npm run mobile:one-event-live-runtime:provider",
-  "canRunLiveRefreshNow": false,
+  "liveOddsSecretPreflightCommand": "npm run mobile:one-event-live-runtime:provider-secret-preflight",
+  "liveOddsSecretRefreshCommand": "npm run mobile:one-event-live-runtime:provider-secret",
+  "canRunLiveRefreshNow": true,
   "readiness": {
     "cachedTradingReady": true,
     "liveOddsReady": false,
     "providerSnapshotFresh": false,
     "quotaSpendingLoopRunning": false,
     "nextAction": "start_internal_tester_runtime_with_supervisor_and_result_poller",
-    "readinessAgeHours": 0.4073361111111111,
-    "runtimeStatusAgeHours": 0.40944444444444444,
-    "auditGateAgeHours": 0.4079391666666667
+    "readinessAgeHours": 0.7600183333333334,
+    "runtimeStatusAgeHours": 0.7621266666666666,
+    "auditGateAgeHours": 0.7606213888888889
   },
   "liveAction": {
     "id": "refresh_mobile_live_odds",
@@ -29,7 +35,8 @@
     "noBroadProviderScan": true,
     "defaultModeSpendsQuota": false,
     "liveRefreshSpendsQuota": true,
-    "providerKeyEnvConfiguredOnlyAsBoolean": true,
+    "providerKeyConfiguredOnlyAsBoolean": true,
+    "providerSecretFileCheckedOnlyForPresence": true,
     "doNotPrintProviderKey": true
   },
   "checks": {
@@ -38,7 +45,10 @@
     "auditGatePass": true,
     "noOpenP0": true,
     "liveOddsRefreshCommandKnown": true,
-    "providerKeyConfigured": false,
+    "providerKeyConfigured": true,
+    "providerEnvKeyConfigured": false,
+    "providerSecretFilePresent": true,
+    "providerSecretFilePathKnown": true,
     "providerQuotaUsedByThisReport": false,
     "secretValuePrinted": false
   },
@@ -54,7 +64,6 @@
       "Production official-result auto-settlement remains open; active-event execution is still guarded by CLOSED market status and exact confirmation.",
       "Status report proves foreground/local runtime truth only; it does not install an unattended daemon.",
       "Official-result automatic settlement remains future work; current trusted-result execution is guarded by exact confirmation and CLOSED market status.",
-      "Live provider refresh cannot run from this shell until the provider key is configured.",
       "Mobile provider snapshots are stale or not proven fresh; run the live provider refresh command when ready to spend quota."
     ],
     "p2": [
