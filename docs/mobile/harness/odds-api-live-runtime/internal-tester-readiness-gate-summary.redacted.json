@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T14:32:43.254Z",
+  "generatedAt": "2026-07-14T14:44:31.375Z",
   "scope": "holiwyn-internal-tester-readiness-gate",
   "pass": true,
   "providerQuotaUsedByThisGate": false,
@@ -15,8 +15,8 @@
       "id": "ordered-live-runtime-audit",
       "command": "npm run mobile:live-runtime-audit-gate",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/live-runtime-audit-gate-summary.redacted.json",
-      "startedAt": "2026-07-14T14:32:31.578Z",
-      "finishedAt": "2026-07-14T14:32:40.877Z",
+      "startedAt": "2026-07-14T14:44:22.548Z",
+      "finishedAt": "2026-07-14T14:44:29.493Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -25,8 +25,8 @@
       "id": "operator-snapshot",
       "command": "npm run mobile:internal-tester-operator-snapshot",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json",
-      "startedAt": "2026-07-14T14:32:40.878Z",
-      "finishedAt": "2026-07-14T14:32:43.252Z",
+      "startedAt": "2026-07-14T14:44:29.494Z",
+      "finishedAt": "2026-07-14T14:44:31.373Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -60,13 +60,13 @@
     "cachedTradingReady": true,
     "liveOddsReady": false,
     "warmNoQuotaRuntime": true,
-    "routeWarmNoQuotaRuntime": false,
-    "allLoopsRunning": false,
+    "routeWarmNoQuotaRuntime": true,
+    "allLoopsRunning": true,
     "quotaSpendingLoopRunning": false,
     "providerSnapshotFresh": false,
     "nextAction": "cached_internal_testing",
     "operatorNextAction": "cached_internal_testing",
-    "runtimeNextAction": "start_internal_tester_runtime_with_supervisor_and_result_poller",
+    "runtimeNextAction": "keep_cached_testing_or_refresh_live_odds",
     "cachedTradingAction": {
       "id": "cached_internal_testing",
       "command": "npm run mobile:one-event-onboarding",
@@ -84,7 +84,7 @@
         "step": "Start or verify local tester runtime",
         "expected": "npm run mobile:one-event-onboarding",
         "pass": true,
-        "notes": "Runtime capability is proven, but supervisor/result-poller loops are not both running now."
+        "notes": "Runtime loops are currently warm in no-quota mode."
       },
       {
         "step": "Open Holiwyn on Samsung S23",
