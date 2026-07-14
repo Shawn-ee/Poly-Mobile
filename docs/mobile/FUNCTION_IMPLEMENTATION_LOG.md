@@ -16682,3 +16682,23 @@ Known limitations:
   - `npm run mobile:internal-tester-readiness-gate`
 - Result: readiness gate passed, provider quota used by gate was false, and P0 gaps are empty.
 - Known limitations: background loops are not running after cleanup; use the documented cached runtime command when a warm loop session is needed. Installed unattended service ownership and production official-result auto-settlement remain P1.
+
+## Cycle ZBE - Runtime Worker Graceful Stop Window
+
+- Feature/runtime worked on: local one-event supervisor/result-poller process manager shutdown reliability.
+- Frontend components touched: none.
+- Backend/routes touched: no HTTP route, Prisma schema, mobile UI, provider refresh, order, or settlement execution changes.
+- Important functions/services touched: `scripts/manage_holiwyn_one_event_live_supervisor.ps1` and `scripts/manage_holiwyn_one_event_result_poller.ps1`.
+- User/runtime interactions supported: local tester operators can stop supervisor/result-poller workers with the normal stop command and give in-flight child proof commands enough time to finish, reducing false failed durable run evidence.
+- State transitions: process managers write the existing stop-request files and wait up to the existing `-WaitSeconds` value, with a 25-second minimum, before force-stop fallback. No provider call, API key read, market mutation, mobile UI change, order placement, or active settlement execution.
+- API/data dependencies: local `.runtime/.../stop-request.json` files, `RuntimeServiceHeartbeat`, `RuntimeServiceRun`, and `GET /api/internal/live-runtime/status?phaseAuditInProgress=1`.
+- Proof:
+  - `npm run mobile:one-event-live-supervisor:process -- -Action start -MaxIterations 5 -IntervalSeconds 15`
+  - `npm run mobile:one-event-result-poller:process -- -Action start -MaxIterations 5 -IntervalSeconds 15`
+  - `npm run mobile:one-event-live-supervisor:stop`
+  - `npm run mobile:one-event-result-poller:stop`
+  - `npm run mobile:one-event-live-supervisor -- -MaxIterations 2 -IntervalSeconds 0 -SkipSleep`
+  - `npm run mobile:one-event-result-poller-proof`
+  - `npm run mobile:internal-tester-readiness-gate`
+- Result: supervisor and result-poller both stopped with `operation.graceful=true`; readiness gate passed with 0 P0 gaps and no provider quota.
+- Known limitations: this improves local worker shutdown only. It does not install an unattended service, productionize official-result settlement, or add multi-event provider polling.

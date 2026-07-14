@@ -307,7 +307,7 @@ if ($Action -eq "start") {
   }
 } elseif ($Action -eq "stop") {
   if ($stateBefore.running) {
-    $gracefulStop = Request-GracefulPollerStop -TargetProcessId $stateBefore.pid
+    $gracefulStop = Request-GracefulPollerStop -TargetProcessId $stateBefore.pid -TimeoutSeconds ([Math]::Max(25, $WaitSeconds))
     if (-not $gracefulStop) {
       Stop-PollerProcessTree -TargetProcessId $stateBefore.pid
       Start-Sleep -Seconds 1

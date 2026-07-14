@@ -353,7 +353,7 @@ if ($Action -eq "start") {
   }
 } elseif ($Action -eq "stop") {
   if ($stateBefore.running) {
-    $gracefulStop = Request-GracefulSupervisorStop -TargetProcessId $stateBefore.pid
+    $gracefulStop = Request-GracefulSupervisorStop -TargetProcessId $stateBefore.pid -TimeoutSeconds ([Math]::Max(25, $WaitSeconds))
     if (-not $gracefulStop) {
       Stop-SupervisorProcessTree -TargetProcessId $stateBefore.pid
       Start-Sleep -Seconds 1

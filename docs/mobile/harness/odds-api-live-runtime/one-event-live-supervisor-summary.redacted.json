@@ -1,9 +1,9 @@
 {
-    "generatedAt":  "2026-07-14T12:26:16.7704467Z",
+    "generatedAt":  "2026-07-14T12:33:27.2790942Z",
     "scope":  "holiwyn-one-event-live-supervisor",
     "pass":  true,
-    "startedAt":  "2026-07-14T12:25:58.3385465Z",
-    "completedAt":  "2026-07-14T12:26:16.7704467Z",
+    "startedAt":  "2026-07-14T12:33:12.6039464Z",
+    "completedAt":  "2026-07-14T12:33:27.2790942Z",
     "backend":  {
                     "baseUrl":  "http://127.0.0.1:3002",
                     "health":  {
@@ -12,7 +12,7 @@
                                                 "status":  "ok",
                                                 "db":  "connected",
                                                 "env":  "development",
-                                                "timestamp":  "2026-07-14T12:26:16.807Z"
+                                                "timestamp":  "2026-07-14T12:33:27.308Z"
                                             },
                                    "error":  null
                                }
@@ -87,15 +87,15 @@
     "cycles":  [
                    {
                        "iteration":  1,
-                       "startedAt":  "2026-07-14T12:25:58.3423801Z",
-                       "finishedAt":  "2026-07-14T12:26:05.8367819Z",
+                       "startedAt":  "2026-07-14T12:33:12.6074553Z",
+                       "finishedAt":  "2026-07-14T12:33:18.7488724Z",
                        "dataHygiene":  {
                                            "label":  "cycle-1-data-hygiene",
                                            "command":  "npm run mobile:one-event-data-hygiene-proof -- --summaryPath=docs\\mobile\\harness\\odds-api-live-runtime\\one-event-data-hygiene-summary.redacted.json",
                                            "exitCode":  0,
                                            "pass":  true,
-                                           "startedAt":  "2026-07-14T12:25:58.3470394Z",
-                                           "finishedAt":  "2026-07-14T12:25:59.7046617Z"
+                                           "startedAt":  "2026-07-14T12:33:12.6124560Z",
+                                           "finishedAt":  "2026-07-14T12:33:15.9587741Z"
                                        },
                        "dataHygienePass":  true,
                        "command":  {
@@ -103,8 +103,8 @@
                                        "command":  "npm run mobile:one-event-live-runtime -- -BackendPort 3002 -SummaryPath docs\\mobile\\harness\\odds-api-live-runtime\\one-event-runtime-launch-summary.redacted.json -MakerSeedSummaryPath docs\\mobile\\harness\\odds-api-live-runtime\\shifted-maker-seed-summary.redacted.json -SeedMaker -SkipSleep",
                                        "exitCode":  1,
                                        "pass":  false,
-                                       "startedAt":  "2026-07-14T12:25:59.7290777Z",
-                                       "finishedAt":  "2026-07-14T12:26:04.1542492Z"
+                                       "startedAt":  "2026-07-14T12:33:15.9971461Z",
+                                       "finishedAt":  "2026-07-14T12:33:18.0027064Z"
                                    },
                        "runtimeCommandAccepted":  true,
                        "runtimeSummaryPath":  "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json",
@@ -114,8 +114,8 @@
                                                   "command":  "npm run mobile:one-event-lifecycle-scheduler-run -- --summaryPath=docs\\mobile\\harness\\odds-api-live-runtime\\one-event-lifecycle-scheduler-run-summary.redacted.json",
                                                   "exitCode":  0,
                                                   "pass":  true,
-                                                  "startedAt":  "2026-07-14T12:26:04.1592466Z",
-                                                  "finishedAt":  "2026-07-14T12:26:05.8347835Z"
+                                                  "startedAt":  "2026-07-14T12:33:18.0082155Z",
+                                                  "finishedAt":  "2026-07-14T12:33:18.7463653Z"
                                               },
                        "lifecycleSchedulerPass":  true,
                        "lifecycleSchedulerAction":  "none",
@@ -312,15 +312,15 @@
                    },
                    {
                        "iteration":  2,
-                       "startedAt":  "2026-07-14T12:26:08.5515984Z",
-                       "finishedAt":  "2026-07-14T12:26:14.6394834Z",
+                       "startedAt":  "2026-07-14T12:33:19.9892025Z",
+                       "finishedAt":  "2026-07-14T12:33:26.3608347Z",
                        "dataHygiene":  {
                                            "label":  "cycle-2-data-hygiene",
                                            "command":  "npm run mobile:one-event-data-hygiene-proof -- --summaryPath=docs\\mobile\\harness\\odds-api-live-runtime\\one-event-data-hygiene-summary.redacted.json",
                                            "exitCode":  0,
                                            "pass":  true,
-                                           "startedAt":  "2026-07-14T12:26:08.5525981Z",
-                                           "finishedAt":  "2026-07-14T12:26:10.9849643Z"
+                                           "startedAt":  "2026-07-14T12:33:19.9907095Z",
+                                           "finishedAt":  "2026-07-14T12:33:23.3937748Z"
                                        },
                        "dataHygienePass":  true,
                        "command":  {
@@ -328,8 +328,8 @@
                                        "command":  "npm run mobile:one-event-live-runtime -- -BackendPort 3002 -SummaryPath docs\\mobile\\harness\\odds-api-live-runtime\\one-event-runtime-launch-summary.redacted.json -MakerSeedSummaryPath docs\\mobile\\harness\\odds-api-live-runtime\\shifted-maker-seed-summary.redacted.json -SeedMaker -SkipSleep",
                                        "exitCode":  1,
                                        "pass":  false,
-                                       "startedAt":  "2026-07-14T12:26:10.9869688Z",
-                                       "finishedAt":  "2026-07-14T12:26:12.8133264Z"
+                                       "startedAt":  "2026-07-14T12:33:23.3956532Z",
+                                       "finishedAt":  "2026-07-14T12:33:25.2125332Z"
                                    },
                        "runtimeCommandAccepted":  true,
                        "runtimeSummaryPath":  "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json",
@@ -339,8 +339,8 @@
                                                   "command":  "npm run mobile:one-event-lifecycle-scheduler-run -- --summaryPath=docs\\mobile\\harness\\odds-api-live-runtime\\one-event-lifecycle-scheduler-run-summary.redacted.json",
                                                   "exitCode":  0,
                                                   "pass":  true,
-                                                  "startedAt":  "2026-07-14T12:26:12.8163265Z",
-                                                  "finishedAt":  "2026-07-14T12:26:14.6384845Z"
+                                                  "startedAt":  "2026-07-14T12:33:25.2237243Z",
+                                                  "finishedAt":  "2026-07-14T12:33:26.3598305Z"
                                               },
                        "lifecycleSchedulerPass":  true,
                        "lifecycleSchedulerAction":  "none",
