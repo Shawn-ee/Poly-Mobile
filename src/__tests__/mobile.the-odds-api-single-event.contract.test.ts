@@ -83,6 +83,18 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("$canonicalLiveProofSummaryPath");
   });
 
+  it("guards direct live provider runtime proof with the no-quota preflight", () => {
+    const source = liveRuntimeScript();
+    expect(source).toContain("SkipLiveOddsPreflight");
+    expect(source).toContain("ForceProviderRefresh");
+    expect(source).toContain("mobile:live-odds-refresh-preflight");
+    expect(source).toContain("quota_spending_loop_already_running");
+    expect(source).toContain("refusing to start another live provider refresh");
+    expect(source).toContain("checksNoQuotaRuntimePreflightBeforeProviderRefresh");
+    expect(source).toContain("refusesConcurrentQuotaSpendingLoop");
+    expect(source).toContain("liveOddsPreflight");
+  });
+
   it("exposes explicit one-command onboarding aliases for cached and live-provider runtime proof", () => {
     const pkg = packageJson();
     expect(pkg).toContain("mobile:one-event-onboarding:cached-runtime");
@@ -149,6 +161,7 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("ForceProviderRefresh");
     expect(source).toContain("checksNoQuotaRuntimePreflightBeforeProviderRefresh = $true");
     expect(source).toContain("refusesConcurrentQuotaSpendingLoop = $true");
+    expect(source).toContain("-SkipLiveOddsPreflight");
     expect(source).toContain("valuePrinted = $false");
     expect(source).toContain("commandLineContainsSecret = $false");
     expect(source).toContain("start_holiwyn_one_event_live_runtime.ps1");

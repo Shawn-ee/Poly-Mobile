@@ -2,6 +2,12 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle ZAQ - Live Refresh Quota Guard Contract
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Direct and secret live-provider refresh guard | `npm run mobile:one-event-live-runtime:provider`; `npm run mobile:one-event-live-runtime:provider-secret`; child preflight `npm run mobile:live-odds-refresh-preflight` | Local CLI plus existing provider proof path only after guard passes | Direct provider mode requires `THE_ODDS_API_KEY` in process env. Secret wrapper can load the key from process env or ignored `.runtime/secrets/the-odds-api-key.txt`. Neither path prints or passes the key on the command line. | Provider mode args include `RunProviderProof`, `RefreshIterations`, `MaxCredits`, `MinRemaining`, optional `ForceProviderRefresh`, and internal `SkipLiveOddsPreflight` when the secret wrapper has already passed the guard. | Preflight fields: `canRunLiveRefreshNow`, `readiness.quotaSpendingLoopRunning`, `providerKeyConfigured`, `providerKeyValuePrinted=false`, and `commandLineContainsSecret=false`; provider launch summary records `quotaPolicy.liveOddsPreflight` when direct mode runs the guard. | No schema change. Guard reads local readiness/runtime/audit summaries; provider proof may update existing `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, `MarketOutcomeSnapshot`, and `ProviderRefreshRun` only after the guard passes. | None. If another quota-spending loop is reported, the command fails instead of fabricating readiness or silently spending quota. | Installed unattended provider service ownership remains P1. This is local operator safety for the current one-event provider refresh path. |
+
 ## Cycle ZAM - Quote Display Label Contract
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |

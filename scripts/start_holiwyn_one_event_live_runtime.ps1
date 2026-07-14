@@ -11,6 +11,8 @@ param(
   [int]$RefreshIterations = 2,
   [int]$MaxCredits = 16,
   [int]$MinRemaining = 2,
+  [switch]$ForceProviderRefresh,
+  [switch]$SkipLiveOddsPreflight,
   [switch]$SkipSleep
 )
 
@@ -231,9 +233,27 @@ if (-not $backendHealthAfter.ok) {
 }
 
 $liveProofExitCode = $null
+$liveOddsPreflight = $null
+$liveOddsPreflightPath = Resolve-RepoPath ".runtime\live-odds-refresh-preflight-runtime.redacted.json"
+$liveOddsPreflightBlockedReason = $null
 if ($RunProviderProof) {
   if ([string]::IsNullOrWhiteSpace($env:THE_ODDS_API_KEY)) {
     throw "RunProviderProof requires THE_ODDS_API_KEY in the process environment. The key is not read from files or printed."
+  }
+  if (-not $SkipLiveOddsPreflight) {
+    & npm.cmd run mobile:live-odds-refresh-preflight -- "--summaryPath=$(ConvertTo-RepoPath $liveOddsPreflightPath)" | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+      throw "Live odds refresh preflight failed; refusing to spend provider quota."
+    }
+    $liveOddsPreflight = Read-JsonFile $liveOddsPreflightPath
+    if ($liveOddsPreflight.readiness.quotaSpendingLoopRunning -eq $true) {
+      $liveOddsPreflightBlockedReason = "quota_spending_loop_already_running"
+      throw "A quota-spending loop is already reported running; refusing to start another live provider refresh."
+    }
+    if ($liveOddsPreflight.canRunLiveRefreshNow -ne $true -and -not $ForceProviderRefresh) {
+      $liveOddsPreflightBlockedReason = "live_refresh_preflight_not_ready"
+      throw "Live odds refresh preflight did not mark refresh as runnable; rerun with -ForceProviderRefresh only for an intentional quota-spending override."
+    }
   }
   $proofArgs = @(
     "npm", "run", "mobile:odds-api-live-runtime-proof", "--",
@@ -296,6 +316,25 @@ $summary = [ordered]@{
       refreshIterations = $RefreshIterations
       keySource = "THE_ODDS_API_KEY process environment only"
       cachedModeUsesQuota = $false
+      checksNoQuotaRuntimePreflightBeforeProviderRefresh = [bool](-not $SkipLiveOddsPreflight)
+      refusesConcurrentQuotaSpendingLoop = $true
+      forceProviderRefresh = [bool]$ForceProviderRefresh
+      liveOddsPreflightBlockedReason = $liveOddsPreflightBlockedReason
+      liveOddsPreflight = if ($liveOddsPreflight) {
+        [ordered]@{
+          path = ConvertTo-RepoPath $liveOddsPreflightPath
+          pass = [bool]$liveOddsPreflight.pass
+          canRunLiveRefreshNow = [bool]$liveOddsPreflight.canRunLiveRefreshNow
+          liveOddsReady = [bool]$liveOddsPreflight.readiness.liveOddsReady
+          providerSnapshotFresh = [bool]$liveOddsPreflight.readiness.providerSnapshotFresh
+          quotaSpendingLoopRunning = [bool]$liveOddsPreflight.readiness.quotaSpendingLoopRunning
+          providerKeyConfigured = [bool]$liveOddsPreflight.providerKeyConfigured
+          providerKeyValuePrinted = [bool]$liveOddsPreflight.providerKeyValuePrinted
+          commandLineContainsSecret = [bool]$liveOddsPreflight.commandLineContainsSecret
+        }
+      } else {
+        $null
+      }
     }
     proof = $liveProof
   }

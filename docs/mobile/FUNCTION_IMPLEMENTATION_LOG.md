@@ -2,19 +2,20 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
-## Cycle ZAP - Secret Live-Refresh Quota Guard
+## Cycle ZAQ - Direct Live-Refresh Quota Guard
 
 - Feature/runtime worked on: live provider odds refresh operator safety for the one-event internal runtime.
 - Frontend components touched: none.
 - Backend/API routes touched: none.
 - Important functions/services touched:
+  - `scripts/start_holiwyn_one_event_live_runtime.ps1`
   - `scripts/run_holiwyn_one_event_live_runtime_with_secret.ps1`
   - `scripts/report_holiwyn_live_odds_refresh_preflight.ts` as the no-quota preflight invoked by the wrapper
   - `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`
-- User/runtime interactions supported: when an operator runs `npm run mobile:one-event-live-runtime:provider-secret`, the wrapper now runs the no-quota live-odds refresh preflight into `.runtime` before spending provider quota. It refuses to continue if another quota-spending loop is already reported running.
+- User/runtime interactions supported: when an operator runs `npm run mobile:one-event-live-runtime:provider` or `npm run mobile:one-event-live-runtime:provider-secret`, the command now runs the no-quota live-odds refresh preflight into `.runtime` before spending provider quota. It refuses to continue if another quota-spending loop is already reported running.
 - State transitions: none unless the operator intentionally runs provider refresh and the preflight passes. The new guard itself does not call providers, mutate markets, start loops, place orders, or execute settlement.
 - API/data dependencies: reads existing local readiness/runtime/audit evidence through `npm run mobile:live-odds-refresh-preflight`; the runtime summary remains under ignored `.runtime` for guard decisions.
-- Known limitations: `-ForceProviderRefresh` remains available for an intentional operator override when the preflight is not marked runnable, but concurrent quota-spending loops are still blocked by default.
+- Known limitations: `-ForceProviderRefresh` remains available for an intentional operator override when the preflight is not marked runnable, but concurrent quota-spending loops are still blocked by default. The secret wrapper skips the lower-level duplicate preflight only after its own guard succeeds.
 - Proof needed: source contract test plus no-quota secret preflight; full provider refresh should only be run when a fresh live-display odds pulse is intentionally needed.
 
 ## Cycle ZAO - Backend Live Runtime Completion Matrix

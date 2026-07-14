@@ -99,8 +99,12 @@ if ($RunProviderProof) {
       "-LiveProofSummaryPath", $LiveProofSummaryPath,
       "-RefreshIterations", "$RefreshIterations",
       "-MaxCredits", "$MaxCredits",
-      "-MinRemaining", "$MinRemaining"
+      "-MinRemaining", "$MinRemaining",
+      "-SkipLiveOddsPreflight"
     )
+    if ($ForceProviderRefresh) {
+      $args += "-ForceProviderRefresh"
+    }
     if ($SkipSleep) {
       $args += "-SkipSleep"
     }
