@@ -2,7 +2,7 @@
 
 This matrix records the current authoritative evidence for the Backend Live Runtime Survey + One Event Live Pipeline phase. It is intentionally scoped to local internal fake-token testing, not production real-money operation.
 
-Last refreshed from `main` evidence after `npm run mobile:one-event-live-runtime:provider-secret`, `npm run mobile:live-runtime-audit-gate`, and `npm run mobile:internal-tester-readiness-gate` at `2026-07-14T14:51:08.740Z`, with current S23 close-position Max evidence in `docs/mobile/audits/cycle-S23CASHOUTMAX-close-position-max.md` and latest committed baseline `2712eade`.
+Last refreshed from `main` evidence after `npm run mobile:one-event-live-runtime:provider-secret`, `npm run mobile:live-runtime-audit-gate`, and `npm run mobile:internal-tester-readiness-gate` at `2026-07-14T14:51:08.740Z`, with current S23 close-position Max evidence in `docs/mobile/audits/cycle-S23CASHOUTMAX-close-position-max.md` and latest committed baseline `2443eec6`.
 
 ## Phase Verdict
 
@@ -28,7 +28,7 @@ Last refreshed from `main` evidence after `npm run mobile:one-event-live-runtime
 | Support one real upcoming soccer event locally | Spain vs. France is the selected one-event runtime target with backend-owned market/outcome identity. | P0 pass | `docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json`; `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json` |
 | Prove mobile can trade that event end-to-end | S23 proof covers Home -> Event Detail -> line market -> ticket -> buy -> Portfolio -> close-position cashout/sell -> History. Current phone-side cashout-Max evidence confirms close-position sell mode, owned-share Max, and no Yes/No selector. | P0 pass | `docs/mobile/harness/cycle-ZBR-odds-api-live-refresh-s23-flow/cycle-ZBR-odds-api-s23-visible-flow.json`; `docs/mobile/audits/cycle-ZBR-live-provider-refresh-s23.md`; `docs/mobile/audits/cycle-S23CASHOUTMAX-close-position-max.md` |
 | Document lifecycle open/suspended/closed/settled | Open/paused/closed lifecycle controls are proven. Settlement mechanics and trusted-result execution are proven on safe disposable/clone markets. Active tester settlement waits for market close plus exact confirmation. | P0 pass for local lifecycle controls; P1 remains for production official-result automation | `docs/mobile/EVENT_LIFECYCLE_RUNBOOK.md`; `docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-matrix-summary.redacted.json`; `docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-readiness-summary.redacted.json` |
-| Give internal testers a current handoff | Readiness gate runs the ordered live-runtime audit first, then emits an operator snapshot/checklist from backend status. It reports cached trading ready, live-display odds ready, whether no-quota loops are warm right now, selected-market liquidity, and zero P0 gaps. The current restart replaced a stale external Expo listener with manager-owned server-mode Expo and reports supervisor/result-poller loops running in no-quota mode. | P0 pass | `docs/mobile/harness/odds-api-live-runtime/internal-tester-readiness-gate-summary.redacted.json`; `docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json`; `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json`; `docs/mobile/audits/cycle-ZBT-internal-tester-readiness-gate.md`; `docs/mobile/audits/cycle-ZBU-watchdog-proof-refresh.md`; `docs/mobile/audits/cycle-ZBV-cached-runtime-warm-restart.md`; `docs/mobile/audits/cycle-ZBW-live-provider-refresh-pulse.md` |
+| Give internal testers a current handoff | Readiness gate runs the ordered live-runtime audit first, then emits an operator snapshot/checklist from backend status. It separates cached trading readiness from short-window live-display odds freshness, reports whether no-quota loops are warm right now, selected-market liquidity, and zero P0 gaps. The current restart replaced a stale external Expo listener with manager-owned server-mode Expo and reports supervisor/result-poller loops running in no-quota mode. | P0 pass | `docs/mobile/harness/odds-api-live-runtime/internal-tester-readiness-gate-summary.redacted.json`; `docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json`; `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json`; `docs/mobile/INTERNAL_TESTER_OPERATOR_HANDOFF.md`; `docs/mobile/audits/cycle-ZBT-internal-tester-readiness-gate.md`; `docs/mobile/audits/cycle-ZBU-watchdog-proof-refresh.md`; `docs/mobile/audits/cycle-ZBV-cached-runtime-warm-restart.md`; `docs/mobile/audits/cycle-ZBW-live-provider-refresh-pulse.md`; `docs/mobile/audits/cycle-ZBX-operator-handoff-clarity.md` |
 | Reconcile stale survey wording | Earlier survey text still described source-aware refresh and continuous maker loops as missing P0s. Current survey now records them as complete for local one-event runtime, with P1 remaining only for installed production service ownership. | P0 pass | `docs/mobile/BACKEND_LIVE_RUNTIME_SURVEY.md`; `docs/mobile/audits/cycle-ZAV-live-runtime-survey-reconciliation.md` |
 
 ## Current Operator Truth
@@ -41,8 +41,8 @@ Last refreshed from `main` evidence after `npm run mobile:one-event-live-runtime
 - Warm no-quota runtime loops: current snapshot says supervisor and result-poller are running in cached no-quota mode.
 - Provider quota spending loop: none.
 - Selected outcome quote: bid `0.58`, ask `0.59`.
-- Mobile-route live-display odds freshness: ready after the latest explicit provider-secret refresh pulse.
-- Live-display odds refresh action: none right now; run the explicit provider-secret command only when fresh display odds are required again.
+- Mobile-route live-display odds freshness: proven ready immediately after the latest explicit provider-secret refresh pulse, but expected to age back to refresh-due/stale under the 60/90-second live-display thresholds. Treat `GET /api/internal/live-runtime/status` as the current authority.
+- Live-display odds refresh action: run the explicit provider-secret command only when fresh display odds are required again.
 - Active settlement action: wait for/apply market close before exact-confirmed settlement execution.
 
 ## Commands
@@ -54,6 +54,7 @@ Last refreshed from `main` evidence after `npm run mobile:one-event-live-runtime
 | Warm local tester runtime | `npm run mobile:internal-tester-runtime:cached-start` | No provider quota |
 | Fresh live-display odds pulse | `npm run mobile:one-event-live-runtime:provider-secret` | Uses provider quota, key-gated |
 | Stop manager-owned runtime | `npm run mobile:internal-tester-runtime:stop` | No provider quota |
+| Operator handoff guide | `docs/mobile/INTERNAL_TESTER_OPERATOR_HANDOFF.md` | No provider quota |
 
 ## Remaining Gaps
 
