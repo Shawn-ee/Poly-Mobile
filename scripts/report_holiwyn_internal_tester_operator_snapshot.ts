@@ -270,6 +270,8 @@ async function main() {
       status: statusBody.status ?? null,
       localInternalRuntimeReady: getPath(statusBody, ["runtimeTruth", "localInternalRuntimeReady"]) === true,
       localTesterReadyRightNow: getPath(statusBody, ["runtimeTruth", "localTesterReadyRightNow"]) === true,
+      cachedTesterReadyRightNow: getPath(statusBody, ["runtimeTruth", "cachedTesterReadyRightNow"]) === true,
+      liveOddsReadyRightNow: getPath(statusBody, ["runtimeTruth", "liveOddsReadyRightNow"]) === true,
       currentRuntimeState: statusBody.currentRuntimeState ?? null,
       managedProcesses: statusBody.managedProcesses ?? null,
       serviceOwnership: {

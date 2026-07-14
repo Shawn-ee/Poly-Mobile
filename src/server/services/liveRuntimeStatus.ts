@@ -795,7 +795,9 @@ function buildCurrentRuntimeState(params: {
     quotaSpendingLoopRunning: params.quotaSpendingLoopRunning,
     backendProofFresh: params.backendProofFresh,
     providerSnapshotFresh: params.providerSnapshotFresh,
-    testerReadyRightNow: noQuotaWarmRuntime && params.providerSnapshotFresh,
+    cachedTesterReadyRightNow: noQuotaWarmRuntime,
+    liveOddsReadyRightNow: noQuotaWarmRuntime && params.providerSnapshotFresh,
+    testerReadyRightNow: noQuotaWarmRuntime,
     p0,
     p1,
     nextAction:
@@ -809,7 +811,7 @@ function buildCurrentRuntimeState(params: {
             ? "start_missing_local_loop_or_run_watchdog"
             : "rerun_batch_readiness_and_phase_audit",
     note:
-      "This separates proven local capability from current process warmth. Ready status can be true while loops are stopped; testerReadyRightNow requires both local loops running without provider quota and fresh mobile-visible provider snapshots.",
+      "This separates proven local capability, cached internal tester warmth, and live mobile odds freshness. Cached tester readiness requires warm no-quota loops; live odds readiness additionally requires fresh mobile-visible provider snapshots.",
   };
 }
 
@@ -1099,6 +1101,8 @@ function buildProductionReadinessBoundary(params: {
     checked: true,
     localInternalRuntimeReady: params.localCapabilityReady,
     localTesterReadyRightNow: params.currentRuntimeState.testerReadyRightNow,
+    cachedTesterReadyRightNow: params.currentRuntimeState.cachedTesterReadyRightNow,
+    liveOddsReadyRightNow: params.currentRuntimeState.liveOddsReadyRightNow,
     productionReady: false,
     fullProductionRuntimeComplete: false,
     fakeTokenOnly: true,
@@ -1964,6 +1968,9 @@ export async function getLocalLiveRuntimeStatus(options: { phaseAuditInProgress?
     selectedMarket: selectedMarketForStatus ?? null,
     runtimeTruth: {
       localInternalRuntimeReady: ready,
+      localTesterReadyRightNow: currentRuntimeState.testerReadyRightNow,
+      cachedTesterReadyRightNow: currentRuntimeState.cachedTesterReadyRightNow,
+      liveOddsReadyRightNow: currentRuntimeState.liveOddsReadyRightNow,
       fullProductionRuntimeComplete: getPath(completionAudit, ["runtimeTruth", "fullProductionRuntimeComplete"]) === true,
       installedUnattendedService: getPath(completionAudit, ["runtimeTruth", "installedUnattendedService"]) === true,
       internalTesterWatchdogPass: getPath(completionAudit, ["runtimeTruth", "internalTesterWatchdogPass"]) === true,

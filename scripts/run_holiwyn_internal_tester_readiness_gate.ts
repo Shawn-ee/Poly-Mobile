@@ -148,6 +148,8 @@ async function main() {
       recommendedFirstAction: getPath(operatorSnapshot, ["operatorNextActions", "recommendedFirstAction"]) ?? null,
       recommendedCommand: getPath(operatorSnapshot, ["operatorNextActions", "recommendedCommand"]) ?? null,
       localTesterReadyRightNow: getPath(operatorSnapshot, ["runtime", "localTesterReadyRightNow"]) === true,
+      cachedTesterReadyRightNow: getPath(operatorSnapshot, ["runtime", "cachedTesterReadyRightNow"]) === true,
+      liveOddsReadyRightNow: getPath(operatorSnapshot, ["runtime", "liveOddsReadyRightNow"]) === true,
       cachedTradingReady: pass && getPath(operatorSnapshot, ["runtime", "localInternalRuntimeReady"]) === true,
       liveOddsReady: pass && warmNoQuotaRuntime && providerSnapshotFresh && !quotaSpendingLoopRunning,
       warmNoQuotaRuntime,

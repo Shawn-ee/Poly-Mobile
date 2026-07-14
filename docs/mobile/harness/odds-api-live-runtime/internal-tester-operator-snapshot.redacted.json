@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T02:56:20.189Z",
+  "generatedAt": "2026-07-14T03:02:18.107Z",
   "scope": "holiwyn-internal-tester-operator-snapshot",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -29,14 +29,16 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-14T02:56:19.076Z"
+      "timestamp": "2026-07-14T03:02:16.790Z"
     },
     "error": null
   },
   "runtime": {
     "status": "ready",
     "localInternalRuntimeReady": true,
-    "localTesterReadyRightNow": false,
+    "localTesterReadyRightNow": true,
+    "cachedTesterReadyRightNow": true,
+    "liveOddsReadyRightNow": false,
     "currentRuntimeState": {
       "checked": true,
       "mode": "warm_no_quota_runtime",
@@ -49,13 +51,15 @@
       "quotaSpendingLoopRunning": false,
       "backendProofFresh": true,
       "providerSnapshotFresh": false,
-      "testerReadyRightNow": false,
+      "cachedTesterReadyRightNow": true,
+      "liveOddsReadyRightNow": false,
+      "testerReadyRightNow": true,
       "p0": [],
       "p1": [
         "mobile_provider_snapshot_not_fresh"
       ],
       "nextAction": "keep_cached_testing_or_refresh_live_odds",
-      "note": "This separates proven local capability from current process warmth. Ready status can be true while loops are stopped; testerReadyRightNow requires both local loops running without provider quota and fresh mobile-visible provider snapshots."
+      "note": "This separates proven local capability, cached internal tester warmth, and live mobile odds freshness. Cached tester readiness requires warm no-quota loops; live odds readiness additionally requires fresh mobile-visible provider snapshots."
     },
     "managedProcesses": {
       "supervisor": {
@@ -123,8 +127,8 @@
     "reason": null,
     "snapshotCount": 2,
     "latestFetchedAt": "2026-07-14T01:56:44.225Z",
-    "latestAgeHours": 0.99,
-    "latestAgeSeconds": 3576,
+    "latestAgeHours": 1.09,
+    "latestAgeSeconds": 3934,
     "maxAgeHours": 24,
     "sources": [
       "sportsbook-odds"
@@ -224,9 +228,9 @@
     "source": "the-odds-api",
     "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
     "sourceUpdatedAt": "2026-07-14T01:56:44.225Z",
-    "now": "2026-07-14T02:56:20.182Z",
+    "now": "2026-07-14T03:02:18.099Z",
     "startTime": "2026-07-14T19:00:00.000Z",
-    "secondsUntilStart": 57820,
+    "secondsUntilStart": 57462,
     "startAgeSeconds": 0,
     "suspendBeforeStartSeconds": 300,
     "insideSuspendWindow": false,

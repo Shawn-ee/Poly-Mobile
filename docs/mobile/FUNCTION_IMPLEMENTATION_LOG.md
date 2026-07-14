@@ -16110,3 +16110,17 @@ Known limitations:
   - `docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json`
   - `docs/mobile/harness/odds-api-live-runtime/internal-tester-readiness-gate-summary.redacted.json`
 - Known limitations: current live mobile odds snapshots remain stale under the 90-second display window unless an explicit provider refresh is run. Cached internal trading is ready. Installed unattended services and production official-result auto-settlement remain P1.
+
+## Cycle ZW3 - Readiness Contract Split
+
+- Feature/runtime worked on: operator-facing readiness truth for the current `Spain vs. France` internal tester runtime.
+- Frontend components touched: none.
+- Backend/routes touched: `GET /api/internal/live-runtime/status` through `src/server/services/liveRuntimeStatus.ts`.
+- Important functions/services touched: `buildCurrentRuntimeState`, `buildProductionReadinessBoundary`, `scripts/report_holiwyn_internal_tester_operator_snapshot.ts`, and `scripts/run_holiwyn_internal_tester_readiness_gate.ts`.
+- User/runtime interactions supported: local operators can distinguish "cached internal tester trading is ready now" from "live mobile odds need an explicit provider refresh." Stale mobile-visible provider snapshots no longer make the no-quota cached tester flow look unavailable.
+- State transitions: none. This is a read-only status/reporting contract change. It does not call The Odds API, start new loops, import markets, place orders, or execute settlement.
+- API/data dependencies: existing runtime status fields plus new `currentRuntimeState.cachedTesterReadyRightNow`, `currentRuntimeState.liveOddsReadyRightNow`, `runtimeTruth.cachedTesterReadyRightNow`, and `runtimeTruth.liveOddsReadyRightNow`.
+- Proof:
+  - `npx jest --runInBand src/__tests__/liveRuntimeStatus.service.test.ts src/__tests__/internal.live-runtime.status.route.test.ts src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`
+  - `npm run mobile:internal-tester-readiness-gate`
+- Known limitations: live odds freshness still requires the explicit key-gated provider-refresh command. Installed unattended services and production official-result auto-settlement remain P1.

@@ -10918,3 +10918,12 @@ Future migration concern:
 - Schema mismatch: none. No Prisma schema or model changes.
 - Temporary mock/static data: none added. Local maker seed writes backend-owned fake-token quote liquidity for the selected outcome and preserves the same market/outcome contract used by mobile orders.
 - Remaining gaps: live mobile provider snapshots still need explicit key-gated refresh when live odds freshness is required. Installed unattended service ownership and production official-result auto-settlement remain P1.
+
+## Cycle ZW3 - Readiness Contract Split
+
+- Fields added/confirmed for tooling: `currentRuntimeState.cachedTesterReadyRightNow`, `currentRuntimeState.liveOddsReadyRightNow`, `runtimeTruth.cachedTesterReadyRightNow`, and `runtimeTruth.liveOddsReadyRightNow`.
+- Closed or narrowed: `localTesterReadyRightNow` no longer conflates cached internal tester usability with fresh mobile-visible provider odds. Cached trading can be true while live odds freshness is false, which matches the approved local MVP mode.
+- Route mismatch: none. Existing status routes expose clearer fields and remain read-only/no-quota.
+- Schema mismatch: none. No database schema or model change.
+- Temporary mock/static data: none added. The fields are derived from real local process state, proof freshness, and provider snapshot freshness.
+- Remaining gaps: live mobile odds still require explicit key-gated provider refresh when testers need fresh provider display. Installed unattended service ownership and production official-result auto-settlement remain P1.
