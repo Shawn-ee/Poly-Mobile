@@ -1,9 +1,9 @@
 {
-    "generatedAt":  "2026-07-13T15:50:25.2184882Z",
+    "generatedAt":  "2026-07-14T14:30:37.9642002Z",
     "scope":  "holiwyn-one-event-continuous-supervisor-proof",
     "pass":  true,
-    "startedAt":  "2026-07-13T15:49:39.0847859Z",
-    "completedAt":  "2026-07-13T15:50:25.2184882Z",
+    "startedAt":  "2026-07-14T14:29:11.9118478Z",
+    "completedAt":  "2026-07-14T14:30:37.9642002Z",
     "settings":  {
                      "backendPort":  3002,
                      "intervalSeconds":  1,
@@ -21,7 +21,7 @@
                   "runtimeStatusPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-runtime-status-summary.redacted.json",
                   "backendStartSummaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\continuous-supervisor-backend-start-summary.redacted.json",
                   "backendStartedProcessStopped":  null,
-                  "nodeProcessCountBefore":  23,
+                  "nodeProcessCountBefore":  24,
                   "nodeProcessCountAfter":  23
               },
     "runtimeTruth":  {
@@ -42,8 +42,8 @@
                          "exitCode":  0,
                          "pass":  true,
                          "timedOut":  false,
-                         "startedAt":  "2026-07-13T15:49:39.1016967Z",
-                         "finishedAt":  "2026-07-13T15:49:40.0615243Z",
+                         "startedAt":  "2026-07-14T14:29:11.9289773Z",
+                         "finishedAt":  "2026-07-14T14:30:15.5645379Z",
                          "outputTail":  [
                                             "                         \"installedOsService\":  false,",
                                             "                         \"providerRefreshMode\":  \"cached provider proof verification; no provider quota spent\",",
@@ -73,8 +73,8 @@
                          "exitCode":  0,
                          "pass":  true,
                          "timedOut":  false,
-                         "startedAt":  "2026-07-13T15:49:39.0847859Z",
-                         "finishedAt":  "2026-07-13T15:49:40.1159823Z",
+                         "startedAt":  "2026-07-14T14:29:11.9118478Z",
+                         "finishedAt":  "2026-07-14T14:30:15.6624543Z",
                          "outputTail":  [
                                             "backend status: already_healthy"
                                         ]
@@ -85,8 +85,8 @@
                          "exitCode":  0,
                          "pass":  true,
                          "timedOut":  false,
-                         "startedAt":  "2026-07-13T15:49:40.1179823Z",
-                         "finishedAt":  "2026-07-13T15:50:18.6320819Z",
+                         "startedAt":  "2026-07-14T14:30:15.6644542Z",
+                         "finishedAt":  "2026-07-14T14:30:35.0163858Z",
                          "outputTail":  [
                                             "                                                  \"p2\":  [",
                                             "                                                             \"multi-market inventory-aware quoting remains future work\"",
@@ -116,8 +116,8 @@
                          "exitCode":  0,
                          "pass":  true,
                          "timedOut":  false,
-                         "startedAt":  "2026-07-13T15:50:18.6407012Z",
-                         "finishedAt":  "2026-07-13T15:50:23.0549552Z",
+                         "startedAt":  "2026-07-14T14:30:35.0258972Z",
+                         "finishedAt":  "2026-07-14T14:30:37.1995276Z",
                          "outputTail":  [
                                             "    \"continuousSupervisorProofPassed\": true,",
                                             "    \"repeatedSupervisorCapabilitiesKnown\": true,",
@@ -147,8 +147,8 @@
                          "exitCode":  0,
                          "pass":  true,
                          "timedOut":  false,
-                         "startedAt":  "2026-07-13T15:50:23.0564587Z",
-                         "finishedAt":  "2026-07-13T15:50:25.1869592Z",
+                         "startedAt":  "2026-07-14T14:30:37.2005303Z",
+                         "finishedAt":  "2026-07-14T14:30:37.9404904Z",
                          "outputTail":  [
                                             "                         \"installedOsService\":  false,",
                                             "                         \"providerRefreshMode\":  \"cached provider proof verification; no provider quota spent\",",

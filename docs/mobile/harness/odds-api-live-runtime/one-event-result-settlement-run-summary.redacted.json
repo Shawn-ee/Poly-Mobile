@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T04:43:57.857Z",
+  "generatedAt": "2026-07-14T14:32:01.096Z",
   "scope": "odds-api-one-event-result-settlement-scheduler-run",
   "pass": true,
   "eventSlug": "odds-api-single-soccer-test",
@@ -13,20 +13,10 @@
     "awayScore": 2,
     "recordedAt": "2026-07-15T00:05:00Z"
   },
-  "action": "approved_waiting_for_closed_market",
+  "action": "preview_settlement",
   "executionRequested": false,
-  "autoExecuteApproved": true,
-  "approval": {
-    "path": "docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
-    "matched": {
-      "eventSlug": "odds-api-single-soccer-test",
-      "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-      "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
-      "resultDigest": "f3a5743c73f2",
-      "approvedBy": "holiwyn-local-approval-audit-proof",
-      "approvedAt": "2026-07-14T02:49:40.228Z"
-    }
-  },
+  "autoExecuteApproved": false,
+  "approval": null,
   "providerStatus": "trusted_external_input",
   "command": {
     "executable": "C:\\nvm4w\\nodejs\\node.exe",
@@ -35,20 +25,19 @@
       "scripts/settle_odds_api_one_event_from_result.ts",
       "--eventSlug=odds-api-single-soccer-test",
       "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
-      "--output=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json",
-      "--writeAuditEvent"
+      "--output=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json"
     ],
     "exitCode": 0,
     "stdoutTail": [
-      "  \"auditEvent\": {",
-      "    \"id\": \"43\",",
-      "    \"sequence\": \"43\",",
-      "    \"type\": \"settlement.trusted_result.preflight\",",
-      "    \"stream\": \"market\",",
-      "    \"marketId\": \"78ea76f1-fc8f-419b-ac21-2554d79093f6\",",
-      "    \"outcomeId\": \"cf189c8a-cadc-4742-9f1f-e64a4911f228\",",
-      "    \"createdAt\": \"2026-07-14T04:43:57.823Z\"",
+      "    \"executeRequiresFlag\": \"--execute\",",
+      "    \"executeRequiresConfirm\": \"SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:caa93a28-258a-4bc7-8dc0-10afe9f342b8:f3a5743c73f2\",",
+      "    \"executeRequiresMarketStatus\": \"CLOSED\",",
+      "    \"currentMarketStatus\": \"LIVE\",",
+      "    \"resultDigest\": \"f3a5743c73f2\",",
+      "    \"actorUserId\": \"holiwyn-local-result-settlement-operator\",",
+      "    \"providerStatus\": \"trusted_external_input\"",
       "  },",
+      "  \"auditEvent\": null,",
       "  \"gaps\": {",
       "    \"p0\": [],",
       "    \"p1\": [",
@@ -73,85 +62,9 @@
       "}"
     ]
   },
-  "previewCommand": {
-    "executable": "C:\\nvm4w\\nodejs\\node.exe",
-    "args": [
-      "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\node_modules\\tsx\\dist\\cli.mjs",
-      "scripts/settle_odds_api_one_event_from_result.ts",
-      "--eventSlug=odds-api-single-soccer-test",
-      "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
-      "--output=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json",
-      "--writeAuditEvent"
-    ],
-    "exitCode": 0,
-    "stdoutTail": [
-      "  \"auditEvent\": {",
-      "    \"id\": \"43\",",
-      "    \"sequence\": \"43\",",
-      "    \"type\": \"settlement.trusted_result.preflight\",",
-      "    \"stream\": \"market\",",
-      "    \"marketId\": \"78ea76f1-fc8f-419b-ac21-2554d79093f6\",",
-      "    \"outcomeId\": \"cf189c8a-cadc-4742-9f1f-e64a4911f228\",",
-      "    \"createdAt\": \"2026-07-14T04:43:57.823Z\"",
-      "  },",
-      "  \"gaps\": {",
-      "    \"p0\": [],",
-      "    \"p1\": [",
-      "      \"Provider-shaped result ingestion can produce trusted result JSON, but this command intentionally consumes only reviewed trusted result JSON.\",",
-      "      \"Automatic unattended result polling and settlement execution are not installed.\"",
-      "    ],",
-      "    \"p2\": [",
-      "      \"Operator settlement UI and multi-event settlement queue remain future work.\"",
-      "    ]",
-      "  }",
-      "}"
-    ],
-    "stderrTail": [
-      "[config] warnings {",
-      "  env: 'development',",
-      "  warnings: [",
-      "    'ADMIN_EMAILS is not set; admin bootstrap may be limited',",
-      "    'POLYGON_RPC_URL is not set; Polygon deposit monitor is disabled',",
-      "    'POLYGON_USDC_ADDRESS is not set; Polygon deposit monitor is disabled',",
-      "    'DEPOSIT_WALLET_ENCRYPTION_KEY is not set; deposit wallet generation is disabled'",
-      "  ]",
-      "}"
-    ]
-  },
+  "previewCommand": null,
   "settlementSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json",
-  "previewSettlementDigest": {
-    "pass": true,
-    "mode": "dry-run",
-    "selectedMarket": {
-      "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-      "slug": "odds-api-single-soccer-test-totals-7439c2d603",
-      "title": "Spain vs. France: Total Goals 2.5",
-      "marketType": "total_goals",
-      "marketGroupKey": "totals",
-      "line": "2.5",
-      "statusBefore": "LIVE",
-      "resolvedOutcomeIdBefore": null,
-      "collateralUSDCBefore": "550"
-    },
-    "winningOutcome": {
-      "id": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
-      "name": "Over 2.5",
-      "label": "Over 2.5",
-      "side": "over",
-      "code": "OVER"
-    },
-    "controls": {
-      "dryRunIsDefault": true,
-      "writeAuditEvent": true,
-      "executeRequiresFlag": "--execute",
-      "executeRequiresConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:cf189c8a-cadc-4742-9f1f-e64a4911f228:f3a5743c73f2",
-      "executeRequiresMarketStatus": "CLOSED",
-      "currentMarketStatus": "LIVE",
-      "resultDigest": "f3a5743c73f2",
-      "actorUserId": "holiwyn-local-result-settlement-operator",
-      "providerStatus": "trusted_external_input"
-    }
-  },
+  "previewSettlementDigest": null,
   "settlementDigest": {
     "pass": true,
     "mode": "dry-run",
@@ -164,42 +77,42 @@
       "line": "2.5",
       "statusBefore": "LIVE",
       "resolvedOutcomeIdBefore": null,
-      "collateralUSDCBefore": "550"
+      "collateralUSDCBefore": "750"
     },
     "winningOutcome": {
-      "id": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
-      "name": "Over 2.5",
-      "label": "Over 2.5",
+      "id": "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
+      "name": "Over +2.5",
+      "label": "Over +2.5",
       "side": "over",
-      "code": "OVER"
+      "code": "over-2-5"
     },
     "preview": {
       "marketStatus": "LIVE",
-      "totalShares": "1100",
-      "totalWinningShares": "550",
-      "totalPayout": "550",
-      "collateralUSDC": "550",
+      "totalShares": "1500",
+      "totalWinningShares": "750",
+      "totalPayout": "750",
+      "collateralUSDC": "750",
       "payoutConservationPass": true,
       "blockers": [],
       "openOrderCleanup": {
         "openOrderCount": 3,
-        "buyOrderLockedUSDCToRelease": "125.402",
+        "buyOrderLockedUSDCToRelease": "111.402",
         "sellOrderSharesToRelease": "200"
       },
-      "payoutCount": 4,
-      "loserPositionCount": 3,
+      "payoutCount": 6,
+      "loserPositionCount": 4,
       "mutation": "none"
     },
     "execution": {
       "attempted": false,
       "reason": "dry_run_default",
-      "requiredConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:cf189c8a-cadc-4742-9f1f-e64a4911f228:f3a5743c73f2"
+      "requiredConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:caa93a28-258a-4bc7-8dc0-10afe9f342b8:f3a5743c73f2"
     },
     "controls": {
       "dryRunIsDefault": true,
-      "writeAuditEvent": true,
+      "writeAuditEvent": false,
       "executeRequiresFlag": "--execute",
-      "executeRequiresConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:cf189c8a-cadc-4742-9f1f-e64a4911f228:f3a5743c73f2",
+      "executeRequiresConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:caa93a28-258a-4bc7-8dc0-10afe9f342b8:f3a5743c73f2",
       "executeRequiresMarketStatus": "CLOSED",
       "currentMarketStatus": "LIVE",
       "resultDigest": "f3a5743c73f2",

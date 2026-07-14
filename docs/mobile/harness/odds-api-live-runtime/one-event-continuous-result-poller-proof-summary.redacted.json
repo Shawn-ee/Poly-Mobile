@@ -1,9 +1,9 @@
 {
-    "generatedAt":  "2026-07-13T15:50:59.1439380Z",
+    "generatedAt":  "2026-07-14T14:32:03.4119623Z",
     "scope":  "holiwyn-one-event-continuous-result-poller-proof",
     "pass":  true,
-    "startedAt":  "2026-07-13T15:50:27.1900358Z",
-    "completedAt":  "2026-07-13T15:50:59.1439380Z",
+    "startedAt":  "2026-07-14T14:30:38.7079976Z",
+    "completedAt":  "2026-07-14T14:32:03.4129623Z",
     "settings":  {
                      "eventSlug":  "odds-api-single-soccer-test",
                      "intervalSeconds":  1,
@@ -38,8 +38,8 @@
                          "exitCode":  0,
                          "pass":  true,
                          "timedOut":  false,
-                         "startedAt":  "2026-07-13T15:50:27.2071455Z",
-                         "finishedAt":  "2026-07-13T15:50:28.9991810Z",
+                         "startedAt":  "2026-07-14T14:30:38.7245277Z",
+                         "finishedAt":  "2026-07-14T14:31:41.9572076Z",
                          "outputTail":  [
                                             "                         \"localBackgroundProcessRunning\":  false,",
                                             "                         \"installedOsService\":  false,",
@@ -69,8 +69,8 @@
                          "exitCode":  0,
                          "pass":  true,
                          "timedOut":  false,
-                         "startedAt":  "2026-07-13T15:50:29.0066924Z",
-                         "finishedAt":  "2026-07-13T15:50:31.1155637Z",
+                         "startedAt":  "2026-07-14T14:31:41.9642065Z",
+                         "finishedAt":  "2026-07-14T14:31:43.6195687Z",
                          "outputTail":  [
                                             "                         \"localBackgroundProcessRunning\":  true,",
                                             "                         \"installedOsService\":  false,",
@@ -100,8 +100,8 @@
                          "exitCode":  0,
                          "pass":  true,
                          "timedOut":  false,
-                         "startedAt":  "2026-07-13T15:50:37.1706257Z",
-                         "finishedAt":  "2026-07-13T15:50:41.3222406Z",
+                         "startedAt":  "2026-07-14T14:31:47.6749983Z",
+                         "finishedAt":  "2026-07-14T14:31:49.0039267Z",
                          "outputTail":  [
                                             "                         \"localBackgroundProcessRunning\":  true,",
                                             "                         \"installedOsService\":  false,",
@@ -131,8 +131,8 @@
                          "exitCode":  0,
                          "pass":  true,
                          "timedOut":  false,
-                         "startedAt":  "2026-07-13T15:50:41.3232440Z",
-                         "finishedAt":  "2026-07-13T15:50:43.7649005Z",
+                         "startedAt":  "2026-07-14T14:31:49.0049299Z",
+                         "finishedAt":  "2026-07-14T14:31:54.7443680Z",
                          "outputTail":  [
                                             "                         \"localBackgroundProcessRunning\":  false,",
                                             "                         \"installedOsService\":  false,",
@@ -162,8 +162,8 @@
                          "exitCode":  0,
                          "pass":  true,
                          "timedOut":  false,
-                         "startedAt":  "2026-07-13T15:50:43.7674079Z",
-                         "finishedAt":  "2026-07-13T15:50:59.1257874Z",
+                         "startedAt":  "2026-07-14T14:31:54.7453687Z",
+                         "finishedAt":  "2026-07-14T14:32:03.3940732Z",
                          "outputTail":  [
                                             "                                                                 \"currentMarketStatus\":  \"LIVE\",",
                                             "                                                                 \"resultDigest\":  \"f3a5743c73f2\",",
@@ -189,15 +189,16 @@
                      }
                  ],
     "processSummary":  {
-                           "generatedAt":  "2026-07-13T15:50:43.6967504Z",
+                           "generatedAt":  "2026-07-14T14:31:54.6746927Z",
                            "scope":  "holiwyn-one-event-result-poller-process",
                            "pass":  true,
                            "operation":  {
                                              "action":  "stop",
-                                             "startedAt":  "2026-07-13T15:50:42.3401419Z",
+                                             "startedAt":  "2026-07-14T14:31:50.5278698Z",
                                              "force":  false,
                                              "result":  "stopped",
-                                             "pid":  57380
+                                             "graceful":  true,
+                                             "pid":  16980
                                          },
                            "process":  {
                                            "statePath":  ".runtime/one-event-result-poller/result-poller-process-state.json",
@@ -205,18 +206,18 @@
                                            "stderr":  ".runtime/one-event-result-poller/result-poller.err.log",
                                            "before":  {
                                                           "known":  true,
-                                                          "pid":  57380,
+                                                          "pid":  16980,
                                                           "running":  true,
                                                           "process":  {
-                                                                          "id":  57380,
+                                                                          "id":  16980,
                                                                           "processName":  "powershell",
-                                                                          "startTime":  "2026-07-13T15:50:31.0015332Z",
+                                                                          "startTime":  "2026-07-14T14:31:43.4971691Z",
                                                                           "hasExited":  false
                                                                       },
                                                           "state":  {
-                                                                        "pid":  57380,
-                                                                        "startedAt":  "2026-07-13T15:50:31.0125542Z",
-                                                                        "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\scripts\\run_holiwyn_one_event_result_poller.ps1 -EventSlug odds-api-single-soccer-test -ResultPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -IntervalSeconds 1 -Continuous -MaxIterations 0 -RunResultSettlement",
+                                                                        "pid":  16980,
+                                                                        "startedAt":  "2026-07-14T14:31:43.5064920Z",
+                                                                        "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\scripts\\run_holiwyn_one_event_result_poller.ps1 -EventSlug odds-api-single-soccer-test -ResultPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -IntervalSeconds 1 -Continuous -MaxIterations 0 -RunResultSettlement -StopRequestPath C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\.runtime\\one-event-result-poller\\stop-request.json",
                                                                         "eventSlug":  "odds-api-single-soccer-test",
                                                                         "resultPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
                                                                         "continuous":  true,
@@ -235,13 +236,13 @@
                                                       },
                                            "after":  {
                                                          "known":  true,
-                                                         "pid":  57380,
+                                                         "pid":  16980,
                                                          "running":  false,
                                                          "process":  null,
                                                          "state":  {
-                                                                       "pid":  57380,
-                                                                       "startedAt":  "2026-07-13T15:50:31.0125542Z",
-                                                                       "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\scripts\\run_holiwyn_one_event_result_poller.ps1 -EventSlug odds-api-single-soccer-test -ResultPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -IntervalSeconds 1 -Continuous -MaxIterations 0 -RunResultSettlement",
+                                                                       "pid":  16980,
+                                                                       "startedAt":  "2026-07-14T14:31:43.5064920Z",
+                                                                       "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\scripts\\run_holiwyn_one_event_result_poller.ps1 -EventSlug odds-api-single-soccer-test -ResultPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -IntervalSeconds 1 -Continuous -MaxIterations 0 -RunResultSettlement -StopRequestPath C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\.runtime\\one-event-result-poller\\stop-request.json",
                                                                        "eventSlug":  "odds-api-single-soccer-test",
                                                                        "resultPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
                                                                        "continuous":  true,
@@ -262,14 +263,14 @@
                            "poller":  {
                                           "summaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-result-poller-summary.redacted.json",
                                           "digest":  {
-                                                         "generatedAt":  "2026-07-13T13:39:13.0379250Z",
+                                                         "generatedAt":  "2026-07-14T14:31:53.0195925Z",
                                                          "pass":  true,
-                                                         "startedAt":  "2026-07-13T13:39:08.7251271Z",
-                                                         "completedAt":  "2026-07-13T13:39:13.0379250Z",
+                                                         "startedAt":  "2026-07-14T14:31:43.7393880Z",
+                                                         "completedAt":  "2026-07-14T14:31:53.0195925Z",
                                                          "eventSlug":  "odds-api-single-soccer-test",
                                                          "settings":  {
-                                                                          "continuous":  false,
-                                                                          "maxIterations":  2,
+                                                                          "continuous":  true,
+                                                                          "maxIterations":  0,
                                                                           "completedIterations":  2,
                                                                           "intervalSeconds":  1,
                                                                           "runLiveResultIngestion":  false,

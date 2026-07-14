@@ -1,36 +1,12 @@
 {
-    "generatedAt":  "2026-07-13T21:37:30.0643116Z",
+    "generatedAt":  "2026-07-14T14:29:11.2163100Z",
     "scope":  "holiwyn-internal-tester-runtime-manager",
     "pass":  true,
-    "action":  "start",
-    "startedAt":  "2026-07-13T21:37:22.0542239Z",
-    "completedAt":  "2026-07-13T21:37:30.0653095Z",
+    "action":  "status",
+    "startedAt":  "2026-07-14T14:29:04.8553933Z",
+    "completedAt":  "2026-07-14T14:29:11.2180326Z",
     "operations":  [
-                       {
-                           "target":  "s23-adb-reverse",
-                           "result":  "configured",
-                           "pid":  null
-                       },
-                       {
-                           "target":  "backend",
-                           "result":  "external_listener_reused",
-                           "pid":  43088
-                       },
-                       {
-                           "target":  "expo",
-                           "result":  "external_listener_reused",
-                           "pid":  80736
-                       },
-                       {
-                           "target":  "supervisor",
-                           "result":  "started_direct",
-                           "pid":  55136
-                       },
-                       {
-                           "target":  "result-poller",
-                           "result":  "started_direct",
-                           "pid":  26096
-                       }
+
                    ],
     "backend":  {
                     "baseUrl":  "http://127.0.0.1:3002",
@@ -39,7 +15,7 @@
                                    "status":  "ok",
                                    "db":  "connected",
                                    "env":  "development",
-                                   "timestamp":  "2026-07-13T21:37:30.032Z",
+                                   "timestamp":  "2026-07-14T14:29:09.571Z",
                                    "error":  null
                                },
                     "portOwner":  {
@@ -54,11 +30,11 @@
                  "port":  8081,
                  "portOwner":  {
                                    "port":  8081,
-                                   "pid":  80736,
+                                   "pid":  60196,
                                    "processName":  "node"
                                },
                  "ownedByManager":  false,
-                 "ownedProcessRunning":  true,
+                 "ownedProcessRunning":  false,
                  "serverModeSource":  "external_listener_unverified",
                  "serverModeVerified":  false,
                  "externalServerModeUnverified":  true
@@ -68,15 +44,15 @@
                            "status":  "poly_postgres|Up 9 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
                        },
     "s23":  {
-                "connected":  true,
-                "deviceId":  "172.16.200.27:44029",
-                "model":  "SM_S911U1",
-                "raw":  "172.16.200.27:44029    device product:dm1quew model:SM_S911U1 device:dm1q transport_id:2",
+                "connected":  false,
+                "deviceId":  null,
+                "model":  null,
+                "raw":  null,
                 "adbTimedOut":  false,
                 "error":  null
             },
     "supervisor":  {
-                       "startRequested":  true,
+                       "startRequested":  false,
                        "statusSummaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-live-supervisor-process-summary.redacted.json",
                        "processSummary":  {
                                               "pass":  true,
@@ -87,18 +63,18 @@
                                                             },
                                               "process":  {
                                                               "before":  {
-                                                                             "pid":  55136,
+                                                                             "pid":  30496,
                                                                              "running":  true
                                                                          },
                                                               "after":  {
-                                                                            "pid":  55136,
+                                                                            "pid":  30496,
                                                                             "running":  true
                                                                         }
                                                           }
                                           }
                    },
     "resultPoller":  {
-                         "startRequested":  true,
+                         "startRequested":  false,
                          "statusSummaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-result-poller-process-summary.redacted.json",
                          "processSummary":  {
                                                 "pass":  true,
@@ -109,27 +85,27 @@
                                                               },
                                                 "process":  {
                                                                 "before":  {
-                                                                               "pid":  26096,
+                                                                               "pid":  55180,
                                                                                "running":  true
                                                                            },
                                                                 "after":  {
-                                                                              "pid":  26096,
+                                                                              "pid":  55180,
                                                                               "running":  true
                                                                           }
                                                             }
                                             }
                      },
     "readiness":  {
-                      "waitRequested":  true,
+                      "waitRequested":  false,
                       "backendReady":  true,
                       "expoReady":  true,
                       "postgresReady":  true,
-                      "s23Connected":  true
+                      "s23Connected":  false
                   },
     "liveRuntimeStatus":  {
                               "checked":  true,
-                              "warmRuntimeRequired":  true,
-                              "warmRuntimeObserved":  true,
+                              "warmRuntimeRequired":  false,
+                              "warmRuntimeObserved":  false,
                               "statusDigest":  {
                                                    "ok":  true,
                                                    "status":  200,
@@ -141,7 +117,7 @@
                                                                                "resultPollerRunning":  true,
                                                                                "quotaSpendingLoopRunning":  false,
                                                                                "providerSnapshotFresh":  false,
-                                                                               "testerReadyRightNow":  false,
+                                                                               "testerReadyRightNow":  true,
                                                                                "p0":  [
 
                                                                                       ],
@@ -161,8 +137,8 @@
                          "supervisorBackgroundProcessAvailable":  true,
                          "resultPollerBackgroundProcessAvailable":  true,
                          "resultPollerBackgroundProcessRunning":  true,
-                         "liveRuntimeStatusWarmObserved":  true,
-                         "liveRuntimeStatusWarmRequiredForLoopStart":  true,
+                         "liveRuntimeStatusWarmObserved":  false,
+                         "liveRuntimeStatusWarmRequiredForLoopStart":  false,
                          "managerStartedExpoUsesServerMode":  false,
                          "expoServerModeSource":  "external_listener_unverified",
                          "externalExpoServerModeUnverified":  true,

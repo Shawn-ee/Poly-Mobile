@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T14:24:13.972Z",
+  "generatedAt": "2026-07-14T14:32:43.189Z",
   "scope": "holiwyn-internal-tester-operator-snapshot",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -30,7 +30,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-14T14:24:12.137Z"
+      "timestamp": "2026-07-14T14:32:41.756Z"
     },
     "error": null
   },
@@ -44,24 +44,26 @@
     "runtimeStatusAcceptedAsCachedInternalTesting": false,
     "currentRuntimeState": {
       "checked": true,
-      "mode": "warm_no_quota_runtime",
+      "mode": "proven_capability_loops_stopped",
       "localCapabilityReady": true,
-      "warmNoQuotaRuntime": true,
-      "allLoopsRunning": true,
-      "anyLoopRunning": true,
-      "supervisorRunning": true,
-      "resultPollerRunning": true,
+      "warmNoQuotaRuntime": false,
+      "allLoopsRunning": false,
+      "anyLoopRunning": false,
+      "supervisorRunning": false,
+      "resultPollerRunning": false,
       "quotaSpendingLoopRunning": false,
       "backendProofFresh": true,
       "providerSnapshotFresh": false,
-      "cachedTesterReadyRightNow": true,
+      "cachedTesterReadyRightNow": false,
       "liveOddsReadyRightNow": false,
-      "testerReadyRightNow": true,
+      "testerReadyRightNow": false,
       "p0": [],
       "p1": [
+        "supervisor_loop_not_running_now",
+        "result_poller_loop_not_running_now",
         "mobile_provider_snapshot_not_fresh"
       ],
-      "nextAction": "keep_cached_testing_or_refresh_live_odds",
+      "nextAction": "start_internal_tester_runtime_with_supervisor_and_result_poller",
       "note": "This separates proven local capability, cached internal tester warmth, and live mobile odds freshness. Cached tester readiness requires warm no-quota loops; live odds readiness additionally requires fresh mobile-visible provider snapshots."
     },
     "managedProcesses": {
@@ -71,7 +73,7 @@
         "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json",
         "known": true,
         "pid": 30496,
-        "running": true,
+        "running": false,
         "startedAt": "2026-07-14T13:00:46.7861291Z",
         "continuous": true,
         "maxIterations": 0,
@@ -95,12 +97,12 @@
         "checked": true,
         "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json",
         "known": true,
-        "pid": 55180,
-        "running": true,
-        "startedAt": "2026-07-14T13:00:47.7750815Z",
+        "pid": 16980,
+        "running": false,
+        "startedAt": "2026-07-14T14:31:43.5064920Z",
         "continuous": true,
         "maxIterations": 0,
-        "intervalSeconds": 15,
+        "intervalSeconds": 1,
         "providerProofEveryIterations": null,
         "maxProviderProofRuns": null,
         "refreshIterations": null,
@@ -112,7 +114,7 @@
           "approvedResultSettlement": false
         }
       },
-      "anyLoopRunning": true,
+      "anyLoopRunning": false,
       "quotaSpendingLoopRunning": false,
       "note": "Read-only live process check from local .runtime state and OS pid existence. Ready status is based on proven local capability and fresh data, not on requiring background loops to be running right now."
     },
@@ -130,8 +132,8 @@
     "reason": null,
     "snapshotCount": 4,
     "latestFetchedAt": "2026-07-14T13:13:00.224Z",
-    "latestAgeHours": 1.19,
-    "latestAgeSeconds": 4274,
+    "latestAgeHours": 1.33,
+    "latestAgeSeconds": 4783,
     "maxAgeHours": 24,
     "sources": [
       "sportsbook-odds"
@@ -159,7 +161,7 @@
     "eventLifecycleAction": "none",
     "eventLifecycleWindow": "pre_start_open",
     "eventLifecycleOperatorAction": "keep_trading_available_until_suspend_window",
-    "actionCount": 5,
+    "actionCount": 7,
     "selectedAction": {
       "id": "cached_internal_testing",
       "priority": "P0",
@@ -181,12 +183,12 @@
       },
       {
         "id": "start_full_internal_tester_runtime",
-        "priority": "P2",
+        "priority": "P1",
         "label": "Start full local internal tester runtime",
         "command": "npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -WaitForReady",
         "requiresProviderKey": false,
         "spendsProviderQuota": false,
-        "reason": "The cached supervisor and result-poller are already running; this remains the no-quota restart/recover command."
+        "reason": "Starts or reuses local backend/Expo, then starts the cached supervisor and result-poller with result ingestion and approved-settlement wait mode."
       },
       {
         "id": "prove_one_command_runtime_loops",
@@ -195,7 +197,7 @@
         "command": "npm run mobile:one-event-onboarding -- -AllowDisconnectedS23 -StartRuntimeLoops -StopRuntimeLoopsAfterProof",
         "requiresProviderKey": false,
         "spendsProviderQuota": false,
-        "reason": "Re-proves the local supervisor/result-poller loop lifecycle without provider quota; use when refreshing proof artifacts."
+        "reason": "Starts the local supervisor/result-poller through onboarding, proves both are running, then stops them without provider quota."
       },
       {
         "id": "refresh_mobile_live_odds",
@@ -205,6 +207,24 @@
         "requiresProviderKey": true,
         "spendsProviderQuota": true,
         "reason": "Selected market provider snapshots are stale under the mobile 90-second live-display window; use the secret wrapper so the provider key stays in the process environment or ignored local secret file."
+      },
+      {
+        "id": "start_cached_supervisor",
+        "priority": "P1",
+        "label": "Start local cached supervisor loop",
+        "command": "npm run mobile:one-event-live-supervisor:process -- -Action start -Continuous -MaxIterations 0",
+        "requiresProviderKey": false,
+        "spendsProviderQuota": false,
+        "reason": "Keeps local maker/lifecycle/result dry-run checks warm in cached no-quota mode while the process is running."
+      },
+      {
+        "id": "start_cached_result_poller",
+        "priority": "P1",
+        "label": "Start local cached result poller",
+        "command": "npm run mobile:one-event-result-poller:process -- -Action start -Continuous -MaxIterations 0",
+        "requiresProviderKey": false,
+        "spendsProviderQuota": false,
+        "reason": "Repeats provider-shaped result ingestion and settlement scheduling dry-runs without provider quota."
       },
       {
         "id": "settlement_wait_for_closed_market",
@@ -231,9 +251,9 @@
     "source": "the-odds-api",
     "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
     "sourceUpdatedAt": "2026-07-14T13:13:00.224Z",
-    "now": "2026-07-14T14:24:13.965Z",
+    "now": "2026-07-14T14:32:43.181Z",
     "startTime": "2026-07-14T19:00:00.000Z",
-    "secondsUntilStart": 16546,
+    "secondsUntilStart": 16037,
     "startAgeSeconds": 0,
     "suspendBeforeStartSeconds": 300,
     "insideSuspendWindow": false,
@@ -257,7 +277,7 @@
         "step": "Start or verify local tester runtime",
         "expected": "npm run mobile:one-event-onboarding",
         "pass": true,
-        "notes": "Runtime loops are currently warm in no-quota mode."
+        "notes": "Runtime capability is proven, but supervisor/result-poller loops are not both running now."
       },
       {
         "step": "Open Holiwyn on Samsung S23",

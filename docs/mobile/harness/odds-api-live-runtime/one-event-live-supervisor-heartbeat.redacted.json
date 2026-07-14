@@ -1,21 +1,21 @@
 {
-    "generatedAt":  "2026-07-14T12:47:52.8050358Z",
+    "generatedAt":  "2026-07-14T14:30:32.9692907Z",
     "scope":  "holiwyn-one-event-live-supervisor-heartbeat",
     "running":  false,
     "passSoFar":  true,
-    "startedAt":  "2026-07-14T12:47:37.5230067Z",
+    "startedAt":  "2026-07-14T14:30:16.2790119Z",
     "completedIterations":  2,
     "latestIteration":  {
                             "iteration":  2,
-                            "startedAt":  "2026-07-14T12:47:45.8867644Z",
-                            "finishedAt":  "2026-07-14T12:47:52.8044118Z",
+                            "startedAt":  "2026-07-14T14:30:25.7124347Z",
+                            "finishedAt":  "2026-07-14T14:30:32.9692907Z",
                             "dataHygiene":  {
                                                 "label":  "cycle-2-data-hygiene",
                                                 "command":  "npm run mobile:one-event-data-hygiene-proof -- --summaryPath=docs\\mobile\\harness\\odds-api-live-runtime\\one-event-data-hygiene-summary.redacted.json",
                                                 "exitCode":  0,
                                                 "pass":  true,
-                                                "startedAt":  "2026-07-14T12:47:45.8867644Z",
-                                                "finishedAt":  "2026-07-14T12:47:46.8864542Z"
+                                                "startedAt":  "2026-07-14T14:30:25.7124347Z",
+                                                "finishedAt":  "2026-07-14T14:30:26.2142008Z"
                                             },
                             "dataHygienePass":  true,
                             "command":  {
@@ -23,8 +23,8 @@
                                             "command":  "npm run mobile:one-event-live-runtime -- -BackendPort 3002 -SummaryPath docs\\mobile\\harness\\odds-api-live-runtime\\one-event-runtime-launch-summary.redacted.json -MakerSeedSummaryPath docs\\mobile\\harness\\odds-api-live-runtime\\shifted-maker-seed-summary.redacted.json -SeedMaker -SkipSleep",
                                             "exitCode":  0,
                                             "pass":  true,
-                                            "startedAt":  "2026-07-14T12:47:46.8874533Z",
-                                            "finishedAt":  "2026-07-14T12:47:51.8066687Z"
+                                            "startedAt":  "2026-07-14T14:30:26.2152001Z",
+                                            "finishedAt":  "2026-07-14T14:30:29.3832895Z"
                                         },
                             "runtimeCommandAccepted":  true,
                             "runtimeSummaryPath":  "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json",
@@ -34,8 +34,8 @@
                                                        "command":  "npm run mobile:one-event-lifecycle-scheduler-run -- --summaryPath=docs\\mobile\\harness\\odds-api-live-runtime\\one-event-lifecycle-scheduler-run-summary.redacted.json",
                                                        "exitCode":  0,
                                                        "pass":  true,
-                                                       "startedAt":  "2026-07-14T12:47:51.8096682Z",
-                                                       "finishedAt":  "2026-07-14T12:47:52.8028869Z"
+                                                       "startedAt":  "2026-07-14T14:30:31.9065625Z",
+                                                       "finishedAt":  "2026-07-14T14:30:32.9682872Z"
                                                    },
                             "lifecycleSchedulerPass":  true,
                             "lifecycleSchedulerAction":  "none",
@@ -43,15 +43,29 @@
                             "staleGuardPass":  true,
                             "staleGuardMode":  "disabled",
                             "staleGuardResult":  null,
-                            "resultIngestion":  null,
+                            "resultIngestion":  {
+                                                    "label":  "cycle-2-result-ingestion",
+                                                    "command":  "npm run mobile:one-event-result-ingest -- --summaryPath=docs\\mobile\\harness\\odds-api-live-runtime\\one-event-result-ingestion-summary.redacted.json",
+                                                    "exitCode":  0,
+                                                    "pass":  true,
+                                                    "startedAt":  "2026-07-14T14:30:29.3852921Z",
+                                                    "finishedAt":  "2026-07-14T14:30:30.3877129Z"
+                                                },
                             "resultIngestionPass":  true,
-                            "resultIngestionMode":  null,
+                            "resultIngestionMode":  "fixture-replay",
                             "liveResultIngestionRan":  false,
                             "liveResultIngestionRunCount":  0,
                             "liveResultIngestionSkippedReason":  null,
-                            "resultSettlement":  null,
+                            "resultSettlement":  {
+                                                     "label":  "cycle-2-result-settlement",
+                                                     "command":  "npm run mobile:one-event-result-settlement-run -- --summaryPath=docs\\mobile\\harness\\odds-api-live-runtime\\one-event-result-settlement-run-summary.redacted.json --settlementOutput=docs\\mobile\\harness\\odds-api-live-runtime\\one-event-result-settlement-summary.redacted.json --result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+                                                     "exitCode":  0,
+                                                     "pass":  true,
+                                                     "startedAt":  "2026-07-14T14:30:30.3887128Z",
+                                                     "finishedAt":  "2026-07-14T14:30:31.8996532Z"
+                                                 },
                             "resultSettlementPass":  true,
-                            "resultSettlementAction":  null,
+                            "resultSettlementAction":  "preview_settlement",
                             "providerProofRan":  false,
                             "providerProofRunCount":  0,
                             "providerProofSkippedReason":  null,
@@ -70,14 +84,15 @@
                                                    "marketType":  "total_goals",
                                                    "marketGroupKey":  "totals",
                                                    "line":  "2.5",
-                                                   "outcomeId":  "30fbc915-74ca-4809-a0c4-cd54c3236aa4",
-                                                   "outcomeName":  "Over +2.5",
+                                                   "outcomeId":  "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
+                                                   "outcomeName":  "Over 2.5",
+                                                   "referenceOutcomeLabel":  "Over +2.5",
                                                    "referenceTokenId":  "odds-api-88263b2c42d6b2f5c6dbbda4"
                                                },
                             "maker":  {
                                           "pass":  true,
-                                          "generatedAt":  "2026-07-14T12:47:50.214Z",
-                                          "startedAt":  "2026-07-14T12:47:50.007Z",
+                                          "generatedAt":  "2026-07-14T14:30:28.447Z",
+                                          "startedAt":  "2026-07-14T14:30:27.968Z",
                                           "scope":  "odds-api-one-event-shifted-maker-seed",
                                           "mode":  "seed-resting-shifted-maker-quotes",
                                           "event":  {
@@ -93,55 +108,60 @@
                                                                  "marketType":  "total_goals",
                                                                  "marketGroupKey":  "totals",
                                                                  "line":  "2.5",
-                                                                 "outcomeId":  "b6066039-6c5a-47f1-bbc4-91cad4eb5bd1",
+                                                                 "outcomeId":  "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
                                                                  "outcomeName":  "Over 2.5",
-                                                                 "referenceOutcomeLabel":  "Over 2.5",
-                                                                 "referenceTokenId":  "odds-api-6ec5620aa25c4fcd08f1d70e"
+                                                                 "referenceOutcomeLabel":  "Over +2.5",
+                                                                 "referenceTokenId":  "odds-api-88263b2c42d6b2f5c6dbbda4"
                                                              },
                                           "providerSnapshot":  {
-                                                                   "fetchedAt":  "2026-07-14T06:03:35.211Z",
-                                                                   "ageMs":  24254815,
+                                                                   "fetchedAt":  "2026-07-14T13:13:00.224Z",
+                                                                   "ageMs":  4647763,
                                                                    "maxSnapshotAgeMs":  86400000,
                                                                    "allowStale":  false,
                                                                    "source":  "sportsbook-odds",
-                                                                   "referenceBid":  0.54,
-                                                                   "referenceAsk":  0.58,
-                                                                   "outcomePrice":  0.56
+                                                                   "referenceBid":  0.4735,
+                                                                   "referenceAsk":  0.5135,
+                                                                   "outcomePrice":  0.4935
                                                                },
                                           "maker":  {
-                                                        "id":  "d345f219-f04e-40b4-9660-410df077a594",
-                                                        "username":  "odds_live_runtime_shifted_maker_709b0631"
+                                                        "id":  "753a04a0-5aa2-4ec6-8c3f-572e46c2ee50",
+                                                        "username":  "odds_live_runtime_shifted_maker_8c4164d5"
                                                     },
                                           "collateralRepair":  {
                                                                    "repaired":  false,
-                                                                   "before":  "600",
-                                                                   "after":  "600",
+                                                                   "before":  "550",
+                                                                   "after":  "550",
                                                                    "byOutcome":  [
                                                                                      {
-                                                                                         "outcomeId":  "b6066039-6c5a-47f1-bbc4-91cad4eb5bd1",
-                                                                                         "code":  "OVER",
-                                                                                         "shares":  "600"
+                                                                                         "outcomeId":  "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
+                                                                                         "code":  "over-2-5",
+                                                                                         "shares":  "550"
                                                                                      },
                                                                                      {
-                                                                                         "outcomeId":  "3a107cb3-1a50-454f-b920-f9514f61c4be",
-                                                                                         "code":  "UNDER",
-                                                                                         "shares":  "600"
+                                                                                         "outcomeId":  "db047bba-39bc-4be0-8cb7-1f130e4bf397",
+                                                                                         "code":  "under-2-5",
+                                                                                         "shares":  "550"
                                                                                      }
                                                                                  ]
                                                                },
                                           "plan":  {
                                                        "quoteOffsetTicks":  2,
-                                                       "plannedBid":  0.52,
-                                                       "plannedAsk":  0.6,
+                                                       "plannedBid":  0.45,
+                                                       "plannedAsk":  0.59,
                                                        "adjustments":  [
-
+                                                                           "plannedAsk moved above existing best bid 0.58"
                                                                        ],
                                                        "preSeedBook":  {
-                                                                           "bestBid":  null,
+                                                                           "bestBid":  0.58,
                                                                            "bestAsk":  null,
-                                                                           "openOrderCount":  0,
+                                                                           "openOrderCount":  1,
                                                                            "orders":  [
-
+                                                                                          {
+                                                                                              "side":  "BUY",
+                                                                                              "price":  "0.58",
+                                                                                              "remaining":  "36.9",
+                                                                                              "username":  "mobile_route_fill_maker_ba580843"
+                                                                                          }
                                                                                       ]
                                                                        },
                                                        "size":  "200",
@@ -149,17 +169,17 @@
                                                    },
                                           "canceledPreviousOrders":  [
                                                                          {
-                                                                             "orderId":  "83171c5d-c5eb-443b-b1a0-03fa0fd298a2",
+                                                                             "orderId":  "58719b24-8b08-4034-a3eb-bdec5f8102f2",
                                                                              "side":  "BUY",
-                                                                             "price":  "0.52",
+                                                                             "price":  "0.45",
                                                                              "remaining":  "200",
                                                                              "statusBefore":  "OPEN",
                                                                              "canceled":  true
                                                                          },
                                                                          {
-                                                                             "orderId":  "f9bd9e29-47ff-4762-b6a7-37b5e799d82e",
+                                                                             "orderId":  "35c1297d-5f35-479c-a592-bdb6cd1748a9",
                                                                              "side":  "SELL",
-                                                                             "price":  "0.6",
+                                                                             "price":  "0.59",
                                                                              "remaining":  "200",
                                                                              "statusBefore":  "OPEN",
                                                                              "canceled":  true
@@ -167,18 +187,18 @@
                                                                      ],
                                           "restingOrders":  [
                                                                 {
-                                                                    "id":  "d52a797a-d0cc-441c-91cf-b0a2756c6eeb",
-                                                                    "username":  "odds_live_runtime_shifted_maker_709b0631",
+                                                                    "id":  "626d7587-622e-42c6-95ba-2615eb60997d",
+                                                                    "username":  "odds_live_runtime_shifted_maker_8c4164d5",
                                                                     "side":  "BUY",
-                                                                    "price":  "0.52",
+                                                                    "price":  "0.45",
                                                                     "remaining":  "200",
                                                                     "status":  "OPEN"
                                                                 },
                                                                 {
-                                                                    "id":  "b9dca392-e35f-43da-a71b-2d18e6c57530",
-                                                                    "username":  "odds_live_runtime_shifted_maker_709b0631",
+                                                                    "id":  "092321d7-39da-45c3-8b28-d67571ef8e74",
+                                                                    "username":  "odds_live_runtime_shifted_maker_8c4164d5",
                                                                     "side":  "SELL",
-                                                                    "price":  "0.6",
+                                                                    "price":  "0.59",
                                                                     "remaining":  "200",
                                                                     "status":  "OPEN"
                                                                 }
@@ -188,16 +208,16 @@
                                                              "ok":  true,
                                                              "status":  200,
                                                              "selectedOutcomeQuote":  {
-                                                                                          "outcomeId":  "b6066039-6c5a-47f1-bbc4-91cad4eb5bd1",
+                                                                                          "outcomeId":  "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
                                                                                           "outcomeName":  "Over 2.5",
-                                                                                          "referenceOutcomeLabel":  "Over 2.5",
-                                                                                          "bestBid":  "0.52",
-                                                                                          "bestAsk":  "0.6",
-                                                                                          "bestBidSize":  200,
+                                                                                          "referenceOutcomeLabel":  "Over +2.5",
+                                                                                          "bestBid":  "0.58",
+                                                                                          "bestAsk":  "0.59",
+                                                                                          "bestBidSize":  36.9,
                                                                                           "bestAskSize":  200,
-                                                                                          "midPrice":  "0.56",
-                                                                                          "lastPrice":  null,
-                                                                                          "lastTradeAt":  null
+                                                                                          "midPrice":  "0.585",
+                                                                                          "lastPrice":  "0.59",
+                                                                                          "lastTradeAt":  "2026-07-14T14:04:47.790Z"
                                                                                       }
                                                          },
                                           "checks":  {
@@ -228,7 +248,7 @@
     "settings":  {
                      "continuous":  false,
                      "maxIterations":  2,
-                     "intervalSeconds":  0,
+                     "intervalSeconds":  1,
                      "runProviderProof":  false,
                      "providerProofRunsCompleted":  0,
                      "providerProofEveryIterations":  0,
@@ -238,14 +258,14 @@
                      "lifecycleSchedulerEnabled":  true,
                      "staleGuardEnabled":  false,
                      "staleGuardEnforced":  false,
-                     "resultIngestionEnabled":  false,
+                     "resultIngestionEnabled":  true,
                      "liveResultIngestionEnabled":  false,
                      "liveResultIngestionRunsCompleted":  0,
                      "resultIngestionEveryIterations":  0,
                      "maxLiveResultIngestionRuns":  0,
-                     "resultSettlementEnabled":  false,
+                     "resultSettlementEnabled":  true,
                      "approvedResultSettlementEnabled":  false,
-                     "resultSettlementPath":  null,
+                     "resultSettlementPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
                      "resultSettlementApprovalPath":  null,
                      "cachedModeUsesQuota":  false
                  },
@@ -254,8 +274,8 @@
                          "marketMakerMode":  "repeated local shifted maker reseed while supervisor runs",
                          "lifecycleSchedulerMode":  "safe real-time scheduler check each cycle; no proof time mutation",
                          "staleGuardMode":  "disabled",
-                         "resultIngestionMode":  "disabled",
-                         "resultSettlementMode":  "disabled",
+                         "resultIngestionMode":  "provider-shaped result ingestion replay while supervisor runs; no provider quota spent",
+                         "resultSettlementMode":  "trusted result scheduler dry-run while supervisor runs",
                          "unattendedServiceInstalled":  false
                      },
     "failure":  ""

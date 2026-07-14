@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T14:24:07.003Z",
+  "generatedAt": "2026-07-14T14:32:36.363Z",
   "scope": "odds-api-one-event-runtime-status",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -15,9 +15,9 @@
   },
   "provenCapabilities": {
     "supervisorProofPath": "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-supervisor-proof-summary.redacted.json",
-    "supervisorProofGeneratedAt": "2026-07-13T15:50:25.2184882Z",
+    "supervisorProofGeneratedAt": "2026-07-14T14:30:37.9642002Z",
     "resultPollerProofPath": "docs/mobile/harness/odds-api-live-runtime/one-event-continuous-result-poller-proof-summary.redacted.json",
-    "resultPollerProofGeneratedAt": "2026-07-13T15:50:59.1439380Z",
+    "resultPollerProofGeneratedAt": "2026-07-14T14:32:03.4119623Z",
     "repeatedSupervisorCycles": true,
     "makerReseedWhileSupervisorRuns": true,
     "lifecycleSchedulerWhileSupervisorRuns": true,
@@ -62,7 +62,7 @@
       "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json",
       "known": true,
       "pid": 30496,
-      "running": true,
+      "running": false,
       "startedAt": "2026-07-14T13:00:46.7861291Z",
       "continuous": true,
       "maxIterations": 0,
@@ -81,26 +81,26 @@
       "checked": true,
       "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json",
       "known": true,
-      "pid": 55180,
-      "running": true,
-      "startedAt": "2026-07-14T13:00:47.7750815Z",
+      "pid": 16980,
+      "running": false,
+      "startedAt": "2026-07-14T14:31:43.5064920Z",
       "continuous": true,
       "maxIterations": 0,
-      "intervalSeconds": 15,
+      "intervalSeconds": 1,
       "usesProviderQuota": false,
       "modes": {
         "liveResultIngestion": false,
         "approvedResultSettlement": false
       }
     },
-    "allLoopsRunning": true,
+    "allLoopsRunning": false,
     "quotaSpendingLoopRunning": false,
-    "localTesterReadyRightNow": true,
+    "localTesterReadyRightNow": false,
     "source": "local .runtime process state plus OS pid check"
   },
   "continuityAnswer": {
     "latestSupervisorRunProfileOnly": true,
-    "currentLoopsRunningNow": true,
+    "currentLoopsRunningNow": false,
     "currentLoopsQuotaSpending": false,
     "marketMakerContinuousWhileSupervisorRuns": true,
     "lifecycleSchedulerContinuousWhileSupervisorRuns": true,
@@ -141,13 +141,13 @@
       "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4"
     },
     "source": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
-    "generatedAt": "2026-07-14T13:24:42.612Z",
+    "generatedAt": "2026-07-14T14:30:28.447Z",
     "quoteVisibleScore": 3,
     "selectionReason": "freshest quote-visible selected outcome",
     "candidates": [
       {
         "source": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
-        "generatedAt": "2026-07-14T13:24:42.612Z",
+        "generatedAt": "2026-07-14T14:30:28.447Z",
         "selectedMarket": {
           "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
           "slug": "odds-api-single-soccer-test-totals-7439c2d603",
@@ -205,7 +205,7 @@
         "status": "ok",
         "db": "connected",
         "env": "development",
-        "timestamp": "2026-07-14T14:24:07.001Z"
+        "timestamp": "2026-07-14T14:32:36.361Z"
       },
       "error": null
     }
@@ -213,7 +213,7 @@
   "provider": {
     "liveProofPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
     "liveProofGeneratedAt": "2026-07-14T13:13:02.490Z",
-    "liveProofAgeHours": 1.18,
+    "liveProofAgeHours": 1.33,
     "maxLiveProofAgeHours": 24,
     "quota": {
       "totalLastCost": 13,
@@ -236,8 +236,8 @@
   },
   "maker": {
     "makerSeedPath": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
-    "makerSeedGeneratedAt": "2026-07-14T13:24:42.612Z",
-    "makerSeedAgeHours": 0.99,
+    "makerSeedGeneratedAt": "2026-07-14T14:30:28.447Z",
+    "makerSeedAgeHours": 0.04,
     "quoteRoute": {
       "ok": true,
       "status": 200,
@@ -251,7 +251,7 @@
             "bestBid": "0.58",
             "bestAsk": "0.59",
             "bestBidSize": 36.9,
-            "bestAskSize": 198,
+            "bestAskSize": 200,
             "midPrice": "0.585",
             "lastPrice": "0.59",
             "lastTradeAt": "2026-07-14T14:04:47.790Z"
@@ -283,8 +283,8 @@
   },
   "lifecycle": {
     "schedulerRunPath": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
-    "schedulerGeneratedAt": "2026-07-14T12:47:52.756Z",
-    "schedulerAgeHours": 1.6,
+    "schedulerGeneratedAt": "2026-07-14T14:30:32.920Z",
+    "schedulerAgeHours": 0.03,
     "schedulerAction": "none",
     "schedulerReason": "Event is not inside the suspend/close window.",
     "schedulerCandidateMarketCount": 3
@@ -293,9 +293,9 @@
     "resultSettlementExecutionPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
     "resultSettlementLiveBlockedPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json",
     "resultSettlementExecutionGeneratedAt": "2026-07-14T13:34:12.765Z",
-    "resultSettlementExecutionAgeHours": 0.83,
+    "resultSettlementExecutionAgeHours": 0.97,
     "resultSettlementLiveBlockedGeneratedAt": "2026-07-14T13:34:10.496Z",
-    "resultSettlementLiveBlockedAgeHours": 0.83,
+    "resultSettlementLiveBlockedAgeHours": 0.97,
     "maxSettlementProofAgeHours": 24,
     "resultSettlementExecutionFresh": true,
     "resultSettlementLiveBlockedFresh": true,
@@ -319,7 +319,7 @@
   },
   "supervisor": {
     "supervisorPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json",
-    "generatedAt": "2026-07-14T12:47:53.6469044Z",
+    "generatedAt": "2026-07-14T14:30:33.4618218Z",
     "completedIterations": 2,
     "runtimeTruth": {
       "backendContinuousWhileSupervisorRuns": true,
@@ -330,12 +330,12 @@
       "lifecycleSchedulerContinuousWhileSupervisorRuns": true,
       "staleGuardContinuousWhileSupervisorRuns": false,
       "staleGuardMode": "disabled",
-      "resultIngestionContinuousWhileSupervisorRuns": false,
-      "resultIngestionMode": "disabled",
+      "resultIngestionContinuousWhileSupervisorRuns": true,
+      "resultIngestionMode": "provider-shaped result ingestion replay while supervisor runs; no provider quota spent",
       "liveResultIngestionContinuousWhileSupervisorRuns": false,
       "liveResultIngestionQuotaCappedWhileSupervisorRuns": false,
-      "resultSettlementContinuousWhileSupervisorRuns": false,
-      "resultSettlementMode": "disabled",
+      "resultSettlementContinuousWhileSupervisorRuns": true,
+      "resultSettlementMode": "trusted result scheduler dry-run while supervisor runs",
       "unattendedServiceInstalled": false,
       "providerRefreshMode": "cached provider proof verification; no provider quota spent",
       "marketMakerMode": "repeated local shifted maker reseed while supervisor runs",
@@ -345,8 +345,8 @@
     "latestRunProfile": {
       "makerSeedEnabled": true,
       "lifecycleSchedulerEnabled": true,
-      "resultIngestionEnabled": false,
-      "resultSettlementEnabled": false,
+      "resultIngestionEnabled": true,
+      "resultSettlementEnabled": true,
       "approvedResultSettlementEnabled": false,
       "runProviderProof": false
     }
