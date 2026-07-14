@@ -2,6 +2,22 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ZZN - Runtime-Only Internal Tester Artifacts
+
+- Feature/runtime worked on: backend live runtime and internal tester launch flow.
+- Frontend components touched: none.
+- Backend/API routes touched: no route implementation changes; proof reads `GET /api/health` and `GET /api/internal/live-runtime/status`.
+- Important functions/services touched:
+  - `scripts/manage_holiwyn_internal_tester_runtime.ps1`
+  - `scripts/run_holiwyn_one_event_live_supervisor.ps1`
+  - `scripts/run_holiwyn_one_event_result_poller.ps1`
+  - `scripts/start_holiwyn_one_event_live_runtime.ps1`
+  - `package.json` internal tester runtime aliases
+- User/runtime interactions supported: operators can run `npm run mobile:internal-tester-runtime:cached-start` for S23/manual testing with backend, Expo, cached supervisor, and result poller active without continuously modifying committed proof summaries.
+- State transitions: runtime start/reuse of backend and Expo, S23 ADB reverse configuration, cached no-quota supervisor/result-poller loop start, result-ingestion and settlement dry-run checks, volatile runtime summaries under `.runtime`, and no provider quota spend by default. Approved-settlement wait/execution mode remains explicit rather than part of the ordinary manual tester startup path.
+- Known limitations: mobile-visible provider snapshots can still be stale in cached/no-quota mode; use the explicit live-provider command only when fresh mobile odds are required and quota use is intentional.
+- Proof: `npm run mobile:internal-tester-runtime:cached-start` passed and left tracked `docs/mobile/harness` summaries untouched after a loop cycle.
+
 ## Cycle ZI - Cached vs Live Odds Tester Readiness
 
 - Feature/runtime worked on: internal tester readiness summary now separates cached trading readiness from live-odds readiness.

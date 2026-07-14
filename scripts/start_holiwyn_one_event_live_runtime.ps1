@@ -3,6 +3,7 @@ param(
   [string]$BackendBaseUrl = "",
   [string]$SummaryPath = "docs\mobile\harness\odds-api-live-runtime\one-event-runtime-launch-summary.redacted.json",
   [string]$LiveProofSummaryPath = "docs\mobile\harness\odds-api-live-runtime\one-event-live-runtime-summary.redacted.json",
+  [string]$MakerSeedSummaryPath = "docs\mobile\harness\odds-api-live-runtime\shifted-maker-seed-summary.redacted.json",
   [int]$MaxProofAgeHours = 24,
   [switch]$RestartBackend,
   [switch]$RunProviderProof,
@@ -262,7 +263,7 @@ if (-not $RunProviderProof -and -not (Test-Path -LiteralPath $resolvedLiveProofS
 $liveProof = Get-ProofFreshness -Path $resolvedLiveProofSummaryPath -MaxAgeHours $MaxProofAgeHours
 $makerSeed = $null
 if ($SeedMaker) {
-  $makerSeedPath = "docs\mobile\harness\odds-api-live-runtime\shifted-maker-seed-summary.redacted.json"
+  $makerSeedPath = $MakerSeedSummaryPath
   cmd /c npm run mobile:one-event-live-maker-seed -- "--summaryPath=$makerSeedPath" | Out-Null
   if ($LASTEXITCODE -ne 0) {
     throw "Local shifted maker seeding failed."

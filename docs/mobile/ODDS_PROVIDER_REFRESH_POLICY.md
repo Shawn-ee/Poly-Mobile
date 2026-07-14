@@ -30,6 +30,9 @@ Temporary Local MVP provider: The Odds API. This policy is for fake-token local 
 - `npm run mobile:one-event-runtime-status` reads local proof summaries plus local backend health/quote routes and reports whether the current runtime is cached-only, how fresh the last live proof is, what quota the last proof used, the latest supervisor run profile, broader proven supervisor/result-poller capabilities, maker/lifecycle state, and trusted-result settlement safety. It does not call the provider.
 - `npm run mobile:live-runtime-audit-gate` runs the local runtime status, phase audit, and completion audit in that exact order. It does not call the provider or spend quota. Use it when refreshing committed audit evidence so completion summaries cannot accidentally read stale failed phase artifacts.
 - `npm run mobile:internal-tester-readiness-gate` runs the ordered audit gate and then refreshes the operator snapshot/checklist. It does not call the provider or spend quota. Use it as the local go/no-go command before handing the S23 flow to a tester.
+- `npm run mobile:internal-tester-runtime:cached-start` starts the local tester runtime in volatile artifact mode. Backend/Expo process state, supervisor process state, result-poller process state, loop heartbeats, maker reseed summaries, lifecycle scheduler summaries, result-ingestion summaries, and settlement dry-run summaries are written under `.runtime` instead of committed `docs/mobile/harness` proof files. Use this for manual tester sessions so the git worktree stays clean while local loops run.
+- `npm run mobile:internal-tester-runtime:live-provider-start` uses the same volatile artifact mode but opts into the existing quota-gated live provider path. Treat it as an intentional provider refresh because it may spend quota.
+- Committed proof summaries under `docs/mobile/harness/odds-api-live-runtime/` remain the audit evidence of record. Runtime-only summaries under `.runtime` are local operational state and should not be committed.
 - `GET /api/internal/live-runtime/status` exposes `providerRefreshLoop` for machine-readable provider refresh mode, current supervisor refresh state, cadence, quota caps, latest durable `ProviderRefreshRun`, and mobile freshness thresholds. It does not call the provider or spend quota.
 - `npm run mobile:one-event-result-ingest` reads a redacted Odds API scores-shaped fixture and writes trusted result JSON without spending quota.
 - `npm run mobile:one-event-result-ingest -- --live` calls the Odds API scores endpoint and requires `THE_ODDS_API_KEY` in the local process environment. Use it only for an intentional result verification because it may spend quota.
@@ -123,7 +126,7 @@ If the provider fails, quota is low, or no upcoming event has supported markets:
 - Event: Spain vs. France, `soccer_fifa_world_cup`, `2026-07-14T19:00:00Z`.
 - Provider calls: one sports scan, quota-free event scans, one event-markets call, and two event-odds refreshes.
 - Quota used by provider headers: 13 credits, under the 16-credit cap.
-- Latest remaining quota at proof time: 393.
+- Latest remaining quota at proof time: 327.
 - Stale handling proof: selected market quote lifecycle changed from stale before refresh to ready after refresh.
 - Repeatability proof: provider outcome seeding now handles legacy/global outcome slug collisions with deterministic per-market suffixes instead of failing repeat imports.
 - Local proof-state hygiene: the live proof records `marketMaker.collateralRepair` if a balanced public `sportsbook-odds` orderbook market needs local collateral metadata reconciled before fake-token maker seeding.

@@ -16,6 +16,7 @@ param(
   [switch]$Force,
   [switch]$ReplaceExternalExpo,
   [switch]$WaitForReady,
+  [switch]$RuntimeOnlyArtifacts,
   [int]$WaitSeconds = 45,
   [string]$SummaryPath = "docs\mobile\harness\odds-api-live-runtime\internal-tester-runtime-manager-summary.redacted.json"
 )
@@ -40,6 +41,12 @@ $ResultPollerStatePath = Join-Path $ResultPollerRuntimeDir "result-poller-proces
 $ResultPollerOutPath = Join-Path $ResultPollerRuntimeDir "result-poller.out.log"
 $ResultPollerErrPath = Join-Path $ResultPollerRuntimeDir "result-poller.err.log"
 $BackendBaseUrl = "http://127.0.0.1:$BackendPort"
+
+if ($RuntimeOnlyArtifacts) {
+  $SummaryPath = Join-Path $RuntimeDir "internal-tester-runtime-manager-summary.redacted.json"
+  $SupervisorProcessSummaryPath = Join-Path $SupervisorRuntimeDir "one-event-live-supervisor-process-summary.redacted.json"
+  $ResultPollerProcessSummaryPath = Join-Path $ResultPollerRuntimeDir "one-event-result-poller-process-summary.redacted.json"
+}
 
 New-Item -ItemType Directory -Force -Path $RuntimeDir | Out-Null
 New-Item -ItemType Directory -Force -Path $SupervisorRuntimeDir | Out-Null
@@ -366,14 +373,14 @@ npm --prefix mobile run start -- --host localhost --port $ExpoPort
 }
 
 function Stop-LocalSupervisorIfRunning {
-  $output = & powershell -NoProfile -ExecutionPolicy Bypass -File scripts/manage_holiwyn_one_event_live_supervisor.ps1 -Action stop 2>&1
+  $output = & powershell -NoProfile -ExecutionPolicy Bypass -File scripts/manage_holiwyn_one_event_live_supervisor.ps1 -Action stop -SummaryPath $SupervisorProcessSummaryPath 2>&1
   if ($LASTEXITCODE -ne 0) {
     throw "Failed to stop existing supervisor before direct start: $($output -join "`n")"
   }
 }
 
 function Stop-LocalResultPollerIfRunning {
-  $output = & powershell -NoProfile -ExecutionPolicy Bypass -File scripts/manage_holiwyn_one_event_result_poller.ps1 -Action stop 2>&1
+  $output = & powershell -NoProfile -ExecutionPolicy Bypass -File scripts/manage_holiwyn_one_event_result_poller.ps1 -Action stop -SummaryPath $ResultPollerProcessSummaryPath 2>&1
   if ($LASTEXITCODE -ne 0) {
     throw "Failed to stop existing result poller before direct start: $($output -join "`n")"
   }
@@ -385,6 +392,10 @@ function Start-LocalSupervisorDirect {
     "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", (Join-Path $RepoRoot "scripts\run_holiwyn_one_event_live_supervisor.ps1"),
     "-BackendPort", "$BackendPort", "-IntervalSeconds", "15", "-Continuous", "-MaxIterations", "0"
   )
+  if ($RuntimeOnlyArtifacts) {
+    $args += "-RuntimeArtifactDir"
+    $args += (Join-Path $SupervisorRuntimeDir "artifacts")
+  }
   if ($RunProviderProof) { $args += "-RunProviderProof" }
   if ($RunResultIngestion) { $args += "-RunResultIngestion" }
   if ($RunLiveResultIngestion) { $args += "-RunLiveResultIngestion" }
@@ -443,6 +454,10 @@ function Start-LocalResultPollerDirect {
     "-ResultPath", "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
     "-IntervalSeconds", "$ResultPollerIntervalSeconds", "-Continuous", "-MaxIterations", "0"
   )
+  if ($RuntimeOnlyArtifacts) {
+    $args += "-RuntimeArtifactDir"
+    $args += (Join-Path $ResultPollerRuntimeDir "artifacts")
+  }
   if ($RunLiveResultIngestion) { $args += "-RunLiveResultIngestion" }
   if ($RunApprovedResultSettlement) {
     $args += "-RunResultSettlement"
@@ -644,8 +659,8 @@ $state = [ordered]@{
 }
 
 if ($Action -eq "stop") {
-  $operations.Add([ordered]@{ target = "supervisor"; result = (& powershell -NoProfile -ExecutionPolicy Bypass -File scripts/manage_holiwyn_one_event_live_supervisor.ps1 -Action stop | Out-String).Trim() }) | Out-Null
-  $operations.Add([ordered]@{ target = "result-poller"; result = (& powershell -NoProfile -ExecutionPolicy Bypass -File scripts/manage_holiwyn_one_event_result_poller.ps1 -Action stop | Out-String).Trim() }) | Out-Null
+  $operations.Add([ordered]@{ target = "supervisor"; result = (& powershell -NoProfile -ExecutionPolicy Bypass -File scripts/manage_holiwyn_one_event_live_supervisor.ps1 -Action stop -SummaryPath $SupervisorProcessSummaryPath | Out-String).Trim() }) | Out-Null
+  $operations.Add([ordered]@{ target = "result-poller"; result = (& powershell -NoProfile -ExecutionPolicy Bypass -File scripts/manage_holiwyn_one_event_result_poller.ps1 -Action stop -SummaryPath $ResultPollerProcessSummaryPath | Out-String).Trim() }) | Out-Null
   $operations.Add([ordered]@{ target = "expo"; result = Stop-OwnedProcessTree $state.expo }) | Out-Null
   $operations.Add([ordered]@{ target = "backend"; result = Stop-OwnedProcessTree $state.backend }) | Out-Null
   $state.backend = $null
@@ -717,9 +732,9 @@ $liveRuntimeStatus = $liveRuntimeStatusWait.status
 
 $backendOwnerAfter = Get-PortOwner $BackendPort
 $expoOwnerAfter = Get-PortOwner $ExpoPort
-$supervisorStatusText = (& powershell -NoProfile -ExecutionPolicy Bypass -File scripts/manage_holiwyn_one_event_live_supervisor.ps1 -Action status | Out-String)
+$supervisorStatusText = (& powershell -NoProfile -ExecutionPolicy Bypass -File scripts/manage_holiwyn_one_event_live_supervisor.ps1 -Action status -SummaryPath $SupervisorProcessSummaryPath | Out-String)
 $supervisorProcessSummary = Select-ProcessSummaryDigest (Read-JsonFile (Resolve-RepoPath $SupervisorProcessSummaryPath))
-$resultPollerStatusText = (& powershell -NoProfile -ExecutionPolicy Bypass -File scripts/manage_holiwyn_one_event_result_poller.ps1 -Action status | Out-String)
+$resultPollerStatusText = (& powershell -NoProfile -ExecutionPolicy Bypass -File scripts/manage_holiwyn_one_event_result_poller.ps1 -Action status -SummaryPath $ResultPollerProcessSummaryPath | Out-String)
 $resultPollerProcessSummary = Select-ProcessSummaryDigest (Read-JsonFile (Resolve-RepoPath $ResultPollerProcessSummaryPath))
 $docker = Get-DockerPostgresStatus
 $s23 = Get-S23Status

@@ -14,7 +14,8 @@ param(
   [switch]$RunResultSettlement,
   [switch]$RunApprovedResultSettlement,
   [string]$ResultSettlementApprovalPath = "docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
-  [switch]$SkipSleep
+  [switch]$SkipSleep,
+  [string]$RuntimeArtifactDir = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -46,6 +47,19 @@ function Resolve-RepoPath {
 function ConvertTo-RepoPath {
   param([string]$Path)
   return $Path.Replace($RepoRoot + "\", "").Replace("\", "/")
+}
+
+function Join-ArtifactPath {
+  param([string]$FileName)
+  if ([string]::IsNullOrWhiteSpace($RuntimeArtifactDir)) {
+    return "docs/mobile/harness/odds-api-live-runtime/$FileName"
+  }
+  return (Join-Path $RuntimeArtifactDir $FileName)
+}
+
+if (-not [string]::IsNullOrWhiteSpace($RuntimeArtifactDir)) {
+  $SummaryPath = Join-Path $RuntimeArtifactDir "one-event-result-poller-summary.redacted.json"
+  $HeartbeatPath = Join-Path $RuntimeArtifactDir "one-event-result-poller-heartbeat.redacted.json"
 }
 
 function Read-JsonFile {
@@ -197,23 +211,26 @@ try {
       ($liveResultIngestionRunCount -lt $MaxLiveResultIngestionRuns)
     )
 
-    $ingestCommand = "npm run mobile:one-event-result-ingest -- --eventSlug=$EventSlug --trustedResultOutput=$ResultPath"
+    $ingestSummaryPath = Join-ArtifactPath "one-event-result-ingestion-summary.redacted.json"
+    $ingestCommand = "npm run mobile:one-event-result-ingest -- --eventSlug=$EventSlug --trustedResultOutput=$ResultPath --summaryPath=$ingestSummaryPath"
     if ($runLiveThisCycle) {
       $ingestCommand += " --live --maxCredits=$MaxCreditsPerResultIngestion --minRemaining=$MinRemaining"
       $liveResultIngestionRunCount += 1
     }
     $ingestResult = Invoke-CheckedCommand -Label "poll-$iteration-result-ingestion" -Command $ingestCommand
-    $ingestSummary = Read-JsonFile "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json"
+    $ingestSummary = Read-JsonFile $ingestSummaryPath
 
     $settlementResult = $null
     $settlementSummary = $null
     if ($RunResultSettlement) {
-      $settlementCommand = "npm run mobile:one-event-result-settlement-run -- --eventSlug=$EventSlug --result=$ResultPath"
+      $settlementSummaryPath = Join-ArtifactPath "one-event-result-settlement-run-summary.redacted.json"
+      $settlementInnerSummaryPath = Join-ArtifactPath "one-event-result-settlement-summary.redacted.json"
+      $settlementCommand = "npm run mobile:one-event-result-settlement-run -- --eventSlug=$EventSlug --result=$ResultPath --summaryPath=$settlementSummaryPath --settlementOutput=$settlementInnerSummaryPath"
       if ($RunApprovedResultSettlement) {
         $settlementCommand += " --autoExecuteApproved --approval=$ResultSettlementApprovalPath --writeAuditEvent"
       }
       $settlementResult = Invoke-CheckedCommand -Label "poll-$iteration-result-settlement" -Command $settlementCommand
-      $settlementSummary = Read-JsonFile "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-run-summary.redacted.json"
+      $settlementSummary = Read-JsonFile $settlementSummaryPath
     }
 
     $cycle = [ordered]@{

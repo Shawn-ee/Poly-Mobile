@@ -26,7 +26,8 @@ param(
   [int]$MaxLiveResultIngestionRuns = 1,
   [int]$MaxCreditsPerResultIngestion = 2,
   [int]$MinRemaining = 2,
-  [switch]$SkipSleep
+  [switch]$SkipSleep,
+  [string]$RuntimeArtifactDir = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -64,6 +65,19 @@ function Resolve-RepoPath {
 function ConvertTo-RepoPath {
   param([string]$Path)
   return $Path.Replace($RepoRoot + "\", "").Replace("\", "/")
+}
+
+function Join-ArtifactPath {
+  param([string]$FileName)
+  if ([string]::IsNullOrWhiteSpace($RuntimeArtifactDir)) {
+    return "docs\mobile\harness\odds-api-live-runtime\$FileName"
+  }
+  return (Join-Path $RuntimeArtifactDir $FileName)
+}
+
+if (-not [string]::IsNullOrWhiteSpace($RuntimeArtifactDir)) {
+  $SummaryPath = Join-Path $RuntimeArtifactDir "one-event-live-supervisor-summary.redacted.json"
+  $HeartbeatPath = Join-Path $RuntimeArtifactDir "one-event-live-supervisor-heartbeat.redacted.json"
 }
 
 function Read-JsonFile {
@@ -328,8 +342,9 @@ try {
     $dataHygieneResult = $null
     $dataHygieneSummary = $null
     if (-not $SkipDataHygiene) {
-      $dataHygieneResult = Invoke-CheckedCommand -Label "cycle-$iteration-data-hygiene" -Command "npm run mobile:one-event-data-hygiene-proof"
-      $dataHygieneSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-data-hygiene-summary.redacted.json"
+      $dataHygieneSummaryPathRaw = Join-ArtifactPath "one-event-data-hygiene-summary.redacted.json"
+      $dataHygieneResult = Invoke-CheckedCommand -Label "cycle-$iteration-data-hygiene" -Command "npm run mobile:one-event-data-hygiene-proof -- --summaryPath=$dataHygieneSummaryPathRaw"
+      $dataHygieneSummaryPath = Resolve-RepoPath $dataHygieneSummaryPathRaw
       $dataHygieneSummary = Read-JsonFile $dataHygieneSummaryPath
       if (-not $dataHygieneResult.pass -or -not ($dataHygieneSummary -and $dataHygieneSummary.pass -eq $true)) {
         $cycles.Add([ordered]@{
@@ -346,7 +361,9 @@ try {
       }
     }
 
-    $command = "npm run mobile:one-event-live-runtime -- -BackendPort $BackendPort"
+    $runtimeSummaryPathRaw = Join-ArtifactPath "one-event-runtime-launch-summary.redacted.json"
+    $makerSeedSummaryPathRaw = Join-ArtifactPath "shifted-maker-seed-summary.redacted.json"
+    $command = "npm run mobile:one-event-live-runtime -- -BackendPort $BackendPort -SummaryPath $runtimeSummaryPathRaw -MakerSeedSummaryPath $makerSeedSummaryPathRaw"
     if ($RestartBackend -and $iteration -eq 1) {
       $command += " -RestartBackend"
     }
@@ -356,7 +373,8 @@ try {
       ($providerProofRunCount -lt $MaxProviderProofRuns)
     )
     if ($runProviderThisCycle) {
-      $command += " -RunProviderProof -RefreshIterations $RefreshIterations -MaxCredits $MaxCreditsPerProviderProof -MinRemaining $MinRemaining"
+      $liveProofSummaryPathRaw = Join-ArtifactPath "one-event-live-runtime-summary.redacted.json"
+      $command += " -RunProviderProof -LiveProofSummaryPath $liveProofSummaryPathRaw -RefreshIterations $RefreshIterations -MaxCredits $MaxCreditsPerProviderProof -MinRemaining $MinRemaining"
       $providerProofRunCount += 1
     }
     if (-not $SkipMakerSeed) {
@@ -367,19 +385,20 @@ try {
     }
 
     $result = Invoke-CheckedCommand -Label "cycle-$iteration-runtime" -Command $command
-    $runtimeSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-runtime-launch-summary.redacted.json"
+    $runtimeSummaryPath = Resolve-RepoPath $runtimeSummaryPathRaw
     $runtimeSummary = Read-JsonFile $runtimeSummaryPath
     $runtimeSummaryPass = [bool]($runtimeSummary -and $runtimeSummary.pass -eq $true)
     $runtimeCommandAccepted = [bool]($result.pass -or $runtimeSummaryPass)
     $staleGuardResult = $null
     $staleGuardSummary = $null
     if ($RunStaleGuard) {
-      $staleGuardCommand = "npm run mobile:one-event-stale-guard-run"
+      $staleGuardSummaryPathRaw = Join-ArtifactPath "one-event-stale-guard-run-summary.redacted.json"
+      $staleGuardCommand = "npm run mobile:one-event-stale-guard-run -- --summaryPath=$staleGuardSummaryPathRaw"
       if (-not $EnforceStaleGuard) {
-        $staleGuardCommand += " -- --dryRun"
+        $staleGuardCommand += " --dryRun"
       }
       $staleGuardResult = Invoke-CheckedCommand -Label "cycle-$iteration-stale-guard" -Command $staleGuardCommand
-      $staleGuardSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-stale-guard-run-summary.redacted.json"
+      $staleGuardSummaryPath = Resolve-RepoPath $staleGuardSummaryPathRaw
       $staleGuardSummary = Read-JsonFile $staleGuardSummaryPath
     }
     $resultIngestionResult = $null
@@ -391,20 +410,25 @@ try {
         (($iteration - 1) % $ResultIngestionEveryIterations -eq 0) -and
         ($liveResultIngestionRunCount -lt $MaxLiveResultIngestionRuns)
       )
-      $resultIngestionCommand = "npm run mobile:one-event-result-ingest"
+      $resultIngestionSummaryPathRaw = Join-ArtifactPath "one-event-result-ingestion-summary.redacted.json"
+      $resultIngestionCommand = "npm run mobile:one-event-result-ingest -- --summaryPath=$resultIngestionSummaryPathRaw"
       if ($runLiveResultThisCycle) {
         $resultIngestionCommand += " -- --live --maxCredits=$MaxCreditsPerResultIngestion --minRemaining=$MinRemaining"
         $liveResultIngestionRunCount += 1
       }
       $resultIngestionResult = Invoke-CheckedCommand -Label "cycle-$iteration-result-ingestion" -Command $resultIngestionCommand
-      $resultIngestionSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-result-ingestion-summary.redacted.json"
+      $resultIngestionSummaryPath = Resolve-RepoPath $resultIngestionSummaryPathRaw
       $resultIngestionSummary = Read-JsonFile $resultIngestionSummaryPath
     }
     $resultSettlementResult = $null
     $resultSettlementSummary = $null
     if ($RunResultSettlement) {
+      $resultSettlementSummaryPathRaw = Join-ArtifactPath "one-event-result-settlement-run-summary.redacted.json"
+      $resultSettlementInnerSummaryPathRaw = Join-ArtifactPath "one-event-result-settlement-summary.redacted.json"
       $resultSettlementCommand = "npm run mobile:one-event-result-settlement-run"
       $resultSettlementArgs = New-Object System.Collections.Generic.List[string]
+      $resultSettlementArgs.Add("--summaryPath=$resultSettlementSummaryPathRaw") | Out-Null
+      $resultSettlementArgs.Add("--settlementOutput=$resultSettlementInnerSummaryPathRaw") | Out-Null
       if ($RunResultIngestion -or $RunApprovedResultSettlement) {
         $resultSettlementArgs.Add("--result=$ResultSettlementPath") | Out-Null
       }
@@ -417,14 +441,15 @@ try {
         $resultSettlementCommand += " -- " + ($resultSettlementArgs -join " ")
       }
       $resultSettlementResult = Invoke-CheckedCommand -Label "cycle-$iteration-result-settlement" -Command $resultSettlementCommand
-      $resultSettlementSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-result-settlement-run-summary.redacted.json"
+      $resultSettlementSummaryPath = Resolve-RepoPath $resultSettlementSummaryPathRaw
       $resultSettlementSummary = Read-JsonFile $resultSettlementSummaryPath
     }
     $schedulerResult = $null
     $schedulerSummary = $null
     if (-not $SkipLifecycleScheduler) {
-      $schedulerResult = Invoke-CheckedCommand -Label "cycle-$iteration-lifecycle-scheduler" -Command "npm run mobile:one-event-lifecycle-scheduler-run"
-      $schedulerSummaryPath = Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-lifecycle-scheduler-run-summary.redacted.json"
+      $schedulerSummaryPathRaw = Join-ArtifactPath "one-event-lifecycle-scheduler-run-summary.redacted.json"
+      $schedulerResult = Invoke-CheckedCommand -Label "cycle-$iteration-lifecycle-scheduler" -Command "npm run mobile:one-event-lifecycle-scheduler-run -- --summaryPath=$schedulerSummaryPathRaw"
+      $schedulerSummaryPath = Resolve-RepoPath $schedulerSummaryPathRaw
       $schedulerSummary = Read-JsonFile $schedulerSummaryPath
     }
     $cycles.Add([ordered]@{
