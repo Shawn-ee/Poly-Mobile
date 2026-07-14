@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T03:29:51.547Z",
+  "generatedAt": "2026-07-14T04:43:59.932Z",
   "scope": "holiwyn-internal-tester-readiness-gate",
   "pass": true,
   "providerQuotaUsedByThisGate": false,
@@ -15,8 +15,8 @@
       "id": "ordered-live-runtime-audit",
       "command": "npm run mobile:live-runtime-audit-gate",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/live-runtime-audit-gate-summary.redacted.json",
-      "startedAt": "2026-07-14T03:29:42.993Z",
-      "finishedAt": "2026-07-14T03:29:49.110Z",
+      "startedAt": "2026-07-14T04:43:50.590Z",
+      "finishedAt": "2026-07-14T04:43:57.736Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -25,8 +25,8 @@
       "id": "operator-snapshot",
       "command": "npm run mobile:internal-tester-operator-snapshot",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json",
-      "startedAt": "2026-07-14T03:29:49.111Z",
-      "finishedAt": "2026-07-14T03:29:51.545Z",
+      "startedAt": "2026-07-14T04:43:57.737Z",
+      "finishedAt": "2026-07-14T04:43:59.928Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -47,29 +47,34 @@
       "marketType": "total_goals",
       "marketGroupKey": "totals",
       "line": "2.5",
-      "outcomeId": "30fbc915-74ca-4809-a0c4-cd54c3236aa4",
-      "outcomeName": "Over +2.5",
-      "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4"
+      "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
+      "outcomeName": "Over 2.5",
+      "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e"
     },
     "recommendedFirstAction": "cached_internal_testing",
     "recommendedCommand": "npm run mobile:one-event-onboarding",
     "localTesterReadyRightNow": true,
     "cachedTesterReadyRightNow": true,
-    "liveOddsReadyRightNow": true,
+    "liveOddsReadyRightNow": false,
     "cachedTradingReady": true,
-    "liveOddsReady": true,
+    "liveOddsReady": false,
     "warmNoQuotaRuntime": true,
     "allLoopsRunning": true,
     "quotaSpendingLoopRunning": false,
-    "providerSnapshotFresh": true,
-    "nextAction": "manual_s23_testing",
+    "providerSnapshotFresh": false,
+    "nextAction": "keep_cached_testing_or_refresh_live_odds",
     "cachedTradingAction": {
       "id": "cached_internal_testing",
       "command": "npm run mobile:one-event-onboarding",
       "requiresProviderKey": false,
       "spendsProviderQuota": false
     },
-    "liveOddsAction": null,
+    "liveOddsAction": {
+      "id": "refresh_mobile_live_odds",
+      "command": "npm run mobile:one-event-live-runtime:provider-secret",
+      "requiresProviderKey": true,
+      "spendsProviderQuota": true
+    },
     "launchChecklist": [
       {
         "step": "Start or verify local tester runtime",
@@ -97,11 +102,11 @@
         "expected": "Markets load from backend for odds-api-single-soccer-test; selected proof market is Spain vs. France: Total Goals 2.5.",
         "routeDependency": "GET /api/mobile/events/odds-api-single-soccer-test/live-detail",
         "pass": true,
-        "notes": "Provider snapshots are fresh for mobile display."
+        "notes": "Cached mode is usable for internal testing; live mobile odds refresh requires the explicit provider-refresh command."
       },
       {
         "step": "Quote and buy",
-        "expected": "Open Over +2.5, enter an amount, and swipe to buy with fake tokens.",
+        "expected": "Open Over 2.5, enter an amount, and swipe to buy with fake tokens.",
         "routeDependency": "GET /api/markets/:id/quote; POST /api/orders",
         "pass": true,
         "notes": "Order must use the selected market/outcome identity from Event Detail."
@@ -156,7 +161,7 @@
     "hasRecommendedCommand": true,
     "hasManualTradingFlow": true,
     "cachedTradingReady": true,
-    "liveOddsReady": true,
+    "liveOddsReady": false,
     "liveOddsActionKnown": true
   },
   "gaps": {

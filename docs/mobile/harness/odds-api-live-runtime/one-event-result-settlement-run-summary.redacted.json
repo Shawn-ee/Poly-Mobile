@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T04:03:17.439Z",
+  "generatedAt": "2026-07-14T04:43:57.857Z",
   "scope": "odds-api-one-event-result-settlement-scheduler-run",
   "pass": true,
   "eventSlug": "odds-api-single-soccer-test",
@@ -35,19 +35,19 @@
       "scripts/settle_odds_api_one_event_from_result.ts",
       "--eventSlug=odds-api-single-soccer-test",
       "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
-      "--output=docs\\mobile\\harness\\odds-api-live-runtime\\one-event-result-settlement-summary.redacted.json",
+      "--output=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json",
       "--writeAuditEvent"
     ],
     "exitCode": 0,
     "stdoutTail": [
       "  \"auditEvent\": {",
-      "    \"id\": \"32\",",
-      "    \"sequence\": \"32\",",
+      "    \"id\": \"43\",",
+      "    \"sequence\": \"43\",",
       "    \"type\": \"settlement.trusted_result.preflight\",",
       "    \"stream\": \"market\",",
       "    \"marketId\": \"78ea76f1-fc8f-419b-ac21-2554d79093f6\",",
       "    \"outcomeId\": \"cf189c8a-cadc-4742-9f1f-e64a4911f228\",",
-      "    \"createdAt\": \"2026-07-14T04:03:17.405Z\"",
+      "    \"createdAt\": \"2026-07-14T04:43:57.823Z\"",
       "  },",
       "  \"gaps\": {",
       "    \"p0\": [],",
@@ -80,19 +80,19 @@
       "scripts/settle_odds_api_one_event_from_result.ts",
       "--eventSlug=odds-api-single-soccer-test",
       "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
-      "--output=docs\\mobile\\harness\\odds-api-live-runtime\\one-event-result-settlement-summary.redacted.json",
+      "--output=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json",
       "--writeAuditEvent"
     ],
     "exitCode": 0,
     "stdoutTail": [
       "  \"auditEvent\": {",
-      "    \"id\": \"32\",",
-      "    \"sequence\": \"32\",",
+      "    \"id\": \"43\",",
+      "    \"sequence\": \"43\",",
       "    \"type\": \"settlement.trusted_result.preflight\",",
       "    \"stream\": \"market\",",
       "    \"marketId\": \"78ea76f1-fc8f-419b-ac21-2554d79093f6\",",
       "    \"outcomeId\": \"cf189c8a-cadc-4742-9f1f-e64a4911f228\",",
-      "    \"createdAt\": \"2026-07-14T04:03:17.405Z\"",
+      "    \"createdAt\": \"2026-07-14T04:43:57.823Z\"",
       "  },",
       "  \"gaps\": {",
       "    \"p0\": [],",
@@ -118,7 +118,7 @@
       "}"
     ]
   },
-  "settlementSummaryPath": "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-result-settlement-summary.redacted.json",
+  "settlementSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json",
   "previewSettlementDigest": {
     "pass": true,
     "mode": "dry-run",
@@ -131,7 +131,7 @@
       "line": "2.5",
       "statusBefore": "LIVE",
       "resolvedOutcomeIdBefore": null,
-      "collateralUSDCBefore": "2750"
+      "collateralUSDCBefore": "550"
     },
     "winningOutcome": {
       "id": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
@@ -164,7 +164,7 @@
       "line": "2.5",
       "statusBefore": "LIVE",
       "resolvedOutcomeIdBefore": null,
-      "collateralUSDCBefore": "2750"
+      "collateralUSDCBefore": "550"
     },
     "winningOutcome": {
       "id": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
@@ -175,10 +175,10 @@
     },
     "preview": {
       "marketStatus": "LIVE",
-      "totalShares": "5500",
-      "totalWinningShares": "2750",
-      "totalPayout": "2750",
-      "collateralUSDC": "2750",
+      "totalShares": "1100",
+      "totalWinningShares": "550",
+      "totalPayout": "550",
+      "collateralUSDC": "550",
       "payoutConservationPass": true,
       "blockers": [],
       "openOrderCleanup": {
@@ -186,8 +186,8 @@
         "buyOrderLockedUSDCToRelease": "125.402",
         "sellOrderSharesToRelease": "200"
       },
-      "payoutCount": 15,
-      "loserPositionCount": 14,
+      "payoutCount": 4,
+      "loserPositionCount": 3,
       "mutation": "none"
     },
     "execution": {

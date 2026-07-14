@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T03:29:51.481Z",
+  "generatedAt": "2026-07-14T04:43:59.870Z",
   "scope": "holiwyn-internal-tester-operator-snapshot",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -18,9 +18,9 @@
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
-    "outcomeId": "30fbc915-74ca-4809-a0c4-cd54c3236aa4",
-    "outcomeName": "Over +2.5",
-    "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4"
+    "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
+    "outcomeName": "Over 2.5",
+    "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e"
   },
   "backend": {
     "ok": true,
@@ -29,7 +29,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-14T03:29:50.061Z"
+      "timestamp": "2026-07-14T04:43:58.688Z"
     },
     "error": null
   },
@@ -38,7 +38,7 @@
     "localInternalRuntimeReady": true,
     "localTesterReadyRightNow": true,
     "cachedTesterReadyRightNow": true,
-    "liveOddsReadyRightNow": true,
+    "liveOddsReadyRightNow": false,
     "currentRuntimeState": {
       "checked": true,
       "mode": "warm_no_quota_runtime",
@@ -50,13 +50,15 @@
       "resultPollerRunning": true,
       "quotaSpendingLoopRunning": false,
       "backendProofFresh": true,
-      "providerSnapshotFresh": true,
+      "providerSnapshotFresh": false,
       "cachedTesterReadyRightNow": true,
-      "liveOddsReadyRightNow": true,
+      "liveOddsReadyRightNow": false,
       "testerReadyRightNow": true,
       "p0": [],
-      "p1": [],
-      "nextAction": "manual_s23_testing",
+      "p1": [
+        "mobile_provider_snapshot_not_fresh"
+      ],
+      "nextAction": "keep_cached_testing_or_refresh_live_odds",
       "note": "This separates proven local capability, cached internal tester warmth, and live mobile odds freshness. Cached tester readiness requires warm no-quota loops; live odds readiness additionally requires fresh mobile-visible provider snapshots."
     },
     "managedProcesses": {
@@ -65,9 +67,9 @@
         "checked": true,
         "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json",
         "known": true,
-        "pid": 43308,
+        "pid": 4836,
         "running": true,
-        "startedAt": "2026-07-14T02:47:37.8126431Z",
+        "startedAt": "2026-07-14T04:43:37.7739263Z",
         "continuous": true,
         "maxIterations": 0,
         "intervalSeconds": 15,
@@ -82,7 +84,7 @@
           "staleGuard": false,
           "staleGuardEnforced": false,
           "liveResultIngestion": false,
-          "approvedResultSettlement": false
+          "approvedResultSettlement": true
         }
       },
       "resultPoller": {
@@ -90,12 +92,12 @@
         "checked": true,
         "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json",
         "known": true,
-        "pid": 69656,
+        "pid": 24848,
         "running": true,
-        "startedAt": "2026-07-14T02:47:38.0879157Z",
+        "startedAt": "2026-07-14T04:43:38.3700616Z",
         "continuous": true,
         "maxIterations": 0,
-        "intervalSeconds": 15,
+        "intervalSeconds": 1,
         "providerProofEveryIterations": null,
         "maxProviderProofRuns": null,
         "refreshIterations": null,
@@ -104,7 +106,7 @@
         "usesProviderQuota": false,
         "modes": {
           "liveResultIngestion": false,
-          "approvedResultSettlement": false
+          "approvedResultSettlement": true
         }
       },
       "anyLoopRunning": true,
@@ -124,9 +126,9 @@
     "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
     "reason": null,
     "snapshotCount": 4,
-    "latestFetchedAt": "2026-07-14T03:29:17.383Z",
-    "latestAgeHours": 0.01,
-    "latestAgeSeconds": 34,
+    "latestFetchedAt": "2026-07-14T03:42:05.458Z",
+    "latestAgeHours": 1.03,
+    "latestAgeSeconds": 3714,
     "maxAgeHours": 24,
     "sources": [
       "sportsbook-odds"
@@ -135,26 +137,26 @@
     "mmEligibleSnapshotCount": 0,
     "latestQualityStatus": "approved",
     "latestReason": "temporary_sportsbook_odds_single_event_provider",
-    "mobileRouteFresh": true,
+    "mobileRouteFresh": false,
     "mobileRouteRefreshDue": false,
-    "mobileRouteStale": false,
-    "mobileLifecycleStatus": "ready",
+    "mobileRouteStale": true,
+    "mobileLifecycleStatus": "stale",
     "mobileRefreshDueSeconds": 60,
     "mobileStaleAfterSeconds": 90,
-    "mobileRefreshDueAt": "2026-07-14T03:30:17.383Z",
-    "mobileStaleAt": "2026-07-14T03:30:47.383Z",
-    "nextProviderAction": "none"
+    "mobileRefreshDueAt": "2026-07-14T03:43:05.458Z",
+    "mobileStaleAt": "2026-07-14T03:43:35.458Z",
+    "nextProviderAction": "refresh_provider_snapshots_or_keep_cached_test_mode"
   },
   "operatorNextActions": {
     "recommendedFirstAction": "cached_internal_testing",
     "recommendedCommand": "npm run mobile:one-event-onboarding",
     "defaultNoQuotaAction": "cached_internal_testing",
-    "liveOddsAction": "none",
-    "nextProviderAction": "none",
+    "liveOddsAction": "refresh_mobile_live_odds",
+    "nextProviderAction": "refresh_provider_snapshots_or_keep_cached_test_mode",
     "eventLifecycleAction": "none",
     "eventLifecycleWindow": "pre_start_open",
     "eventLifecycleOperatorAction": "keep_trading_available_until_suspend_window",
-    "actionCount": 4,
+    "actionCount": 5,
     "selectedAction": {
       "id": "cached_internal_testing",
       "priority": "P0",
@@ -193,6 +195,15 @@
         "reason": "Re-proves the local supervisor/result-poller loop lifecycle without provider quota; use when refreshing proof artifacts."
       },
       {
+        "id": "refresh_mobile_live_odds",
+        "priority": "P0",
+        "label": "Refresh mobile-visible live odds",
+        "command": "npm run mobile:one-event-live-runtime:provider-secret",
+        "requiresProviderKey": true,
+        "spendsProviderQuota": true,
+        "reason": "Selected market provider snapshots are stale under the mobile 90-second live-display window; use the secret wrapper so the provider key stays in the process environment or ignored local secret file."
+      },
+      {
         "id": "settlement_wait_for_closed_market",
         "priority": "P1",
         "label": "Wait for closed market before settlement",
@@ -212,14 +223,14 @@
     "title": "Spain vs. France",
     "status": "active",
     "liveStatus": "LIVE",
-    "sportKey": "soccer",
-    "leagueKey": "world_cup",
+    "sportKey": "soccer_fifa_world_cup",
+    "leagueKey": "soccer_fifa_world_cup",
     "source": "the-odds-api",
     "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
-    "sourceUpdatedAt": "2026-07-14T03:29:17.383Z",
-    "now": "2026-07-14T03:29:51.471Z",
+    "sourceUpdatedAt": "2026-07-14T03:29:19.428Z",
+    "now": "2026-07-14T04:43:59.860Z",
     "startTime": "2026-07-14T19:00:00.000Z",
-    "secondsUntilStart": 55809,
+    "secondsUntilStart": 51360,
     "startAgeSeconds": 0,
     "suspendBeforeStartSeconds": 300,
     "insideSuspendWindow": false,
@@ -236,7 +247,7 @@
       "title": "Spain vs. France",
       "localSlug": "odds-api-single-soccer-test",
       "selectedMarket": "Spain vs. France: Total Goals 2.5",
-      "selectedOutcome": "Over +2.5"
+      "selectedOutcome": "Over 2.5"
     },
     "launch": [
       {
@@ -265,11 +276,11 @@
         "expected": "Markets load from backend for odds-api-single-soccer-test; selected proof market is Spain vs. France: Total Goals 2.5.",
         "routeDependency": "GET /api/mobile/events/odds-api-single-soccer-test/live-detail",
         "pass": true,
-        "notes": "Provider snapshots are fresh for mobile display."
+        "notes": "Cached mode is usable for internal testing; live mobile odds refresh requires the explicit provider-refresh command."
       },
       {
         "step": "Quote and buy",
-        "expected": "Open Over +2.5, enter an amount, and swipe to buy with fake tokens.",
+        "expected": "Open Over 2.5, enter an amount, and swipe to buy with fake tokens.",
         "routeDependency": "GET /api/markets/:id/quote; POST /api/orders",
         "pass": true,
         "notes": "Order must use the selected market/outcome identity from Event Detail."

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T04:37:39.529Z",
+  "generatedAt": "2026-07-14T04:44:21.502Z",
   "scope": "odds-api-one-event-runtime-status",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -61,9 +61,9 @@
       "checked": true,
       "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json",
       "known": true,
-      "pid": 67348,
+      "pid": 4836,
       "running": false,
-      "startedAt": "2026-07-14T03:44:22.4971899Z",
+      "startedAt": "2026-07-14T04:43:37.7739263Z",
       "continuous": true,
       "maxIterations": 0,
       "intervalSeconds": 15,
@@ -73,7 +73,7 @@
         "staleGuard": false,
         "staleGuardEnforced": false,
         "liveResultIngestion": false,
-        "approvedResultSettlement": false
+        "approvedResultSettlement": true
       }
     },
     "resultPoller": {
@@ -81,16 +81,16 @@
       "checked": true,
       "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json",
       "known": true,
-      "pid": 69656,
+      "pid": 24848,
       "running": false,
-      "startedAt": "2026-07-14T02:47:38.0879157Z",
+      "startedAt": "2026-07-14T04:43:38.3700616Z",
       "continuous": true,
       "maxIterations": 0,
-      "intervalSeconds": 15,
+      "intervalSeconds": 1,
       "usesProviderQuota": false,
       "modes": {
         "liveResultIngestion": false,
-        "approvedResultSettlement": false
+        "approvedResultSettlement": true
       }
     },
     "allLoopsRunning": false,
@@ -139,13 +139,13 @@
       "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e"
     },
     "source": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
-    "generatedAt": "2026-07-14T04:35:05.941Z",
+    "generatedAt": "2026-07-14T04:43:40.493Z",
     "quoteVisibleScore": 3,
     "selectionReason": "freshest quote-visible selected outcome",
     "candidates": [
       {
         "source": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
-        "generatedAt": "2026-07-14T04:35:05.941Z",
+        "generatedAt": "2026-07-14T04:43:40.493Z",
         "selectedMarket": {
           "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
           "slug": "odds-api-single-soccer-test-totals-7439c2d603",
@@ -201,7 +201,7 @@
         "status": "ok",
         "db": "connected",
         "env": "development",
-        "timestamp": "2026-07-14T04:37:39.527Z"
+        "timestamp": "2026-07-14T04:44:21.501Z"
       },
       "error": null
     }
@@ -209,7 +209,7 @@
   "provider": {
     "liveProofPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
     "liveProofGeneratedAt": "2026-07-14T03:29:19.428Z",
-    "liveProofAgeHours": 1.14,
+    "liveProofAgeHours": 1.25,
     "maxLiveProofAgeHours": 24,
     "quota": {
       "totalLastCost": 13,
@@ -232,8 +232,8 @@
   },
   "maker": {
     "makerSeedPath": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
-    "makerSeedGeneratedAt": "2026-07-14T04:35:05.941Z",
-    "makerSeedAgeHours": 0.04,
+    "makerSeedGeneratedAt": "2026-07-14T04:43:40.493Z",
+    "makerSeedAgeHours": 0.01,
     "quoteRoute": {
       "ok": true,
       "status": 200,
@@ -277,8 +277,8 @@
   },
   "lifecycle": {
     "schedulerRunPath": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
-    "schedulerGeneratedAt": "2026-07-14T04:03:18.164Z",
-    "schedulerAgeHours": 0.57,
+    "schedulerGeneratedAt": "2026-07-14T04:43:47.682Z",
+    "schedulerAgeHours": 0.01,
     "schedulerAction": "none",
     "schedulerReason": "Event is not inside the suspend/close window.",
     "schedulerCandidateMarketCount": 3
@@ -287,9 +287,9 @@
     "resultSettlementExecutionPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
     "resultSettlementLiveBlockedPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json",
     "resultSettlementExecutionGeneratedAt": "2026-07-13T12:32:50.663Z",
-    "resultSettlementExecutionAgeHours": 16.08,
+    "resultSettlementExecutionAgeHours": 16.19,
     "resultSettlementLiveBlockedGeneratedAt": "2026-07-13T12:32:49.154Z",
-    "resultSettlementLiveBlockedAgeHours": 16.08,
+    "resultSettlementLiveBlockedAgeHours": 16.19,
     "maxSettlementProofAgeHours": 24,
     "resultSettlementExecutionFresh": true,
     "resultSettlementLiveBlockedFresh": true,

@@ -16275,3 +16275,18 @@ Known limitations:
   - `npm run mobile:live-runtime-audit-gate`
   - `docs/mobile/audits/cycle-ZAE-runtime-liquidity-after-cashout.md`
 - Known limitations: installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1. Multi-event polling and production operator UI remain P2.
+
+## Cycle ZAF - Warm Runtime Continuity Refresh
+
+- Feature/runtime worked on: no-quota warm runtime proof for the current Spain vs. France internal tester environment.
+- Frontend components touched: none.
+- Backend/routes touched: no route implementation changes. Existing internal status and readiness gates were exercised.
+- Important functions/services touched: `scripts/prove_holiwyn_current_runtime_state.js`, `scripts/manage_holiwyn_one_event_live_supervisor.ps1`, `scripts/manage_holiwyn_one_event_result_poller.ps1`, `scripts/manage_holiwyn_internal_tester_runtime.ps1`, and `GET /api/internal/live-runtime/status`.
+- User/runtime interactions supported: internal tester runtime can be started locally with supervisor and result-poller loops, observed as warm/no-quota by backend status, then cleaned up. This supports the current local tester workflow without leaving background processes behind.
+- State transitions: proof stopped stale loops, restored the cached backend-owned event, started supervisor/result-poller loops, observed `warmNoQuotaRuntime`, ran readiness while loops were active, and stopped both loops after proof. No provider quota was spent and no settlement execution occurred.
+- API/data dependencies: `GET /api/internal/live-runtime/status` reports current loop process state, quota-spending truth, local capability readiness, selected event/market evidence, and next operator action. The readiness gate consumes the same local status evidence.
+- Proof:
+  - `npm run mobile:current-runtime-state-proof`
+  - `npm run mobile:live-runtime-audit-gate`
+  - `docs/mobile/audits/cycle-ZAF-warm-runtime-continuity-refresh.md`
+- Known limitations: mobile-visible provider snapshots can still be stale in no-quota mode; live odds refresh remains explicit and quota-capped. This proves local foreground process continuity, not an installed OS service.
