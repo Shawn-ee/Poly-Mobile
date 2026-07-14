@@ -1,5 +1,5 @@
 {
-    "generatedAt":  "2026-07-14T03:07:26.0308461Z",
+    "generatedAt":  "2026-07-14T03:29:20.3670751Z",
     "scope":  "holiwyn-one-event-live-runtime-launch",
     "pass":  true,
     "backend":  {
@@ -10,7 +10,7 @@
                                                       "status":  "ok",
                                                       "db":  "connected",
                                                       "env":  "development",
-                                                      "timestamp":  "2026-07-14T03:07:20.002Z"
+                                                      "timestamp":  "2026-07-14T03:29:14.160Z"
                                                   },
                                          "error":  null
                                      },
@@ -20,7 +20,7 @@
                                                      "status":  "ok",
                                                      "db":  "connected",
                                                      "env":  "development",
-                                                     "timestamp":  "2026-07-14T03:07:20.022Z"
+                                                     "timestamp":  "2026-07-14T03:29:14.180Z"
                                                  },
                                         "error":  null
                                     },
@@ -56,7 +56,7 @@
                                    "pass":  true,
                                    "fresh":  true,
                                    "reason":  "fresh",
-                                   "generatedAt":  "2026-07-14T03:07:25.089Z",
+                                   "generatedAt":  "2026-07-14T03:29:19.428Z",
                                    "ageHours":  0,
                                    "maxAgeHours":  24,
                                    "summaryPath":  "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
@@ -81,9 +81,9 @@
                                    "marketMaker":  {
                                                        "continuous":  false,
                                                        "mode":  "bounded-proof-local-shifted-maker",
-                                                       "makerUserId":  "10e76413-a238-4db9-af57-943e56ccc6d7",
-                                                       "bidOrderId":  "3c45f22d-a8bb-405d-8f3e-196bd590503a",
-                                                       "askOrderId":  "73a8211b-0ac1-4251-991b-203c769eb290",
+                                                       "makerUserId":  "24164213-7701-4049-b33b-1b69b540ea10",
+                                                       "bidOrderId":  "f7070abb-42f2-4f8b-8761-e82a7780a266",
+                                                       "askOrderId":  "c18062b1-ea47-499a-8417-f640a5f3aa48",
                                                        "referenceBid":  0.4839,
                                                        "referenceAsk":  0.5239,
                                                        "preSeedBook":  {
@@ -95,30 +95,30 @@
                                                                                               "side":  "BUY",
                                                                                               "price":  "0.46",
                                                                                               "remaining":  "200",
-                                                                                              "username":  "odds_live_runtime_shifted_maker_5c11207b"
+                                                                                              "username":  "odds_live_runtime_shifted_maker_e61e2d01"
                                                                                           },
                                                                                           {
                                                                                               "side":  "SELL",
                                                                                               "price":  "0.54",
                                                                                               "remaining":  "200",
-                                                                                              "username":  "odds_live_runtime_shifted_maker_5c11207b"
+                                                                                              "username":  "odds_live_runtime_shifted_maker_e61e2d01"
                                                                                           }
                                                                                       ]
                                                                        },
                                                        "collateralRepair":  {
                                                                                 "repaired":  false,
-                                                                                "before":  "200",
-                                                                                "after":  "200",
+                                                                                "before":  "11800",
+                                                                                "after":  "11800",
                                                                                 "byOutcome":  [
                                                                                                   {
                                                                                                       "outcomeId":  "30fbc915-74ca-4809-a0c4-cd54c3236aa4",
                                                                                                       "code":  "over-2-5",
-                                                                                                      "shares":  "200"
+                                                                                                      "shares":  "11800"
                                                                                                   },
                                                                                                   {
                                                                                                       "outcomeId":  "fe72ef40-ee22-4cc8-9830-bb46a4bf6c15",
                                                                                                       "code":  "under-2-5",
-                                                                                                      "shares":  "200"
+                                                                                                      "shares":  "11800"
                                                                                                   }
                                                                                               ]
                                                                             },
@@ -133,9 +133,9 @@
 
                                                        ],
                                                 "p1":  [
-                                                           "continuous unattended market-maker daemon is not complete; this proof is bounded",
-                                                           "automatic event close/suspend scheduler is not complete",
-                                                           "automatic official-result settlement is not complete"
+                                                           "installed unattended market-maker service ownership is not complete; this proof is bounded",
+                                                           "event close/suspend scheduler runs under the local foreground supervisor but is not installed as an unattended service",
+                                                           "production official-result auto-settlement is not complete; local settlement remains CLOSED-market and exact-confirmation guarded"
                                                        ],
                                                 "p2":  [
                                                            "multi-event polling remains out of scope to protect quota"

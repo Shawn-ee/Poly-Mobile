@@ -10954,3 +10954,12 @@ Future migration concern:
 - Schema mismatch: none. No Prisma schema or model changes.
 - Temporary mock/static data: none added. This is a read-only current-state report and uses existing proof/runtime artifacts.
 - Remaining gaps: live mobile odds freshness still requires the explicit quota-spending provider refresh command when real-time odds display matters. Installed unattended service ownership and production official-result auto-settlement remain P1.
+
+## Cycle ZY - Live Odds Freshness Pulse
+
+- Fields confirmed for tooling: live provider proof reports provider quota headers, `provider.quota.totalLastCost`, selected event/market/outcome identity, `lifecycle.beforeRefresh.quote.status=stale`, `lifecycle.afterRefresh.quote.status=ready`, maker bid/ask, buy/sell order IDs, and portfolio/history proof. Readiness gate reports `liveOddsReadyRightNow=true`, `providerSnapshotFresh=true`, and `quotaSpendingLoopRunning=false`.
+- Closed or narrowed: the live-odds preflight now validates the secret-wrapper command instead of the older raw provider alias, so the operator-facing no-quota preflight matches the safer real refresh path.
+- Route mismatch: none. Existing mobile/live-detail and runtime status routes surface the fresh provider snapshot state after refresh.
+- Schema mismatch: none. No Prisma schema or model changes.
+- Temporary mock/static data: none added. The refresh used real The Odds API data for one event; fake-token order/portfolio behavior remains local exchange state.
+- Remaining gaps: mobile route freshness has a short operational window and will naturally age back to refresh-due/stale without another explicit quota-capped refresh. Installed unattended service ownership and production official-result auto-settlement remain P1.

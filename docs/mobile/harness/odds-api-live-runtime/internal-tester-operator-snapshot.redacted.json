@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T03:22:41.188Z",
+  "generatedAt": "2026-07-14T03:29:51.481Z",
   "scope": "holiwyn-internal-tester-operator-snapshot",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -29,7 +29,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-14T03:22:39.847Z"
+      "timestamp": "2026-07-14T03:29:50.061Z"
     },
     "error": null
   },
@@ -38,7 +38,7 @@
     "localInternalRuntimeReady": true,
     "localTesterReadyRightNow": true,
     "cachedTesterReadyRightNow": true,
-    "liveOddsReadyRightNow": false,
+    "liveOddsReadyRightNow": true,
     "currentRuntimeState": {
       "checked": true,
       "mode": "warm_no_quota_runtime",
@@ -50,15 +50,13 @@
       "resultPollerRunning": true,
       "quotaSpendingLoopRunning": false,
       "backendProofFresh": true,
-      "providerSnapshotFresh": false,
+      "providerSnapshotFresh": true,
       "cachedTesterReadyRightNow": true,
-      "liveOddsReadyRightNow": false,
+      "liveOddsReadyRightNow": true,
       "testerReadyRightNow": true,
       "p0": [],
-      "p1": [
-        "mobile_provider_snapshot_not_fresh"
-      ],
-      "nextAction": "keep_cached_testing_or_refresh_live_odds",
+      "p1": [],
+      "nextAction": "manual_s23_testing",
       "note": "This separates proven local capability, cached internal tester warmth, and live mobile odds freshness. Cached tester readiness requires warm no-quota loops; live odds readiness additionally requires fresh mobile-visible provider snapshots."
     },
     "managedProcesses": {
@@ -126,9 +124,9 @@
     "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
     "reason": null,
     "snapshotCount": 4,
-    "latestFetchedAt": "2026-07-14T03:07:23.278Z",
-    "latestAgeHours": 0.25,
-    "latestAgeSeconds": 918,
+    "latestFetchedAt": "2026-07-14T03:29:17.383Z",
+    "latestAgeHours": 0.01,
+    "latestAgeSeconds": 34,
     "maxAgeHours": 24,
     "sources": [
       "sportsbook-odds"
@@ -137,26 +135,26 @@
     "mmEligibleSnapshotCount": 0,
     "latestQualityStatus": "approved",
     "latestReason": "temporary_sportsbook_odds_single_event_provider",
-    "mobileRouteFresh": false,
+    "mobileRouteFresh": true,
     "mobileRouteRefreshDue": false,
-    "mobileRouteStale": true,
-    "mobileLifecycleStatus": "stale",
+    "mobileRouteStale": false,
+    "mobileLifecycleStatus": "ready",
     "mobileRefreshDueSeconds": 60,
     "mobileStaleAfterSeconds": 90,
-    "mobileRefreshDueAt": "2026-07-14T03:08:23.278Z",
-    "mobileStaleAt": "2026-07-14T03:08:53.278Z",
-    "nextProviderAction": "refresh_provider_snapshots_or_keep_cached_test_mode"
+    "mobileRefreshDueAt": "2026-07-14T03:30:17.383Z",
+    "mobileStaleAt": "2026-07-14T03:30:47.383Z",
+    "nextProviderAction": "none"
   },
   "operatorNextActions": {
     "recommendedFirstAction": "cached_internal_testing",
     "recommendedCommand": "npm run mobile:one-event-onboarding",
     "defaultNoQuotaAction": "cached_internal_testing",
-    "liveOddsAction": "refresh_mobile_live_odds",
-    "nextProviderAction": "refresh_provider_snapshots_or_keep_cached_test_mode",
+    "liveOddsAction": "none",
+    "nextProviderAction": "none",
     "eventLifecycleAction": "none",
     "eventLifecycleWindow": "pre_start_open",
     "eventLifecycleOperatorAction": "keep_trading_available_until_suspend_window",
-    "actionCount": 5,
+    "actionCount": 4,
     "selectedAction": {
       "id": "cached_internal_testing",
       "priority": "P0",
@@ -195,15 +193,6 @@
         "reason": "Re-proves the local supervisor/result-poller loop lifecycle without provider quota; use when refreshing proof artifacts."
       },
       {
-        "id": "refresh_mobile_live_odds",
-        "priority": "P0",
-        "label": "Refresh mobile-visible live odds",
-        "command": "npm run mobile:one-event-live-runtime:provider-secret",
-        "requiresProviderKey": true,
-        "spendsProviderQuota": true,
-        "reason": "Selected market provider snapshots are stale under the mobile 90-second live-display window; use the secret wrapper so the provider key stays in the process environment or ignored local secret file."
-      },
-      {
         "id": "settlement_wait_for_closed_market",
         "priority": "P1",
         "label": "Wait for closed market before settlement",
@@ -227,10 +216,10 @@
     "leagueKey": "world_cup",
     "source": "the-odds-api",
     "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
-    "sourceUpdatedAt": "2026-07-14T03:07:23.278Z",
-    "now": "2026-07-14T03:22:41.176Z",
+    "sourceUpdatedAt": "2026-07-14T03:29:17.383Z",
+    "now": "2026-07-14T03:29:51.471Z",
     "startTime": "2026-07-14T19:00:00.000Z",
-    "secondsUntilStart": 56239,
+    "secondsUntilStart": 55809,
     "startAgeSeconds": 0,
     "suspendBeforeStartSeconds": 300,
     "insideSuspendWindow": false,
@@ -276,7 +265,7 @@
         "expected": "Markets load from backend for odds-api-single-soccer-test; selected proof market is Spain vs. France: Total Goals 2.5.",
         "routeDependency": "GET /api/mobile/events/odds-api-single-soccer-test/live-detail",
         "pass": true,
-        "notes": "Cached mode is usable for internal testing; live mobile odds refresh requires the explicit provider-refresh command."
+        "notes": "Provider snapshots are fresh for mobile display."
       },
       {
         "step": "Quote and buy",

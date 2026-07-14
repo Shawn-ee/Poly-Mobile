@@ -15,6 +15,7 @@ This phase is complete for local internal testing.
 - Runtime type: local fake-token internal runtime, not production real-money infrastructure.
 - Latest runtime proof refresh: Cycle ZW5 lifecycle matrix proof refresh, commit `32cfbc1b`.
 - Latest operator snapshot refresh: current runtime reports warm cached tester mode with supervisor/result-poller loops running, backend healthy, and no provider quota-spending loop.
+- Latest live-odds freshness pulse: Cycle ZY refreshed the Spain vs. France selected market through the secret-wrapper provider command, moved the mobile quote lifecycle from stale to ready, and left no open P0 gaps.
 
 ## Requirement Evidence
 
@@ -39,6 +40,7 @@ This phase is complete for local internal testing.
 - Supervisor/result-poller loops are local foreground/background processes, not installed services.
 - Local maker quote proof and provider-to-maker handoff are durable.
 - Cached internal testing is ready right now. Mobile-visible live odds freshness is not ready under the 90-second route threshold unless the explicit provider-refresh command is run.
+- After Cycle ZY, mobile-visible live odds were proven ready immediately after the bounded provider refresh. This is an operational freshness window, not a background quota-spending loop.
 - Official result review and settlement queue APIs are read-only, dev-only, and quota-free.
 - Active event settlement execution is blocked until market close plus exact confirmation.
 

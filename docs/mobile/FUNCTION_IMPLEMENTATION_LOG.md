@@ -16174,3 +16174,19 @@ Known limitations:
   - `npm run mobile:local-runtime-launch-profile`
   - `npm run mobile:internal-tester-operator-snapshot`
 - Known limitations: installed unattended service ownership and production official-result auto-settlement remain P1. Live mobile odds freshness is intentionally not refreshed without the explicit quota-spending provider command.
+
+## Cycle ZY - Live Odds Freshness Pulse
+
+- Feature/runtime worked on: bounded one-event live provider refresh for the `Spain vs. France` internal tester event.
+- Frontend components touched: none.
+- Backend/routes touched: no route implementation changes. Existing live-detail, quote, order, portfolio, runtime status, and audit routes were exercised by the provider proof.
+- Important functions/services touched: `scripts/report_holiwyn_live_odds_refresh_preflight.ts` now validates the safer `npm run mobile:one-event-live-runtime:provider-secret` command as the known live-refresh action.
+- User/runtime interactions supported: local operators can preflight live odds refresh through a no-quota report, then run the secret-wrapper provider refresh without printing or committing the key. After the pulse, the internal tester readiness gate reports `liveOddsReadyRightNow=true` and the tester-facing next action is manual S23 testing.
+- State transitions: selected market quote lifecycle moved from stale before refresh to ready after refresh. Runtime loops remained warm in no-quota mode and no active-event settlement executed.
+- API/data dependencies: The Odds API one-event sportsbook odds endpoints; local `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, `ProviderRefreshRun`, `MarketMakerQuoteRun`, order/portfolio/history proof data, and `/api/internal/live-runtime/status`.
+- Proof:
+  - `npm run mobile:live-odds-refresh-preflight`
+  - `npm run mobile:one-event-live-runtime:provider-secret`
+  - `npm run mobile:live-runtime-audit-gate`
+  - `npm run mobile:internal-tester-readiness-gate`
+- Known limitations: mobile route freshness is a short operational window; once it ages past the stale threshold, cached trading remains ready but live odds display requires another explicit quota-capped refresh. Installed unattended service ownership and production official-result auto-settlement remain P1.

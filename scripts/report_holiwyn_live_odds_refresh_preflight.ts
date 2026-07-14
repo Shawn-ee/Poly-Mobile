@@ -9,7 +9,7 @@ const RUNTIME_STATUS_PATH =
   "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json";
 const AUDIT_GATE_PATH =
   "docs/mobile/harness/odds-api-live-runtime/live-runtime-audit-gate-summary.redacted.json";
-const LIVE_ODDS_REFRESH_COMMAND = "npm run mobile:one-event-live-runtime:provider";
+const LIVE_ODDS_REFRESH_COMMAND = "npm run mobile:one-event-live-runtime:provider-secret";
 const LIVE_ODDS_SECRET_PREFLIGHT_COMMAND = "npm run mobile:one-event-live-runtime:provider-secret-preflight";
 const LIVE_ODDS_SECRET_REFRESH_COMMAND = "npm run mobile:one-event-live-runtime:provider-secret";
 const PROVIDER_SECRET_FILE_PATH = ".runtime/secrets/the-odds-api-key.txt";
@@ -103,7 +103,7 @@ async function main() {
   const liveOddsReady = getPath(readiness, ["testerReady", "liveOddsReady"]) === true;
   const providerSnapshotFresh = getPath(readiness, ["testerReady", "providerSnapshotFresh"]) === true;
   const quotaSpendingLoopRunning = getPath(readiness, ["testerReady", "quotaSpendingLoopRunning"]) === true;
-  const liveActionKnown = liveAction?.command === LIVE_ODDS_REFRESH_COMMAND;
+  const liveActionKnown = liveOddsReady || liveAction?.command === LIVE_ODDS_REFRESH_COMMAND;
   const readinessPass = readiness?.pass === true;
   const auditGatePass = auditGate?.pass === true;
   const runtimeStatusPass = runtimeStatus?.pass === true;
@@ -143,7 +143,7 @@ async function main() {
     liveOddsRefreshCommand: LIVE_ODDS_REFRESH_COMMAND,
     liveOddsSecretPreflightCommand: LIVE_ODDS_SECRET_PREFLIGHT_COMMAND,
     liveOddsSecretRefreshCommand: LIVE_ODDS_SECRET_REFRESH_COMMAND,
-    canRunLiveRefreshNow: pass && providerKeyConfigured && !quotaSpendingLoopRunning,
+    canRunLiveRefreshNow: !liveOddsReady && pass && providerKeyConfigured && !quotaSpendingLoopRunning,
     readiness: {
       cachedTradingReady,
       liveOddsReady,

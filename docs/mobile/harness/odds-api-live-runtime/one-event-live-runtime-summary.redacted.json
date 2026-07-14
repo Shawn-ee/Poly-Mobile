@@ -1,7 +1,7 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-14T03:07:25.089Z",
-  "startedAt": "2026-07-14T03:07:20.727Z",
+  "generatedAt": "2026-07-14T03:29:19.428Z",
+  "startedAt": "2026-07-14T03:29:15.780Z",
   "scope": "odds-api-one-event-live-runtime",
   "policy": {
     "fakeTokenOnly": true,
@@ -29,8 +29,8 @@
         "path": "/v4/sports",
         "status": 200,
         "quota": {
-          "requestsUsed": "173",
-          "requestsRemaining": "327",
+          "requestsUsed": "186",
+          "requestsRemaining": "314",
           "requestsLast": "0"
         }
       },
@@ -40,8 +40,8 @@
         "path": "/v4/sports/soccer_fifa_world_cup/events?dateFormat=iso&commenceTimeFrom=2026-07-14T00%3A00%3A00Z&commenceTimeTo=2026-07-15T00%3A00%3A00Z",
         "status": 200,
         "quota": {
-          "requestsUsed": "173",
-          "requestsRemaining": "327",
+          "requestsUsed": "186",
+          "requestsRemaining": "314",
           "requestsLast": "0"
         }
       },
@@ -51,8 +51,8 @@
         "path": "/v4/sports/soccer_fifa_world_cup/events/f9aa13a662d1658e5a02cfc06d6a2d73/markets?regions=us&dateFormat=iso",
         "status": 200,
         "quota": {
-          "requestsUsed": "174",
-          "requestsRemaining": "326",
+          "requestsUsed": "187",
+          "requestsRemaining": "313",
           "requestsLast": "1"
         }
       },
@@ -62,8 +62,8 @@
         "path": "/v4/sports/soccer_fifa_world_cup/events/f9aa13a662d1658e5a02cfc06d6a2d73/odds?regions=us&markets=h2h%2Cspreads%2Ctotals%2Ch2h_3_way%2Calternate_spreads%2Calternate_totals&oddsFormat=decimal&dateFormat=iso",
         "status": 200,
         "quota": {
-          "requestsUsed": "180",
-          "requestsRemaining": "320",
+          "requestsUsed": "193",
+          "requestsRemaining": "307",
           "requestsLast": "6"
         }
       },
@@ -73,8 +73,8 @@
         "path": "/v4/sports/soccer_fifa_world_cup/events/f9aa13a662d1658e5a02cfc06d6a2d73/odds?regions=us&markets=h2h%2Cspreads%2Ctotals%2Ch2h_3_way%2Calternate_spreads%2Calternate_totals&oddsFormat=decimal&dateFormat=iso",
         "status": 200,
         "quota": {
-          "requestsUsed": "186",
-          "requestsRemaining": "314",
+          "requestsUsed": "199",
+          "requestsRemaining": "301",
           "requestsLast": "6"
         }
       }
@@ -82,8 +82,8 @@
     "quota": {
       "totalLastCost": 13,
       "latest": {
-        "requestsUsed": "186",
-        "requestsRemaining": "314",
+        "requestsUsed": "199",
+        "requestsRemaining": "301",
         "requestsLast": "6"
       }
     },
@@ -296,7 +296,7 @@
     "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4"
   },
   "lifecycle": {
-    "forcedStaleAt": "2026-07-14T03:02:21.948Z",
+    "forcedStaleAt": "2026-07-14T03:24:16.116Z",
     "beforeRefresh": {
       "source": "mobile-live-detail-market",
       "status": "stale",
@@ -312,14 +312,14 @@
       "fallbackApplied": false,
       "fallbackReason": null,
       "reason": "Provider quote snapshot is older than 90 seconds.",
-      "nextRefreshAt": "2026-07-14T03:03:21.948Z",
-      "lastFetchedAt": "2026-07-14T03:02:21.948Z",
+      "nextRefreshAt": "2026-07-14T03:25:16.116Z",
+      "lastFetchedAt": "2026-07-14T03:24:16.116Z",
       "quote": {
         "source": "sportsbook-odds",
         "status": "stale",
         "reason": "Provider quote snapshot is older than 90 seconds.",
-        "nextRefreshAt": "2026-07-14T03:03:21.948Z",
-        "lastFetchedAt": "2026-07-14T03:02:21.948Z",
+        "nextRefreshAt": "2026-07-14T03:25:16.116Z",
+        "lastFetchedAt": "2026-07-14T03:24:16.116Z",
         "stalenessSeconds": 300,
         "shouldRefresh": true,
         "ready": false,
@@ -375,14 +375,14 @@
       "fallbackApplied": false,
       "fallbackReason": null,
       "reason": "No provider orderbook depth snapshot is available.",
-      "nextRefreshAt": "2026-07-14T03:08:23.278Z",
-      "lastFetchedAt": "2026-07-14T03:07:23.278Z",
+      "nextRefreshAt": "2026-07-14T03:30:17.383Z",
+      "lastFetchedAt": "2026-07-14T03:29:17.383Z",
       "quote": {
         "source": "sportsbook-odds",
         "status": "ready",
         "reason": "Provider quote snapshot is fresh.",
-        "nextRefreshAt": "2026-07-14T03:08:23.278Z",
-        "lastFetchedAt": "2026-07-14T03:07:23.278Z",
+        "nextRefreshAt": "2026-07-14T03:30:17.383Z",
+        "lastFetchedAt": "2026-07-14T03:29:17.383Z",
         "stalenessSeconds": 1,
         "shouldRefresh": false,
         "ready": true,
@@ -443,9 +443,9 @@
   "marketMaker": {
     "continuous": false,
     "mode": "bounded-proof-local-shifted-maker",
-    "makerUserId": "10e76413-a238-4db9-af57-943e56ccc6d7",
-    "bidOrderId": "3c45f22d-a8bb-405d-8f3e-196bd590503a",
-    "askOrderId": "73a8211b-0ac1-4251-991b-203c769eb290",
+    "makerUserId": "24164213-7701-4049-b33b-1b69b540ea10",
+    "bidOrderId": "f7070abb-42f2-4f8b-8761-e82a7780a266",
+    "askOrderId": "c18062b1-ea47-499a-8417-f640a5f3aa48",
     "referenceBid": 0.4839,
     "referenceAsk": 0.5239,
     "preSeedBook": {
@@ -457,30 +457,30 @@
           "side": "BUY",
           "price": "0.46",
           "remaining": "200",
-          "username": "odds_live_runtime_shifted_maker_5c11207b"
+          "username": "odds_live_runtime_shifted_maker_e61e2d01"
         },
         {
           "side": "SELL",
           "price": "0.54",
           "remaining": "200",
-          "username": "odds_live_runtime_shifted_maker_5c11207b"
+          "username": "odds_live_runtime_shifted_maker_e61e2d01"
         }
       ]
     },
     "collateralRepair": {
       "repaired": false,
-      "before": "200",
-      "after": "200",
+      "before": "11800",
+      "after": "11800",
       "byOutcome": [
         {
           "outcomeId": "30fbc915-74ca-4809-a0c4-cd54c3236aa4",
           "code": "over-2-5",
-          "shares": "200"
+          "shares": "11800"
         },
         {
           "outcomeId": "fe72ef40-ee22-4cc8-9830-bb46a4bf6c15",
           "code": "under-2-5",
-          "shares": "200"
+          "shares": "11800"
         }
       ]
     },
@@ -490,7 +490,7 @@
   },
   "flow": {
     "buyOrder": {
-      "id": "b8fe1d4d-c7e6-41de-9bca-cf86ffc689fc",
+      "id": "ca58c343-9dbf-4681-88bc-1ff81658a829",
       "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
       "outcomeId": "30fbc915-74ca-4809-a0c4-cd54c3236aa4",
       "side": "BUY",
@@ -500,7 +500,7 @@
       "reservedNotional": "0",
       "status": "FILLED",
       "type": "LIMIT",
-      "clientOrderId": "odds-live-runtime-buy-abd3c553-4548-4848-91c6-6ee576b796aa",
+      "clientOrderId": "odds-live-runtime-buy-3ad03d3c-920b-4c77-9b29-0460223c78eb",
       "apiKeyId": "[redacted]",
       "contractSide": "YES",
       "selection": {
@@ -526,7 +526,7 @@
       }
     },
     "sellOrder": {
-      "id": "a050ad5f-b47b-4d73-bfa7-3da0df450437",
+      "id": "c5c3eb39-7137-4662-8a1c-dde79dadde54",
       "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
       "outcomeId": "30fbc915-74ca-4809-a0c4-cd54c3236aa4",
       "side": "SELL",
@@ -536,7 +536,7 @@
       "reservedNotional": "0",
       "status": "FILLED",
       "type": "LIMIT",
-      "clientOrderId": "odds-live-runtime-cashout-sell-8a857f84-0dcd-4e7c-977f-dcdb3925d351",
+      "clientOrderId": "odds-live-runtime-cashout-sell-c1832bd6-84cb-482c-81a8-3fa1aca881ac",
       "apiKeyId": "[redacted]",
       "contractSide": "YES",
       "selection": {
@@ -657,9 +657,9 @@
   "gaps": {
     "p0": [],
     "p1": [
-      "continuous unattended market-maker daemon is not complete; this proof is bounded",
-      "automatic event close/suspend scheduler is not complete",
-      "automatic official-result settlement is not complete"
+      "installed unattended market-maker service ownership is not complete; this proof is bounded",
+      "event close/suspend scheduler runs under the local foreground supervisor but is not installed as an unattended service",
+      "production official-result auto-settlement is not complete; local settlement remains CLOSED-market and exact-confirmation guarded"
     ],
     "p2": [
       "multi-event polling remains out of scope to protect quota"
