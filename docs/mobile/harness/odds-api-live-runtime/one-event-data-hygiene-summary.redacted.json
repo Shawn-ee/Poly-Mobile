@@ -1,10 +1,10 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-14T09:45:43.019Z",
+  "generatedAt": "2026-07-14T12:26:10.943Z",
   "scope": "odds-api-one-event-data-hygiene",
   "mode": "apply",
   "event": {
-    "id": "9a275a56-9b05-4fbc-84f8-ecf6ce6c106a",
+    "id": "599b0903-1bd2-441e-928a-a420b494c1b8",
     "slug": "odds-api-single-soccer-test",
     "title": "Spain vs. France",
     "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",

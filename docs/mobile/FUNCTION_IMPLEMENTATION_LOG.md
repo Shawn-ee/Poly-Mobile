@@ -16664,3 +16664,21 @@ Known limitations:
   - `npm run mobile:live-runtime-completion-audit`
 - Result: ordered gates passed with zero open P0 gaps, fresh settlement guard evidence, visible selected-outcome bid/ask, and no provider quota.
 - Known limitations: installed unattended service ownership and production official-result auto-settlement remain P1. Multi-event provider polling/dashboard remains P2.
+
+## Cycle ZBD - Durable Runtime Run Refresh
+
+- Feature/runtime worked on: current no-quota internal tester readiness gate for the Spain vs. France one-event runtime.
+- Frontend components touched: none.
+- Backend/routes touched: no HTTP route, Prisma schema, mobile UI, order, provider refresh, or settlement execution changes.
+- Important functions/services touched: no source changes. This cycle refreshed existing worker-owned `RuntimeServiceRun` evidence by running bounded supervisor and result-poller proofs.
+- User/runtime interactions supported: operators can trust the readiness gate again because both local workers now have fresh passed durable run rows. The tester-facing snapshot truthfully reports cached trading ready while the supervisor/result-poller loops are not currently running after proof cleanup.
+- State transitions: local supervisor/result-poller workers were stopped, then bounded no-quota worker proofs ran. No provider call, API key read, mobile UI change, order placement, market mutation, or active settlement execution.
+- API/data dependencies: reads `GET /api/internal/live-runtime/status?phaseAuditInProgress=1`, `/api/health`, and `GET /api/markets/:marketId/quote`; writes fresh `RuntimeServiceRun` rows through existing worker proof commands and refreshed redacted audit summaries under `docs/mobile/harness/odds-api-live-runtime/`.
+- Proof:
+  - `npm run mobile:one-event-live-supervisor:stop`
+  - `npm run mobile:one-event-result-poller:stop`
+  - `npm run mobile:one-event-live-supervisor -- -MaxIterations 2 -IntervalSeconds 0 -SkipSleep`
+  - `npm run mobile:one-event-result-poller-proof`
+  - `npm run mobile:internal-tester-readiness-gate`
+- Result: readiness gate passed, provider quota used by gate was false, and P0 gaps are empty.
+- Known limitations: background loops are not running after cleanup; use the documented cached runtime command when a warm loop session is needed. Installed unattended service ownership and production official-result auto-settlement remain P1.

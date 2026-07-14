@@ -1,15 +1,15 @@
 {
-    "generatedAt":  "2026-07-14T09:46:00.7991712Z",
+    "generatedAt":  "2026-07-14T12:26:04.1552475Z",
     "scope":  "holiwyn-one-event-result-poller",
     "pass":  true,
-    "startedAt":  "2026-07-14T09:45:53.4956355Z",
-    "completedAt":  "2026-07-14T09:46:00.7991712Z",
+    "startedAt":  "2026-07-14T12:25:58.3147783Z",
+    "completedAt":  "2026-07-14T12:26:04.1552475Z",
     "eventSlug":  "odds-api-single-soccer-test",
     "settings":  {
-                     "continuous":  true,
-                     "maxIterations":  0,
+                     "continuous":  false,
+                     "maxIterations":  2,
                      "completedIterations":  2,
-                     "intervalSeconds":  2,
+                     "intervalSeconds":  0,
                      "runLiveResultIngestion":  false,
                      "liveResultIngestionRunsCompleted":  0,
                      "resultIngestionEveryIterations":  0,
@@ -36,15 +36,15 @@
     "cycles":  [
                    {
                        "iteration":  1,
-                       "startedAt":  "2026-07-14T09:45:53.4986346Z",
-                       "finishedAt":  "2026-07-14T09:45:55.3649711Z",
+                       "startedAt":  "2026-07-14T12:25:58.3177776Z",
+                       "finishedAt":  "2026-07-14T12:25:59.8836127Z",
                        "resultIngestion":  {
                                                "label":  "poll-1-result-ingestion",
                                                "command":  "npm run mobile:one-event-result-ingest -- --eventSlug=odds-api-single-soccer-test --trustedResultOutput=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json --summaryPath=docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json",
                                                "exitCode":  0,
                                                "pass":  true,
-                                               "startedAt":  "2026-07-14T09:45:53.5031464Z",
-                                               "finishedAt":  "2026-07-14T09:45:55.3206568Z",
+                                               "startedAt":  "2026-07-14T12:25:58.3232874Z",
+                                               "finishedAt":  "2026-07-14T12:25:59.8648858Z",
                                                "outputTail":  [
                                                                   "  },",
                                                                   "  \"auditEvent\": null,",
@@ -95,15 +95,15 @@
                    },
                    {
                        "iteration":  2,
-                       "startedAt":  "2026-07-14T09:45:58.2665559Z",
-                       "finishedAt":  "2026-07-14T09:45:59.5888082Z",
+                       "startedAt":  "2026-07-14T12:26:02.7262362Z",
+                       "finishedAt":  "2026-07-14T12:26:03.4813427Z",
                        "resultIngestion":  {
                                                "label":  "poll-2-result-ingestion",
                                                "command":  "npm run mobile:one-event-result-ingest -- --eventSlug=odds-api-single-soccer-test --trustedResultOutput=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json --summaryPath=docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-summary.redacted.json",
                                                "exitCode":  0,
                                                "pass":  true,
-                                               "startedAt":  "2026-07-14T09:45:58.2670592Z",
-                                               "finishedAt":  "2026-07-14T09:45:59.5868081Z",
+                                               "startedAt":  "2026-07-14T12:26:02.7262362Z",
+                                               "finishedAt":  "2026-07-14T12:26:03.4793441Z",
                                                "outputTail":  [
                                                                   "  },",
                                                                   "  \"auditEvent\": null,",
