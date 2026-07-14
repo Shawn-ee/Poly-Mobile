@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T14:44:31.375Z",
+  "generatedAt": "2026-07-14T14:51:08.740Z",
   "scope": "holiwyn-internal-tester-readiness-gate",
   "pass": true,
   "providerQuotaUsedByThisGate": false,
@@ -15,8 +15,8 @@
       "id": "ordered-live-runtime-audit",
       "command": "npm run mobile:live-runtime-audit-gate",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/live-runtime-audit-gate-summary.redacted.json",
-      "startedAt": "2026-07-14T14:44:22.548Z",
-      "finishedAt": "2026-07-14T14:44:29.493Z",
+      "startedAt": "2026-07-14T14:51:00.657Z",
+      "finishedAt": "2026-07-14T14:51:06.662Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -25,8 +25,8 @@
       "id": "operator-snapshot",
       "command": "npm run mobile:internal-tester-operator-snapshot",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json",
-      "startedAt": "2026-07-14T14:44:29.494Z",
-      "finishedAt": "2026-07-14T14:44:31.373Z",
+      "startedAt": "2026-07-14T14:51:06.663Z",
+      "finishedAt": "2026-07-14T14:51:08.738Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -56,29 +56,24 @@
     "recommendedCommand": "npm run mobile:one-event-onboarding",
     "localTesterReadyRightNow": true,
     "cachedTesterReadyRightNow": true,
-    "liveOddsReadyRightNow": false,
+    "liveOddsReadyRightNow": true,
     "cachedTradingReady": true,
-    "liveOddsReady": false,
+    "liveOddsReady": true,
     "warmNoQuotaRuntime": true,
     "routeWarmNoQuotaRuntime": true,
     "allLoopsRunning": true,
     "quotaSpendingLoopRunning": false,
-    "providerSnapshotFresh": false,
+    "providerSnapshotFresh": true,
     "nextAction": "cached_internal_testing",
     "operatorNextAction": "cached_internal_testing",
-    "runtimeNextAction": "keep_cached_testing_or_refresh_live_odds",
+    "runtimeNextAction": "manual_s23_testing",
     "cachedTradingAction": {
       "id": "cached_internal_testing",
       "command": "npm run mobile:one-event-onboarding",
       "requiresProviderKey": false,
       "spendsProviderQuota": false
     },
-    "liveOddsAction": {
-      "id": "refresh_mobile_live_odds",
-      "command": "npm run mobile:one-event-live-runtime:provider-secret",
-      "requiresProviderKey": true,
-      "spendsProviderQuota": true
-    },
+    "liveOddsAction": null,
     "launchChecklist": [
       {
         "step": "Start or verify local tester runtime",
@@ -106,7 +101,7 @@
         "expected": "Markets load from backend for odds-api-single-soccer-test; selected proof market is Spain vs. France: Total Goals 2.5.",
         "routeDependency": "GET /api/mobile/events/odds-api-single-soccer-test/live-detail",
         "pass": true,
-        "notes": "Cached mode is usable for internal testing; live mobile odds refresh requires the explicit provider-refresh command."
+        "notes": "Provider snapshots are fresh for mobile display."
       },
       {
         "step": "Quote and buy",
@@ -165,7 +160,7 @@
     "hasRecommendedCommand": true,
     "hasManualTradingFlow": true,
     "cachedTradingReady": true,
-    "liveOddsReady": false,
+    "liveOddsReady": true,
     "liveOddsActionKnown": true
   },
   "gaps": {

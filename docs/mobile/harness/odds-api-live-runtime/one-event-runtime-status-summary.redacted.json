@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T14:44:26.123Z",
+  "generatedAt": "2026-07-14T14:51:02.840Z",
   "scope": "odds-api-one-event-runtime-status",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -146,8 +146,8 @@
     "selectionReason": "freshest quote-visible selected outcome",
     "candidates": [
       {
-        "source": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
-        "generatedAt": "2026-07-14T14:30:28.447Z",
+        "source": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
+        "generatedAt": "2026-07-14T14:50:46.070Z",
         "selectedMarket": {
           "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
           "slug": "odds-api-single-soccer-test-totals-7439c2d603",
@@ -171,8 +171,8 @@
         }
       },
       {
-        "source": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
-        "generatedAt": "2026-07-14T13:13:02.490Z",
+        "source": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
+        "generatedAt": "2026-07-14T14:30:28.447Z",
         "selectedMarket": {
           "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
           "slug": "odds-api-single-soccer-test-totals-7439c2d603",
@@ -205,20 +205,20 @@
         "status": "ok",
         "db": "connected",
         "env": "development",
-        "timestamp": "2026-07-14T14:44:26.121Z"
+        "timestamp": "2026-07-14T14:51:02.840Z"
       },
       "error": null
     }
   },
   "provider": {
     "liveProofPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
-    "liveProofGeneratedAt": "2026-07-14T13:13:02.490Z",
-    "liveProofAgeHours": 1.52,
+    "liveProofGeneratedAt": "2026-07-14T14:50:46.070Z",
+    "liveProofAgeHours": 0,
     "maxLiveProofAgeHours": 24,
     "quota": {
       "totalLastCost": 13,
-      "requestsUsed": "245",
-      "requestsRemaining": "255",
+      "requestsUsed": "258",
+      "requestsRemaining": "242",
       "requestsLast": "6"
     },
     "policy": {
@@ -237,7 +237,7 @@
   "maker": {
     "makerSeedPath": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
     "makerSeedGeneratedAt": "2026-07-14T14:30:28.447Z",
-    "makerSeedAgeHours": 0.23,
+    "makerSeedAgeHours": 0.34,
     "quoteRoute": {
       "ok": true,
       "status": 200,
@@ -250,11 +250,11 @@
             "referenceOutcomeLabel": "Over +2.5",
             "bestBid": "0.58",
             "bestAsk": "0.59",
-            "bestBidSize": 36.9,
+            "bestBidSize": 35.9,
             "bestAskSize": 200,
             "midPrice": "0.585",
-            "lastPrice": "0.59",
-            "lastTradeAt": "2026-07-14T14:04:47.790Z"
+            "lastPrice": "0.58",
+            "lastTradeAt": "2026-07-14T14:50:45.880Z"
           },
           {
             "outcomeId": "db047bba-39bc-4be0-8cb7-1f130e4bf397",
@@ -284,7 +284,7 @@
   "lifecycle": {
     "schedulerRunPath": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
     "schedulerGeneratedAt": "2026-07-14T14:30:32.920Z",
-    "schedulerAgeHours": 0.23,
+    "schedulerAgeHours": 0.34,
     "schedulerAction": "none",
     "schedulerReason": "Event is not inside the suspend/close window.",
     "schedulerCandidateMarketCount": 3
@@ -293,9 +293,9 @@
     "resultSettlementExecutionPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
     "resultSettlementLiveBlockedPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json",
     "resultSettlementExecutionGeneratedAt": "2026-07-14T13:34:12.765Z",
-    "resultSettlementExecutionAgeHours": 1.17,
+    "resultSettlementExecutionAgeHours": 1.28,
     "resultSettlementLiveBlockedGeneratedAt": "2026-07-14T13:34:10.496Z",
-    "resultSettlementLiveBlockedAgeHours": 1.17,
+    "resultSettlementLiveBlockedAgeHours": 1.28,
     "maxSettlementProofAgeHours": 24,
     "resultSettlementExecutionFresh": true,
     "resultSettlementLiveBlockedFresh": true,
