@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T11:51:43.682Z",
+  "generatedAt": "2026-07-14T13:34:12.765Z",
   "scope": "odds-api-trusted-result-settlement-scheduler-execution-proof",
   "pass": true,
   "mode": "disposable-scheduler-execution-proof",
@@ -10,12 +10,12 @@
     "settlementStateMutated": false
   },
   "disposableEvent": {
-    "slug": "scheduler-settlement-proof-trusted-result-scheduler-execution-0e73f98f85",
+    "slug": "scheduler-settlement-proof-trusted-result-scheduler-execution-a6f82f19fe",
     "title": "Scheduler Settlement Proof trusted-result-scheduler-execution",
-    "marketId": "a3b9062e-18a8-4038-9cfe-6db712d09d8c",
-    "marketSlug": "scheduler-settlement-proof-trusted-result-scheduler-execution-0e73f98f85-total-goals-2-5",
-    "winningOutcomeId": "e4a9721c-0149-4655-8605-f31fd3f9f518",
-    "losingOutcomeId": "d92154f4-a7e7-47d0-994c-aa683749cab6",
+    "marketId": "f0943fb4-8269-4920-915b-38c3d68a0d08",
+    "marketSlug": "scheduler-settlement-proof-trusted-result-scheduler-execution-a6f82f19fe-total-goals-2-5",
+    "winningOutcomeId": "e3cf4e49-231e-4461-bd88-31b85a225f6a",
+    "losingOutcomeId": "434c58ac-04af-4a36-bdf6-b9773b24e791",
     "operator": "scheduler_settlement_trusted-result-scheduler-execution_operator",
     "users": [
       "scheduler_settlement_trusted-result-scheduler-execution_winner",
@@ -29,7 +29,7 @@
       "args": [
         "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\node_modules\\tsx\\dist\\cli.mjs",
         "scripts/run_odds_api_one_event_result_settlement_scheduler.ts",
-        "--eventSlug=scheduler-settlement-proof-trusted-result-scheduler-execution-0e73f98f85",
+        "--eventSlug=scheduler-settlement-proof-trusted-result-scheduler-execution-a6f82f19fe",
         "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-scheduler-execution-disposable.redacted.json",
         "--settlementOutput=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-dry-run.redacted.json",
         "--output=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-run.redacted.json"
@@ -68,12 +68,12 @@
       "args": [
         "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\node_modules\\tsx\\dist\\cli.mjs",
         "scripts/run_odds_api_one_event_result_settlement_scheduler.ts",
-        "--eventSlug=scheduler-settlement-proof-trusted-result-scheduler-execution-0e73f98f85",
+        "--eventSlug=scheduler-settlement-proof-trusted-result-scheduler-execution-a6f82f19fe",
         "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-scheduler-execution-disposable.redacted.json",
         "--settlementOutput=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json",
         "--output=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-run.redacted.json",
         "--execute",
-        "--confirm=SETTLE_FROM_RESULT:a3b9062e-18a8-4038-9cfe-6db712d09d8c:e4a9721c-0149-4655-8605-f31fd3f9f518:e219088468a1",
+        "--confirm=SETTLE_FROM_RESULT:f0943fb4-8269-4920-915b-38c3d68a0d08:e3cf4e49-231e-4461-bd88-31b85a225f6a:03717a6f4673",
         "--allowTrustedLocalFixture"
       ],
       "exitCode": 1,
@@ -112,12 +112,12 @@
       "args": [
         "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\node_modules\\tsx\\dist\\cli.mjs",
         "scripts/run_odds_api_one_event_result_settlement_scheduler.ts",
-        "--eventSlug=scheduler-settlement-proof-trusted-result-scheduler-execution-0e73f98f85",
+        "--eventSlug=scheduler-settlement-proof-trusted-result-scheduler-execution-a6f82f19fe",
         "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-scheduler-execution-disposable.redacted.json",
         "--settlementOutput=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-result.redacted.json",
         "--output=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-run.redacted.json",
         "--execute",
-        "--confirm=SETTLE_FROM_RESULT:a3b9062e-18a8-4038-9cfe-6db712d09d8c:e4a9721c-0149-4655-8605-f31fd3f9f518:e219088468a1",
+        "--confirm=SETTLE_FROM_RESULT:f0943fb4-8269-4920-915b-38c3d68a0d08:e3cf4e49-231e-4461-bd88-31b85a225f6a:03717a6f4673",
         "--allowTrustedLocalFixture"
       ],
       "exitCode": 0,
@@ -152,7 +152,7 @@
   },
   "postSettlement": {
     "marketStatus": "RESOLVED",
-    "resolvedOutcomeId": "e4a9721c-0149-4655-8605-f31fd3f9f518",
+    "resolvedOutcomeId": "e3cf4e49-231e-4461-bd88-31b85a225f6a",
     "settlementStatus": "closed_for_trusted_result_scheduler_execution_proof",
     "collateralUSDC": "0",
     "openOrdersAfter": 0,

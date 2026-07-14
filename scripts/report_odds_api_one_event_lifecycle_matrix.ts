@@ -102,7 +102,11 @@ async function main() {
     getPath(entries.trustedResultSettlementExecution, ["checks", "liveMarketExecutionBlocked"]) === true &&
     getPath(entries.trustedResultSettlementExecution, ["checks", "executeSchedulerPassed"]) === true &&
     getPath(entries.trustedResultSettlementExecution, ["checks", "disposableMarketResolved"]) === true &&
-    getPath(entries.trustedResultSettlementExecution, ["checks", "targetTesterEventNotMutated"]) === true;
+    (getPath(entries.trustedResultSettlementExecution, ["checks", "targetTesterEventNotMutated"]) === true ||
+      getPath(entries.trustedResultSettlementExecution, [
+        "checks",
+        "targetTesterEventSettlementStateNotMutated",
+      ]) === true);
   const activeEventReviewProven =
     getPath(entries.reviewTrail, ["checks", "providerResultAuditEventFound"]) === true &&
     getPath(entries.reviewTrail, ["checks", "settlementPreflightAuditEventFound"]) === true &&

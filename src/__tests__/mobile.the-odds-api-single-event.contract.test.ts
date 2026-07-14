@@ -24,6 +24,7 @@ describe("The Odds API single-event temporary provider", () => {
   const runtimeStatusScript = () => readFileSync("scripts/report_odds_api_one_event_runtime_status.ts", "utf8");
   const operatorSnapshotScript = () =>
     readFileSync("scripts/report_holiwyn_internal_tester_operator_snapshot.ts", "utf8");
+  const lifecycleMatrixScript = () => readFileSync("scripts/report_odds_api_one_event_lifecycle_matrix.ts", "utf8");
   const phaseAuditScript = () => readFileSync("scripts/report_odds_api_live_runtime_phase_audit.ts", "utf8");
   const completionAuditScript = () => readFileSync("scripts/report_holiwyn_live_runtime_completion_audit.ts", "utf8");
   const auditGateScript = () => readFileSync("scripts/run_holiwyn_live_runtime_audit_gate.ts", "utf8");
@@ -460,6 +461,12 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("resultSettlementGuardFresh");
     expect(source).toContain("rerun_trusted_result_settlement_execution_proof");
     expect(source).toContain("resultSettlementGuardFresh: resultSettlementExecutionFresh && resultSettlementLiveBlockedFresh");
+  });
+
+  it("lets lifecycle matrix accept the current settlement-state mutation guard", () => {
+    const source = lifecycleMatrixScript();
+    expect(source).toContain("targetTesterEventNotMutated");
+    expect(source).toContain("targetTesterEventSettlementStateNotMutated");
   });
 
   it("gates phase and completion audits on current loop state plus continuity truth", () => {

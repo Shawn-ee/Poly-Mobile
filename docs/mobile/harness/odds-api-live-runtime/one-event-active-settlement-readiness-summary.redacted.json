@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-14T11:15:42.538Z",
+  "generatedAt": "2026-07-14T13:33:39.511Z",
   "scope": "odds-api-active-event-settlement-readiness",
   "pass": true,
   "providerQuotaUsed": false,
   "eventSlug": "odds-api-single-soccer-test",
   "selectedMarketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-  "winningOutcomeId": "9fa19273-e446-4bec-9d3b-3f80639c9d32",
+  "winningOutcomeId": "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
   "activeMarket": {
     "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
     "slug": "odds-api-single-soccer-test-totals-7439c2d603",
@@ -22,14 +22,14 @@
     }
   },
   "approvalEvidence": {
-    "id": "9",
+    "id": "15",
     "eventType": "settlement.trusted_result.approved",
     "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-    "outcomeId": "9fa19273-e446-4bec-9d3b-3f80639c9d32",
-    "createdAt": "2026-07-14T11:15:39.003Z",
+    "outcomeId": "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
+    "createdAt": "2026-07-14T13:33:37.969Z",
     "resultDigest": "f3a5743c73f2",
     "approvedBy": "holiwyn-local-approval-audit-proof",
-    "approvedAt": "2026-07-14T11:15:39.000Z",
+    "approvedAt": "2026-07-14T13:33:37.967Z",
     "executionRequiresMarketStatus": "CLOSED",
     "activeTesterSettlementExecution": false
   },
@@ -39,7 +39,7 @@
     "blockers": [
       "market_not_closed_for_execution:LIVE"
     ],
-    "exactConfirmationRequired": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:9fa19273-e446-4bec-9d3b-3f80639c9d32:f3a5743c73f2",
+    "exactConfirmationRequired": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:caa93a28-258a-4bc7-8dc0-10afe9f342b8:f3a5743c73f2",
     "marketMustBeClosed": true,
     "activeMarketExecutionAttempted": false
   },
