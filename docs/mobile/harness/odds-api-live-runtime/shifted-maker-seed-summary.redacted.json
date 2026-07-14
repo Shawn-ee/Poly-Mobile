@@ -1,7 +1,7 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-14T09:02:27.755Z",
-  "startedAt": "2026-07-14T09:02:27.399Z",
+  "generatedAt": "2026-07-14T09:45:46.346Z",
+  "startedAt": "2026-07-14T09:45:45.652Z",
   "scope": "odds-api-one-event-shifted-maker-seed",
   "mode": "seed-resting-shifted-maker-quotes",
   "event": {
@@ -24,7 +24,7 @@
   },
   "providerSnapshot": {
     "fetchedAt": "2026-07-14T06:03:35.211Z",
-    "ageMs": 10732210,
+    "ageMs": 13330491,
     "maxSnapshotAgeMs": 86400000,
     "allowStale": false,
     "source": "sportsbook-odds",
@@ -33,23 +33,23 @@
     "outcomePrice": 0.56
   },
   "maker": {
-    "id": "5726f95d-5fd4-47cb-9e38-6d31442a5936",
-    "username": "odds_live_runtime_shifted_maker_37f2cdb8"
+    "id": "11455425-6a12-4d47-bd65-75082fdc5b79",
+    "username": "odds_live_runtime_shifted_maker_47c8d283"
   },
   "collateralRepair": {
     "repaired": false,
-    "before": "350",
-    "after": "350",
+    "before": "550",
+    "after": "550",
     "byOutcome": [
       {
         "outcomeId": "5a3f04ff-6efd-42c5-a225-8fae8070b509",
         "code": "OVER",
-        "shares": "350"
+        "shares": "550"
       },
       {
         "outcomeId": "b8f120c1-70d8-4e20-9491-ebdf6a4b8328",
         "code": "UNDER",
-        "shares": "350"
+        "shares": "550"
       }
     ]
   },
@@ -76,7 +76,7 @@
   },
   "canceledPreviousOrders": [
     {
-      "orderId": "d8b4a9e7-2f31-4ce4-a21a-e0e9831eedd9",
+      "orderId": "171d21a5-61f9-46ef-a55e-d07985fc0bc9",
       "side": "BUY",
       "price": "0.52",
       "remaining": "200",
@@ -84,7 +84,7 @@
       "canceled": true
     },
     {
-      "orderId": "b999a0e9-52c0-426d-b372-e4082bcd8ee7",
+      "orderId": "544ff175-9745-424e-bf3c-417f17b8ebf9",
       "side": "SELL",
       "price": "0.6",
       "remaining": "200",
@@ -94,16 +94,16 @@
   ],
   "restingOrders": [
     {
-      "id": "171d21a5-61f9-46ef-a55e-d07985fc0bc9",
-      "username": "odds_live_runtime_shifted_maker_37f2cdb8",
+      "id": "84e1918e-4248-4b81-8460-72554cef967a",
+      "username": "odds_live_runtime_shifted_maker_47c8d283",
       "side": "BUY",
       "price": "0.52",
       "remaining": "200",
       "status": "OPEN"
     },
     {
-      "id": "544ff175-9745-424e-bf3c-417f17b8ebf9",
-      "username": "odds_live_runtime_shifted_maker_37f2cdb8",
+      "id": "782cb1ca-b486-4ed5-8d5e-9feb6ee1e955",
+      "username": "odds_live_runtime_shifted_maker_47c8d283",
       "side": "SELL",
       "price": "0.6",
       "remaining": "200",

@@ -28,6 +28,7 @@ $RuntimeDir = Join-Path $RepoRoot ".runtime\one-event-result-poller"
 $StatePath = Join-Path $RuntimeDir "result-poller-process-state.json"
 $StdoutPath = Join-Path $RuntimeDir "result-poller.out.log"
 $StderrPath = Join-Path $RuntimeDir "result-poller.err.log"
+$StopRequestPath = Join-Path $RuntimeDir "stop-request.json"
 $PollerSummaryPath = "docs\mobile\harness\odds-api-live-runtime\one-event-result-poller-summary.redacted.json"
 New-Item -ItemType Directory -Force -Path $RuntimeDir | Out-Null
 
@@ -118,6 +119,26 @@ function Stop-PollerProcessTree {
   }
 }
 
+function Request-GracefulPollerStop {
+  param(
+    [Parameter(Mandatory = $true)] [int]$TargetProcessId,
+    [int]$TimeoutSeconds = 25
+  )
+  $request = [ordered]@{
+    requestedAt = (Get-Date).ToUniversalTime().ToString("o")
+    pid = $TargetProcessId
+    reason = "operator_stop"
+  }
+  Write-JsonFile -Value $request -Path $StopRequestPath -Depth 10
+  $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
+  while ((Get-Date) -lt $deadline) {
+    $process = Get-Process -Id $TargetProcessId -ErrorAction SilentlyContinue
+    if (-not $process) { return $true }
+    Start-Sleep -Milliseconds 500
+  }
+  return $false
+}
+
 function Get-State {
   $state = Read-JsonFile $StatePath
   if (-not $state -or -not $state.pid) {
@@ -196,6 +217,8 @@ function Build-PollerArguments {
     $parts.Add($ResultSettlementApprovalPath) | Out-Null
   }
   if ($SkipSleep) { $parts.Add("-SkipSleep") | Out-Null }
+  $parts.Add("-StopRequestPath") | Out-Null
+  $parts.Add($StopRequestPath) | Out-Null
   return $parts
 }
 
@@ -284,9 +307,15 @@ if ($Action -eq "start") {
   }
 } elseif ($Action -eq "stop") {
   if ($stateBefore.running) {
-    Stop-PollerProcessTree -TargetProcessId $stateBefore.pid
-    Start-Sleep -Seconds 1
-    $operation.result = "stopped"
+    $gracefulStop = Request-GracefulPollerStop -TargetProcessId $stateBefore.pid
+    if (-not $gracefulStop) {
+      Stop-PollerProcessTree -TargetProcessId $stateBefore.pid
+      Start-Sleep -Seconds 1
+      $operation.result = "force_stopped"
+    } else {
+      $operation.result = "stopped"
+    }
+    $operation.graceful = [bool]$gracefulStop
     $operation.pid = $stateBefore.pid
   } else {
     $operation.result = "not_running"

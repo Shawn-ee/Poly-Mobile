@@ -40,6 +40,7 @@ $RuntimeDir = Join-Path $RepoRoot ".runtime\one-event-live-supervisor"
 $StatePath = Join-Path $RuntimeDir "supervisor-process-state.json"
 $StdoutPath = Join-Path $RuntimeDir "supervisor.out.log"
 $StderrPath = Join-Path $RuntimeDir "supervisor.err.log"
+$StopRequestPath = Join-Path $RuntimeDir "stop-request.json"
 $SupervisorSummaryPath = "docs\mobile\harness\odds-api-live-runtime\one-event-live-supervisor-summary.redacted.json"
 New-Item -ItemType Directory -Force -Path $RuntimeDir | Out-Null
 
@@ -136,6 +137,26 @@ function Stop-SupervisorProcessTree {
   }
 }
 
+function Request-GracefulSupervisorStop {
+  param(
+    [Parameter(Mandatory = $true)] [int]$TargetProcessId,
+    [int]$TimeoutSeconds = 25
+  )
+  $request = [ordered]@{
+    requestedAt = (Get-Date).ToUniversalTime().ToString("o")
+    pid = $TargetProcessId
+    reason = "operator_stop"
+  }
+  Write-JsonFile -Value $request -Path $StopRequestPath -Depth 10
+  $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
+  while ((Get-Date) -lt $deadline) {
+    $process = Get-Process -Id $TargetProcessId -ErrorAction SilentlyContinue
+    if (-not $process) { return $true }
+    Start-Sleep -Milliseconds 500
+  }
+  return $false
+}
+
 function Get-State {
   $state = Read-JsonFile $StatePath
   if (-not $state -or -not $state.pid) {
@@ -230,6 +251,8 @@ function Build-SupervisorArguments {
   }
   if ($RestartBackend) { $parts.Add("-RestartBackend") | Out-Null }
   if ($SkipSleep) { $parts.Add("-SkipSleep") | Out-Null }
+  $parts.Add("-StopRequestPath") | Out-Null
+  $parts.Add($StopRequestPath) | Out-Null
   return $parts
 }
 
@@ -330,9 +353,15 @@ if ($Action -eq "start") {
   }
 } elseif ($Action -eq "stop") {
   if ($stateBefore.running) {
-    Stop-SupervisorProcessTree -TargetProcessId $stateBefore.pid
-    Start-Sleep -Seconds 1
-    $operation.result = "stopped"
+    $gracefulStop = Request-GracefulSupervisorStop -TargetProcessId $stateBefore.pid
+    if (-not $gracefulStop) {
+      Stop-SupervisorProcessTree -TargetProcessId $stateBefore.pid
+      Start-Sleep -Seconds 1
+      $operation.result = "force_stopped"
+    } else {
+      $operation.result = "stopped"
+    }
+    $operation.graceful = [bool]$gracefulStop
     $operation.pid = $stateBefore.pid
   } else {
     $operation.result = "not_running"

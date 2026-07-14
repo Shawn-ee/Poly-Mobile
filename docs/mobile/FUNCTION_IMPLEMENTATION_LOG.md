@@ -16561,3 +16561,22 @@ Known limitations:
   - `npm run mobile:internal-tester-readiness-gate`
   - `docs/mobile/audits/cycle-ZAX-durable-result-poller-run-repair.md`
 - Known limitations: installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1. Multi-event provider polling/dashboard remains P2.
+
+## Cycle ZAY - Graceful Runtime Worker Stop
+
+- Feature/runtime worked on: local one-event supervisor/result-poller process stop behavior.
+- Frontend components touched: none.
+- Backend/routes touched: no HTTP route or schema changes.
+- Important functions/services touched: `scripts/run_holiwyn_one_event_live_supervisor.ps1`, `scripts/run_holiwyn_one_event_result_poller.ps1`, `scripts/manage_holiwyn_one_event_live_supervisor.ps1`, and `scripts/manage_holiwyn_one_event_result_poller.ps1`.
+- User/runtime interactions supported: operators can stop local runtime workers without immediately force-killing the PowerShell process tree, reducing false failed `RuntimeServiceRun` rows during normal local tester shutdown.
+- State transitions: process managers now write local stop-request files under `.runtime`, workers remove stale stop requests on startup, check for stop between cycles, and exit cleanly with passing summaries when stopped gracefully. No provider call, mobile UI change, order placement, active settlement execution, or database schema mutation.
+- API/data dependencies: existing local process state files, worker heartbeat/run record writers, `RuntimeServiceHeartbeat`, `RuntimeServiceRun`, and `GET /api/internal/live-runtime/status`.
+- Proof:
+  - supervisor start/stop with `operation.graceful=true`
+  - result-poller start/stop with `operation.graceful=true`
+  - `npm run mobile:internal-tester-readiness-gate`
+  - `npx tsc --noEmit --pretty false --incremental false`
+  - `npm --prefix mobile run typecheck`
+  - `npm run test:ci`
+  - `docs/mobile/audits/cycle-ZAY-graceful-runtime-worker-stop.md`
+- Known limitations: installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1. Multi-event provider polling/dashboard remains P2.

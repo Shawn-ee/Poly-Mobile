@@ -15,6 +15,7 @@ param(
   [switch]$RunApprovedResultSettlement,
   [string]$ResultSettlementApprovalPath = "docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
   [switch]$SkipSleep,
+  [string]$StopRequestPath = "",
   [string]$RuntimeArtifactDir = ""
 )
 
@@ -60,6 +61,16 @@ function Join-ArtifactPath {
 if (-not [string]::IsNullOrWhiteSpace($RuntimeArtifactDir)) {
   $SummaryPath = Join-Path $RuntimeArtifactDir "one-event-result-poller-summary.redacted.json"
   $HeartbeatPath = Join-Path $RuntimeArtifactDir "one-event-result-poller-heartbeat.redacted.json"
+  if ([string]::IsNullOrWhiteSpace($StopRequestPath)) {
+    $StopRequestPath = Join-Path $RuntimeArtifactDir "stop-request.json"
+  }
+}
+
+if (-not [string]::IsNullOrWhiteSpace($StopRequestPath)) {
+  $resolvedStopRequest = Resolve-RepoPath $StopRequestPath
+  if (Test-Path -LiteralPath $resolvedStopRequest) {
+    Remove-Item -LiteralPath $resolvedStopRequest -Force
+  }
 }
 
 function Read-JsonFile {
@@ -106,6 +117,21 @@ function Invoke-CheckedCommand {
     startedAt = $startedAt.ToString("o")
     finishedAt = (Get-Date).ToUniversalTime().ToString("o")
     outputTail = @($output | Select-Object -Last 20)
+  }
+}
+
+function Test-StopRequested {
+  if ([string]::IsNullOrWhiteSpace($StopRequestPath)) { return $false }
+  return Test-Path -LiteralPath (Resolve-RepoPath $StopRequestPath)
+}
+
+function Wait-OrStopRequested {
+  param([int]$Seconds)
+  if ($Seconds -le 0) { return }
+  $deadline = (Get-Date).AddSeconds($Seconds)
+  while ((Get-Date) -lt $deadline) {
+    if (Test-StopRequested) { return }
+    Start-Sleep -Milliseconds 500
   }
 }
 
@@ -203,6 +229,7 @@ $failure = $null
 
 try {
   do {
+    if (Test-StopRequested) { break }
     $iteration += 1
     $cycleStartedAt = (Get-Date).ToUniversalTime()
     $runLiveThisCycle = [bool](
@@ -265,7 +292,7 @@ try {
       break
     }
     if (-not $SkipSleep -and $IntervalSeconds -gt 0) {
-      Start-Sleep -Seconds $IntervalSeconds
+      Wait-OrStopRequested -Seconds $IntervalSeconds
     }
   } while ($Continuous -or $iteration -lt $MaxIterations)
 } catch {
