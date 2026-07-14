@@ -2,6 +2,12 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle ODDSAPIS23 - Spain vs. France Cashout Current Proof
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| S23 internal tester buy/cashout/history proof | `/api/events?sportKey=soccer&leagueKey=world_cup&includeMobileMarkets=1&mobileMvpMatches=1`; `/api/mobile/events/:slug/live-detail`; `/api/markets/:marketId/quote`; `/api/orders`; `/api/portfolio`; `/api/portfolio/history`; `/api/portfolio/cash-out/estimate` | `GET`/`POST` | Generated local mobile dev credential for order, portfolio, history, and cashout estimate routes | Buy uses selected market/outcome/size/price. Cashout Sell uses owned `marketId`, owned `outcomeId`, `side=SELL`, selected owned share quantity, and current bid/sell price. | Home event card, Event Detail market groups, quote price, filled order, Portfolio position, close-position available shares, sell price, History rows with contract side and sportsbook line identity | Existing `Event`, `Market`, `Outcome`, `Order`, `Trade`, `Position`, `UserBalance`, quote/orderbook snapshot models | Proof-only local maker liquidity remains available for the selected event. Mobile does not fabricate a close-position ticket when no owned shares exist. | No P0 for internal tester trading. Richer close-position slippage/fee preview remains P1. |
+
 ## Cycle ZAQ - Live Refresh Quota Guard Contract
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |

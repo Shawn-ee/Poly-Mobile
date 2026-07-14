@@ -1,7 +1,7 @@
 param(
   [string]$Device = "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
   [int]$Port = 8289,
-  [string]$ExpoHost = "172.16.200.14",
+  [string]$ExpoHost = "127.0.0.1",
   [string]$MobileApiBaseUrl = "http://172.16.200.14:3002",
   [string]$BackendBaseUrl = "http://127.0.0.1:3002",
   [string]$EventSlug = "odds-api-single-soccer-test",
@@ -113,6 +113,7 @@ function Wait-HierarchyContains {
   param(
     [string]$NamePrefix,
     [string[]]$Expected,
+    [string]$RestartUrl = "",
     [int]$TimeoutSeconds = 90,
     [int]$IntervalSeconds = 3
   )
@@ -134,6 +135,11 @@ function Wait-HierarchyContains {
         & $adb -s $Device shell input keyevent KEYCODE_BACK | Out-Null
       }
       Start-Sleep -Seconds 2
+      continue
+    }
+    if ($RestartUrl -and $raw -match [regex]::Escape("Play Store") -and $raw -match [regex]::Escape("OneDrive")) {
+      Start-Link -Url $RestartUrl
+      Start-Sleep -Seconds 6
       continue
     }
     $found = $true
@@ -448,11 +454,12 @@ try {
   & $adb -s $Device shell pm clear host.exp.exponent | Out-Null
   Start-Sleep -Seconds 2
   $encodedKey = [uri]::EscapeDataString($apiKey)
-  Start-Link -Url "exp://${ExpoHost}:$Port/--/?forceResetState=1&apiKey=$encodedKey"
+  $launchUrl = "exp://${ExpoHost}:$Port/--/?forceResetState=1&apiKey=$encodedKey"
+  Start-Link -Url $launchUrl
   Start-Sleep -Seconds 6
   Dismiss-ExpoDeveloperMenu -NamePrefix "cycle-$Cycle-home" | Out-Null
 
-  $homeXml = Wait-HierarchyContains -NamePrefix "cycle-$Cycle-home" -Expected @("event-card-$EventSlug", $HomeExpectedTitle) -TimeoutSeconds 120 -IntervalSeconds 4
+  $homeXml = Wait-HierarchyContains -NamePrefix "cycle-$Cycle-home" -Expected @("event-card-$EventSlug", $HomeExpectedTitle) -RestartUrl $launchUrl -TimeoutSeconds 120 -IntervalSeconds 4
   Save-Screenshot -Name "cycle-$Cycle-home.png" | Out-Null
   Assert-Contains -Path $homeXml -Expected @("Holiwyn", "World Cup", "Matches", $HomeExpectedTitle, "event-card-$EventSlug", "home-compact-retail-feed", "home-card-source-sportsbook-odds", "home-card-source-partial-provider-backed")
   Assert-NotContains -Path $homeXml -Unexpected @("This is the developer menu", "SDK version", "Order Book", "event-detail-open-order-book", "Chat", "Provider Breadth")

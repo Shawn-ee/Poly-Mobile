@@ -674,7 +674,7 @@ const activityStatusLabel = (activity: PortfolioActivity) =>
   activity.action === "canceled" ? "Canceled" : activity.action === "opened" || activity.action === "sold" ? "Filled" : "Closed";
 
 const activitySideLabel = (activity: PortfolioActivity) =>
-  (activity.contractSide ?? activity.selection?.contractSide) === "no" || activity.side === "sell" ? "No" : "Yes";
+  (activity.contractSide ?? activity.selection?.contractSide) === "no" ? "No" : "Yes";
 
 const activityDisplayTitle = (activity: PortfolioActivity) =>
   displayPositionChoice(activity).replace(/^(Yes|No)\s*-\s*/i, "");

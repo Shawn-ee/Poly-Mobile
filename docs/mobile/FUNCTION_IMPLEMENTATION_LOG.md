@@ -2,6 +2,23 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ODDSAPIS23 - Spain vs. France Cashout Current Proof
+
+- Feature/runtime worked on: internal tester mobile trading flow for `Spain vs. France`, focused on the real S23 cashout path and Portfolio History semantics.
+- Frontend components touched: `mobile/src/components/Portfolio.tsx`.
+- Backend/API routes touched: none.
+- Important functions/services touched:
+  - `activitySideLabel` in `Portfolio.tsx`
+  - `scripts/prove_mobile_odds_api_s23_visible_flow.ps1`
+  - `mobile/src/__tests__/portfolioHistorySellLabelContract.test.ts`
+- User interactions proved: Home -> Event Detail -> `Over 2.5` line market -> Buy ticket -> fake-token order -> Portfolio -> Cash out -> Max -> SELL -> Portfolio History.
+- State transitions: BUY creates a server-backed position; cashout opens close-position mode using owned shares; Max fills owned shares only; SELL submits for the owned market/outcome; Portfolio History records the closing activity with the actual contract side.
+- API/data dependencies: Home event feed, Event Detail route, quote route, order route, portfolio route, cashout estimate/position identity, and portfolio history route. No schema or product route changes were made.
+- Proof:
+  - `docs/mobile/harness/cycle-ODDSAPIS23-odds-api-s23-visible-flow/cycle-ODDSAPIS23-odds-api-s23-visible-flow.json`
+  - `docs/mobile/audits/cycle-ODDSAPIS23-spain-france-cashout-current.md`
+- Known limitations: proof still uses Expo Go. Moving to a development build/APK remains P1 for proof stability.
+
 ## Cycle ZAQ - Direct Live-Refresh Quota Guard
 
 - Feature/runtime worked on: live provider odds refresh operator safety for the one-event internal runtime.
