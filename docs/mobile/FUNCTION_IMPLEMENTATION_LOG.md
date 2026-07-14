@@ -16510,3 +16510,18 @@ Known limitations:
   - `npm run mobile:internal-tester-readiness-gate`
   - `docs/mobile/audits/cycle-ZAU-cached-internal-readiness-after-s23-cashout.md`
 - Known limitations: cached internal testing is ready, but live mobile odds are not fresh until the quota-gated provider refresh command is intentionally run. Installed unattended service ownership and production official-result auto-settlement remain P1.
+
+## Cycle ZAV - Live Runtime Survey Reconciliation
+
+- Feature/runtime worked on: documentation reconciliation for Backend Live Runtime Survey + One Event Live Pipeline.
+- Frontend components touched: none.
+- Backend/routes touched: none.
+- Important functions/services touched: none. This cycle updates authoritative docs to match current pushed evidence.
+- User/runtime interactions supported: future operators no longer see stale P0 wording that says provider refresh and local maker continuity are missing after they have already been proven for the local one-event runtime.
+- State transitions: none. No provider calls, runtime loop changes, order placement, cashout, settlement execution, or schema mutation.
+- API/data dependencies: existing evidence from `GET /api/internal/live-runtime/status`, `npm run mobile:internal-tester-readiness-gate`, `npm run mobile:one-event-runtime-status`, and the S23 cashout proof.
+- Proof:
+  - `docs/mobile/audits/cycle-ZAV-live-runtime-survey-reconciliation.md`
+  - `docs/mobile/BACKEND_LIVE_RUNTIME_SURVEY.md`
+  - `docs/mobile/BACKEND_LIVE_RUNTIME_COMPLETION_AUDIT_MATRIX.md`
+- Known limitations: installed unattended provider/maker/lifecycle service ownership, production official-result auto-settlement, and multi-event provider polling/dashboard remain P1/P2.
