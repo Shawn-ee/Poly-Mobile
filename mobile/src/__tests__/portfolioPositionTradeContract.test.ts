@@ -29,7 +29,9 @@ describe("Portfolio position trade actions", () => {
     expect(cashOutActionBlock).not.toContain("openCashoutPosition(position)");
     expect(app).toContain("closePosition:");
     expect(app).toContain("sellPrice: positionSellPrice");
-    expect(app).toContain("availableShares: availablePositionShares(position)");
+    expect(app).toContain("serverCashoutAvailableShares");
+    expect(app).toContain("availablePositionShares(position)");
+    expect(app).toContain("availableShares: positionAvailableShares");
   });
 
   test("does not keep a hidden dedicated cashout component in the default MVP path", () => {

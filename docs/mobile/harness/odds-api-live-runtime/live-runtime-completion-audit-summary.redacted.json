@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T04:54:04.197Z",
+  "generatedAt": "2026-07-14T05:24:54.968Z",
   "scope": "holiwyn-live-runtime-completion-audit",
   "pass": true,
   "providerQuotaUsed": false,
@@ -26,11 +26,11 @@
       "oneEventOnly": true
     },
     "freshness": {
-      "liveProofAgeHours": 0.08,
+      "liveProofAgeHours": 0.59,
       "maxLiveProofAgeHours": 24,
-      "watchdogAgeHours": 13.05,
+      "watchdogAgeHours": 13.56,
       "maxWatchdogAgeHours": 24,
-      "s23ProofAgeHours": 0.42,
+      "s23ProofAgeHours": 0.04,
       "maxS23ProofAgeHours": 24
     },
     "staleHandling": "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",
@@ -59,7 +59,7 @@
     "activeTesterSettlementExecutionAttempted": false,
     "activeEventClosedStateEligibilityProven": true,
     "s23ProofDevice": "172.16.200.27:44029",
-    "s23ProofAgeHours": 0.42,
+    "s23ProofAgeHours": 0.04,
     "maxS23ProofAgeHours": 24
   },
   "sourceEvidence": {
@@ -82,7 +82,7 @@
     "activeSettlementReadiness": "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-readiness-summary.redacted.json",
     "activeSettlementClosedEligibility": "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-closed-eligibility-summary.redacted.json",
     "providerMakerHandoff": "docs/mobile/harness/odds-api-live-runtime/provider-maker-handoff-summary.redacted.json",
-    "s23Visible": "docs/mobile/harness/cycle-ZAD-server-cashout-estimate-s23/cycle-ZAD-odds-api-s23-visible-flow.json"
+    "s23Visible": "docs/mobile/harness/cycle-ZAH-live-provider-normalized-s23/cycle-ZAH-odds-api-s23-visible-flow.json"
   },
   "checks": {
     "backendRuntimeStatusPass": true,
@@ -174,7 +174,7 @@
       "answer": "One real upcoming soccer event is visible and tradable from S23 through event detail, quote, buy, portfolio, cashout/sell, and history proof.",
       "evidence": [
         "docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json",
-        "docs/mobile/harness/cycle-ZAD-server-cashout-estimate-s23/cycle-ZAD-odds-api-s23-visible-flow.json"
+        "docs/mobile/harness/cycle-ZAH-live-provider-normalized-s23/cycle-ZAH-odds-api-s23-visible-flow.json"
       ]
     },
     "runtimeLaunch": {

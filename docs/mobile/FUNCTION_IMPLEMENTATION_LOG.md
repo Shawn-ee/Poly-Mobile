@@ -16308,3 +16308,18 @@ Known limitations:
   - `npm run mobile:live-runtime-audit-gate`
   - `docs/mobile/audits/cycle-ZAG-live-provider-refresh-mobile-line-normalization.md`
 - Known limitations: installed unattended provider/maker/lifecycle service ownership remains P1; production official-result auto-settlement remains P1; multi-event provider polling remains P2.
+
+## Cycle ZAH - Live Provider Normalized S23 Flow
+
+- Feature/runtime worked on: S23 proof hardening for the current Spain vs. France internal tester flow after mobile totals label normalization.
+- Frontend components touched: none.
+- Backend/routes touched: no route implementation changes. Existing `GET /api/mobile/events/:slug/live-detail`, quote/order, portfolio, cashout, and history routes were exercised from the phone.
+- Important functions/services touched: `scripts/prove_mobile_odds_api_s23_visible_flow.ps1`.
+- User/runtime interactions supported: Home match title opens Event Detail reliably in the S23 proof, normalized sportsbook totals can be bought, Portfolio opens the close-position cashout ticket, Max uses owned shares, and history records the sell.
+- State transitions: fake-token buy created a position, cashout sell closed the owned shares path, and Portfolio History showed the resulting sold activity. No provider quota refresh was run.
+- API/data dependencies: mobile reads the backend-owned `Spain vs. France` event and provider-backed `Total Goals 2.5` market from Holiwyn backend routes only; fake-token trade and cashout use local exchange routes.
+- Proof:
+  - `npm run mobile:the-odds-api-s23-visible-flow -- -Device 172.16.200.27:44029 -Cycle ZAH -OutputDir docs\mobile\screenshots\cycle-ZAH-live-provider-normalized-s23 -HierarchyOutputDir docs\mobile\harness\cycle-ZAH-live-provider-normalized-s23 -SkipReplaySeed -HomeExpectedTitle "Spain vs. France" -TeamAExpected "France" -TeamBExpected "Spain"`
+  - `docs/mobile/harness/cycle-ZAH-live-provider-normalized-s23/cycle-ZAH-odds-api-s23-visible-flow.json`
+  - `docs/mobile/audits/cycle-ZAH-live-provider-normalized-s23-flow.md`
+- Known limitations: provider odds freshness still requires explicit quota-capped refresh; unattended provider/maker/lifecycle service ownership remains P1.

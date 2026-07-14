@@ -23,7 +23,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-$repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
+$repoRoot = [string](Resolve-Path (Join-Path $PSScriptRoot ".."))
 $mobileRoot = Join-Path $repoRoot "mobile"
 $resolvedOutputDir = Join-Path $repoRoot $OutputDir
 $resolvedHierarchyOutputDir = Join-Path $repoRoot $HierarchyOutputDir
@@ -109,6 +109,38 @@ function Assert-NotContains {
   }
 }
 
+function Wait-HierarchyContains {
+  param(
+    [string]$NamePrefix,
+    [string[]]$Expected,
+    [int]$TimeoutSeconds = 90,
+    [int]$IntervalSeconds = 3
+  )
+  $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
+  $attempt = 0
+  $lastPath = $null
+  while ((Get-Date) -lt $deadline) {
+    $attempt += 1
+    $lastPath = Save-Hierarchy -Name "$NamePrefix-attempt-$attempt.xml"
+    $raw = Get-Content -Raw -Path $lastPath
+    $found = $true
+    foreach ($item in $Expected) {
+      if ($raw -notmatch [regex]::Escape($item)) {
+        $found = $false
+        break
+      }
+    }
+    if ($found) {
+      return $lastPath
+    }
+    Start-Sleep -Seconds $IntervalSeconds
+  }
+  if ($lastPath) {
+    return $lastPath
+  }
+  return Save-Hierarchy -Name "$NamePrefix-timeout.xml"
+}
+
 function Get-CashoutAvailableShares {
   param([string]$Path)
   $raw = Get-Content -Raw -Path $Path
@@ -147,6 +179,22 @@ function Save-Hierarchy {
   return $local
 }
 
+function Format-ArtifactPath {
+  param([string]$Path)
+  $candidate = [string]$Path
+  try {
+    $resolved = Resolve-Path -LiteralPath ([string]$Path) -ErrorAction Stop
+    $candidate = [string]$resolved.ProviderPath
+  } catch {
+    $candidate = [string]$Path
+  }
+  $repoRootPrefix = $repoRoot.ToLowerInvariant()
+  if ($candidate.ToLowerInvariant().StartsWith($repoRootPrefix)) {
+    return $candidate.Substring($repoRoot.Length).TrimStart([char[]]@("\", "/"))
+  }
+  return $candidate
+}
+
 function Tap-Node {
   param(
     [string]$Path,
@@ -167,6 +215,30 @@ function Tap-Node {
   }
   if ($node.bounds -notmatch "^\[(\d+),(\d+)\]\[(\d+),(\d+)\]$") {
     throw "Invalid bounds for '$Identifier': $($node.bounds)"
+  }
+  $left = [int]$Matches[1]
+  $top = [int]$Matches[2]
+  $right = [int]$Matches[3]
+  $bottom = [int]$Matches[4]
+  $x = [math]::Floor($left + (($right - $left) * $XRatio))
+  $y = [math]::Floor($top + (($bottom - $top) * $YRatio))
+  & $adb -s $Device shell input tap $x $y | Out-Null
+}
+
+function Tap-TextNode {
+  param(
+    [string]$Path,
+    [string]$Text,
+    [double]$XRatio = 0.25,
+    [double]$YRatio = 0.5
+  )
+  [xml]$hierarchy = Get-Content -Raw -Path $Path
+  $node = $hierarchy.SelectSingleNode("//*[@text='$Text']")
+  if (-not $node) {
+    throw "Missing text node '$Text' in $Path"
+  }
+  if ($node.bounds -notmatch "^\[(\d+),(\d+)\]\[(\d+),(\d+)\]$") {
+    throw "Invalid bounds for '$Text': $($node.bounds)"
   }
   $left = [int]$Matches[1]
   $top = [int]$Matches[2]
@@ -347,21 +419,21 @@ try {
   Start-Sleep -Seconds 2
   $encodedKey = [uri]::EscapeDataString($apiKey)
   Start-Link -Url "exp://${ExpoHost}:$Port/--/?forceResetState=1&apiKey=$encodedKey"
-  Start-Sleep -Seconds 18
+  Start-Sleep -Seconds 6
   Dismiss-ExpoDeveloperMenu -NamePrefix "cycle-$Cycle-home" | Out-Null
 
+  $homeXml = Wait-HierarchyContains -NamePrefix "cycle-$Cycle-home" -Expected @("event-card-$EventSlug", $HomeExpectedTitle) -TimeoutSeconds 120 -IntervalSeconds 4
   Save-Screenshot -Name "cycle-$Cycle-home.png" | Out-Null
-  $homeXml = Save-Hierarchy -Name "cycle-$Cycle-home.xml"
   Assert-Contains -Path $homeXml -Expected @("Holiwyn", "World Cup", "Matches", $HomeExpectedTitle, "event-card-$EventSlug", "home-compact-retail-feed", "home-card-source-sportsbook-odds", "home-card-source-partial-provider-backed")
   Assert-NotContains -Path $homeXml -Unexpected @("This is the developer menu", "SDK version", "Order Book", "event-detail-open-order-book", "Chat", "Provider Breadth")
 
-  Tap-Node -Path $homeXml -Identifier "event-card-$EventSlug" -StartsWith -YRatio 0.28
+  Tap-TextNode -Path $homeXml -Text $HomeExpectedTitle
   Start-Sleep -Seconds 5
   Save-Screenshot -Name "cycle-$Cycle-detail-top.png" | Out-Null
   $detailTopXml = Save-Hierarchy -Name "cycle-$Cycle-detail-top.xml"
   $detailTopRaw = Get-Content -Raw -Path $detailTopXml
   if ($detailTopRaw -notmatch [regex]::Escape("event-detail-back")) {
-    & $adb -s $Device shell input tap 540 900 | Out-Null
+    Tap-Node -Path $homeXml -Identifier "event-card-$EventSlug" -StartsWith -XRatio 0.25 -YRatio 0.38
     Start-Sleep -Seconds 4
     Save-Screenshot -Name "cycle-$Cycle-detail-top-retry.png" | Out-Null
     $detailTopXml = Save-Hierarchy -Name "cycle-$Cycle-detail-top-retry.xml"
@@ -509,11 +581,11 @@ try {
 
   $artifacts = @(
     "$OutputDir\cycle-$Cycle-home.png",
-    "$HierarchyOutputDir\cycle-$Cycle-home.xml",
+    $homeXml,
     "$OutputDir\cycle-$Cycle-detail-top.png",
-    "$HierarchyOutputDir\cycle-$Cycle-detail-top.xml",
+    $detailTopXml,
     "$OutputDir\cycle-$Cycle-line-market.png",
-    "$HierarchyOutputDir\cycle-$Cycle-line-attempt-1.xml",
+    $lineXml,
     "$OutputDir\cycle-$Cycle-ticket-initial.png",
     "$HierarchyOutputDir\cycle-$Cycle-ticket-initial.xml",
     "$OutputDir\cycle-$Cycle-ticket-ready.png",
@@ -528,7 +600,7 @@ try {
     "$HierarchyOutputDir\cycle-$Cycle-after-cashout.xml",
     "$OutputDir\cycle-$Cycle-portfolio-history.png",
     "$HierarchyOutputDir\cycle-$Cycle-portfolio-history.xml"
-  )
+  ) | ForEach-Object { Format-ArtifactPath $_ }
 
   $summary = [ordered]@{
     cycle = $Cycle

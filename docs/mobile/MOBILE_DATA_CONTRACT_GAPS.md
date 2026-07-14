@@ -10972,3 +10972,12 @@ Future migration concern:
 - Schema mismatch: none. Raw provider labels remain in provider/reference metadata and proof artifacts, so no database migration is required.
 - Temporary mock/static data: none added. The visible market remains provider-backed with local fake-token maker liquidity; the duplicate contract fixture is only hidden from mobile display for the matching line.
 - Remaining gaps: provider proof summaries still use raw provider labels for audit identity, which is acceptable as long as mobile route serialization keeps user-facing labels normalized. Installed unattended service ownership and production official-result auto-settlement remain P1.
+
+## Cycle ZAH - Live Provider Normalized S23 Flow
+
+- Fields confirmed for mobile/runtime: S23 proof confirms `selectedMarket.marketGroupKey=totals`, `marketType=totals`, `line=2.5`, `outcomeSide=over`, `outcomeLabel=Over 2.5`, `referenceSource=sportsbook-odds`, plus cashout assertions for close-position mode, owned-share Max, hidden Yes/No selector, sell submission, and history identity.
+- Closed or narrowed: mobile-visible provider-backed totals are now proven through Home, Event Detail, ticket, order, Portfolio, cashout, and History on the physical S23.
+- Route mismatch: none found in this proof. Mobile stayed on Holiwyn backend routes for event detail, quote/order, portfolio, and history.
+- Schema mismatch: none. Existing event/market/outcome/order/portfolio fields carried provider market identity and line identity through the full flow.
+- Temporary mock/static data: none added. The flow uses local fake-token exchange liquidity against the backend-owned sportsbook event.
+- Remaining gaps: live provider freshness still ages out without explicit quota-capped refresh; unattended provider/maker/lifecycle service ownership remains P1; dedicated close-position preview route remains P1.
