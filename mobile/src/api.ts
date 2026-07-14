@@ -1,4 +1,4 @@
-import type { AccountBalance, EventDetail, EventSummary, Market, OrderbookBook, PortfolioCanceledOrderItem, PortfolioHistoryItem, PortfolioRecentTradeItem, PortfolioSnapshot, PortfolioValueHistory, PortfolioValueHistoryRange, ProfilePreferences, ProfileSummary, Quote } from "./types";
+import type { AccountBalance, CashOutEstimate, EventDetail, EventSummary, Market, OrderbookBook, PortfolioCanceledOrderItem, PortfolioHistoryItem, PortfolioRecentTradeItem, PortfolioSnapshot, PortfolioValueHistory, PortfolioValueHistoryRange, ProfilePreferences, ProfileSummary, Quote } from "./types";
 
 const trimSlash = (value: string) => value.replace(/\/+$/, "");
 const REQUEST_TIMEOUT_MS = 12000;
@@ -108,6 +108,14 @@ export class PolyApi {
 
   getPortfolio() {
     return this.request<PortfolioSnapshot>(`/api/portfolio`);
+  }
+
+  getCashOutEstimate(input: { marketId: string; outcomeId: string }) {
+    const params = new URLSearchParams({
+      marketId: input.marketId,
+      outcomeId: input.outcomeId,
+    });
+    return this.request<CashOutEstimate>(`/api/portfolio/cash-out/estimate?${params.toString()}`);
   }
 
   getAccountBalance() {

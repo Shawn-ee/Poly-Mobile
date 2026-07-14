@@ -124,6 +124,41 @@ describe("Holiwyn mobile API client", () => {
     });
   });
 
+  test("loads server cashout estimates by owned market and outcome identity", async () => {
+    const fetchImpl = vi.fn(async () =>
+      jsonResponse({
+        supported: true,
+        positionType: "single_leg",
+        marketId: "market-1",
+        marketTitle: "Spain vs France",
+        outcomeId: "outcome-1",
+        outcomeName: "Over 2.5",
+        quantity: "12.345000",
+        entryCost: "6.500000",
+        exitPrice: "0.57",
+        estimatedExitValue: "7.036650",
+        estimatedPnl: "0.536650",
+      }),
+    );
+    vi.stubGlobal("fetch", fetchImpl);
+
+    const estimate = await new PolyApi("https://api.example.test", "test-api-key").getCashOutEstimate({
+      marketId: "market/1",
+      outcomeId: "outcome/1",
+    });
+
+    const [url, init] = fetchImpl.mock.calls[0] as unknown as [string, RequestInit];
+    const parsedUrl = new URL(url);
+    expect(`${parsedUrl.origin}${parsedUrl.pathname}`).toBe("https://api.example.test/api/portfolio/cash-out/estimate");
+    expect(parsedUrl.searchParams.get("marketId")).toBe("market/1");
+    expect(parsedUrl.searchParams.get("outcomeId")).toBe("outcome/1");
+    expect((init.headers as Headers).get("Authorization")).toBe("Bearer test-api-key");
+    expect(estimate).toMatchObject({
+      quantity: "12.345000",
+      exitPrice: "0.57",
+    });
+  });
+
   test("loads authenticated profile summary for account settings", async () => {
     const fetchImpl = vi.fn(async () =>
       jsonResponse({

@@ -455,6 +455,20 @@ export type PortfolioSnapshot = {
   comboOrders: unknown[];
 };
 
+export type CashOutEstimate = {
+  supported: true;
+  positionType: "single_leg";
+  marketId: string;
+  marketTitle: string;
+  outcomeId: string;
+  outcomeName: string;
+  quantity: string | number;
+  entryCost: string | number;
+  exitPrice: string | number;
+  estimatedExitValue: string | number;
+  estimatedPnl: string | number;
+};
+
 export type PortfolioValueHistoryRange = "1D" | "1W" | "1M" | "All";
 
 export type PortfolioValueHistoryPoint = {

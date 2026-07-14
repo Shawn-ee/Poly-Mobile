@@ -2,6 +2,12 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle ZAD - Server Cashout Estimate Contract
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Portfolio/Event Detail cashout estimate | `/api/portfolio/cash-out/estimate?marketId=:marketId&outcomeId=:outcomeId` | `GET` | Mobile API key with `account:read` scope in server mode | Query parameters only; no body | `quantity`, `exitPrice`, `estimatedExitValue`, `estimatedPnl`, `marketId`, `outcomeId`, `outcomeName`, `positionType` | Existing `Position`, `Market`, `Outcome`, and quote/orderbook pricing tables read through `getOutcomeQuotes`; no schema change | If the estimate route fails or returns unavailable/stale quote errors, mobile falls back to the existing quote + Portfolio position fields and still keeps close-position mode share-based | Dedicated partial-close preview remains basic: no fee/slippage model and no guaranteed execution. The actual close still submits through `/api/orders` with `side=SELL`. |
+
 ## Cycle ZY - Operator Snapshot Lifecycle Handoff
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |

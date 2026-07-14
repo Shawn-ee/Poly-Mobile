@@ -2,6 +2,21 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ZAD - Server Cashout Estimate Contract
+
+- Feature/page worked on: Portfolio/Event Detail cashout ticket reliability for the internal tester flow.
+- Frontend components touched: `mobile/App.tsx`, `mobile/src/api.ts`, `mobile/src/types.ts`.
+- Backend/API routes touched: added `GET /api/portfolio/cash-out/estimate`.
+- Important functions/services touched:
+  - `estimateCashOut` in `src/server/services/cashOut.ts`
+  - `PolyApi.getCashOutEstimate`
+  - `openPositionTrade` in `mobile/App.tsx`
+  - canonical route/rate-limit id `portfolio:cash-out-estimate`
+- User interactions supported: when an internal tester taps Cash out from an owned Portfolio/Event Detail position, the ticket now attempts to load server-owned close-position quantity and exit bid before opening the share-based close-position ticket.
+- State transitions: no new trading state transition. The ticket still submits through the existing SELL limit order route; the estimate route only reads the current position and bid quote.
+- Known limitations: if the estimate route is unavailable, stale, or has no bid, mobile falls back to the previous quote/portfolio-derived path so testers are not blocked by transient estimate failures. Physical S23 proof should be rerun before claiming a new visible cashout pass.
+- Proof: focused backend route/service tests passed; mobile API/source-contract coverage added; S23 proof passed at `docs/mobile/harness/cycle-ZAD-server-cashout-estimate-s23/cycle-ZAD-odds-api-s23-visible-flow.json`.
+
 ## Cycle ZZN - Runtime-Only Internal Tester Artifacts
 
 - Feature/runtime worked on: backend live runtime and internal tester launch flow.

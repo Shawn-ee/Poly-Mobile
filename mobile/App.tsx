@@ -325,6 +325,14 @@ const cashoutSellPriceFromQuote = (quote: TicketQuote | undefined, fallback: num
     ? normalizeProbabilityPrice(price)
     : fallback;
 };
+const numericApiField = (value: string | number | null | undefined) => {
+  if (typeof value === "number") return Number.isFinite(value) ? value : undefined;
+  if (typeof value === "string" && value.trim()) {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : undefined;
+  }
+  return undefined;
+};
 const outcomeWithCashoutQuote = (outcome: Outcome, quote: TicketQuote | undefined): Outcome => {
   if (!quote) return outcome;
   return {
@@ -1814,7 +1822,20 @@ export default function App() {
     const tradeIdentity = buildPositionTradeTicketIdentity(position);
     const fallbackPositionSellPrice = cashoutSellPrice(position);
     let latestCashoutQuote: TicketQuote | undefined;
+    let serverCashoutAvailableShares: number | undefined;
+    let serverCashoutSellPrice: number | undefined;
     if (side === "sell" && ORDER_MODE === "server" && position.marketId && position.outcomeId) {
+      try {
+        const estimate = await api.getCashOutEstimate({
+          marketId: position.marketId,
+          outcomeId: position.outcomeId,
+        });
+        serverCashoutAvailableShares = numericApiField(estimate.quantity);
+        serverCashoutSellPrice = numericApiField(estimate.exitPrice);
+      } catch {
+        serverCashoutAvailableShares = undefined;
+        serverCashoutSellPrice = undefined;
+      }
       try {
         latestCashoutQuote = cashoutQuoteForPosition(
           await loadTicketQuotes(api, position.marketId, position.outcomeId),
@@ -1824,13 +1845,18 @@ export default function App() {
         latestCashoutQuote = undefined;
       }
     }
-    const positionSellPrice = cashoutSellPriceFromQuote(latestCashoutQuote, fallbackPositionSellPrice);
+    const positionAvailableShares = serverCashoutAvailableShares && serverCashoutAvailableShares > 0
+      ? serverCashoutAvailableShares
+      : availablePositionShares(position);
+    const positionSellPrice = serverCashoutSellPrice && serverCashoutSellPrice > 0
+      ? normalizeProbabilityPrice(serverCashoutSellPrice)
+      : cashoutSellPriceFromQuote(latestCashoutQuote, fallbackPositionSellPrice);
     const closeSelection = side === "sell" && tradeIdentity.selection
       ? {
           ...tradeIdentity.selection,
           limitPrice: positionSellPrice,
           limitSide: "bid" as const,
-          limitShares: availablePositionShares(position),
+          limitShares: positionAvailableShares,
         }
       : tradeIdentity.selection;
     const ticketOutcome = side === "sell"
@@ -1850,7 +1876,7 @@ export default function App() {
       sourcePositionId: position.id,
       closePosition: side === "sell"
         ? {
-            availableShares: availablePositionShares(position),
+            availableShares: positionAvailableShares,
             sellPrice: positionSellPrice,
           }
         : undefined,

@@ -426,7 +426,7 @@ try {
   }
 
   Tap-Node -Path $afterSubmitXml -Identifier "portfolio-position-cash-out-" -StartsWith
-  Start-Sleep -Seconds 2
+  Start-Sleep -Seconds 6
   Save-Screenshot -Name "cycle-$Cycle-cashout-ticket.png" | Out-Null
   $cashoutTicketXml = Save-Hierarchy -Name "cycle-$Cycle-cashout-ticket.xml"
   Assert-Contains -Path $cashoutTicketXml -Expected @(
