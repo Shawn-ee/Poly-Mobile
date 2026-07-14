@@ -16494,3 +16494,19 @@ Known limitations:
   - `npm run mobile:one-event-runtime-status`
   - `docs/mobile/audits/cycle-ZAM-quote-display-label-contract.md`
 - Known limitations: quote route still uses the current orderbook price source. Installed unattended service ownership and production official-result auto-settlement remain P1.
+
+## Cycle ZAU - Cached Internal Readiness After S23 Cashout
+
+- Feature/runtime worked on: cached internal tester readiness reconciliation after the fresh S23 Spain vs. France cashout proof.
+- Frontend components touched: none.
+- Backend/routes touched: no route implementation changes. Existing health, live-runtime status, quote, order, portfolio, and history routes are still the runtime contract.
+- Important functions/services touched: `scripts/report_holiwyn_internal_tester_operator_snapshot.ts`, `scripts/report_odds_api_live_runtime_phase_audit.ts`, `scripts/report_holiwyn_live_runtime_completion_audit.ts`, and `scripts/run_holiwyn_internal_tester_readiness_gate.ts`.
+- User/runtime interactions supported: internal testers can keep using the cached backend-owned Spain vs. France trading flow without spending Odds API quota, while live mobile odds refresh remains a separate explicit provider-secret action.
+- State transitions: local maker evidence was reseeded for the current selected outcome id; runtime heartbeat/run records were refreshed for the supervisor and result-poller. No mobile UI, order/cashout route, provider schema, settlement execution, or live provider refresh behavior changed.
+- API/data dependencies: `GET /api/health`, `GET /api/internal/live-runtime/status?phaseAuditInProgress=1`, `GET /api/markets/:marketId/quote`, `POST /api/orders`, `GET /api/portfolio`, and `GET /api/portfolio/history`.
+- Proof:
+  - `npm run mobile:provider-refresh-run-record`
+  - `npm run mobile:one-event-live-maker-seed`
+  - `npm run mobile:internal-tester-readiness-gate`
+  - `docs/mobile/audits/cycle-ZAU-cached-internal-readiness-after-s23-cashout.md`
+- Known limitations: cached internal testing is ready, but live mobile odds are not fresh until the quota-gated provider refresh command is intentionally run. Installed unattended service ownership and production official-result auto-settlement remain P1.

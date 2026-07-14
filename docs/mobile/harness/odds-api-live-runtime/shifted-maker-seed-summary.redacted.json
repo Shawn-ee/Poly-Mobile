@@ -1,11 +1,11 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-14T08:21:51.691Z",
-  "startedAt": "2026-07-14T08:21:51.133Z",
+  "generatedAt": "2026-07-14T09:02:27.755Z",
+  "startedAt": "2026-07-14T09:02:27.399Z",
   "scope": "odds-api-one-event-shifted-maker-seed",
   "mode": "seed-resting-shifted-maker-quotes",
   "event": {
-    "id": "3722a197-6584-41e8-ab71-bfede8eedbf0",
+    "id": "9a275a56-9b05-4fbc-84f8-ecf6ce6c106a",
     "slug": "odds-api-single-soccer-test",
     "title": "Spain vs. France",
     "startTime": "2026-07-14T19:00:00.000Z"
@@ -17,14 +17,14 @@
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
-    "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
+    "outcomeId": "5a3f04ff-6efd-42c5-a225-8fae8070b509",
     "outcomeName": "Over 2.5",
     "referenceOutcomeLabel": "Over 2.5",
     "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e"
   },
   "providerSnapshot": {
     "fetchedAt": "2026-07-14T06:03:35.211Z",
-    "ageMs": 8295948,
+    "ageMs": 10732210,
     "maxSnapshotAgeMs": 86400000,
     "allowStale": false,
     "source": "sportsbook-odds",
@@ -33,23 +33,23 @@
     "outcomePrice": 0.56
   },
   "maker": {
-    "id": "b45df0aa-a899-403e-91da-7df0af439e01",
-    "username": "odds_live_runtime_shifted_maker_8420ae76"
+    "id": "5726f95d-5fd4-47cb-9e38-6d31442a5936",
+    "username": "odds_live_runtime_shifted_maker_37f2cdb8"
   },
   "collateralRepair": {
     "repaired": false,
-    "before": "150",
-    "after": "150",
+    "before": "350",
+    "after": "350",
     "byOutcome": [
       {
-        "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
+        "outcomeId": "5a3f04ff-6efd-42c5-a225-8fae8070b509",
         "code": "OVER",
-        "shares": "150"
+        "shares": "350"
       },
       {
-        "outcomeId": "2b498cd2-1a06-4b2d-918e-76199969e093",
+        "outcomeId": "b8f120c1-70d8-4e20-9491-ebdf6a4b8328",
         "code": "UNDER",
-        "shares": "150"
+        "shares": "350"
       }
     ]
   },
@@ -67,26 +67,43 @@
           "side": "BUY",
           "price": "0.58",
           "remaining": "36.9",
-          "username": "mobile_route_fill_maker_2362dae5"
+          "username": "mobile_route_fill_maker_f2aa489b"
         }
       ]
     },
     "size": "200",
     "mintQuantity": "200"
   },
-  "canceledPreviousOrders": [],
+  "canceledPreviousOrders": [
+    {
+      "orderId": "d8b4a9e7-2f31-4ce4-a21a-e0e9831eedd9",
+      "side": "BUY",
+      "price": "0.52",
+      "remaining": "200",
+      "statusBefore": "OPEN",
+      "canceled": true
+    },
+    {
+      "orderId": "b999a0e9-52c0-426d-b372-e4082bcd8ee7",
+      "side": "SELL",
+      "price": "0.6",
+      "remaining": "200",
+      "statusBefore": "OPEN",
+      "canceled": true
+    }
+  ],
   "restingOrders": [
     {
-      "id": "420d4431-02c1-454b-baa9-34170502d9b4",
-      "username": "odds_live_runtime_shifted_maker_8420ae76",
+      "id": "171d21a5-61f9-46ef-a55e-d07985fc0bc9",
+      "username": "odds_live_runtime_shifted_maker_37f2cdb8",
       "side": "BUY",
       "price": "0.52",
       "remaining": "200",
       "status": "OPEN"
     },
     {
-      "id": "21d83571-31f2-49db-a309-b817d09b1151",
-      "username": "odds_live_runtime_shifted_maker_8420ae76",
+      "id": "544ff175-9745-424e-bf3c-417f17b8ebf9",
+      "username": "odds_live_runtime_shifted_maker_37f2cdb8",
       "side": "SELL",
       "price": "0.6",
       "remaining": "200",
@@ -98,7 +115,7 @@
     "ok": true,
     "status": 200,
     "selectedOutcomeQuote": {
-      "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
+      "outcomeId": "5a3f04ff-6efd-42c5-a225-8fae8070b509",
       "outcomeName": "Over 2.5",
       "referenceOutcomeLabel": "Over 2.5",
       "bestBid": "0.58",
@@ -107,7 +124,7 @@
       "bestAskSize": 200,
       "midPrice": "0.59",
       "lastPrice": "0.58",
-      "lastTradeAt": "2026-07-14T08:09:51.300Z"
+      "lastTradeAt": "2026-07-14T08:48:46.153Z"
     }
   },
   "checks": {

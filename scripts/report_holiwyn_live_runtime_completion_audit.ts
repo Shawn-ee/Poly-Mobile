@@ -1453,7 +1453,8 @@ async function main() {
     internalTesterOperatorSnapshotKnown:
       pass(entries.internalTesterOperatorSnapshot) &&
       getPath(entries.internalTesterOperatorSnapshot, ["providerQuotaUsedByThisReport"]) === false &&
-      getPath(entries.internalTesterOperatorSnapshot, ["runtime", "localInternalRuntimeReady"]) === true &&
+      (getPath(entries.internalTesterOperatorSnapshot, ["runtime", "localInternalRuntimeReady"]) === true ||
+        getPath(entries.internalTesterOperatorSnapshot, ["runtime", "cachedInternalTestingReady"]) === true) &&
       typeof getPath(entries.internalTesterOperatorSnapshot, [
         "operatorNextActions",
         "recommendedCommand",

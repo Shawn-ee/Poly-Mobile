@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T08:28:15.710Z",
+  "generatedAt": "2026-07-14T09:11:53.334Z",
   "scope": "holiwyn-internal-tester-operator-snapshot",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -18,7 +18,7 @@
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
-    "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
+    "outcomeId": "5a3f04ff-6efd-42c5-a225-8fae8070b509",
     "outcomeName": "Over 2.5",
     "referenceOutcomeLabel": "Over 2.5",
     "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e"
@@ -30,21 +30,23 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-14T08:28:14.878Z"
+      "timestamp": "2026-07-14T09:11:52.414Z"
     },
     "error": null
   },
   "runtime": {
-    "status": "ready",
-    "localInternalRuntimeReady": true,
-    "localTesterReadyRightNow": true,
-    "cachedTesterReadyRightNow": true,
+    "status": "needs_attention",
+    "localInternalRuntimeReady": false,
+    "localTesterReadyRightNow": false,
+    "cachedTesterReadyRightNow": false,
     "liveOddsReadyRightNow": false,
+    "cachedInternalTestingReady": true,
+    "runtimeStatusAcceptedAsCachedInternalTesting": true,
     "currentRuntimeState": {
       "checked": true,
-      "mode": "warm_no_quota_runtime",
-      "localCapabilityReady": true,
-      "warmNoQuotaRuntime": true,
+      "mode": "not_ready",
+      "localCapabilityReady": false,
+      "warmNoQuotaRuntime": false,
       "allLoopsRunning": true,
       "anyLoopRunning": true,
       "supervisorRunning": true,
@@ -52,14 +54,16 @@
       "quotaSpendingLoopRunning": false,
       "backendProofFresh": true,
       "providerSnapshotFresh": false,
-      "cachedTesterReadyRightNow": true,
+      "cachedTesterReadyRightNow": false,
       "liveOddsReadyRightNow": false,
-      "testerReadyRightNow": true,
-      "p0": [],
+      "testerReadyRightNow": false,
+      "p0": [
+        "local_capability_not_ready"
+      ],
       "p1": [
         "mobile_provider_snapshot_not_fresh"
       ],
-      "nextAction": "keep_cached_testing_or_refresh_live_odds",
+      "nextAction": "rerun_batch_readiness_and_phase_audit",
       "note": "This separates proven local capability, cached internal tester warmth, and live mobile odds freshness. Cached tester readiness requires warm no-quota loops; live odds readiness additionally requires fresh mobile-visible provider snapshots."
     },
     "managedProcesses": {
@@ -126,15 +130,15 @@
     "freshnessBasis": "local_proof_window",
     "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
     "reason": null,
-    "snapshotCount": 4,
+    "snapshotCount": 2,
     "latestFetchedAt": "2026-07-14T06:03:35.211Z",
-    "latestAgeHours": 2.41,
-    "latestAgeSeconds": 8680,
+    "latestAgeHours": 3.14,
+    "latestAgeSeconds": 11298,
     "maxAgeHours": 24,
     "sources": [
       "sportsbook-odds"
     ],
-    "acceptingOrderSnapshotCount": 4,
+    "acceptingOrderSnapshotCount": 2,
     "mmEligibleSnapshotCount": 0,
     "latestQualityStatus": "approved",
     "latestReason": "cached_live_runtime_restore",
@@ -220,7 +224,7 @@
     "checked": true,
     "found": true,
     "eventSlug": "odds-api-single-soccer-test",
-    "eventId": "3722a197-6584-41e8-ab71-bfede8eedbf0",
+    "eventId": "9a275a56-9b05-4fbc-84f8-ecf6ce6c106a",
     "title": "Spain vs. France",
     "status": "active",
     "liveStatus": "LIVE",
@@ -229,9 +233,9 @@
     "source": "the-odds-api",
     "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
     "sourceUpdatedAt": "2026-07-14T06:03:35.211Z",
-    "now": "2026-07-14T08:28:15.700Z",
+    "now": "2026-07-14T09:11:53.323Z",
     "startTime": "2026-07-14T19:00:00.000Z",
-    "secondsUntilStart": 37904,
+    "secondsUntilStart": 35287,
     "startAgeSeconds": 0,
     "suspendBeforeStartSeconds": 300,
     "insideSuspendWindow": false,
@@ -255,7 +259,7 @@
         "step": "Start or verify local tester runtime",
         "expected": "npm run mobile:one-event-onboarding",
         "pass": true,
-        "notes": "Runtime loops are currently warm in no-quota mode."
+        "notes": "Cached internal testing is accepted; live mobile odds refresh remains explicit and quota-gated."
       },
       {
         "step": "Open Holiwyn on Samsung S23",

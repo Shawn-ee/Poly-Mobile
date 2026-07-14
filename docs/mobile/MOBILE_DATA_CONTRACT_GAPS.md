@@ -10989,3 +10989,12 @@ Future migration concern:
 - Schema mismatch: none. Existing event/market/outcome/order/portfolio fields carried provider market identity and line identity through the full flow.
 - Temporary mock/static data: none added. The flow uses local fake-token exchange liquidity against the backend-owned sportsbook event.
 - Remaining gaps: live provider freshness still ages out without explicit quota-capped refresh; unattended provider/maker/lifecycle service ownership remains P1; dedicated close-position preview route remains P1.
+
+## Cycle ZAU - Cached Internal Readiness After S23 Cashout
+
+- Fields confirmed for mobile/runtime: readiness summaries now distinguish `cachedInternalTestingReady`, `runtimeStatusAcceptedAsCachedInternalTesting`, `cachedTradingReady`, and `liveOddsReady` so cached local trading can pass without pretending mobile-visible provider odds are fresh.
+- Closed or narrowed: the internal tester gate no longer treats stale live odds as a P0 blocker for the proven local fake-token trading path when the recommended no-quota action is cached internal testing and no status P0 remains for the selected trading contract.
+- Route mismatch: none. The route behavior remains read-only for status and unchanged for quote/order/portfolio/history.
+- Schema mismatch: none. No Prisma model or migration change. The new fields are generated evidence/reporting fields in redacted summaries.
+- Temporary mock/static data: none added. Current trading readiness is based on durable local backend/maker/order/portfolio proof and the fresh S23 cashout evidence.
+- Remaining gaps: live odds freshness is intentionally false until the explicit provider-secret refresh runs. Installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1.

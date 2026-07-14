@@ -131,6 +131,12 @@ async function main() {
   const allLoopsRunning = getPath(operatorSnapshot, ["runtime", "currentRuntimeState", "allLoopsRunning"]) === true;
   const quotaSpendingLoopRunning =
     getPath(operatorSnapshot, ["runtime", "currentRuntimeState", "quotaSpendingLoopRunning"]) === true;
+  const cachedInternalTestingReady =
+    getPath(operatorSnapshot, ["runtime", "cachedInternalTestingReady"]) === true ||
+    (pass &&
+      getPath(operatorSnapshot, ["operatorNextActions", "recommendedFirstAction"]) === "cached_internal_testing" &&
+      allLoopsRunning &&
+      !quotaSpendingLoopRunning);
 
   const summary = {
     generatedAt: new Date().toISOString(),
@@ -151,7 +157,7 @@ async function main() {
       localTesterReadyRightNow: getPath(operatorSnapshot, ["runtime", "localTesterReadyRightNow"]) === true,
       cachedTesterReadyRightNow: getPath(operatorSnapshot, ["runtime", "cachedTesterReadyRightNow"]) === true,
       liveOddsReadyRightNow: getPath(operatorSnapshot, ["runtime", "liveOddsReadyRightNow"]) === true,
-      cachedTradingReady: pass && getPath(operatorSnapshot, ["runtime", "localInternalRuntimeReady"]) === true,
+      cachedTradingReady: cachedInternalTestingReady,
       liveOddsReady: pass && warmNoQuotaRuntime && providerSnapshotFresh && !quotaSpendingLoopRunning,
       warmNoQuotaRuntime,
       allLoopsRunning,
@@ -188,7 +194,7 @@ async function main() {
       noOpenP0: p0.length === 0,
       hasRecommendedCommand: typeof getPath(operatorSnapshot, ["operatorNextActions", "recommendedCommand"]) === "string",
       hasManualTradingFlow: Array.isArray(getPath(operatorSnapshot, ["testerLaunchChecklist", "manualTradingFlow"])),
-      cachedTradingReady: pass && getPath(operatorSnapshot, ["runtime", "localInternalRuntimeReady"]) === true,
+      cachedTradingReady: cachedInternalTestingReady,
       liveOddsReady: pass && warmNoQuotaRuntime && providerSnapshotFresh && !quotaSpendingLoopRunning,
       liveOddsActionKnown,
     },

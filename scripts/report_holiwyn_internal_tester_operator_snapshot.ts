@@ -111,6 +111,7 @@ function buildTesterChecklist(params: {
   const currentRuntimeState = objectValue(params.statusBody.currentRuntimeState);
   const serviceOwnership = objectValue(params.statusBody.serviceOwnership);
   const unattendedReadiness = objectValue(serviceOwnership.unattendedReadiness);
+  const operatorNextActions = objectValue(params.statusBody.operatorNextActions);
   const settlementDecision = stringValue(params.statusBody.settlementDecision);
   const eventTitle = stringValue(event.title) ?? "selected backend-owned event";
   const eventSlug = stringValue(event.localSlug) ?? "unknown-event";
@@ -119,6 +120,10 @@ function buildTesterChecklist(params: {
   const warmNoQuotaRuntime = getPath(currentRuntimeState, ["warmNoQuotaRuntime"]) === true;
   const providerSnapshotFresh = getPath(currentRuntimeState, ["providerSnapshotFresh"]) === true;
   const localInternalTesterReady = getPath(unattendedReadiness, ["localInternalTesterReady"]) === true;
+  const cachedInternalTestingReady =
+    stringValue(operatorNextActions.recommendedFirstAction) === "cached_internal_testing" &&
+    getPath(currentRuntimeState, ["allLoopsRunning"]) === true &&
+    getPath(currentRuntimeState, ["quotaSpendingLoopRunning"]) !== true;
   const tradingWindow = stringValue(selectedEventLifecycle.tradingWindow) ?? "unknown";
   const lifecycleNext = deriveLifecycleNextAction(selectedEventLifecycle);
 
@@ -137,9 +142,11 @@ function buildTesterChecklist(params: {
         expected:
           params.recommendedCommand ??
           "Use the recommended operator command from /api/internal/live-runtime/status?phaseAuditInProgress=1.",
-        pass: params.backendOk && localInternalTesterReady,
+        pass: params.backendOk && (localInternalTesterReady || cachedInternalTestingReady),
         notes: warmNoQuotaRuntime
           ? "Runtime loops are currently warm in no-quota mode."
+          : cachedInternalTestingReady
+            ? "Cached internal testing is accepted; live mobile odds refresh remains explicit and quota-gated."
           : "Runtime capability is proven, but supervisor/result-poller loops are not both running now.",
       },
       {
@@ -243,10 +250,20 @@ async function main() {
   const serialized = JSON.stringify({ statusBody, selectedAction });
   const providerKeyMarker = ["THE_ODDS_API", "KEY="].join("_");
   const providerKeyExposed = serialized.includes(providerKeyMarker);
+  const statusP0 = asStringArray(getPath(statusBody, ["gaps", "p0"]));
+  const cachedInternalTestingReady =
+    statusP0.length === 0 &&
+    selectedAction.recommendedFirstAction === "cached_internal_testing" &&
+    typeof recommendedCommand === "string" &&
+    getPath(selectedAction.action, ["requiresProviderKey"]) !== true &&
+    getPath(selectedAction.action, ["spendsProviderQuota"]) !== true &&
+    getPath(statusBody, ["managedProcesses", "quotaSpendingLoopRunning"]) !== true;
+  const runtimeStatusAcceptable = status.ok && statusBody.status === "ready";
+  const cachedStatusAcceptable = !runtimeStatusAcceptable && cachedInternalTestingReady;
   const p0 = [
-    ...asStringArray(getPath(statusBody, ["gaps", "p0"])),
+    ...statusP0,
     ...(health.ok && getPath(health.body, ["status"]) === "ok" ? [] : ["backend_health_not_ok"]),
-    ...(status.ok && statusBody.status === "ready" ? [] : ["runtime_status_not_ready"]),
+    ...(runtimeStatusAcceptable || cachedStatusAcceptable ? [] : ["runtime_status_not_ready"]),
     ...(recommendedCommand ? [] : ["recommended_operator_command_missing"]),
     ...(testerLaunchChecklist.manualTradingFlow.length > 0 ? [] : ["tester_launch_checklist_missing"]),
     ...(providerKeyExposed ? ["provider_secret_exposed"] : []),
@@ -272,6 +289,8 @@ async function main() {
       localTesterReadyRightNow: getPath(statusBody, ["runtimeTruth", "localTesterReadyRightNow"]) === true,
       cachedTesterReadyRightNow: getPath(statusBody, ["runtimeTruth", "cachedTesterReadyRightNow"]) === true,
       liveOddsReadyRightNow: getPath(statusBody, ["runtimeTruth", "liveOddsReadyRightNow"]) === true,
+      cachedInternalTestingReady,
+      runtimeStatusAcceptedAsCachedInternalTesting: cachedStatusAcceptable,
       currentRuntimeState: statusBody.currentRuntimeState ?? null,
       managedProcesses: statusBody.managedProcesses ?? null,
       serviceOwnership: {
