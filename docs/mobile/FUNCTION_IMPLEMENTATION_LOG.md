@@ -15953,3 +15953,14 @@ Known limitations:
   - `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json`
   - `docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json`
 - Known limitations: this aligns local runtime status and completion gates only. Installed unattended services and production official-result auto-settlement remain P1.
+
+## Cycle ZZE - Live Odds Refresh Preflight
+
+- Feature/runtime worked on: no-quota operator preflight for the live provider refresh path.
+- Frontend components touched: none.
+- Backend/routes touched: no route implementation changes. The preflight reads local redacted evidence from the internal tester readiness gate, runtime status, and ordered audit gate.
+- Important functions/services touched: `scripts/report_holiwyn_live_odds_refresh_preflight.ts`, `package.json`, and `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`.
+- User/runtime interactions supported: local operators can now run `npm run mobile:live-odds-refresh-preflight` before choosing the quota-spending `npm run mobile:one-event-live-runtime:provider` path. The report shows cached trading readiness, live odds readiness, provider snapshot freshness, whether a provider key is configured as a boolean, and whether any quota-spending loop is already reported running.
+- State transitions: read-only reporting only. It spends no provider quota, prints no provider key, starts no loops, imports no markets, places no orders, and executes no settlement.
+- Proof summary: `docs/mobile/harness/odds-api-live-runtime/live-odds-refresh-preflight-summary.redacted.json`.
+- Known limitations: this does not make live odds fresh by itself. It only makes the live-refresh decision explicit and safe before an operator intentionally spends provider quota.

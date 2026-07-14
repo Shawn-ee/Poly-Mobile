@@ -27,6 +27,8 @@ describe("The Odds API single-event temporary provider", () => {
   const completionAuditScript = () => readFileSync("scripts/report_holiwyn_live_runtime_completion_audit.ts", "utf8");
   const auditGateScript = () => readFileSync("scripts/run_holiwyn_live_runtime_audit_gate.ts", "utf8");
   const testerReadinessGateScript = () => readFileSync("scripts/run_holiwyn_internal_tester_readiness_gate.ts", "utf8");
+  const liveOddsRefreshPreflightScript = () =>
+    readFileSync("scripts/report_holiwyn_live_odds_refresh_preflight.ts", "utf8");
   const liveReadinessScript = () => readFileSync("scripts/prove_holiwyn_one_event_live_readiness.ps1", "utf8");
   const internalEnvScript = () => readFileSync("scripts/prove_mobile_odds_api_internal_environment.ts", "utf8");
   const routeCounterpartyScript = () => readFileSync("scripts/seed_mobile_route_spread_counterparty.ts", "utf8");
@@ -182,6 +184,24 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("providerSnapshotFresh");
     expect(source).toContain("quotaSpendingLoopRunning");
     expect(source).toContain("does not call providers");
+    expect(source).not.toContain("process.env.THE_ODDS_API_KEY");
+    expect(source).not.toContain("THE_ODDS_API_KEY=");
+  });
+
+  it("exposes a redacted no-quota live odds refresh preflight", () => {
+    const pkg = packageJson();
+    const source = liveOddsRefreshPreflightScript();
+    expect(pkg).toContain("mobile:live-odds-refresh-preflight");
+    expect(source).toContain("holiwyn-live-odds-refresh-preflight");
+    expect(source).toContain("providerQuotaUsedByThisReport: false");
+    expect(source).toContain("liveOddsRefreshCommand");
+    expect(source).toContain("npm run mobile:one-event-live-runtime:provider");
+    expect(source).toContain("providerKeyConfigured");
+    expect(source).toContain("[\"THE\", \"ODDS\", \"API\", \"KEY\"].join(\"_\")");
+    expect(source).toContain("providerKeyValuePrinted: false");
+    expect(source).toContain("commandLineContainsSecret: false");
+    expect(source).toContain("canRunLiveRefreshNow");
+    expect(source).toContain("Mobile provider snapshots are stale");
     expect(source).not.toContain("process.env.THE_ODDS_API_KEY");
     expect(source).not.toContain("THE_ODDS_API_KEY=");
   });
