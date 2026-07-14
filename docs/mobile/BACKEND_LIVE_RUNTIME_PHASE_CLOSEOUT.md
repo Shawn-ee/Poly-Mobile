@@ -13,9 +13,9 @@ This phase is complete for local internal testing.
 - Real upcoming test event: Spain vs. France.
 - Mobile proof device: Samsung S23 `SM_S911U1`.
 - Runtime type: local fake-token internal runtime, not production real-money infrastructure.
-- Latest runtime proof refresh: Cycle ZAI warm-runtime S23 trading flow.
-- Latest operator snapshot refresh: current proof artifacts show the warm cached tester loops are proven restartable, but may be stopped after proof cleanup. Runtime status should be checked before a manual tester session.
-- Latest live-odds freshness pulse: Cycle ZY refreshed the Spain vs. France selected market through the secret-wrapper provider command, moved the mobile quote lifecycle from stale to ready, and left no open P0 gaps.
+- Latest S23 runtime proof refresh: Cycle ZAI warm-runtime S23 trading flow.
+- Latest operator snapshot refresh: Cycle ZAK internal tester readiness gate refresh.
+- Latest live-odds freshness pulse: Cycle ZAJ refreshed the Spain vs. France selected market through the secret-wrapper provider command, moved the mobile quote lifecycle from stale to ready, spent 13 credits under the 16-credit cap, and left 268 provider requests remaining.
 
 ## Requirement Evidence
 
@@ -40,7 +40,7 @@ This phase is complete for local internal testing.
 - Supervisor/result-poller loops are local foreground/background processes, not installed services.
 - Local maker quote proof and provider-to-maker handoff are durable.
 - Cached internal testing is ready right now. Mobile-visible live odds freshness is not ready under the 90-second route threshold unless the explicit provider-refresh command is run.
-- After Cycle ZY, mobile-visible live odds were proven ready immediately after the bounded provider refresh. This is an operational freshness window, not a background quota-spending loop.
+- After Cycle ZAJ, mobile-visible live odds were proven ready immediately after the bounded provider refresh. This is an operational freshness window, not a background quota-spending loop.
 - Official result review and settlement queue APIs are read-only, dev-only, and quota-free.
 - Active event settlement execution is blocked until market close plus exact confirmation.
 

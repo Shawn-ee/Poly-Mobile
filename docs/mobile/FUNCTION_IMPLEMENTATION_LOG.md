@@ -16372,3 +16372,19 @@ Known limitations:
   - `docs/mobile/INTERNAL_TESTER_RUNTIME_LAUNCH.md`
   - `docs/mobile/harness/odds-api-live-runtime/internal-tester-readiness-gate-summary.redacted.json`
 - Known limitations: cached local testing is ready, but mobile-visible live odds are not fresh under the 90-second display window until `npm run mobile:one-event-live-runtime:provider-secret` is intentionally run. Installed unattended service ownership and production official-result auto-settlement remain P1.
+
+## Cycle ZAL - Live Runtime Evidence Reconciliation
+
+- Feature/runtime worked on: human-readable live-runtime evidence reconciliation against the current committed audit summaries.
+- Frontend components touched: none.
+- Backend/routes touched: none.
+- Important functions/services touched: none. This was a documentation/evidence alignment cycle.
+- User/runtime interactions supported: operators now see the current provider quota, selected market/outcome, maker prices, and latest proof cycle names without reading raw JSON artifacts.
+- State transitions: none. No provider refresh, order placement, settlement execution, mobile UI proof, or runtime process change was performed.
+- API/data dependencies: existing evidence from `live-runtime-completion-audit-summary.redacted.json`, `one-event-runtime-status-summary.redacted.json`, `one-event-live-runtime-summary.redacted.json`, `shifted-maker-seed-summary.redacted.json`, and `internal-tester-readiness-gate-summary.redacted.json`.
+- Proof:
+  - `docs/mobile/audits/cycle-ZAL-live-runtime-evidence-reconciliation.md`
+  - `docs/mobile/BACKEND_LIVE_RUNTIME_PHASE_CLOSEOUT.md`
+  - `docs/mobile/LIVE_RUNTIME_GAP_LIST.md`
+  - `docs/mobile/ODDS_PROVIDER_REFRESH_POLICY.md`
+- Known limitations: installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1. Multi-event polling remains P2.
