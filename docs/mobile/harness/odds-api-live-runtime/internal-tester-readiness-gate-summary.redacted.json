@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T01:37:48.510Z",
+  "generatedAt": "2026-07-14T02:56:20.248Z",
   "scope": "holiwyn-internal-tester-readiness-gate",
   "pass": true,
   "providerQuotaUsedByThisGate": false,
@@ -15,8 +15,8 @@
       "id": "ordered-live-runtime-audit",
       "command": "npm run mobile:live-runtime-audit-gate",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/live-runtime-audit-gate-summary.redacted.json",
-      "startedAt": "2026-07-14T01:37:42.349Z",
-      "finishedAt": "2026-07-14T01:37:46.775Z",
+      "startedAt": "2026-07-14T02:56:13.437Z",
+      "finishedAt": "2026-07-14T02:56:18.651Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -25,8 +25,8 @@
       "id": "operator-snapshot",
       "command": "npm run mobile:internal-tester-operator-snapshot",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json",
-      "startedAt": "2026-07-14T01:37:46.775Z",
-      "finishedAt": "2026-07-14T01:37:48.507Z",
+      "startedAt": "2026-07-14T02:56:18.652Z",
+      "finishedAt": "2026-07-14T02:56:20.246Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -47,7 +47,7 @@
       "marketType": "total_goals",
       "marketGroupKey": "totals",
       "line": "2.5",
-      "outcomeId": "8720dab4-70ff-44d0-8d74-5fcff36f8420",
+      "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
       "outcomeName": "Over 2.5",
       "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e"
     },
@@ -56,11 +56,11 @@
     "localTesterReadyRightNow": false,
     "cachedTradingReady": true,
     "liveOddsReady": false,
-    "warmNoQuotaRuntime": false,
-    "allLoopsRunning": false,
+    "warmNoQuotaRuntime": true,
+    "allLoopsRunning": true,
     "quotaSpendingLoopRunning": false,
     "providerSnapshotFresh": false,
-    "nextAction": "start_internal_tester_runtime_with_supervisor_and_result_poller",
+    "nextAction": "keep_cached_testing_or_refresh_live_odds",
     "cachedTradingAction": {
       "id": "cached_internal_testing",
       "command": "npm run mobile:one-event-onboarding",
@@ -78,7 +78,7 @@
         "step": "Start or verify local tester runtime",
         "expected": "npm run mobile:one-event-onboarding",
         "pass": true,
-        "notes": "Runtime capability is proven, but supervisor/result-poller loops are not both running now."
+        "notes": "Runtime loops are currently warm in no-quota mode."
       },
       {
         "step": "Open Holiwyn on Samsung S23",

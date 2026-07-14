@@ -10909,3 +10909,12 @@ Future migration concern:
 - Schema mismatch: none. No database model or migration changes.
 - Temporary mock/static data: none added. The snapshot is read-only and does not call providers.
 - Remaining gaps: current mobile provider snapshots are stale for live display and require explicit key-gated refresh for live-odds testing; cached internal testing remains available. Installed unattended service and production official-result auto-settlement remain P1.
+
+## Cycle ZW2 - Internal Tester Readiness Recovery
+
+- Fields added/confirmed for tooling: no mobile/backend response fields changed. The operator snapshot now consumes `/api/internal/live-runtime/status?phaseAuditInProgress=1` during readiness regeneration, and the generated checklist records that source.
+- Closed or narrowed: readiness no longer fails because the operator snapshot reads stale completion artifacts while the same ordered gate is regenerating them. Selected-outcome quote evidence was also restored by local maker seeding.
+- Route mismatch: none. The audit-safe query parameter already existed on the runtime status route and is now used consistently by this snapshot script during gate execution.
+- Schema mismatch: none. No Prisma schema or model changes.
+- Temporary mock/static data: none added. Local maker seed writes backend-owned fake-token quote liquidity for the selected outcome and preserves the same market/outcome contract used by mobile orders.
+- Remaining gaps: live mobile provider snapshots still need explicit key-gated refresh when live odds freshness is required. Installed unattended service ownership and production official-result auto-settlement remain P1.

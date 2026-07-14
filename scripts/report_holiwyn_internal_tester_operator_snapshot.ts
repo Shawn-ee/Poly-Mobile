@@ -123,7 +123,7 @@ function buildTesterChecklist(params: {
   const lifecycleNext = deriveLifecycleNextAction(selectedEventLifecycle);
 
   return {
-    generatedFrom: "/api/internal/live-runtime/status",
+    generatedFrom: "/api/internal/live-runtime/status?phaseAuditInProgress=1",
     providerQuotaUsedByChecklist: false,
     eventToOpen: {
       title: eventTitle,
@@ -136,7 +136,7 @@ function buildTesterChecklist(params: {
         step: "Start or verify local tester runtime",
         expected:
           params.recommendedCommand ??
-          "Use the recommended operator command from /api/internal/live-runtime/status.",
+          "Use the recommended operator command from /api/internal/live-runtime/status?phaseAuditInProgress=1.",
         pass: params.backendOk && localInternalTesterReady,
         notes: warmNoQuotaRuntime
           ? "Runtime loops are currently warm in no-quota mode."
@@ -230,7 +230,7 @@ async function main() {
   const baseUrl = argValue("baseUrl") ?? DEFAULT_BASE_URL;
   const outputPath = argValue("output") ?? argValue("summaryPath") ?? DEFAULT_OUTPUT_PATH;
   const health = await fetchJson(`${baseUrl}/api/health`);
-  const status = await fetchJson(`${baseUrl}/api/internal/live-runtime/status`);
+  const status = await fetchJson(`${baseUrl}/api/internal/live-runtime/status?phaseAuditInProgress=1`);
   const statusBody = objectValue(status.body);
   const selectedAction = selectAction(statusBody);
   const actions = summarizeActions(statusBody);

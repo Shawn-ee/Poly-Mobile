@@ -16086,3 +16086,27 @@ Known limitations:
 - Proof: `npm run mobile:the-odds-api-s23-visible-flow -- -Device 172.16.200.27:44029 -SkipReplaySeed -HomeExpectedTitle "Spain vs. France" -TeamAExpected "France" -TeamBExpected "Spain" -Cycle S23CASHOUTNOW2`.
 - Proof summary: `docs/mobile/harness/cycle-S23CASHOUTNOW2-spain-france-cashout/cycle-S23CASHOUTNOW2-odds-api-s23-visible-flow.json`.
 - Known limitations: cached/no-quota runtime can age out the 90-second mobile-display provider freshness window; this does not affect the verified cashout contract but means live odds freshness still needs the explicit provider refresh path when required.
+
+## Cycle ZW2 - Internal Tester Readiness Recovery
+
+- Feature/runtime worked on: no-quota recovery of the current `Spain vs. France` internal tester runtime after the S23 buy/cashout proof consumed local maker ask liquidity.
+- Frontend components touched: none.
+- Backend/routes touched: no route implementation changes. Existing `GET /api/health`, `GET /api/markets/:marketId/quote`, and `GET /api/internal/live-runtime/status?phaseAuditInProgress=1` were exercised.
+- Important functions/services touched: `scripts/report_holiwyn_internal_tester_operator_snapshot.ts`.
+- User/runtime interactions supported: local operators can run the ordered readiness gate while phase/completion artifacts are regenerating. The operator snapshot now reads the audit-safe runtime status variant instead of failing on temporarily stale completion artifacts during the same gate run.
+- State transitions: re-seeded local fake-token maker liquidity for the selected `Total Goals 2.5 / Over 2.5` outcome; started cached supervisor/result-poller loops; refreshed no-quota result ingestion, settlement preflight, approval, and result-review trail evidence. No provider quota was spent and no active settlement executed.
+- API/data dependencies: quote visibility depends on existing local maker orders for the selected market/outcome. Runtime readiness depends on existing health/status routes, redacted proof summaries, `RuntimeServiceHeartbeat`/`RuntimeServiceRun`, and no-quota result/settlement audit evidence.
+- Proof:
+  - `npm run mobile:one-event-live-maker-seed`
+  - `npm run mobile:internal-tester-runtime:cached-start`
+  - `npm run mobile:one-event-result-ingestion-audit-event-proof`
+  - `npm run mobile:one-event-settlement-audit-event-proof`
+  - `npm run mobile:one-event-settlement-approval-audit-event-proof`
+  - `npm run mobile:one-event-result-review-trail`
+  - `npm run mobile:internal-tester-operator-snapshot`
+  - `npm run mobile:internal-tester-readiness-gate`
+- Proof summaries:
+  - `docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json`
+  - `docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json`
+  - `docs/mobile/harness/odds-api-live-runtime/internal-tester-readiness-gate-summary.redacted.json`
+- Known limitations: current live mobile odds snapshots remain stale under the 90-second display window unless an explicit provider refresh is run. Cached internal trading is ready. Installed unattended services and production official-result auto-settlement remain P1.

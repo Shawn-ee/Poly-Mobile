@@ -1,7 +1,7 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-14T02:25:30.778Z",
-  "startedAt": "2026-07-14T02:25:30.347Z",
+  "generatedAt": "2026-07-14T02:47:12.695Z",
+  "startedAt": "2026-07-14T02:47:12.532Z",
   "scope": "odds-api-one-event-shifted-maker-seed",
   "mode": "seed-resting-shifted-maker-quotes",
   "event": {
@@ -23,7 +23,7 @@
   },
   "providerSnapshot": {
     "fetchedAt": "2026-07-14T01:56:44.225Z",
-    "ageMs": 1726140,
+    "ageMs": 3028324,
     "maxSnapshotAgeMs": 86400000,
     "allowStale": false,
     "source": "sportsbook-odds",
@@ -32,23 +32,23 @@
     "outcomePrice": 0.56
   },
   "maker": {
-    "id": "c1f4c92c-f57c-4038-b5c5-cf50749de580",
-    "username": "odds_live_runtime_shifted_maker_21249de1"
+    "id": "f5c52d84-8c50-469f-8c6f-ac56b617a877",
+    "username": "odds_live_runtime_shifted_maker_d733b2ee"
   },
   "collateralRepair": {
     "repaired": false,
-    "before": "2400",
-    "after": "2400",
+    "before": "150",
+    "after": "150",
     "byOutcome": [
       {
         "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
         "code": "OVER",
-        "shares": "2400"
+        "shares": "150"
       },
       {
         "outcomeId": "2b498cd2-1a06-4b2d-918e-76199969e093",
         "code": "UNDER",
-        "shares": "2400"
+        "shares": "150"
       }
     ]
   },
@@ -58,44 +58,34 @@
     "plannedAsk": 0.6,
     "adjustments": [],
     "preSeedBook": {
-      "bestBid": null,
+      "bestBid": 0.58,
       "bestAsk": null,
-      "openOrderCount": 0,
-      "orders": []
+      "openOrderCount": 1,
+      "orders": [
+        {
+          "side": "BUY",
+          "price": "0.58",
+          "remaining": "36.9",
+          "username": "mobile_route_fill_maker_3de988f7"
+        }
+      ]
     },
     "size": "200",
     "mintQuantity": "200"
   },
-  "canceledPreviousOrders": [
-    {
-      "orderId": "c6eb6b89-e1f8-4860-a66c-ef24e6a733c4",
-      "side": "BUY",
-      "price": "0.52",
-      "remaining": "200",
-      "statusBefore": "OPEN",
-      "canceled": true
-    },
-    {
-      "orderId": "81d2e5b4-18c3-4a60-bc51-6484f7c84c5d",
-      "side": "SELL",
-      "price": "0.6",
-      "remaining": "200",
-      "statusBefore": "OPEN",
-      "canceled": true
-    }
-  ],
+  "canceledPreviousOrders": [],
   "restingOrders": [
     {
-      "id": "5d383b58-0970-463b-9b07-86ad907141be",
-      "username": "odds_live_runtime_shifted_maker_21249de1",
+      "id": "b0b263ca-7fe4-4df4-a165-a4ddaecf627a",
+      "username": "odds_live_runtime_shifted_maker_d733b2ee",
       "side": "BUY",
       "price": "0.52",
       "remaining": "200",
       "status": "OPEN"
     },
     {
-      "id": "db1c9563-b1ab-4b76-9d95-1485fe1f9bee",
-      "username": "odds_live_runtime_shifted_maker_21249de1",
+      "id": "7ba35caa-29ba-49e5-b046-33ded202d200",
+      "username": "odds_live_runtime_shifted_maker_d733b2ee",
       "side": "SELL",
       "price": "0.6",
       "remaining": "200",
@@ -109,13 +99,13 @@
     "selectedOutcomeQuote": {
       "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
       "outcomeName": "Over 2.5",
-      "bestBid": "0.52",
+      "bestBid": "0.58",
       "bestAsk": "0.6",
-      "bestBidSize": 200,
+      "bestBidSize": 36.9,
       "bestAskSize": 200,
-      "midPrice": "0.56",
-      "lastPrice": null,
-      "lastTradeAt": null
+      "midPrice": "0.59",
+      "lastPrice": "0.58",
+      "lastTradeAt": "2026-07-14T02:40:35.853Z"
     }
   },
   "checks": {
