@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T05:42:05.375Z",
+  "generatedAt": "2026-07-14T06:17:02.910Z",
   "scope": "holiwyn-internal-tester-operator-snapshot",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -19,7 +19,8 @@
     "marketGroupKey": "totals",
     "line": "2.5",
     "outcomeId": "30fbc915-74ca-4809-a0c4-cd54c3236aa4",
-    "outcomeName": "Over +2.5",
+    "outcomeName": "Over 2.5",
+    "referenceOutcomeLabel": "Over +2.5",
     "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4"
   },
   "backend": {
@@ -29,7 +30,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-14T05:42:03.970Z"
+      "timestamp": "2026-07-14T06:17:01.286Z"
     },
     "error": null
   },
@@ -126,9 +127,9 @@
     "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
     "reason": null,
     "snapshotCount": 4,
-    "latestFetchedAt": "2026-07-14T04:49:08.576Z",
-    "latestAgeHours": 0.88,
-    "latestAgeSeconds": 3176,
+    "latestFetchedAt": "2026-07-14T06:03:32.787Z",
+    "latestAgeHours": 0.23,
+    "latestAgeSeconds": 810,
     "maxAgeHours": 24,
     "sources": [
       "sportsbook-odds"
@@ -143,8 +144,8 @@
     "mobileLifecycleStatus": "stale",
     "mobileRefreshDueSeconds": 60,
     "mobileStaleAfterSeconds": 90,
-    "mobileRefreshDueAt": "2026-07-14T04:50:08.576Z",
-    "mobileStaleAt": "2026-07-14T04:50:38.576Z",
+    "mobileRefreshDueAt": "2026-07-14T06:04:32.787Z",
+    "mobileStaleAt": "2026-07-14T06:05:02.787Z",
     "nextProviderAction": "refresh_provider_snapshots_or_keep_cached_test_mode"
   },
   "operatorNextActions": {
@@ -227,10 +228,10 @@
     "leagueKey": "world_cup",
     "source": "the-odds-api",
     "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
-    "sourceUpdatedAt": "2026-07-14T04:49:08.576Z",
-    "now": "2026-07-14T05:42:05.366Z",
+    "sourceUpdatedAt": "2026-07-14T06:03:32.787Z",
+    "now": "2026-07-14T06:17:02.900Z",
     "startTime": "2026-07-14T19:00:00.000Z",
-    "secondsUntilStart": 47875,
+    "secondsUntilStart": 45777,
     "startAgeSeconds": 0,
     "suspendBeforeStartSeconds": 300,
     "insideSuspendWindow": false,
@@ -247,7 +248,7 @@
       "title": "Spain vs. France",
       "localSlug": "odds-api-single-soccer-test",
       "selectedMarket": "Spain vs. France: Total Goals 2.5",
-      "selectedOutcome": "Over +2.5"
+      "selectedOutcome": "Over 2.5"
     },
     "launch": [
       {
@@ -280,7 +281,7 @@
       },
       {
         "step": "Quote and buy",
-        "expected": "Open Over +2.5, enter an amount, and swipe to buy with fake tokens.",
+        "expected": "Open Over 2.5, enter an amount, and swipe to buy with fake tokens.",
         "routeDependency": "GET /api/markets/:id/quote; POST /api/orders",
         "pass": true,
         "notes": "Order must use the selected market/outcome identity from Event Detail."

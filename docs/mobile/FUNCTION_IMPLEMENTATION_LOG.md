@@ -16357,3 +16357,18 @@ Known limitations:
   - `npm run mobile:live-runtime-audit-gate`
   - `docs/mobile/audits/cycle-ZAJ-live-provider-refresh-display-label-proof.md`
 - Known limitations: installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1. Multi-event polling remains P2.
+
+## Cycle ZAK - Internal Tester Runtime Launch Handoff
+
+- Feature/runtime worked on: no-quota internal tester readiness gate refresh and human-readable runtime launch handoff.
+- Frontend components touched: none.
+- Backend/routes touched: no route implementation changes. Existing health, live-runtime status, operator snapshot, quote, lifecycle, settlement queue, and audit routes were exercised.
+- Important functions/services touched: `scripts/run_holiwyn_internal_tester_readiness_gate.ts`, `scripts/run_holiwyn_live_runtime_audit_gate.ts`, `scripts/report_holiwyn_internal_tester_operator_snapshot.ts`, and `GET /api/internal/live-runtime/status`.
+- User/runtime interactions supported: a tester/operator can now read one Markdown file to launch cached local testing, identify when live odds refresh is optional/quota-spending, and manually prove Home -> Event Detail -> Buy -> Portfolio -> Cashout/Sell -> History.
+- State transitions: no runtime mutation, provider call, settlement execution, or code path change. The readiness gate refreshed local audit evidence and confirmed supervisor/result-poller loops are currently running without provider quota.
+- API/data dependencies: `GET /api/events`, `GET /api/mobile/events/:slug/live-detail`, `GET /api/markets/:id/quote`, `POST /api/orders`, `GET /api/portfolio`, `GET /api/portfolio/history`, `GET /api/internal/live-runtime/status`, and `GET /api/internal/live-runtime/settlement-queue`.
+- Proof:
+  - `npm run mobile:internal-tester-readiness-gate`
+  - `docs/mobile/INTERNAL_TESTER_RUNTIME_LAUNCH.md`
+  - `docs/mobile/harness/odds-api-live-runtime/internal-tester-readiness-gate-summary.redacted.json`
+- Known limitations: cached local testing is ready, but mobile-visible live odds are not fresh under the 90-second display window until `npm run mobile:one-event-live-runtime:provider-secret` is intentionally run. Installed unattended service ownership and production official-result auto-settlement remain P1.

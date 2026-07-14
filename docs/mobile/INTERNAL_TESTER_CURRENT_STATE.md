@@ -1,6 +1,6 @@
 # Holiwyn Internal Tester Current State
 
-Generated: 2026-07-14 after Cycle ZAI warm-runtime S23 trading proof.
+Generated: 2026-07-14 after Cycle ZAK internal tester readiness gate refresh.
 
 ## Current Verdict
 
@@ -37,6 +37,7 @@ This is not production readiness. It is a local internal tester runtime with bac
 - S23 proof: `docs/mobile/harness/cycle-ZAI-warm-runtime-s23/cycle-ZAI-warm-runtime-s23-odds-api-s23-visible-flow.json`
 - ZAI audit note: `docs/mobile/audits/cycle-ZAI-warm-runtime-s23-flow.md`
 - Latest live refresh audit note: `docs/mobile/audits/cycle-ZAJ-live-provider-refresh-display-label-proof.md`
+- Tester runtime launch handoff: `docs/mobile/INTERNAL_TESTER_RUNTIME_LAUNCH.md`
 
 Latest local audit result:
 
@@ -64,6 +65,12 @@ Internal tester readiness handoff:
 
 ```text
 npm run mobile:internal-tester-readiness-gate
+```
+
+Human-readable launch checklist:
+
+```text
+docs/mobile/INTERNAL_TESTER_RUNTIME_LAUNCH.md
 ```
 
 Start local cached tester runtime without provider quota:
