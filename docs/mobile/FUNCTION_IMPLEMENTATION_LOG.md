@@ -16011,3 +16011,20 @@ Known limitations:
   - `docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json`
   - `docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json`
 - Known limitations: foreground/local supervisor capability is proven, but no installed unattended production service exists. Official-result auto-settlement remains guarded P1.
+
+## Cycle ZZH - Ordered Internal Tester Readiness Refresh
+
+- Feature/runtime worked on: no-quota ordered runtime/readiness evidence for the current `Spain vs. France` internal tester flow.
+- Frontend components touched: none.
+- Backend/routes touched: no route implementation changes. Existing `GET /api/health`, `GET /api/markets/:marketId/quote`, `GET /api/internal/live-runtime/status`, result-review, settlement-queue, and lifecycle status evidence were exercised by the gates.
+- Important functions/services touched: no source implementation changes. Refreshed ordered audit/readiness artifacts after Cycle ZZG so downstream tester guidance no longer reads stale pre-refresh summaries.
+- User/runtime interactions supported: the tester-facing readiness summary now confirms cached trading is ready with `npm run mobile:one-event-onboarding`, reports live mobile odds as not fresh under the 90-second mobile display window, and keeps the quota-spending refresh path explicit.
+- State transitions: read-only audit refresh. It spent no provider quota, started no runtime loops, imported no markets, placed no orders, and executed no settlement.
+- Proof:
+  - `npm run mobile:live-runtime-audit-gate`
+  - `npm run mobile:internal-tester-readiness-gate`
+- Proof summaries:
+  - `docs/mobile/harness/odds-api-live-runtime/live-runtime-audit-gate-summary.redacted.json`
+  - `docs/mobile/harness/odds-api-live-runtime/internal-tester-readiness-gate-summary.redacted.json`
+  - `docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json`
+- Known limitations: installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1. Cached trading is ready; live mobile odds require the explicit provider-refresh command when current snapshots are stale.
