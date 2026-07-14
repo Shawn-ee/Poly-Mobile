@@ -2,6 +2,21 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ZBO - Spain vs. France Fresh S23 Cashout Proof
+
+- Feature/runtime worked on: current internal tester mobile trading flow for `Spain vs. France`, focused on fresh S23 proof that Portfolio Cash out opens the close-position ticket and Max uses owned shares.
+- Frontend components touched: none.
+- Backend/API routes touched: none.
+- Important functions/services touched: no source code changed. Proof used `scripts/prove_mobile_odds_api_s23_visible_flow.ps1`; focused validation used mobile close-position tests and backend sell/oversell tests.
+- User interactions proved: Home -> Event Detail -> `Over 2.5` line market -> Buy ticket -> fake-token order -> Portfolio -> Cash out -> Max -> SELL -> Portfolio History.
+- State transitions: BUY creates a server-backed position; cashout opens close-position mode with owned shares; Max fills owned shares only; SELL submits for the owned market/outcome; History records sold activity.
+- API/data dependencies: Home event feed, Event Detail route, quote route, order route, portfolio route, and cashout estimate/position identity. No schema or product route changes were made in this cycle.
+- Proof:
+  - `docs/mobile/harness/cycle-ZBO-spain-france-cashout-s23/cycle-ZBO-odds-api-s23-visible-flow.json`
+  - `docs/mobile/screenshots/cycle-ZBO-spain-france-cashout-s23/`
+  - `docs/mobile/audits/cycle-ZBO-spain-france-cashout-s23.md`
+- Known limitations: repeated phone proof still uses Expo Go. Moving to a development build/APK remains P1 for proof stability.
+
 ## Cycle ZAT - Local Runtime Launch Profile Refresh
 
 - Feature/runtime worked on: no-quota local runtime launch-profile evidence for the one-event internal tester runtime.
