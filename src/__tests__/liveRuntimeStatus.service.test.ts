@@ -989,6 +989,7 @@ describe("live runtime status service", () => {
       eventLifecycleOperatorAction: "keep_trading_available_until_suspend_window",
       safety: expect.stringContaining("THE_ODDS_API_KEY"),
     });
+    expect(status.operatorNextActions.safety).toContain(".runtime/secrets/the-odds-api-key.txt");
     expect(status.operatorNextActions.actions).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -2025,7 +2026,7 @@ describe("live runtime status service", () => {
       expect.arrayContaining([
         expect.objectContaining({
           id: "refresh_mobile_live_odds",
-          command: "npm run mobile:one-event-live-runtime:provider",
+          command: "npm run mobile:one-event-live-runtime:provider-secret",
           requiresProviderKey: true,
           spendsProviderQuota: true,
         }),
@@ -2073,6 +2074,7 @@ describe("live runtime status service", () => {
         }),
         expect.objectContaining({
           id: "refresh_mobile_live_odds",
+          command: "npm run mobile:one-event-live-runtime:provider-secret",
           spendsProviderQuota: true,
         }),
       ]),

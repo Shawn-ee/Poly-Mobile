@@ -81,7 +81,7 @@ For a selected binary sportsbook market:
 - Trusted result approval audit proof command: `npm run mobile:one-event-settlement-approval-audit-event-proof`
 - Trusted result scheduler execution proof command: `npm run mobile:one-event-result-settlement-execution-proof`
 - Active event settlement clone proof command: `npm run mobile:one-event-active-settlement-clone-proof`
-- Live provider wrapper command: `npm run mobile:one-event-live-runtime:provider`
+- Live provider wrapper command: `npm run mobile:one-event-live-runtime:provider-secret`
 - Summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json`
 - Runtime launch summary: `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-launch-summary.redacted.json`
 - Maker seed summary: `docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json`

@@ -25,7 +25,7 @@
 8. To run the same supervisor as a local hidden background process, run `npm run mobile:one-event-live-supervisor:process -- -Action start -Continuous -MaxIterations 0`.
 9. To check that local background supervisor process, run `npm run mobile:one-event-live-supervisor:status`.
 10. To stop that local background supervisor process, run `npm run mobile:one-event-live-supervisor:stop`.
-11. For a live provider refresh proof only, set `THE_ODDS_API_KEY` in the local process environment and run `npm run mobile:one-event-live-runtime:provider`.
+11. For a live provider refresh proof only, set `THE_ODDS_API_KEY` in the local process environment or store the raw key in ignored `.runtime/secrets/the-odds-api-key.txt`, then run `npm run mobile:one-event-live-runtime:provider-secret`.
 12. For a repeated live-provider supervisor, run `npm run mobile:one-event-live-supervisor -- -RunProviderProof -Continuous -MaxIterations 0` only during intentional manual testing; provider refresh is capped by cadence and max proof runs.
 13. Confirm the proof reports provider refresh `ready`.
 14. Confirm local shifted maker quotes exist.

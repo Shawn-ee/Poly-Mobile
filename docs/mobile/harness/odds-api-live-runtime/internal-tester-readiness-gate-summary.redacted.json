@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T01:09:07.660Z",
+  "generatedAt": "2026-07-14T01:16:08.201Z",
   "scope": "holiwyn-internal-tester-readiness-gate",
   "pass": true,
   "providerQuotaUsedByThisGate": false,
@@ -15,8 +15,8 @@
       "id": "ordered-live-runtime-audit",
       "command": "npm run mobile:live-runtime-audit-gate",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/live-runtime-audit-gate-summary.redacted.json",
-      "startedAt": "2026-07-14T01:08:57.184Z",
-      "finishedAt": "2026-07-14T01:09:05.282Z",
+      "startedAt": "2026-07-14T01:15:56.920Z",
+      "finishedAt": "2026-07-14T01:16:05.276Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -25,8 +25,8 @@
       "id": "operator-snapshot",
       "command": "npm run mobile:internal-tester-operator-snapshot",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json",
-      "startedAt": "2026-07-14T01:09:05.283Z",
-      "finishedAt": "2026-07-14T01:09:07.658Z",
+      "startedAt": "2026-07-14T01:16:05.277Z",
+      "finishedAt": "2026-07-14T01:16:08.199Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -69,7 +69,7 @@
     },
     "liveOddsAction": {
       "id": "refresh_mobile_live_odds",
-      "command": "npm run mobile:one-event-live-runtime:provider",
+      "command": "npm run mobile:one-event-live-runtime:provider-secret",
       "requiresProviderKey": true,
       "spendsProviderQuota": true
     },

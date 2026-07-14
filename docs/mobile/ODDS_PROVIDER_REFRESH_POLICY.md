@@ -17,7 +17,7 @@ Temporary Local MVP provider: The Odds API. This policy is for fake-token local 
 - `npm run mobile:one-event-onboarding -- -AllowDisconnectedS23 -StartRuntimeLoops -StopRuntimeLoopsAfterProof` is the backend-runtime proof mode. It keeps provider refresh in cached/no-quota mode, starts the local supervisor and result-poller, proves both are running, then stops both. Use this when validating local backend runtime without requiring a phone connection.
 - `npm run mobile:one-event-onboarding:cached-runtime` is the preferred shortcut for the same cached/no-quota runtime-loop proof mode.
 - `npm run mobile:one-event-onboarding:live-provider-runtime` is the explicit shortcut for a live-provider refresh plus runtime-loop proof. It requires `THE_ODDS_API_KEY`, is quota-capped by the underlying onboarding/live-runtime commands, and should only be used when a live provider refresh is intentional.
-- `npm run mobile:one-event-live-runtime:provider` is the explicit live provider proof command and requires `THE_ODDS_API_KEY`.
+- `npm run mobile:one-event-live-runtime:provider` is the lower-level explicit live provider proof command and requires `THE_ODDS_API_KEY` in the process environment.
 - `npm run mobile:one-event-live-runtime:provider-secret-preflight` checks whether live refresh can obtain the key from the process environment or from `.runtime/secrets/the-odds-api-key.txt`. It is redacted, local-only, and does not call the provider.
 - `npm run mobile:one-event-live-runtime:provider-secret` runs the same explicit live provider proof while loading the key from the process environment or from `.runtime/secrets/the-odds-api-key.txt`. The key is never passed on the command line, never printed, and the `.runtime` path is git-ignored.
 - `npm run mobile:one-event-live-supervisor` repeats data hygiene, the local one-event runtime check, maker seed, and safe real-time lifecycle scheduler without spending provider quota unless `-RunProviderProof` is passed.
@@ -76,7 +76,7 @@ The local internal status route intentionally reports two freshness lenses:
 
 This means `/api/internal/live-runtime/status` can be `ready` for cached local internal testing while also reporting `providerSnapshots.mobileLifecycleStatus=stale`. That is expected in no-quota mode. To refresh mobile-visible live odds, use the explicit quota-capped provider refresh commands.
 
-The same status route also returns `operatorNextActions` with local command guidance. The cached internal testing action is no-quota. The mobile live-odds refresh action explicitly requires `THE_ODDS_API_KEY` in the caller's environment and may spend quota under the existing caps. The route never returns or reads the key.
+The same status route also returns `operatorNextActions` with local command guidance. The cached internal testing action is no-quota. The mobile live-odds refresh action points operators to `npm run mobile:one-event-live-runtime:provider-secret`, explicitly requires either `THE_ODDS_API_KEY` in the caller's environment or an ignored `.runtime/secrets/the-odds-api-key.txt` file, and may spend quota under the existing caps. The route never returns or reads the key.
 
 The live proof intentionally forces the selected market's existing quote snapshots stale before a refresh, then proves the route returns to `ready` after a live provider refresh.
 

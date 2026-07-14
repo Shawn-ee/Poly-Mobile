@@ -90,7 +90,7 @@ The backend is close enough for a one-event local live proof because the data mo
 
 - Command: `npm run mobile:odds-api-live-runtime-proof`.
 - Restart/runtime command: `npm run mobile:one-event-live-runtime`.
-- Explicit live-provider wrapper: `npm run mobile:one-event-live-runtime:provider`.
+- Explicit live-provider wrapper: `npm run mobile:one-event-live-runtime:provider-secret` so the key can stay in the process environment or ignored `.runtime/secrets/the-odds-api-key.txt`.
 - Script: `scripts/prove_odds_api_one_event_live_runtime.ts`.
 - Runtime launcher: `scripts/start_holiwyn_one_event_live_runtime.ps1`.
 - Reusable maker seed: `scripts/seed_odds_api_live_shifted_maker.ts`.

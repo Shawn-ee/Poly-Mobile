@@ -665,15 +665,15 @@ function buildOperatorNextActions(params: {
       id: "refresh_mobile_live_odds",
       priority: "P0",
       label: "Refresh mobile-visible live odds",
-      command: "npm run mobile:one-event-live-runtime:provider",
+      command: "npm run mobile:one-event-live-runtime:provider-secret",
       requiresProviderKey: true,
       spendsProviderQuota: true,
       reason:
         mobileLifecycleStatus === "stale"
-          ? "Selected market provider snapshots are stale under the mobile 90-second live-display window."
+          ? "Selected market provider snapshots are stale under the mobile 90-second live-display window; use the secret wrapper so the provider key stays in the process environment or ignored local secret file."
           : mobileLifecycleStatus === "refresh_due"
-            ? "Selected market provider snapshots are past the mobile 60-second refresh-due threshold."
-            : "Selected market needs provider snapshots before live mobile display can be fresh.",
+            ? "Selected market provider snapshots are past the mobile 60-second refresh-due threshold; use the secret wrapper so the provider key stays in the process environment or ignored local secret file."
+            : "Selected market needs provider snapshots before live mobile display can be fresh; use the secret wrapper so the provider key stays in the process environment or ignored local secret file.",
     });
   }
 
@@ -748,7 +748,7 @@ function buildOperatorNextActions(params: {
     eventLifecycleOperatorAction,
     actions,
     safety:
-      "Commands are local-only. Provider-refresh commands require THE_ODDS_API_KEY in the environment and remain quota-capped by the underlying proof scripts; the status route never returns or reads the key.",
+      "Commands are local-only. Provider-refresh commands require THE_ODDS_API_KEY in the environment or ignored .runtime/secrets/the-odds-api-key.txt file and remain quota-capped by the underlying proof scripts; the status route never returns or reads the key.",
   };
 }
 

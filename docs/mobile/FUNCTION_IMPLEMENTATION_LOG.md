@@ -16028,3 +16028,15 @@ Known limitations:
   - `docs/mobile/harness/odds-api-live-runtime/internal-tester-readiness-gate-summary.redacted.json`
   - `docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json`
 - Known limitations: installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1. Cached trading is ready; live mobile odds require the explicit provider-refresh command when current snapshots are stale.
+
+## Cycle ZZI - Secret-Wrapper Live Odds Operator Guidance
+
+- Feature/runtime worked on: operator command guidance for refreshing stale mobile-visible live odds.
+- Frontend components touched: none.
+- Backend/routes touched: `GET /api/internal/live-runtime/status` through `src/server/services/liveRuntimeStatus.ts`.
+- Important functions/services touched: `buildOperatorNextActions`, provider refresh policy docs, backend/runtime survey docs, event lifecycle runbook, market-maker runtime report, and Odds API contract tests.
+- User/runtime interactions supported: cached internal testing remains the default no-quota action, but when live mobile odds are stale or refresh-due the optional `refresh_mobile_live_odds` action now points to `npm run mobile:one-event-live-runtime:provider-secret`. This keeps provider credentials in the process environment or ignored `.runtime/secrets/the-odds-api-key.txt`, instead of steering operators to the raw env-only command.
+- State transitions: none. This is read-only status guidance and documentation. It does not call The Odds API, read the provider secret, start loops, import markets, place orders, or execute settlement.
+- API/data dependencies: existing `/api/internal/live-runtime/status.operatorNextActions` fields. Action entries still expose command, provider-key requirement, quota-spend flag, priority, label, and reason.
+- Proof needed: focused live-runtime status tests, Odds API contract tests, no-quota readiness gate refresh, root/mobile typecheck, `npm run test:ci`, secret scan, GitHub CI.
+- Known limitations: the live odds refresh action may still spend provider quota when intentionally run; cached internal testing remains the safe default.

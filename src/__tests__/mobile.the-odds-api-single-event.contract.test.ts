@@ -29,6 +29,7 @@ describe("The Odds API single-event temporary provider", () => {
   const testerReadinessGateScript = () => readFileSync("scripts/run_holiwyn_internal_tester_readiness_gate.ts", "utf8");
   const liveOddsRefreshPreflightScript = () =>
     readFileSync("scripts/report_holiwyn_live_odds_refresh_preflight.ts", "utf8");
+  const liveRuntimeStatusService = () => readFileSync("src/server/services/liveRuntimeStatus.ts", "utf8");
   const liveReadinessScript = () => readFileSync("scripts/prove_holiwyn_one_event_live_readiness.ps1", "utf8");
   const internalEnvScript = () => readFileSync("scripts/prove_mobile_odds_api_internal_environment.ts", "utf8");
   const routeCounterpartyScript = () => readFileSync("scripts/seed_mobile_route_spread_counterparty.ts", "utf8");
@@ -214,6 +215,15 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("Mobile provider snapshots are stale");
     expect(source).not.toContain("process.env.THE_ODDS_API_KEY");
     expect(source).not.toContain("THE_ODDS_API_KEY=");
+  });
+
+  it("uses the secret-wrapper command for operator live-odds refresh guidance", () => {
+    const source = liveRuntimeStatusService();
+    expect(source).toContain('id: "refresh_mobile_live_odds"');
+    expect(source).toContain('command: "npm run mobile:one-event-live-runtime:provider-secret"');
+    expect(source).toContain(".runtime/secrets/the-odds-api-key.txt");
+    expect(source).toContain("status route never returns or reads the key");
+    expect(source).not.toContain('command: "npm run mobile:one-event-live-runtime:provider"');
   });
 
   it("starts managed Expo in server-backed S23 tester mode", () => {

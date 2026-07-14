@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T01:09:07.600Z",
+  "generatedAt": "2026-07-14T01:16:08.141Z",
   "scope": "holiwyn-internal-tester-operator-snapshot",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -29,7 +29,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-14T01:09:06.585Z"
+      "timestamp": "2026-07-14T01:16:06.562Z"
     },
     "error": null
   },
@@ -125,8 +125,8 @@
     "reason": null,
     "snapshotCount": 4,
     "latestFetchedAt": "2026-07-14T00:57:07.608Z",
-    "latestAgeHours": 0.2,
-    "latestAgeSeconds": 720,
+    "latestAgeHours": 0.32,
+    "latestAgeSeconds": 1141,
     "maxAgeHours": 24,
     "sources": [
       "sportsbook-odds"
@@ -196,10 +196,10 @@
         "id": "refresh_mobile_live_odds",
         "priority": "P0",
         "label": "Refresh mobile-visible live odds",
-        "command": "npm run mobile:one-event-live-runtime:provider",
+        "command": "npm run mobile:one-event-live-runtime:provider-secret",
         "requiresProviderKey": true,
         "spendsProviderQuota": true,
-        "reason": "Selected market provider snapshots are stale under the mobile 90-second live-display window."
+        "reason": "Selected market provider snapshots are stale under the mobile 90-second live-display window; use the secret wrapper so the provider key stays in the process environment or ignored local secret file."
       },
       {
         "id": "start_cached_supervisor",
@@ -229,7 +229,7 @@
         "reason": "Active-event trusted-result settlement is intentionally blocked while the selected market is not CLOSED."
       }
     ],
-    "safety": "Commands are local-only. Provider-refresh commands require THE_ODDS_API_KEY in the environment and remain quota-capped by the underlying proof scripts; the status route never returns or reads the key."
+    "safety": "Commands are local-only. Provider-refresh commands require THE_ODDS_API_KEY in the environment or ignored .runtime/secrets/the-odds-api-key.txt file and remain quota-capped by the underlying proof scripts; the status route never returns or reads the key."
   },
   "selectedEventLifecycle": {
     "checked": true,
@@ -244,9 +244,9 @@
     "source": "the-odds-api",
     "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
     "sourceUpdatedAt": "2026-07-14T00:57:07.608Z",
-    "now": "2026-07-14T01:09:07.594Z",
+    "now": "2026-07-14T01:16:08.135Z",
     "startTime": "2026-07-14T19:00:00.000Z",
-    "secondsUntilStart": 64252,
+    "secondsUntilStart": 63832,
     "startAgeSeconds": 0,
     "suspendBeforeStartSeconds": 300,
     "insideSuspendWindow": false,
