@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T03:09:12.650Z",
+  "generatedAt": "2026-07-14T03:15:15.919Z",
   "scope": "odds-api-one-event-runtime-status",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -149,7 +149,7 @@
         "status": "ok",
         "db": "connected",
         "env": "development",
-        "timestamp": "2026-07-14T03:09:12.649Z"
+        "timestamp": "2026-07-14T03:15:15.919Z"
       },
       "error": null
     }
@@ -157,7 +157,7 @@
   "provider": {
     "liveProofPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
     "liveProofGeneratedAt": "2026-07-14T03:07:25.089Z",
-    "liveProofAgeHours": 0.03,
+    "liveProofAgeHours": 0.13,
     "maxLiveProofAgeHours": 24,
     "quota": {
       "totalLastCost": 13,
@@ -181,7 +181,7 @@
   "maker": {
     "makerSeedPath": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
     "makerSeedGeneratedAt": "2026-07-14T02:47:12.695Z",
-    "makerSeedAgeHours": 0.37,
+    "makerSeedAgeHours": 0.47,
     "quoteRoute": {
       "ok": true,
       "status": 200,
@@ -226,7 +226,7 @@
   "lifecycle": {
     "schedulerRunPath": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
     "schedulerGeneratedAt": "2026-07-14T02:25:12.199Z",
-    "schedulerAgeHours": 0.73,
+    "schedulerAgeHours": 0.83,
     "schedulerAction": "none",
     "schedulerReason": "Event is not inside the suspend/close window.",
     "schedulerCandidateMarketCount": 3
@@ -235,9 +235,9 @@
     "resultSettlementExecutionPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
     "resultSettlementLiveBlockedPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json",
     "resultSettlementExecutionGeneratedAt": "2026-07-13T12:32:50.663Z",
-    "resultSettlementExecutionAgeHours": 14.61,
+    "resultSettlementExecutionAgeHours": 14.71,
     "resultSettlementLiveBlockedGeneratedAt": "2026-07-13T12:32:49.154Z",
-    "resultSettlementLiveBlockedAgeHours": 14.61,
+    "resultSettlementLiveBlockedAgeHours": 14.71,
     "maxSettlementProofAgeHours": 24,
     "resultSettlementExecutionFresh": true,
     "resultSettlementLiveBlockedFresh": true,

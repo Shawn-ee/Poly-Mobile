@@ -16144,3 +16144,18 @@ Known limitations:
   - `docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json`
   - `docs/mobile/harness/odds-api-live-runtime/internal-tester-readiness-gate-summary.redacted.json`
 - Known limitations: live refresh is explicit/key-gated, mobile freshness is intentionally short, and this is not an installed unattended daemon. Production official-result auto-settlement remains P1.
+
+## Cycle ZW5 - Lifecycle Matrix Proof Refresh
+
+- Feature/runtime worked on: no-quota lifecycle proof refresh for the current `Spain vs. France` one-event runtime.
+- Frontend components touched: none.
+- Backend/routes touched: no route implementation changes. Existing lifecycle/status/reporting scripts were exercised.
+- Important functions/services touched: `scripts/report_odds_api_one_event_lifecycle_matrix.ts` and `scripts/prove_odds_api_one_event_live_runtime.ts`.
+- User/runtime interactions supported: local operators can regenerate the lifecycle matrix from a clean shell without manually exporting `DATABASE_URL`. Future live-provider proof summaries now describe the true remaining lifecycle gap: foreground supervisor support exists, while installed unattended service ownership remains P1.
+- State transitions: none. Lifecycle matrix is read-only and uses existing proof artifacts plus local DB state. No provider quota was spent and no active tester settlement executed.
+- API/data dependencies: local Prisma `Event`/`Market` reads, lifecycle controls proof, lifecycle scheduler proof, scheduler run proof, settlement execution proof, trusted-result scheduler execution proof, and result review trail proof.
+- Proof:
+  - `npx jest --runInBand src/__tests__/mobile.the-odds-api-single-event.contract.test.ts src/__tests__/liveRuntimeStatus.service.test.ts src/__tests__/liveRuntimeLifecycle.service.test.ts src/__tests__/internal.live-runtime.lifecycle.route.test.ts`
+  - `npm run mobile:one-event-lifecycle-matrix`
+  - `npm run mobile:live-runtime-audit-gate`
+- Known limitations: lifecycle scheduling is proven under the local foreground supervisor, not as an installed unattended service. Production official-result auto-settlement remains P1.

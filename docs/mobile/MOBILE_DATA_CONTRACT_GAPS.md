@@ -10936,3 +10936,12 @@ Future migration concern:
 - Schema mismatch: none. Existing event/market/outcome/reference quote/order/portfolio models support this proof.
 - Temporary mock/static data: none added. Provider data is real The Odds API data; fake-token liquidity/order flow remains local internal exchange behavior.
 - Remaining gaps: refresh is not an installed unattended provider daemon; production result settlement is not automatic; multi-event polling is intentionally out of scope for quota protection.
+
+## Cycle ZW5 - Lifecycle Matrix Proof Refresh
+
+- Fields confirmed for tooling: lifecycle matrix reports `open.proven`, `suspendedPaused.proven`, `closed.proven`, `settledResolved.proven`, current event status, listed sportsbook market status set, and active tester settlement execution truth.
+- Closed or narrowed: the lifecycle matrix command now loads local DB configuration the same way other runtime scripts do, so lifecycle proof can run from a clean local shell. Future live-provider proof gap wording now distinguishes foreground-supervisor lifecycle scheduling from missing installed service ownership.
+- Route mismatch: none. This is a local proof/reporting command and does not alter mobile routes.
+- Schema mismatch: none. No Prisma schema or model changes.
+- Temporary mock/static data: none added. The matrix reads current DB state and existing proof artifacts.
+- Remaining gaps: installed unattended lifecycle service ownership and production official-result auto-settlement remain P1.

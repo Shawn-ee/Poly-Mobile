@@ -855,9 +855,9 @@ async function main() {
     gaps: {
       p0: Object.entries(checks).filter(([, value]) => !value).map(([key]) => key),
       p1: [
-        "continuous unattended market-maker daemon is not complete; this proof is bounded",
-        "automatic event close/suspend scheduler is not complete",
-        "automatic official-result settlement is not complete",
+        "installed unattended market-maker service ownership is not complete; this proof is bounded",
+        "event close/suspend scheduler runs under the local foreground supervisor but is not installed as an unattended service",
+        "production official-result auto-settlement is not complete; local settlement remains CLOSED-market and exact-confirmation guarded",
       ],
       p2: ["multi-event polling remains out of scope to protect quota"],
     },
