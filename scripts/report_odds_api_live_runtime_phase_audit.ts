@@ -215,6 +215,39 @@ function ageHours(generatedAt: unknown) {
   return Number(((Date.now() - parsed) / 3_600_000).toFixed(2));
 }
 
+function timestampMs(value: unknown) {
+  const raw = text(value);
+  if (!raw) return 0;
+  const parsed = Date.parse(raw);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function selectedMarketEvidence(entries: { makerSeed?: JsonObject | null; liveProof?: JsonObject | null }) {
+  const candidates = [
+    {
+      selectedMarket: asObject(entries.makerSeed?.selectedMarket),
+      source: PATHS.makerSeed,
+      generatedAt: entries.makerSeed?.generatedAt,
+      usable: pass(entries.makerSeed ?? null),
+    },
+    {
+      selectedMarket: asObject(entries.liveProof?.selectedMarket),
+      source: PATHS.liveProof,
+      generatedAt: entries.liveProof?.generatedAt,
+      usable: pass(entries.liveProof ?? null),
+    },
+  ]
+    .filter((candidate) => candidate.usable && candidate.selectedMarket)
+    .sort((left, right) => timestampMs(right.generatedAt) - timestampMs(left.generatedAt));
+
+  const current = candidates[0];
+  return {
+    selectedMarket: current?.selectedMarket ?? null,
+    source: current?.source ?? null,
+    generatedAt: current?.generatedAt ?? null,
+  };
+}
+
 async function fetchJson(url: string, init?: RequestInit) {
   try {
     const response = await fetch(url, init);
@@ -318,7 +351,8 @@ async function main() {
     internalTesterRuntimeScript.includes("replaceExternalExpoAvailable") &&
     internalTesterRuntimeScript.includes("Use -Force -ReplaceExternalExpo");
   const health = await fetchJson(`${baseUrl}/api/health`);
-  const currentSelectedMarket = asObject(entries.makerSeed?.selectedMarket) ?? asObject(entries.liveProof?.selectedMarket);
+  const currentSelectedMarketSource = selectedMarketEvidence(entries);
+  const currentSelectedMarket = currentSelectedMarketSource.selectedMarket;
   const selectedMarketId = text(currentSelectedMarket?.id);
   const selectedOutcomeId = text(currentSelectedMarket?.outcomeId);
   const quote = selectedMarketId
@@ -1259,6 +1293,7 @@ async function main() {
     event: entries.liveProof?.event ?? null,
     selectedMarket: entries.liveProof?.selectedMarket ?? null,
     currentSelectedMarket,
+    currentSelectedMarketSource,
     health,
     quote,
     selectedOutcomeQuote: {

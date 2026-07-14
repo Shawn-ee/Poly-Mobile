@@ -1,5 +1,5 @@
 {
-    "generatedAt":  "2026-07-13T23:58:31.0239787Z",
+    "generatedAt":  "2026-07-14T00:57:11.3002265Z",
     "scope":  "holiwyn-one-event-live-runtime-launch",
     "pass":  true,
     "backend":  {
@@ -10,7 +10,7 @@
                                                       "status":  "ok",
                                                       "db":  "connected",
                                                       "env":  "development",
-                                                      "timestamp":  "2026-07-13T23:58:26.481Z"
+                                                      "timestamp":  "2026-07-14T00:57:03.303Z"
                                                   },
                                          "error":  null
                                      },
@@ -20,7 +20,7 @@
                                                      "status":  "ok",
                                                      "db":  "connected",
                                                      "env":  "development",
-                                                     "timestamp":  "2026-07-13T23:58:26.501Z"
+                                                     "timestamp":  "2026-07-14T00:57:03.335Z"
                                                  },
                                         "error":  null
                                     },
@@ -35,14 +35,14 @@
                        },
     "s23":  {
                 "connected":  true,
-                "deviceId":  "172.16.200.27:44029",
+                "deviceId":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
                 "model":  "SM_S911U1",
-                "raw":  "172.16.200.27:44029    device product:dm1quew model:SM_S911U1 device:dm1q transport_id:2",
+                "raw":  "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp device product:dm1quew model:SM_S911U1 device:dm1q transport_id:1",
                 "adbTimedOut":  false
             },
     "provider":  {
-                     "liveProofRanThisLaunch":  false,
-                     "liveProofExitCode":  null,
+                     "liveProofRanThisLaunch":  true,
+                     "liveProofExitCode":  0,
                      "quotaPolicy":  {
                                          "oneEventOnly":  true,
                                          "maxCredits":  16,
@@ -56,8 +56,8 @@
                                    "pass":  true,
                                    "fresh":  true,
                                    "reason":  "fresh",
-                                   "generatedAt":  "2026-07-13T21:38:09.297Z",
-                                   "ageHours":  2.34,
+                                   "generatedAt":  "2026-07-14T00:57:10.083Z",
+                                   "ageHours":  0,
                                    "maxAgeHours":  24,
                                    "summaryPath":  "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
                                    "event":  {
@@ -81,9 +81,9 @@
                                    "marketMaker":  {
                                                        "continuous":  false,
                                                        "mode":  "bounded-proof-local-shifted-maker",
-                                                       "makerUserId":  "ce8a4d40-7dad-4bbf-8217-f942a0c071b8",
-                                                       "bidOrderId":  "88a28ee2-adcb-4efc-a354-1e22e47c3f9e",
-                                                       "askOrderId":  "69448d37-d15a-48a3-9bef-b2171db80e42",
+                                                       "makerUserId":  "f2576b0e-ad63-456b-95da-89eec39f05e6",
+                                                       "bidOrderId":  "efdd33dc-fda9-4f6f-9486-da995c5dc72f",
+                                                       "askOrderId":  "4663f76e-12db-4678-963f-943b7b98f79b",
                                                        "referenceBid":  0.4839,
                                                        "referenceAsk":  0.5239,
                                                        "preSeedBook":  {
@@ -96,7 +96,7 @@
                                                                        },
                                                        "collateralRepair":  {
                                                                                 "repaired":  true,
-                                                                                "before":  "550",
+                                                                                "before":  "150",
                                                                                 "after":  "0",
                                                                                 "byOutcome":  [
                                                                                                   {
@@ -136,144 +136,9 @@
                     "backendContinuous":  true,
                     "providerRefreshContinuous":  false,
                     "marketMakerContinuous":  false,
-                    "makerSeededThisLaunch":  true,
-                    "makerSeedSummary":  {
-                                             "pass":  true,
-                                             "generatedAt":  "2026-07-13T23:58:29.941Z",
-                                             "startedAt":  "2026-07-13T23:58:28.892Z",
-                                             "scope":  "odds-api-one-event-shifted-maker-seed",
-                                             "mode":  "seed-resting-shifted-maker-quotes",
-                                             "event":  {
-                                                           "id":  "6a94107f-6513-4131-876d-87018782334f",
-                                                           "slug":  "odds-api-single-soccer-test",
-                                                           "title":  "Spain vs. France",
-                                                           "startTime":  "2026-07-14T19:00:00.000Z"
-                                                       },
-                                             "selectedMarket":  {
-                                                                    "id":  "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-                                                                    "slug":  "odds-api-single-soccer-test-totals-7439c2d603",
-                                                                    "title":  "Spain vs. France: Total Goals 2.5",
-                                                                    "marketType":  "total_goals",
-                                                                    "marketGroupKey":  "totals",
-                                                                    "line":  "2.5",
-                                                                    "outcomeId":  "8720dab4-70ff-44d0-8d74-5fcff36f8420",
-                                                                    "outcomeName":  "Over 2.5",
-                                                                    "referenceTokenId":  "odds-api-6ec5620aa25c4fcd08f1d70e"
-                                                                },
-                                             "providerSnapshot":  {
-                                                                      "fetchedAt":  "2026-07-13T21:38:09.297Z",
-                                                                      "ageMs":  8419613,
-                                                                      "maxSnapshotAgeMs":  86400000,
-                                                                      "allowStale":  false,
-                                                                      "source":  "sportsbook-odds",
-                                                                      "referenceBid":  0.54,
-                                                                      "referenceAsk":  0.58,
-                                                                      "outcomePrice":  0.56
-                                                                  },
-                                             "maker":  {
-                                                           "id":  "474c8936-be29-48b3-94af-71e3185d6a17",
-                                                           "username":  "odds_live_runtime_shifted_maker_95037dbd"
-                                                       },
-                                             "plan":  {
-                                                          "quoteOffsetTicks":  2,
-                                                          "plannedBid":  0.52,
-                                                          "plannedAsk":  0.6,
-                                                          "adjustments":  [
-
-                                                                          ],
-                                                          "preSeedBook":  {
-                                                                              "bestBid":  0.58,
-                                                                              "bestAsk":  null,
-                                                                              "openOrderCount":  1,
-                                                                              "orders":  [
-                                                                                             {
-                                                                                                 "side":  "BUY",
-                                                                                                 "price":  "0.58",
-                                                                                                 "remaining":  "36.9",
-                                                                                                 "username":  "mobile_route_fill_maker_64d06671"
-                                                                                             }
-                                                                                         ]
-                                                                          },
-                                                          "size":  "200",
-                                                          "mintQuantity":  "200"
-                                                      },
-                                             "canceledPreviousOrders":  [
-                                                                            {
-                                                                                "orderId":  "3fa767da-ab12-443f-a550-93a109150c19",
-                                                                                "side":  "BUY",
-                                                                                "price":  "0.52",
-                                                                                "remaining":  "200",
-                                                                                "statusBefore":  "OPEN",
-                                                                                "canceled":  true
-                                                                            },
-                                                                            {
-                                                                                "orderId":  "a49fac59-3c7a-449f-bfa3-1159bc14e451",
-                                                                                "side":  "SELL",
-                                                                                "price":  "0.6",
-                                                                                "remaining":  "200",
-                                                                                "statusBefore":  "OPEN",
-                                                                                "canceled":  true
-                                                                            }
-                                                                        ],
-                                             "restingOrders":  [
-                                                                   {
-                                                                       "id":  "2aefc3ca-dfe6-4e53-b777-80e0c8ddae5b",
-                                                                       "username":  "odds_live_runtime_shifted_maker_95037dbd",
-                                                                       "side":  "BUY",
-                                                                       "price":  "0.52",
-                                                                       "remaining":  "200",
-                                                                       "status":  "OPEN"
-                                                                   },
-                                                                   {
-                                                                       "id":  "90096166-555d-4b8f-a902-d4c6ed4f28fd",
-                                                                       "username":  "odds_live_runtime_shifted_maker_95037dbd",
-                                                                       "side":  "SELL",
-                                                                       "price":  "0.6",
-                                                                       "remaining":  "200",
-                                                                       "status":  "OPEN"
-                                                                   }
-                                                               ],
-                                             "quoteRoute":  {
-                                                                "url":  "http://127.0.0.1:3002/api/markets/78ea76f1-fc8f-419b-ac21-2554d79093f6/quote",
-                                                                "ok":  true,
-                                                                "status":  200,
-                                                                "selectedOutcomeQuote":  {
-                                                                                             "outcomeId":  "8720dab4-70ff-44d0-8d74-5fcff36f8420",
-                                                                                             "outcomeName":  "Over 2.5",
-                                                                                             "bestBid":  "0.58",
-                                                                                             "bestAsk":  "0.6",
-                                                                                             "bestBidSize":  36.9,
-                                                                                             "bestAskSize":  200,
-                                                                                             "midPrice":  "0.59",
-                                                                                             "lastPrice":  "0.58",
-                                                                                             "lastTradeAt":  "2026-07-13T23:28:26.487Z"
-                                                                                         }
-                                                            },
-                                             "checks":  {
-                                                            "eventLoaded":  true,
-                                                            "marketLive":  true,
-                                                            "snapshotFresh":  true,
-                                                            "shiftedBidWorseThanProvider":  true,
-                                                            "shiftedAskWorseThanProvider":  true,
-                                                            "makerBidResting":  true,
-                                                            "makerAskResting":  true,
-                                                            "quoteRouteShowsBid":  true,
-                                                            "quoteRouteShowsAsk":  true
-                                                        },
-                                             "gaps":  {
-                                                          "p0":  [
-
-                                                                 ],
-                                                          "p1":  [
-                                                                     "this command seeds resting shifted maker quotes once; it is reusable but not an unattended daemon by itself",
-                                                                     "provider refresh still comes from the bounded live proof or future daemon"
-                                                                 ],
-                                                          "p2":  [
-                                                                     "multi-market inventory-aware quoting remains future work"
-                                                                 ]
-                                                      }
-                                         },
-                    "mode":  "cached-proof-runtime-check",
+                    "makerSeededThisLaunch":  false,
+                    "makerSeedSummary":  null,
+                    "mode":  "bounded-live-provider-proof",
                     "notes":  [
                                   "Backend can stay running locally on the configured port.",
                                   "Provider refresh is bounded proof mode unless a future daemon is added.",
@@ -282,6 +147,11 @@
                               ]
                 },
     "listeners":  [
+                      {
+                          "LocalAddress":  "::",
+                          "LocalPort":  8081,
+                          "OwningProcess":  39916
+                      },
                       {
                           "LocalAddress":  "::",
                           "LocalPort":  3002,

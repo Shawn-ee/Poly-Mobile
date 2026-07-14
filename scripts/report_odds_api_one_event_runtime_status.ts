@@ -183,6 +183,42 @@ function ageHours(generatedAt: unknown) {
   return Number(((Date.now() - parsed) / 3_600_000).toFixed(2));
 }
 
+function timestampMs(value: unknown) {
+  const text = stringValue(value);
+  if (!text) return 0;
+  const parsed = Date.parse(text);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function selectedMarketEvidence(
+  makerSeed: JsonObject | null,
+  liveProof: JsonObject | null,
+): { selectedMarket: JsonObject | null; source: string | null; generatedAt: unknown } {
+  const candidates = [
+    {
+      selectedMarket: asObject(makerSeed?.selectedMarket),
+      source: MAKER_SEED_PATH,
+      generatedAt: makerSeed?.generatedAt,
+      usable: bool(makerSeed?.pass),
+    },
+    {
+      selectedMarket: asObject(liveProof?.selectedMarket),
+      source: LIVE_PROOF_PATH,
+      generatedAt: liveProof?.generatedAt,
+      usable: bool(liveProof?.pass),
+    },
+  ]
+    .filter((candidate) => candidate.usable && candidate.selectedMarket)
+    .sort((left, right) => timestampMs(right.generatedAt) - timestampMs(left.generatedAt));
+
+  const current = candidates[0];
+  return {
+    selectedMarket: current?.selectedMarket ?? null,
+    source: current?.source ?? null,
+    generatedAt: current?.generatedAt ?? null,
+  };
+}
+
 function latestQuota(liveProof: JsonObject | null) {
   const latest = getPath(liveProof, ["provider", "quota", "latest"]);
   const totalLastCost = getPath(liveProof, ["provider", "quota", "totalLastCost"]);
@@ -221,7 +257,8 @@ async function main() {
     kind: "result-poller",
   });
 
-  const currentSelectedMarket = asObject(makerSeed?.selectedMarket) ?? asObject(liveProof?.selectedMarket);
+  const selectedMarketSource = selectedMarketEvidence(makerSeed, liveProof);
+  const currentSelectedMarket = selectedMarketSource.selectedMarket;
   const selectedMarketId = stringValue(currentSelectedMarket?.id);
   const selectedOutcomeId = stringValue(currentSelectedMarket?.outcomeId);
   const quoteRoute = selectedMarketId
@@ -404,6 +441,7 @@ async function main() {
     continuityAnswer,
     event: liveProof?.event ?? runtimeLaunch?.provider?.proof?.event ?? null,
     selectedMarket: currentSelectedMarket,
+    selectedMarketSource,
     backend: {
       health,
     },

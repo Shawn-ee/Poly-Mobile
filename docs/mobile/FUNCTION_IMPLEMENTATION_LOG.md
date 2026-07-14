@@ -15986,3 +15986,28 @@ Known limitations:
 - State transitions: read-only reporting only. It spends no provider quota, prints no provider key, starts no loops, imports no markets, places no orders, and executes no settlement.
 - API/data dependencies: reads committed runtime evidence plus local ignored secret-file presence only. It does not call The Odds API.
 - Known limitations: this does not refresh live odds by itself. It only proves the operator can safely distinguish missing provider credentials from configured local credentials before intentionally running the quota-spending refresh.
+
+## Cycle ZZG - Fresh Provider Outcome Status Alignment
+
+- Feature/runtime worked on: one-event live provider refresh evidence for `Spain vs. France` and selected-outcome quote readiness.
+- Frontend components touched: none.
+- Backend/routes touched: no route implementation changes. Existing `GET /api/health`, `GET /api/markets/:marketId/quote`, and `GET /api/internal/live-runtime/status` were exercised.
+- Important functions/services touched: `scripts/report_odds_api_one_event_runtime_status.ts` and `scripts/report_odds_api_live_runtime_phase_audit.ts`.
+- User/runtime interactions supported: internal tester status now follows the freshest passing selected market/outcome evidence between the live provider proof and local shifted-maker seed. This prevents stale proof metadata such as an old `Over 2.5` outcome id from failing or misreporting the current refreshed `Over +2.5` quote.
+- State transitions: intentionally ran the quota-capped one-event live provider proof through the local secret wrapper, then ran the quota-free shifted-maker seed to restore visible local bid/ask after proof trading consumed the one-shot liquidity. No mobile UI changed and no settlement executed.
+- API/data dependencies: live proof spent bounded Odds API quota under the one-event policy; status/phase/completion audits remain no-quota and read redacted local artifacts plus backend routes only.
+- Proof:
+  - `npm run mobile:one-event-live-runtime:provider-secret-preflight`
+  - `npm run mobile:one-event-live-runtime:provider-secret`
+  - `npm run mobile:one-event-live-maker-seed`
+  - `npm run mobile:one-event-runtime-status`
+  - `npm run mobile:one-event-phase-audit`
+  - `npm run mobile:live-runtime-completion-audit`
+- Proof summaries:
+  - `docs/mobile/harness/odds-api-live-runtime/live-provider-key-preflight.redacted.json`
+  - `docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json`
+  - `docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json`
+  - `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json`
+  - `docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json`
+  - `docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json`
+- Known limitations: foreground/local supervisor capability is proven, but no installed unattended production service exists. Official-result auto-settlement remains guarded P1.
