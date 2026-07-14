@@ -11016,3 +11016,12 @@ Future migration concern:
 - Schema mismatch: none. No Prisma schema or migration change.
 - Temporary mock/static data: none added. The proof reads stored provider evidence, maker quote evidence, S23 proof, and local process state; it does not invent provider freshness.
 - Remaining gaps: supervisor/result-poller loops are not running right now unless started by the runtime manager/onboarding command. Live mobile odds are stale under the route freshness window until the key-gated provider refresh runs. Installed unattended service ownership and production official-result auto-settlement remain P1; multi-event polling/dashboard remains P2.
+
+## Cycle ZBB - Warm No-Quota Runtime Start
+
+- Fields confirmed for mobile/runtime: warm status now reports `currentRuntimeState.mode=warm_no_quota_runtime`, `localCapabilityReady=true`, `warmNoQuotaRuntime=true`, `allLoopsRunning=true`, `cachedTesterReadyRightNow=true`, `testerReadyRightNow=true`, `quotaSpendingLoopRunning=false`, and empty current-runtime P0 gaps.
+- Closed or narrowed: the local internal tester runtime is not only proven by old artifacts; it is running now through the cached supervisor and result poller. Canonical provider-result, settlement-preflight, settlement-approval, and active settlement readiness evidence was refreshed for the current selected market.
+- Route mismatch: none. `/api/internal/live-runtime/status?phaseAuditInProgress=1` returns HTTP 200 in warm mode after evidence refresh.
+- Schema mismatch: none. No Prisma schema or migration change.
+- Temporary mock/static data: none added. The flow uses stored provider evidence, real local maker quote evidence, real worker process state, and fake-token local exchange state.
+- Remaining gaps: `liveOddsReadyRightNow=false` because provider snapshots are stale under the mobile live-display window; use the explicit provider-secret refresh when live odds freshness matters. Expo was reused as an external listener and is not manager-verified server-mode. Installed unattended service ownership and production official-result auto-settlement remain P1.

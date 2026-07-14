@@ -16610,3 +16610,23 @@ Known limitations:
   - `npm run mobile:internal-tester-readiness-gate`
 - Result: all gates passed with no provider quota and no open P0 gaps. Current truth remains: cached trading is ready; supervisor/result-poller loops are not running right now; live odds are stale under the short mobile freshness window until `npm run mobile:one-event-live-runtime:provider-secret` is intentionally run.
 - Known limitations: installed unattended service ownership and production official-result auto-settlement remain P1. Multi-event provider polling/dashboard remains P2.
+
+## Cycle ZBB - Warm No-Quota Runtime Start
+
+- Feature/runtime worked on: actually warmed the local internal tester runtime for the Spain vs. France one-event pipeline.
+- Frontend components touched: none.
+- Backend/routes touched: no HTTP route, Prisma schema, order, portfolio, or mobile UI changes.
+- Important functions/services touched: no source changes. This cycle used the existing internal tester runtime manager, one-event supervisor, result poller, canonical result ingestion proof, settlement preflight/approval proof, and ordered live-runtime audit gate.
+- User/runtime interactions supported: the local backend now reports the current runtime as ready while the supervisor and result-poller are running. Testers can use cached fake-token trading without spending provider quota.
+- State transitions: started local supervisor PID `36444` and result-poller PID `2100`; refreshed canonical provider-result, settlement preflight, settlement approval, result-review, and active-settlement readiness evidence; did not execute settlement; did not refresh provider odds; did not read or spend provider secrets.
+- API/data dependencies: `/api/internal/live-runtime/status?phaseAuditInProgress=1`, `/api/health`, `/api/markets/:marketId/quote`, `RuntimeServiceHeartbeat`, `RuntimeServiceRun`, `CanonicalEvent`, and `OfficialResultReview`.
+- Proof:
+  - `npm run mobile:internal-tester-runtime:cached-start`
+  - `npm run mobile:one-event-result-ingestion-audit-event-proof`
+  - `npm run mobile:one-event-settlement-audit-event-proof`
+  - `npm run mobile:one-event-settlement-approval-audit-event-proof`
+  - `npm run mobile:one-event-result-review-trail`
+  - `npm run mobile:one-event-active-settlement-readiness`
+  - `npm run mobile:live-runtime-audit-gate`
+  - `GET /api/internal/live-runtime/status?phaseAuditInProgress=1` returned HTTP 200 with `mode=warm_no_quota_runtime`, `supervisorRunning=true`, `resultPollerRunning=true`, `quotaSpendingLoopRunning=false`, and empty P0 gaps.
+- Known limitations: Expo was reused as an external listener, so server-mode Expo should be replaced with the explicit manager command if S23 shows stale behavior. Live mobile odds freshness remains false until the key-gated provider refresh runs. Installed unattended service ownership and production official-result auto-settlement remain P1.

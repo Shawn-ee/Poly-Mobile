@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-14T09:27:16.692Z",
+  "generatedAt": "2026-07-14T11:15:40.896Z",
   "scope": "odds-api-one-event-result-review-trail",
   "pass": true,
   "providerQuotaUsed": false,
   "eventSlug": "odds-api-single-soccer-test",
   "selectedMarketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-  "winningOutcomeId": "5a3f04ff-6efd-42c5-a225-8fae8070b509",
+  "winningOutcomeId": "9fa19273-e446-4bec-9d3b-3f80639c9d32",
   "sourceEvidence": {
     "settlementAuditSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-settlement-audit-event-summary.redacted.json",
     "resultIngestionAuditSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-ingestion-audit-event-summary.redacted.json",
@@ -26,13 +26,13 @@
   },
   "reviewTrail": {
     "providerResultEvent": {
-      "id": "6",
+      "id": "7",
       "eventType": "provider.result.ingested",
       "stream": "MARKET",
       "topicKey": "market:provider-result:odds-api-single-soccer-test",
       "marketId": null,
       "outcomeId": null,
-      "createdAt": "2026-07-14T09:27:10.680Z",
+      "createdAt": "2026-07-14T11:15:33.466Z",
       "payload": {
         "eventSlug": "odds-api-single-soccer-test",
         "sourceEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
@@ -55,13 +55,13 @@
       }
     },
     "settlementPreflightEvent": {
-      "id": "7",
+      "id": "8",
       "eventType": "settlement.trusted_result.preflight",
       "stream": "MARKET",
       "topicKey": "market:78ea76f1-fc8f-419b-ac21-2554d79093f6",
       "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-      "outcomeId": "5a3f04ff-6efd-42c5-a225-8fae8070b509",
-      "createdAt": "2026-07-14T09:27:14.412Z",
+      "outcomeId": "9fa19273-e446-4bec-9d3b-3f80639c9d32",
+      "createdAt": "2026-07-14T11:15:35.208Z",
       "payload": {
         "eventSlug": "odds-api-single-soccer-test",
         "sourceEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
@@ -84,13 +84,13 @@
       }
     },
     "settlementApprovalEvent": {
-      "id": "8",
+      "id": "9",
       "eventType": "settlement.trusted_result.approved",
       "stream": "MARKET",
       "topicKey": "market:78ea76f1-fc8f-419b-ac21-2554d79093f6",
       "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-      "outcomeId": "5a3f04ff-6efd-42c5-a225-8fae8070b509",
-      "createdAt": "2026-07-14T09:27:15.942Z",
+      "outcomeId": "9fa19273-e446-4bec-9d3b-3f80639c9d32",
+      "createdAt": "2026-07-14T11:15:39.003Z",
       "payload": {
         "eventSlug": "odds-api-single-soccer-test",
         "sourceEventId": null,
@@ -105,9 +105,9 @@
         "settlementExecutionAttempted": null,
         "previewPayoutConservationPass": null,
         "currentMarketStatus": "LIVE",
-        "confirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:5a3f04ff-6efd-42c5-a225-8fae8070b509:f3a5743c73f2",
+        "confirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:9fa19273-e446-4bec-9d3b-3f80639c9d32:f3a5743c73f2",
         "approvedBy": "holiwyn-local-approval-audit-proof",
-        "approvedAt": "2026-07-14T09:27:15.939Z",
+        "approvedAt": "2026-07-14T11:15:39.000Z",
         "executionRequiresMarketStatus": "CLOSED",
         "activeTesterSettlementExecution": false
       }

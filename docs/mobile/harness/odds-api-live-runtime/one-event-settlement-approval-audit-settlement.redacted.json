@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T09:27:15.872Z",
+  "generatedAt": "2026-07-14T11:15:38.934Z",
   "scope": "odds-api-one-event-result-settlement",
   "pass": true,
   "mode": "dry-run",
@@ -19,7 +19,7 @@
     "recordedAt": "2026-07-15T00:05:00Z"
   },
   "event": {
-    "id": "9a275a56-9b05-4fbc-84f8-ecf6ce6c106a",
+    "id": "599b0903-1bd2-441e-928a-a420b494c1b8",
     "slug": "odds-api-single-soccer-test",
     "title": "Spain vs. France",
     "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
@@ -34,7 +34,7 @@
     "line": "2.5",
     "statusBefore": "LIVE",
     "resolvedOutcomeIdBefore": null,
-    "collateralUSDCBefore": "550"
+    "collateralUSDCBefore": "1150"
   },
   "mappedResolution": {
     "rule": "total_goals",
@@ -43,7 +43,7 @@
     "winningSide": "over"
   },
   "winningOutcome": {
-    "id": "5a3f04ff-6efd-42c5-a225-8fae8070b509",
+    "id": "9fa19273-e446-4bec-9d3b-3f80639c9d32",
     "name": "Over 2.5",
     "label": "Over 2.5",
     "side": "over",
@@ -51,10 +51,10 @@
   },
   "preview": {
     "marketStatus": "LIVE",
-    "totalShares": "1100",
-    "totalWinningShares": "550",
-    "totalPayout": "550",
-    "collateralUSDC": "550",
+    "totalShares": "2300",
+    "totalWinningShares": "1150",
+    "totalPayout": "1150",
+    "collateralUSDC": "1150",
     "payoutConservationPass": true,
     "blockers": [],
     "openOrderCleanup": {
@@ -62,26 +62,26 @@
       "buyOrderLockedUSDCToRelease": "125.402",
       "sellOrderSharesToRelease": "200"
     },
-    "payoutCount": 4,
-    "loserPositionCount": 3,
+    "payoutCount": 8,
+    "loserPositionCount": 6,
     "mutation": "none"
   },
   "execution": {
     "attempted": false,
     "reason": "dry_run_default",
-    "requiredConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:5a3f04ff-6efd-42c5-a225-8fae8070b509:f3a5743c73f2"
+    "requiredConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:9fa19273-e446-4bec-9d3b-3f80639c9d32:f3a5743c73f2"
   },
   "postMarket": {
     "status": "LIVE",
     "resolvedOutcomeId": null,
     "settlementStatus": null,
-    "collateralUSDC": "550"
+    "collateralUSDC": "1150"
   },
   "controls": {
     "dryRunIsDefault": true,
     "writeAuditEvent": false,
     "executeRequiresFlag": "--execute",
-    "executeRequiresConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:5a3f04ff-6efd-42c5-a225-8fae8070b509:f3a5743c73f2",
+    "executeRequiresConfirm": "SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:9fa19273-e446-4bec-9d3b-3f80639c9d32:f3a5743c73f2",
     "executeRequiresMarketStatus": "CLOSED",
     "currentMarketStatus": "LIVE",
     "resultDigest": "f3a5743c73f2",
