@@ -171,6 +171,9 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("providerQuotaUsedByThisGate: false");
     expect(source).toContain("manualTradingFlow");
     expect(source).toContain("recommendedCommand");
+    expect(source).toContain("warmNoQuotaRuntime");
+    expect(source).toContain("providerSnapshotFresh");
+    expect(source).toContain("quotaSpendingLoopRunning");
     expect(source).toContain("does not call providers");
     expect(source).not.toContain("process.env.THE_ODDS_API_KEY");
     expect(source).not.toContain("THE_ODDS_API_KEY=");

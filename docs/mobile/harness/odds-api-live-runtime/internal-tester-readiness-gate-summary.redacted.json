@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-13T23:51:36.004Z",
+  "generatedAt": "2026-07-13T23:59:39.125Z",
   "scope": "holiwyn-internal-tester-readiness-gate",
   "pass": true,
   "providerQuotaUsedByThisGate": false,
@@ -15,8 +15,8 @@
       "id": "ordered-live-runtime-audit",
       "command": "npm run mobile:live-runtime-audit-gate",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/live-runtime-audit-gate-summary.redacted.json",
-      "startedAt": "2026-07-13T23:51:21.459Z",
-      "finishedAt": "2026-07-13T23:51:32.189Z",
+      "startedAt": "2026-07-13T23:59:29.118Z",
+      "finishedAt": "2026-07-13T23:59:36.948Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -25,8 +25,8 @@
       "id": "operator-snapshot",
       "command": "npm run mobile:internal-tester-operator-snapshot",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json",
-      "startedAt": "2026-07-13T23:51:32.190Z",
-      "finishedAt": "2026-07-13T23:51:36.001Z",
+      "startedAt": "2026-07-13T23:59:36.949Z",
+      "finishedAt": "2026-07-13T23:59:39.123Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -54,6 +54,11 @@
     "recommendedFirstAction": "cached_internal_testing",
     "recommendedCommand": "npm run mobile:one-event-onboarding",
     "localTesterReadyRightNow": false,
+    "warmNoQuotaRuntime": false,
+    "allLoopsRunning": false,
+    "quotaSpendingLoopRunning": false,
+    "providerSnapshotFresh": false,
+    "nextAction": "start_internal_tester_runtime_with_supervisor_and_result_poller",
     "launchChecklist": [
       {
         "step": "Start or verify local tester runtime",

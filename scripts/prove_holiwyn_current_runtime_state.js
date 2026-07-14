@@ -9,6 +9,7 @@ const waitSeconds = Number(process.env.HOLIWYN_CURRENT_RUNTIME_WAIT_SECONDS || 4
 const resultPollerIntervalSeconds = Number(process.env.HOLIWYN_RESULT_POLLER_INTERVAL_SECONDS || 1);
 const runtimeSummaryPath = path.join(repoRoot, "docs/mobile/harness/odds-api-live-runtime/internal-tester-runtime-manager-summary.redacted.json");
 const proofSummaryPath = path.join(repoRoot, "docs/mobile/harness/odds-api-live-runtime/current-runtime-state-proof-summary.redacted.json");
+const readinessGateSummaryPath = path.join(repoRoot, "docs/mobile/harness/odds-api-live-runtime/internal-tester-readiness-gate-summary.redacted.json");
 const supervisorProcessSummaryPath = path.join(repoRoot, "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-process-summary.redacted.json");
 const resultPollerProcessSummaryPath = path.join(repoRoot, "docs/mobile/harness/odds-api-live-runtime/one-event-result-poller-process-summary.redacted.json");
 const logDir = path.join(repoRoot, ".runtime/current-runtime-state-proof");
@@ -228,6 +229,8 @@ async function main() {
   commands.push(runCommand("status-result-poller-while-running", ["npm", "run", "mobile:one-event-result-poller:status"]));
   const resultPollerWhileRunning = readJson(resultPollerProcessSummaryPath);
   const startSummary = readJson(runtimeSummaryPath);
+  commands.push(runCommand("tester-readiness-gate-while-running", ["npm", "run", "mobile:internal-tester-readiness-gate"]));
+  const readinessGateWhileRunning = readJson(readinessGateSummaryPath);
   commands.push(runCommand("stop-supervisor-after-proof", ["npm", "run", "mobile:one-event-live-supervisor:stop"]));
   const supervisorStopSummary = readJson(supervisorProcessSummaryPath);
   commands.push(runCommand("stop-result-poller-after-proof", ["npm", "run", "mobile:one-event-result-poller:stop"]));
@@ -243,13 +246,23 @@ async function main() {
   const backendStatusManagedProcessesRunning = Boolean(managedProcesses && managedProcesses.supervisor.running === true && managedProcesses.resultPoller.running === true);
   const warmNoQuotaRuntimeObserved = backendStatusWarmNoQuotaRuntime && backendStatusAllLoopsRunning;
   const allLoopsRunningObserved = warmNoQuotaRuntimeObserved || directWarmNoQuotaRuntime;
+  const readinessGatePass = Boolean(readinessGateWhileRunning && readinessGateWhileRunning.pass === true);
+  const readinessGateWarmNoQuotaRuntime = Boolean(readinessGateWhileRunning && readinessGateWhileRunning.testerReady && readinessGateWhileRunning.testerReady.warmNoQuotaRuntime === true);
+  const readinessGateAllLoopsRunning = Boolean(readinessGateWhileRunning && readinessGateWhileRunning.testerReady && readinessGateWhileRunning.testerReady.allLoopsRunning === true);
+  const readinessGateQuotaSpending = Boolean(readinessGateWhileRunning && readinessGateWhileRunning.testerReady && readinessGateWhileRunning.testerReady.quotaSpendingLoopRunning === true);
+  const readinessGateProviderSnapshotFresh = Boolean(readinessGateWhileRunning && readinessGateWhileRunning.testerReady && readinessGateWhileRunning.testerReady.providerSnapshotFresh === true);
 
   if (!(runningStatus && runningStatus.status === "ready")) p0.push("local_runtime_status_not_ready_while_running");
   if (restoreCommand.pass !== true) p0.push("cached_one_event_restore_failed");
+  if (!readinessGatePass) p0.push("tester_readiness_gate_failed_while_loops_running");
   if (!(runningState && runningState.localCapabilityReady === true)) p0.push("current_runtime_state_local_capability_not_ready");
   if (!allLoopsRunningObserved) p0.push("warm_no_quota_runtime_not_observed");
+  if (!readinessGateWarmNoQuotaRuntime) p1.push("tester_readiness_gate_did_not_observe_warm_no_quota_runtime");
+  if (!readinessGateAllLoopsRunning) p1.push("tester_readiness_gate_did_not_observe_all_loops_running");
+  if (!readinessGateProviderSnapshotFresh) p1.push("tester_readiness_gate_reports_mobile_provider_snapshot_not_fresh");
   if (!directWarmNoQuotaRuntime) p1.push("direct_process_state_did_not_see_warm_no_quota_runtime");
   if (runningState && runningState.quotaSpendingLoopRunning === true) p0.push("quota_spending_loop_running");
+  if (readinessGateQuotaSpending) p0.push("tester_readiness_gate_observed_quota_spending_loop");
   if (runningState && Array.isArray(runningState.p0) && runningState.p0.length > 0) p0.push("current_runtime_state_has_p0_gaps");
   if (!backendStatusWarmNoQuotaRuntime) p1.push("backend_status_route_did_not_report_warm_no_quota_runtime");
   if (!backendStatusAllLoopsRunning) p1.push("backend_status_route_did_not_report_all_loops_running");
@@ -283,6 +296,10 @@ async function main() {
       localCapabilityReadyWhileRunning: Boolean(runningState && runningState.localCapabilityReady === true),
       quotaSpendingLoopRunning: Boolean(runningState && runningState.quotaSpendingLoopRunning === true),
       testerReadyRightNow: Boolean(runningState && runningState.testerReadyRightNow === true),
+      testerReadinessGatePass: readinessGatePass,
+      testerReadinessGateWarmNoQuotaRuntime: readinessGateWarmNoQuotaRuntime,
+      testerReadinessGateAllLoopsRunning: readinessGateAllLoopsRunning,
+      testerReadinessGateProviderSnapshotFresh: readinessGateProviderSnapshotFresh,
       providerSnapshotFresh: Boolean(runningState && runningState.providerSnapshotFresh === true),
       mobileOddsLiveFresh: Boolean(runningState && runningState.providerSnapshotFresh === true),
       stopsLoopsAfterProof: Boolean(supervisorStopSummary && supervisorStopSummary.process && supervisorStopSummary.process.after && supervisorStopSummary.process.after.running === false && resultPollerStopSummary && resultPollerStopSummary.process && resultPollerStopSummary.process.after && resultPollerStopSummary.process.after.running === false),
@@ -296,6 +313,29 @@ async function main() {
       startSummary: runtimeDigest(startSummary),
       supervisorWhileRunning: processDigest(supervisorWhileRunning),
       resultPollerWhileRunning: processDigest(resultPollerWhileRunning),
+      readinessGateWhileRunning: readinessGateWhileRunning
+        ? {
+            generatedAt: readinessGateWhileRunning.generatedAt,
+            pass: readinessGateWhileRunning.pass === true,
+            providerQuotaUsedByThisGate: readinessGateWhileRunning.providerQuotaUsedByThisGate === true,
+            eventTitle: readinessGateWhileRunning.testerReady && readinessGateWhileRunning.testerReady.event
+              ? readinessGateWhileRunning.testerReady.event.title
+              : null,
+            selectedMarketTitle: readinessGateWhileRunning.testerReady && readinessGateWhileRunning.testerReady.selectedMarket
+              ? readinessGateWhileRunning.testerReady.selectedMarket.title
+              : null,
+            recommendedCommand: readinessGateWhileRunning.testerReady
+              ? readinessGateWhileRunning.testerReady.recommendedCommand
+              : null,
+            localTesterReadyRightNow: readinessGateWhileRunning.testerReady
+              ? readinessGateWhileRunning.testerReady.localTesterReadyRightNow === true
+              : false,
+            warmNoQuotaRuntime: readinessGateWarmNoQuotaRuntime,
+            allLoopsRunning: readinessGateAllLoopsRunning,
+            providerSnapshotFresh: readinessGateProviderSnapshotFresh,
+            nextAction: readinessGateWhileRunning.testerReady ? readinessGateWhileRunning.testerReady.nextAction : null,
+          }
+        : null,
       supervisorStopSummary: processDigest(supervisorStopSummary),
       resultPollerStopSummary: processDigest(resultPollerStopSummary),
       cleanupEvidence: "Loop cleanup is proven by supervisorStopSummary and resultPollerStopSummary, not by the internal tester runtime manager summary.",

@@ -2,6 +2,20 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ZH - Warm Runtime Readiness Gate Proof
+
+- Feature/runtime worked on: warm no-quota internal tester runtime proof now runs the internal tester readiness gate while supervisor and result-poller loops are active.
+- Frontend components touched: none.
+- Backend/API routes touched: none directly; proof reads `GET /api/internal/live-runtime/status` and the readiness gate reads existing local health/status/audit routes.
+- Important functions/services touched:
+  - `scripts/prove_holiwyn_current_runtime_state.js`
+  - `scripts/run_holiwyn_internal_tester_readiness_gate.ts`
+  - `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`
+- User/runtime interactions supported: operators can distinguish three states in one proof artifact: proven local capability, warm no-quota loops running, and whether mobile-visible provider snapshots are fresh enough for live-odds testing.
+- State transitions: proof starts local supervisor/result-poller loops, runs the tester readiness gate while they are running, then stops those loops. It does not call providers, spend quota, place orders, mutate lifecycle state, or execute settlement.
+- Known limitations: the proof still reports mobile provider snapshots stale in cached/no-quota mode. Fresh mobile-display odds require explicit live-provider refresh.
+- Proof: `docs/mobile/harness/odds-api-live-runtime/current-runtime-state-proof-summary.redacted.json`.
+
 ## Cycle ZG - Internal Tester Readiness Gate
 
 - Feature/runtime worked on: no-quota go/no-go gate for the local one-event internal tester flow.

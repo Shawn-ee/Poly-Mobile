@@ -129,6 +129,12 @@ async function main() {
       recommendedFirstAction: getPath(operatorSnapshot, ["operatorNextActions", "recommendedFirstAction"]) ?? null,
       recommendedCommand: getPath(operatorSnapshot, ["operatorNextActions", "recommendedCommand"]) ?? null,
       localTesterReadyRightNow: getPath(operatorSnapshot, ["runtime", "localTesterReadyRightNow"]) === true,
+      warmNoQuotaRuntime: getPath(operatorSnapshot, ["runtime", "currentRuntimeState", "warmNoQuotaRuntime"]) === true,
+      allLoopsRunning: getPath(operatorSnapshot, ["runtime", "currentRuntimeState", "allLoopsRunning"]) === true,
+      quotaSpendingLoopRunning:
+        getPath(operatorSnapshot, ["runtime", "currentRuntimeState", "quotaSpendingLoopRunning"]) === true,
+      providerSnapshotFresh: getPath(operatorSnapshot, ["runtime", "currentRuntimeState", "providerSnapshotFresh"]) === true,
+      nextAction: getPath(operatorSnapshot, ["runtime", "currentRuntimeState", "nextAction"]) ?? null,
       launchChecklist: getPath(operatorSnapshot, ["testerLaunchChecklist", "launch"]) ?? [],
       manualTradingFlow: getPath(operatorSnapshot, ["testerLaunchChecklist", "manualTradingFlow"]) ?? [],
       lifecycleChecks: getPath(operatorSnapshot, ["testerLaunchChecklist", "lifecycleChecks"]) ?? [],
