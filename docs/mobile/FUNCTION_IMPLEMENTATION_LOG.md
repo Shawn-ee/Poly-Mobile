@@ -2,6 +2,21 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ZAS - Two-Sided Maker Liquidity Refresh
+
+- Feature/runtime worked on: current internal tester runtime liquidity for `Spain vs. France`, selected market `Total Goals 2.5`.
+- Frontend components touched: none.
+- Backend/API routes touched: none.
+- Important functions/services touched: no source code changed. Runtime proof used `scripts/seed_odds_api_live_shifted_maker.ts` through `npm run mobile:one-event-live-maker-seed`, then verified with `scripts/report_odds_api_one_event_runtime_status.ts`.
+- User interactions supported: restores buy-side readiness for the next Home -> Event Detail -> ticket -> fake-token buy path after a previous proof consumed the selected outcome ask.
+- State transitions: local maker complete sets were minted, new resting BUY/SELL orders were placed on the selected sportsbook-backed market, and quote route readiness moved from bid-only to two-sided.
+- API/data dependencies: `/api/markets/:marketId/quote` now returns both `bestBid` and `bestAsk` for selected outcome `Over 2.5`; runtime status reads backend health, maker summary, provider proof, lifecycle proof, settlement proof, and managed loop state.
+- Proof:
+  - `docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json`
+  - `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json`
+  - `docs/mobile/audits/cycle-ZAS-two-sided-maker-liquidity-refresh.md`
+- Known limitations: this cycle refreshed the selected market without spending provider quota. It does not install an unattended daemon or broaden to multi-event inventory-aware quoting.
+
 ## Cycle ODDSAPIS23 - Spain vs. France Cashout Current Proof
 
 - Feature/runtime worked on: internal tester mobile trading flow for `Spain vs. France`, focused on the real S23 cashout path and Portfolio History semantics.

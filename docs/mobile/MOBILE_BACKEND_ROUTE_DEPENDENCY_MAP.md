@@ -2,6 +2,12 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle ZAS - Two-Sided Maker Liquidity Refresh
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Selected market buy/sell readiness after cashout proof | `/api/markets/:marketId/quote`; local command `npm run mobile:one-event-live-maker-seed`; local command `npm run mobile:one-event-runtime-status -- --json` | `GET` plus local CLI/service calls | Quote route is public/internal local; maker seed requires local dev DB and refuses production | No quote body. Maker seed targets event slug `odds-api-single-soccer-test`, selected market `Total Goals 2.5`, selected outcome `Over 2.5`, and creates local fake-token maker orders from the latest cached provider snapshot | `quotes[].bestBid`, `quotes[].bestAsk`, bid/ask sizes, selected market/outcome identity, runtime status `selectedOutcomeBidVisible`, `selectedOutcomeAskVisible`, and P0 gap list | Existing `Event`, `Market`, `Outcome`, `Order`, `Position`, `UserBalance`, `ReferenceQuoteSnapshot`, `MarketMakerQuoteRun` | None for the selected event. This proof uses existing cached provider evidence and local fake-token maker liquidity; it does not call The Odds API | Installed unattended maker daemon and multi-market inventory-aware quoting remain P1/P2. Current local runtime can reseed the selected market, but cached mode intentionally spends no provider quota. |
+
 ## Cycle ODDSAPIS23 - Spain vs. France Cashout Current Proof
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
