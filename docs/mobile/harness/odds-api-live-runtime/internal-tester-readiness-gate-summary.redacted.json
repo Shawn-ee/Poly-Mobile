@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T13:06:46.496Z",
+  "generatedAt": "2026-07-14T13:25:01.205Z",
   "scope": "holiwyn-internal-tester-readiness-gate",
   "pass": true,
   "providerQuotaUsedByThisGate": false,
@@ -15,8 +15,8 @@
       "id": "ordered-live-runtime-audit",
       "command": "npm run mobile:live-runtime-audit-gate",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/live-runtime-audit-gate-summary.redacted.json",
-      "startedAt": "2026-07-14T13:06:38.180Z",
-      "finishedAt": "2026-07-14T13:06:43.766Z",
+      "startedAt": "2026-07-14T13:24:51.958Z",
+      "finishedAt": "2026-07-14T13:24:58.568Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -25,8 +25,8 @@
       "id": "operator-snapshot",
       "command": "npm run mobile:internal-tester-operator-snapshot",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json",
-      "startedAt": "2026-07-14T13:06:43.892Z",
-      "finishedAt": "2026-07-14T13:06:46.490Z",
+      "startedAt": "2026-07-14T13:24:58.569Z",
+      "finishedAt": "2026-07-14T13:25:01.202Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -47,10 +47,10 @@
       "marketType": "total_goals",
       "marketGroupKey": "totals",
       "line": "2.5",
-      "outcomeId": "b6066039-6c5a-47f1-bbc4-91cad4eb5bd1",
+      "outcomeId": "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
       "outcomeName": "Over 2.5",
-      "referenceOutcomeLabel": "Over 2.5",
-      "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e"
+      "referenceOutcomeLabel": "Over +2.5",
+      "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4"
     },
     "recommendedFirstAction": "cached_internal_testing",
     "recommendedCommand": "npm run mobile:one-event-onboarding",
