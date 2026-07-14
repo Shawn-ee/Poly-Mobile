@@ -16260,3 +16260,18 @@ Known limitations:
   - Documentation references were aligned from older `cycle-ZE`/`cycle-ZL`/`LIVEODDSS23` proof paths to the current `cycle-ZAB-spain-france-cashout-s23` proof and ZAC runtime audit.
   - `docs/mobile/INTERNAL_TESTER_CURRENT_STATE.md` added as the current tester handoff.
 - Known limitations: documentation hardening only. Installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1.
+
+## Cycle ZAE - Runtime Liquidity After Cashout
+
+- Feature/runtime worked on: proof refresh for the current Spain vs. France internal tester trading flow after S23 cashout consumed selected-market ask liquidity.
+- Frontend components touched: none.
+- Backend/routes touched: no route implementation changes. Existing health, quote, runtime status, phase audit, and completion audit paths were exercised.
+- Important functions/services touched: `scripts/seed_odds_api_live_shifted_maker.ts`, `scripts/report_odds_api_one_event_runtime_status.ts`, `scripts/report_odds_api_live_runtime_phase_audit.ts`, and `scripts/report_holiwyn_live_runtime_completion_audit.ts`.
+- User/runtime interactions supported: local tester can still open Spain vs. France, select `Total Goals 2.5 / Over 2.5`, buy against visible maker ask liquidity, then use the proven S23 cashout path from Cycle ZAD.
+- State transitions: a local-only maker seed restored resting bid/ask liquidity for the selected market. No provider quota was spent, no provider refresh was called, and no settlement execution occurred.
+- API/data dependencies: `GET /api/markets/:marketId/quote` now shows the selected outcome with bid `0.58` and ask `0.60`; the ordered audit gate reads `GET /api/health`, `GET /api/internal/live-runtime/status`, runtime artifacts, phase audit, and completion audit.
+- Proof:
+  - `npm run mobile:one-event-live-maker-seed`
+  - `npm run mobile:live-runtime-audit-gate`
+  - `docs/mobile/audits/cycle-ZAE-runtime-liquidity-after-cashout.md`
+- Known limitations: installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1. Multi-event polling and production operator UI remain P2.

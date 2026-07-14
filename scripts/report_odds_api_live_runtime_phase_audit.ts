@@ -1327,7 +1327,7 @@ async function main() {
     pass: openP0.length === 0,
     baseUrl,
     event: entries.liveProof?.event ?? null,
-    selectedMarket: entries.liveProof?.selectedMarket ?? null,
+    selectedMarket: currentSelectedMarket,
     currentSelectedMarket,
     currentSelectedMarketSource: {
       selectedMarket: currentSelectedMarketSource?.selectedMarket ?? null,
