@@ -258,11 +258,27 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("operatorNextAction");
     expect(source).toContain("runtimeNextAction");
     expect(source).toContain("warmNoQuotaRuntime");
+    expect(source).toContain("routeWarmNoQuotaRuntime");
+    expect(source).toContain("acceptedWarmNoQuotaRuntime");
+    expect(source).toContain("operatorCachedTesterReady");
     expect(source).toContain("providerSnapshotFresh");
     expect(source).toContain("quotaSpendingLoopRunning");
+    expect(source).toContain("cachedInternalTestingReady");
+    expect(source).toContain("liveOddsReady: pass && acceptedWarmNoQuotaRuntime && providerSnapshotFresh");
     expect(source).toContain("does not call providers");
     expect(source).not.toContain("process.env.THE_ODDS_API_KEY");
     expect(source).not.toContain("THE_ODDS_API_KEY=");
+  });
+
+  it("keeps cached internal tester readiness separate from live odds freshness", () => {
+    const operatorSnapshot = operatorSnapshotScript();
+    const readinessGate = testerReadinessGateScript();
+    expect(operatorSnapshot).toContain("acceptedCachedRuntimeReady");
+    expect(operatorSnapshot).toContain("Cached internal testing is ready because both local loops are running");
+    expect(operatorSnapshot).toContain("live mobile odds refresh remains explicit and quota-gated");
+    expect(readinessGate).toContain("acceptedWarmNoQuotaRuntime");
+    expect(readinessGate).toContain("routeWarmNoQuotaRuntime");
+    expect(readinessGate).toContain("liveOddsReady: pass && acceptedWarmNoQuotaRuntime && providerSnapshotFresh");
   });
 
   it("exposes a redacted no-quota live odds refresh preflight", () => {

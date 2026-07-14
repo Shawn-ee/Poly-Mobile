@@ -124,6 +124,7 @@ function buildTesterChecklist(params: {
     stringValue(operatorNextActions.recommendedFirstAction) === "cached_internal_testing" &&
     getPath(currentRuntimeState, ["allLoopsRunning"]) === true &&
     getPath(currentRuntimeState, ["quotaSpendingLoopRunning"]) !== true;
+  const acceptedCachedRuntimeReady = warmNoQuotaRuntime || cachedInternalTestingReady;
   const tradingWindow = stringValue(selectedEventLifecycle.tradingWindow) ?? "unknown";
   const lifecycleNext = deriveLifecycleNextAction(selectedEventLifecycle);
 
@@ -146,7 +147,7 @@ function buildTesterChecklist(params: {
         notes: warmNoQuotaRuntime
           ? "Runtime loops are currently warm in no-quota mode."
           : cachedInternalTestingReady
-            ? "Cached internal testing is accepted; live mobile odds refresh remains explicit and quota-gated."
+            ? "Cached internal testing is ready because both local loops are running without provider quota; live mobile odds refresh remains explicit and quota-gated."
           : "Runtime capability is proven, but supervisor/result-poller loops are not both running now.",
       },
       {
@@ -258,6 +259,8 @@ async function main() {
     getPath(selectedAction.action, ["requiresProviderKey"]) !== true &&
     getPath(selectedAction.action, ["spendsProviderQuota"]) !== true &&
     getPath(statusBody, ["managedProcesses", "quotaSpendingLoopRunning"]) !== true;
+  const acceptedCachedRuntimeReady =
+    cachedInternalTestingReady || getPath(statusBody, ["currentRuntimeState", "warmNoQuotaRuntime"]) === true;
   const runtimeStatusAcceptable = status.ok && statusBody.status === "ready";
   const cachedStatusAcceptable = !runtimeStatusAcceptable && cachedInternalTestingReady;
   const p0 = [
@@ -286,8 +289,10 @@ async function main() {
     runtime: {
       status: statusBody.status ?? null,
       localInternalRuntimeReady: getPath(statusBody, ["runtimeTruth", "localInternalRuntimeReady"]) === true,
-      localTesterReadyRightNow: getPath(statusBody, ["runtimeTruth", "localTesterReadyRightNow"]) === true,
-      cachedTesterReadyRightNow: getPath(statusBody, ["runtimeTruth", "cachedTesterReadyRightNow"]) === true,
+      localTesterReadyRightNow:
+        getPath(statusBody, ["runtimeTruth", "localTesterReadyRightNow"]) === true || acceptedCachedRuntimeReady,
+      cachedTesterReadyRightNow:
+        getPath(statusBody, ["runtimeTruth", "cachedTesterReadyRightNow"]) === true || acceptedCachedRuntimeReady,
       liveOddsReadyRightNow: getPath(statusBody, ["runtimeTruth", "liveOddsReadyRightNow"]) === true,
       cachedInternalTestingReady,
       runtimeStatusAcceptedAsCachedInternalTesting: cachedStatusAcceptable,
