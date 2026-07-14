@@ -16757,3 +16757,19 @@ Known limitations:
 - API/data dependencies: documents existing fields in `internal-tester-readiness-gate-summary.redacted.json`: `orderInvariant.requiredOrder`, `testerReady.exchangeReadiness`, `testerReady.routeWarmNoQuotaRuntime`, `testerReady.allLoopsRunning`, and `testerReady.runtimeNextAction`.
 - Proof: `npm run mobile:internal-tester-readiness-gate -- --summaryPath docs/mobile/harness/odds-api-live-runtime/current-readiness-probe.redacted.json` passed locally; timestamp-only generated summaries were restored instead of committed.
 - Known limitations: this is a documentation alignment cycle. It does not start warm loops, refresh live odds, perform S23 proof, or install unattended services.
+
+## Cycle ZCB - Warm Runtime Current Proof
+
+- Feature/runtime worked on: current no-quota local internal tester runtime warmth for the Spain vs. France one-event pipeline.
+- Frontend components touched: none.
+- Backend/routes touched: no source route, Prisma schema, mobile UI, provider refresh, order, or settlement execution changes.
+- Important functions/services touched: no source implementation changes. Used `scripts/manage_holiwyn_internal_tester_runtime.ps1` through `npm run mobile:internal-tester-runtime` and refreshed the no-quota readiness gate summaries.
+- User/runtime interactions supported: operators can see current proof that the local supervisor and result-poller are running now, with cached fake-token trading ready and no quota-spending provider loop active.
+- State transitions: started local cached supervisor and result-poller processes. Did not call provider, mutate event markets, execute settlement, or change mobile app state.
+- API/data dependencies: reads `/api/health`, `/api/internal/live-runtime/status`, `GET /api/markets/:marketId/quote`, local `.runtime` process-state files, `RuntimeServiceHeartbeat`, `RuntimeServiceRun`, `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, and open `Order` rows through existing proof commands.
+- Proof:
+  - `npm run mobile:internal-tester-runtime -- -Action status -RuntimeOnlyArtifacts`
+  - `npm run mobile:internal-tester-runtime -- -Action start -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -WaitForReady -AllowDisconnectedS23 -RuntimeOnlyArtifacts`
+  - `npm run mobile:internal-tester-readiness-gate`
+- Result: readiness gate passed with `routeWarmNoQuotaRuntime=true`, `allLoopsRunning=true`, `quotaSpendingLoopRunning=false`, `internalExchangeReady=true`, `cachedTradingReady=true`, `liveOddsReady=false`, and zero P0 gaps.
+- Known limitations: S23 is disconnected, so no new mobile UI proof. Live odds freshness still requires the explicit provider-secret refresh. Installed unattended services and production official-result auto-settlement remain P1.
