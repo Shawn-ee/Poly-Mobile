@@ -1,0 +1,62 @@
+{
+  "generatedAt": "2026-07-14T15:13:41.326Z",
+  "readOnly": true,
+  "scope": "poly-internal-exchange-runtime-readiness",
+  "thresholds": {
+    "staleAfterSeconds": 90,
+    "minMobileEvents": 2,
+    "minMmReadyMarkets": 1
+  },
+  "database": {
+    "connected": true,
+    "eventCount": 2,
+    "marketCount": 21,
+    "outcomeCount": 52
+  },
+  "mobileExposure": {
+    "mobileVisibleEventCount": 2,
+    "mobileVisibleProviderEventCount": 0,
+    "sampleEvents": [
+      {
+        "slug": "odds-api-single-soccer-test",
+        "title": "Spain vs. France",
+        "status": "active",
+        "listedMarketCount": 19,
+        "providerMarketCount": 0
+      },
+      {
+        "slug": "scheduler-settlement-proof-trusted-result-scheduler-execution-a6f82f19fe",
+        "title": "Scheduler Settlement Proof trusted-result-scheduler-execution",
+        "status": "upcoming",
+        "listedMarketCount": 1,
+        "providerMarketCount": 0
+      }
+    ]
+  },
+  "providerMarkets": {
+    "referenceSource": "polymarket",
+    "requireMmEligibleSnapshot": true,
+    "allowCachedProviderSnapshot": false,
+    "requireBotSeeded": true,
+    "totalInspected": 0,
+    "mobileVisibleCount": 0,
+    "snapshotReadyCount": 0,
+    "localMmReadyCount": 0,
+    "openOrderBackedCount": 0,
+    "providerUnavailableOrClosedCount": 0,
+    "providerBooksUnavailableOrClosed": false,
+    "snapshotBlockerSummary": {},
+    "samples": []
+  },
+  "readyForInternalMobileExchange": false,
+  "blockers": [
+    "no_mobile_visible_provider_markets",
+    "no_ready_provider_snapshots",
+    "local_mm_ready_market_count_below_1"
+  ],
+  "nextActions": [
+    "Import/list approved provider-backed markets into local Event/Market/Outcome rows for the selected reference source.",
+    "Refresh reference snapshots for the mobile-visible provider allowlist.",
+    "Seed/enable local market-maker readiness for at least one allowlisted provider market."
+  ]
+}

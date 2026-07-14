@@ -87,6 +87,7 @@
     "mobile:provider-visible-tradable-flow": "tsx scripts/prove_mobile_provider_visible_tradable_flow.ts",
     "mobile:mvp-local-match-breadth": "tsx scripts/seed_mobile_mvp_local_match_breadth.ts",
     "poly:internal-exchange-readiness": "tsx scripts/check_poly_internal_exchange_readiness.ts",
+    "mobile:internal-exchange-readiness": "tsx scripts/check_poly_internal_exchange_readiness.ts --referenceSource sportsbook-odds --requireMmEligibleSnapshot false --allowCachedProviderSnapshot true --requireBotSeeded false --minMobileEvents 1 --minMmReadyMarkets 1",
     "poly:mobile-rehearsal:start": "powershell -ExecutionPolicy Bypass -File scripts/start_poly_mobile_rehearsal.ps1",
     "mobile:mvp-s23:start": "npm run mobile:internal-mvp:start",
     "mobile:filled-trade-proof": "tsx scripts/prove_mobile_filled_trade.ts --summaryPath=docs/mobile/harness/cycle-current-mobile-filled-trade-proof.json",

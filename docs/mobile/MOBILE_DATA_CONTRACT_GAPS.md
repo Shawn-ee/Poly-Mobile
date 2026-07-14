@@ -11025,3 +11025,12 @@ Future migration concern:
 - Schema mismatch: none. No Prisma schema or migration change.
 - Temporary mock/static data: none added. The flow uses stored provider evidence, real local maker quote evidence, real worker process state, and fake-token local exchange state.
 - Remaining gaps: `liveOddsReadyRightNow=false` because provider snapshots are stale under the mobile live-display window; use the explicit provider-secret refresh when live odds freshness matters. Expo was reused as an external listener and is not manager-verified server-mode. Installed unattended service ownership and production official-result auto-settlement remain P1.
+
+## Cycle ZBY - Source-Aware Internal Exchange Readiness
+
+- Fields confirmed for mobile/runtime: `mobile:internal-exchange-readiness` now reports `referenceSource=sportsbook-odds`, `allowCachedProviderSnapshot=true`, `requireBotSeeded=false`, `readyForInternalMobileExchange=true`, provider snapshot counts, local maker/open-order counts, and sampled market blockers.
+- Closed or narrowed: the internal exchange readiness checker no longer treats missing Polymarket markets as a P0 blocker for the approved sportsbook-backed local MVP. The original `poly:internal-exchange-readiness` path remains strict and continues to expose Polymarket provider parity as deferred.
+- Route mismatch: none. This is a local DB/readiness command and does not alter mobile routes.
+- Schema mismatch: none. No Prisma schema or model change. The checker reads existing `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, and `Order` rows.
+- Temporary mock/static data: none added. Cached sportsbook readiness accepts stored provider-shaped snapshots plus real local fake-token maker orders; it does not claim fresh live odds.
+- Remaining gaps: live odds freshness still requires explicit quota-gated provider refresh. Polymarket attach-ready provider parity, installed unattended service ownership, and production official-result auto-settlement remain P1.

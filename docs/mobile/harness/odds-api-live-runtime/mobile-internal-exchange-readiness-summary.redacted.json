@@ -1,0 +1,192 @@
+{
+  "generatedAt": "2026-07-14T15:13:40.979Z",
+  "readOnly": true,
+  "scope": "poly-internal-exchange-runtime-readiness",
+  "thresholds": {
+    "staleAfterSeconds": 90,
+    "minMobileEvents": 1,
+    "minMmReadyMarkets": 1
+  },
+  "database": {
+    "connected": true,
+    "eventCount": 2,
+    "marketCount": 21,
+    "outcomeCount": 52
+  },
+  "mobileExposure": {
+    "mobileVisibleEventCount": 2,
+    "mobileVisibleProviderEventCount": 2,
+    "sampleEvents": [
+      {
+        "slug": "odds-api-single-soccer-test",
+        "title": "Spain vs. France",
+        "status": "active",
+        "listedMarketCount": 19,
+        "providerMarketCount": 3
+      },
+      {
+        "slug": "scheduler-settlement-proof-trusted-result-scheduler-execution-a6f82f19fe",
+        "title": "Scheduler Settlement Proof trusted-result-scheduler-execution",
+        "status": "upcoming",
+        "listedMarketCount": 1,
+        "providerMarketCount": 1
+      }
+    ]
+  },
+  "providerMarkets": {
+    "referenceSource": "sportsbook-odds",
+    "requireMmEligibleSnapshot": false,
+    "allowCachedProviderSnapshot": true,
+    "requireBotSeeded": false,
+    "totalInspected": 4,
+    "mobileVisibleCount": 4,
+    "snapshotReadyCount": 3,
+    "localMmReadyCount": 1,
+    "openOrderBackedCount": 1,
+    "providerUnavailableOrClosedCount": 0,
+    "providerBooksUnavailableOrClosed": false,
+    "snapshotBlockerSummary": {
+      "snapshot_missing": 1
+    },
+    "samples": [
+      {
+        "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+        "title": "Spain vs. France: Total Goals 2.5",
+        "eventSlug": "odds-api-single-soccer-test",
+        "status": "LIVE",
+        "listed": true,
+        "mobileVisible": true,
+        "providerBacked": true,
+        "importStatus": "approved",
+        "tradable": true,
+        "mmEnabled": false,
+        "outcomeCount": 2,
+        "mappedOutcomeCount": 2,
+        "latestSnapshotAt": "2026-07-14T14:50:44.370Z",
+        "snapshotAgeSeconds": 1377,
+        "snapshotReady": true,
+        "snapshotQualityStatus": "approved",
+        "snapshotReason": "temporary_sportsbook_odds_single_event_provider",
+        "snapshotBestBid": "0.48",
+        "snapshotBestAsk": "0.52",
+        "snapshotAcceptingOrders": true,
+        "snapshotMmEligible": false,
+        "snapshotBlockers": [],
+        "localOpenOrderCount": 3,
+        "botStatus": null,
+        "botSeeded": false,
+        "localMmReady": true,
+        "blockers": []
+      },
+      {
+        "marketId": "528f1f87-cc1c-44a0-8732-876ef0676071",
+        "title": "Spain vs. France: Regulation Time Winner",
+        "eventSlug": "odds-api-single-soccer-test",
+        "status": "LIVE",
+        "listed": true,
+        "mobileVisible": true,
+        "providerBacked": true,
+        "importStatus": "approved",
+        "tradable": true,
+        "mmEnabled": false,
+        "outcomeCount": 3,
+        "mappedOutcomeCount": 3,
+        "latestSnapshotAt": "2026-07-14T14:50:44.370Z",
+        "snapshotAgeSeconds": 1377,
+        "snapshotReady": true,
+        "snapshotQualityStatus": "approved",
+        "snapshotReason": "temporary_sportsbook_odds_single_event_provider",
+        "snapshotBestBid": "0.2882",
+        "snapshotBestAsk": "0.3282",
+        "snapshotAcceptingOrders": true,
+        "snapshotMmEligible": false,
+        "snapshotBlockers": [],
+        "localOpenOrderCount": 0,
+        "botStatus": null,
+        "botSeeded": false,
+        "localMmReady": false,
+        "blockers": [
+          "no_local_open_orders",
+          "not_local_mm_ready"
+        ]
+      },
+      {
+        "marketId": "378abc5d-144e-4797-9f07-8b271103468b",
+        "title": "Spain vs. France: Regulation Time Winner",
+        "eventSlug": "odds-api-single-soccer-test",
+        "status": "LIVE",
+        "listed": true,
+        "mobileVisible": true,
+        "providerBacked": true,
+        "importStatus": "approved",
+        "tradable": true,
+        "mmEnabled": false,
+        "outcomeCount": 3,
+        "mappedOutcomeCount": 3,
+        "latestSnapshotAt": "2026-07-14T14:50:44.370Z",
+        "snapshotAgeSeconds": 1377,
+        "snapshotReady": true,
+        "snapshotQualityStatus": "approved",
+        "snapshotReason": "temporary_sportsbook_odds_single_event_provider",
+        "snapshotBestBid": "0.3795",
+        "snapshotBestAsk": "0.4195",
+        "snapshotAcceptingOrders": true,
+        "snapshotMmEligible": false,
+        "snapshotBlockers": [],
+        "localOpenOrderCount": 0,
+        "botStatus": null,
+        "botSeeded": false,
+        "localMmReady": false,
+        "blockers": [
+          "no_local_open_orders",
+          "not_local_mm_ready"
+        ]
+      },
+      {
+        "marketId": "f0943fb4-8269-4920-915b-38c3d68a0d08",
+        "title": "Scheduler Settlement Proof trusted-result-scheduler-execution: Total Goals 2.5",
+        "eventSlug": "scheduler-settlement-proof-trusted-result-scheduler-execution-a6f82f19fe",
+        "status": "RESOLVED",
+        "listed": true,
+        "mobileVisible": true,
+        "providerBacked": true,
+        "importStatus": null,
+        "tradable": false,
+        "mmEnabled": false,
+        "outcomeCount": 2,
+        "mappedOutcomeCount": 2,
+        "latestSnapshotAt": null,
+        "snapshotAgeSeconds": null,
+        "snapshotReady": false,
+        "snapshotQualityStatus": null,
+        "snapshotReason": null,
+        "snapshotBestBid": null,
+        "snapshotBestAsk": null,
+        "snapshotAcceptingOrders": null,
+        "snapshotMmEligible": null,
+        "snapshotBlockers": [
+          "snapshot_missing"
+        ],
+        "localOpenOrderCount": 0,
+        "botStatus": null,
+        "botSeeded": false,
+        "localMmReady": false,
+        "blockers": [
+          "not_live",
+          "not_approved",
+          "not_tradable",
+          "snapshot_not_ready:snapshot_missing",
+          "no_local_open_orders",
+          "not_local_mm_ready"
+        ]
+      }
+    ]
+  },
+  "readyForInternalMobileExchange": true,
+  "blockers": [],
+  "nextActions": [
+    "Start the backend and mobile app in server mode.",
+    "Run S23 route/UI proof against the shared Poly backend.",
+    "Run poly-bot dry-run against the ready allowlist before any live-local quoting."
+  ]
+}

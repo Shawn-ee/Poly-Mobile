@@ -1,18 +1,25 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { Prisma } from "@prisma/client";
-import { prisma } from "@/lib/db";
+import { Prisma, type PrismaClient } from "@prisma/client";
 import { parseBotInitializationMetadata } from "@/server/services/referenceBotInitialization";
+import { loadLocalEnvForScript } from "./local_env";
 
 const DEFAULT_STALE_AFTER_SECONDS = 90;
 const DEFAULT_MIN_MOBILE_EVENTS = 2;
 const DEFAULT_MIN_MM_READY_MARKETS = 1;
+const DEFAULT_REFERENCE_SOURCE = "polymarket";
+
+let prisma: PrismaClient | null = null;
 
 type Args = {
   summaryPath: string | null;
   staleAfterSeconds: number;
   minMobileEvents: number;
   minMmReadyMarkets: number;
+  referenceSource: string;
+  requireMmEligibleSnapshot: boolean;
+  allowCachedProviderSnapshot: boolean;
+  requireBotSeeded: boolean;
 };
 
 type MarketReadiness = {
@@ -58,6 +65,10 @@ function parseArgs(argv: string[]): Args {
     staleAfterSeconds: intArg(args.get("staleAfterSeconds"), DEFAULT_STALE_AFTER_SECONDS),
     minMobileEvents: intArg(args.get("minMobileEvents"), DEFAULT_MIN_MOBILE_EVENTS),
     minMmReadyMarkets: intArg(args.get("minMmReadyMarkets"), DEFAULT_MIN_MM_READY_MARKETS),
+    referenceSource: stringArg(args.get("referenceSource")) ?? DEFAULT_REFERENCE_SOURCE,
+    requireMmEligibleSnapshot: boolArg(args.get("requireMmEligibleSnapshot"), (stringArg(args.get("referenceSource")) ?? DEFAULT_REFERENCE_SOURCE) === "polymarket"),
+    allowCachedProviderSnapshot: boolArg(args.get("allowCachedProviderSnapshot"), (stringArg(args.get("referenceSource")) ?? DEFAULT_REFERENCE_SOURCE) !== "polymarket"),
+    requireBotSeeded: boolArg(args.get("requireBotSeeded"), (stringArg(args.get("referenceSource")) ?? DEFAULT_REFERENCE_SOURCE) === "polymarket"),
   };
 }
 
@@ -69,6 +80,14 @@ function intArg(value: string | undefined, fallback: number) {
   if (!value) return fallback;
   const parsed = Number.parseInt(value, 10);
   return Number.isFinite(parsed) && parsed >= 0 ? parsed : fallback;
+}
+
+function boolArg(value: string | undefined, fallback: boolean) {
+  if (!value) return fallback;
+  const normalized = value.trim().toLowerCase();
+  if (["1", "true", "yes", "y"].includes(normalized)) return true;
+  if (["0", "false", "no", "n"].includes(normalized)) return false;
+  return fallback;
 }
 
 function metadataObject(value: Prisma.JsonValue | null): Record<string, unknown> {
@@ -92,14 +111,18 @@ function secondsSince(date: Date | null, now: Date) {
 }
 
 async function buildReport(args: Args) {
+  const db = prisma;
+  if (!db) {
+    throw new Error("Prisma client was not initialized.");
+  }
   const now = new Date();
   const [eventCount, marketCount, outcomeCount] = await Promise.all([
-    prisma.event.count(),
-    prisma.market.count(),
-    prisma.outcome.count(),
+    db.event.count(),
+    db.market.count(),
+    db.outcome.count(),
   ]);
 
-  const mobileEvents = await prisma.event.findMany({
+  const mobileEvents = await db.event.findMany({
     where: {
       markets: {
         some: {
@@ -125,9 +148,9 @@ async function buildReport(args: Args) {
     },
   });
 
-  const providerMarkets = await prisma.market.findMany({
+  const providerMarkets = await db.market.findMany({
     where: {
-      referenceSource: "polymarket",
+      referenceSource: args.referenceSource,
     },
     orderBy: [{ updatedAt: "desc" }, { createdAt: "desc" }],
     take: 100,
@@ -170,6 +193,8 @@ async function buildReport(args: Args) {
       latest,
       snapshotAgeSeconds,
       staleAfterSeconds: args.staleAfterSeconds,
+      requireMmEligibleSnapshot: args.requireMmEligibleSnapshot,
+      allowCachedProviderSnapshot: args.allowCachedProviderSnapshot,
     });
     const snapshotReady = snapshotBlockers.length === 0;
     const importStatus = stringFromMetadata(metadata, "importStatus");
@@ -178,26 +203,32 @@ async function buildReport(args: Args) {
     const mappedOutcomeCount = market.outcomes.filter((outcome) => outcome.referenceTokenId).length;
     const mobileVisible = market.visibility === "PUBLIC" && market.isListed;
     const botSeeded = Boolean(bot?.capital?.botUserId && bot.capital.botApiCredentialId);
+    const localOrderBacked = market.orders.length > 0;
+    const makerReady = args.requireBotSeeded
+      ? Boolean(
+          mmEnabled &&
+            botSeeded &&
+            (bot?.status === "live_ready" || bot?.status === "live_enabled" || bot?.status === "dry_run_ready"),
+        )
+      : localOrderBacked;
     const localMmReady = Boolean(
       mobileVisible &&
         market.status === "LIVE" &&
         importStatus === "approved" &&
         tradable &&
-        mmEnabled &&
         mappedOutcomeCount === market.outcomes.length &&
         snapshotReady &&
-        botSeeded &&
-        (bot?.status === "live_ready" || bot?.status === "live_enabled" || bot?.status === "dry_run_ready"),
+        makerReady,
     );
     const blockers = [
       mobileVisible ? null : "not_mobile_visible",
       market.status === "LIVE" ? null : "not_live",
       importStatus === "approved" ? null : "not_approved",
       tradable ? null : "not_tradable",
-      mmEnabled ? null : "mm_disabled",
+      args.requireBotSeeded && !mmEnabled ? "mm_disabled" : null,
       mappedOutcomeCount === market.outcomes.length ? null : "missing_reference_token_mapping",
       snapshotReady ? null : `snapshot_not_ready:${snapshotBlockers.join(",")}`,
-      botSeeded ? null : "bot_not_seeded",
+      makerReady ? null : args.requireBotSeeded ? "bot_not_seeded" : "no_local_open_orders",
       localMmReady ? null : "not_local_mm_ready",
     ].filter((value): value is string => Boolean(value));
 
@@ -288,10 +319,14 @@ async function buildReport(args: Args) {
         title: event.title,
         status: event.status,
         listedMarketCount: event.markets.length,
-        providerMarketCount: event.markets.filter((market) => market.referenceSource === "polymarket").length,
+        providerMarketCount: event.markets.filter((market) => market.referenceSource === args.referenceSource).length,
       })),
     },
     providerMarkets: {
+      referenceSource: args.referenceSource,
+      requireMmEligibleSnapshot: args.requireMmEligibleSnapshot,
+      allowCachedProviderSnapshot: args.allowCachedProviderSnapshot,
+      requireBotSeeded: args.requireBotSeeded,
       totalInspected: marketReadiness.length,
       mobileVisibleCount: providerVisibleMarkets.length,
       snapshotReadyCount: snapshotReadyMarkets.length,
@@ -325,8 +360,10 @@ function deriveSnapshotBlockers(params: {
   } | null;
   snapshotAgeSeconds: number | null;
   staleAfterSeconds: number;
+  requireMmEligibleSnapshot: boolean;
+  allowCachedProviderSnapshot: boolean;
 }) {
-  const { latest, snapshotAgeSeconds, staleAfterSeconds } = params;
+  const { latest, snapshotAgeSeconds, staleAfterSeconds, requireMmEligibleSnapshot, allowCachedProviderSnapshot } = params;
   if (!latest) {
     return ["snapshot_missing"];
   }
@@ -335,12 +372,12 @@ function deriveSnapshotBlockers(params: {
     latest.bestBid == null ? "snapshot_missing_bid" : null,
     latest.bestAsk == null ? "snapshot_missing_ask" : null,
     latest.acceptingOrders ? null : "snapshot_not_accepting_orders",
-    snapshotAgeSeconds == null || snapshotAgeSeconds > staleAfterSeconds ? "snapshot_stale" : null,
-    latest.mmEligible ? null : "snapshot_not_mm_eligible",
+    !allowCachedProviderSnapshot && (snapshotAgeSeconds == null || snapshotAgeSeconds > staleAfterSeconds) ? "snapshot_stale" : null,
+    requireMmEligibleSnapshot && !latest.mmEligible ? "snapshot_not_mm_eligible" : null,
   ].filter((value): value is string => Boolean(value));
 
   const reason = latest.reason?.trim();
-  if (reason) {
+  if (reason && !(allowCachedProviderSnapshot && reason === "temporary_sportsbook_odds_single_event_provider")) {
     blockers.push(`snapshot_reason_${reason}`);
   }
 
@@ -373,10 +410,10 @@ function deriveNextActions(blockers: string[]) {
       actions.add("Import, classify, and list more backend events before expecting Home/Search breadth.");
     }
     if (blocker === "no_mobile_visible_provider_markets") {
-      actions.add("Import/list approved Polymarket-backed markets into local Event/Market/Outcome rows.");
+      actions.add("Import/list approved provider-backed markets into local Event/Market/Outcome rows for the selected reference source.");
     }
     if (blocker === "no_ready_provider_snapshots") {
-      actions.add("Refresh Polymarket reference snapshots for the mobile-visible provider allowlist.");
+      actions.add("Refresh reference snapshots for the mobile-visible provider allowlist.");
     }
     if (blocker === "provider_books_unavailable_or_closed") {
       actions.add("Keep Local MVP contract-fixture trading active and do not seed local MM against closed/unusable Polymarket books.");
@@ -399,6 +436,14 @@ async function writeSummary(summaryPath: string | null, report: unknown) {
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   try {
+    const envLoad = loadLocalEnvForScript(["DATABASE_URL"]);
+    if (envLoad.missingKeys.includes("DATABASE_URL")) {
+      throw new Error(
+        "DATABASE_URL is required for internal exchange readiness. Set DATABASE_URL, set DOTENV_CONFIG_PATH, or run from a workspace with a local .env.",
+      );
+    }
+    const dbModule = await import("@/lib/db");
+    prisma = dbModule.prisma;
     const report = await buildReport(args);
     await writeSummary(args.summaryPath, report);
     process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
@@ -424,7 +469,7 @@ async function main() {
     process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
     process.exitCode = 1;
   } finally {
-    await prisma.$disconnect().catch(() => undefined);
+    await prisma?.$disconnect().catch(() => undefined);
   }
 }
 

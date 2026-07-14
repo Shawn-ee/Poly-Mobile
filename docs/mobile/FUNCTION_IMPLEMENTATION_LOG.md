@@ -16714,3 +16714,18 @@ Known limitations:
 - API/data dependencies: `GET /api/portfolio`, `GET /api/portfolio/cash-out/estimate`, `GET /api/markets/:marketId/quote`, and `POST /api/orders` for the eventual sell submit path.
 - Proof: `docs/mobile/audits/cycle-S23CASHOUTMAX-close-position-max.md`.
 - Known limitations: the current S23 screen is paused at the cashout ticket after `Max` so the user can manually inspect before submitting. Full sell-submit/history proof remains covered by Cycle ZBO and should be repeated if manual proof finds a mismatch.
+
+## Cycle ZBY - Source-Aware Internal Exchange Readiness
+
+- Feature/runtime worked on: local internal exchange readiness for the current backend-owned sportsbook event.
+- Frontend components touched: none.
+- Backend/routes touched: no HTTP route, Prisma schema, mobile UI, order, provider refresh, or settlement execution changes.
+- Important functions/services touched: `scripts/check_poly_internal_exchange_readiness.ts` and `package.json`.
+- User/runtime interactions supported: operators can run a dedicated `mobile:internal-exchange-readiness` check for the current Spain vs. France sportsbook-backed internal tester path without confusing it with deferred Polymarket provider parity.
+- State transitions: none. The checker is read-only and only inspects existing DB rows/proof evidence.
+- API/data dependencies: reads local `Event`, `Market`, `Outcome`, `ReferenceQuoteSnapshot`, and open `Order` rows. It loads `DATABASE_URL` from the local script env loader before importing Prisma.
+- Proof:
+  - `npm run mobile:internal-exchange-readiness -- --summaryPath docs/mobile/harness/odds-api-live-runtime/mobile-internal-exchange-readiness-summary.redacted.json`
+  - `npm run poly:internal-exchange-readiness -- --summaryPath docs/mobile/harness/odds-api-live-runtime/poly-internal-exchange-readiness-summary.redacted.json`
+- Result: sportsbook local exchange readiness passed with `readyForInternalMobileExchange=true`; Polymarket readiness still fails honestly because no mobile-visible Polymarket provider markets are attached.
+- Known limitations: this does not make live mobile odds fresh and does not install an unattended provider/maker/lifecycle service. Fresh odds remain an explicit quota-gated provider refresh path; Polymarket provider parity remains P1.
