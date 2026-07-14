@@ -16074,3 +16074,15 @@ Known limitations:
   - `npm run mobile:one-event-live-supervisor -- -MaxIterations 1 -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement`
   - `npm run mobile:one-event-runtime-status`
 - Known limitations: default cached onboarding does not install an unattended production daemon. Official-result auto-settlement remains guarded P1 and requires closed-market confirmation before execution.
+
+## Cycle S23CASHOUTNOW2 - Spain vs. France Cashout Reproof
+
+- Feature/runtime worked on: real-device internal tester cashout validation for the backend-owned `Spain vs. France` Odds API event.
+- Frontend components touched: none. The current `main` mobile bundle was reloaded and exercised on Samsung S23.
+- Backend/routes touched: none. Existing `GET /api/health`, event detail, quote, order, portfolio, and history routes were exercised through the S23 proof.
+- Important functions/services touched: no source changes. Runtime path verified `Portfolio` cashout -> `openPositionTrade(position, "sell")` -> `TradeTicket` close-position mode -> server SELL order -> Portfolio/history refresh.
+- User/runtime interactions supported: Home -> Event Detail -> totals line -> buy ticket -> swipe buy -> Portfolio -> Cash out -> Max -> swipe cashout -> Portfolio history.
+- State transitions: buy created a fake-token server-backed position; cashout sold owned shares only; history showed the sell/cashout activity.
+- Proof: `npm run mobile:the-odds-api-s23-visible-flow -- -Device 172.16.200.27:44029 -SkipReplaySeed -HomeExpectedTitle "Spain vs. France" -TeamAExpected "France" -TeamBExpected "Spain" -Cycle S23CASHOUTNOW2`.
+- Proof summary: `docs/mobile/harness/cycle-S23CASHOUTNOW2-spain-france-cashout/cycle-S23CASHOUTNOW2-odds-api-s23-visible-flow.json`.
+- Known limitations: cached/no-quota runtime can age out the 90-second mobile-display provider freshness window; this does not affect the verified cashout contract but means live odds freshness still needs the explicit provider refresh path when required.
