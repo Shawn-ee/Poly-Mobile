@@ -16215,3 +16215,19 @@ Known limitations:
 - API/data dependencies: `GET /api/mobile/events/:slug/live-detail`, `GET /api/markets/:marketId/quote`, `POST /api/orders`, `GET /api/portfolio`, and `GET /api/portfolio/history`.
 - Proof: `docs/mobile/harness/cycle-ZAB-spain-france-cashout-s23/cycle-ZAB-odds-api-s23-visible-flow.json`.
 - Known limitations: proof still relies on local seeded counterparty liquidity for the cashout bid. A dedicated close-position preview route remains P1, not a blocker for internal tester trading.
+
+## Cycle ZAC - Runtime Evidence Alignment
+
+- Feature/runtime worked on: no-quota runtime evidence alignment for the current `Spain vs. France` internal tester event.
+- Frontend components touched: none.
+- Backend/routes touched: no route implementation changes. Existing backend health, quote, and internal runtime status routes were exercised.
+- Important functions/services touched: `scripts/report_odds_api_one_event_runtime_status.ts` and `scripts/report_odds_api_live_runtime_phase_audit.ts`.
+- User/runtime interactions supported: internal runtime gates now select the quote-visible `Over 2.5` outcome from current maker evidence instead of falsely choosing an older provider proof outcome id (`Over +2.5`) that no longer appears in the quote route.
+- State transitions: a short local supervisor pass reseeded fake-token maker liquidity, refreshed local replay result ingestion, ran approved-settlement wait checks, and wrote no-quota runtime run evidence. It did not call The Odds API and did not execute active-event settlement.
+- API/data dependencies: `GET /api/health`, `GET /api/markets/:marketId/quote`, `GET /api/internal/live-runtime/status`, local `ProviderRefreshRun`, `MarketMakerQuoteRun`, `RuntimeServiceHeartbeat`, and `RuntimeServiceRun` evidence.
+- Proof:
+  - `npm run mobile:one-event-live-supervisor -- -MaxIterations 1 -IntervalSeconds 0 -SkipSleep -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement`
+  - `npm run mobile:one-event-runtime-status`
+  - `npm run mobile:one-event-phase-audit`
+  - `npm run mobile:live-runtime-completion-audit`
+- Known limitations: installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1. Local internal runtime evidence has 0 P0 gaps.

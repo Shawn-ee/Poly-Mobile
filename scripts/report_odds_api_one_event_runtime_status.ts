@@ -197,30 +197,27 @@ function timestampMs(value: unknown) {
 function selectedMarketEvidence(
   makerSeed: JsonObject | null,
   liveProof: JsonObject | null,
-): { selectedMarket: JsonObject | null; source: string | null; generatedAt: unknown } {
-  const candidates = [
+): Array<{ selectedMarket: JsonObject; source: string; generatedAt: unknown; sourceRank: number }> {
+  return [
     {
       selectedMarket: asObject(makerSeed?.selectedMarket),
       source: MAKER_SEED_PATH,
       generatedAt: makerSeed?.generatedAt,
       usable: bool(makerSeed?.pass),
+      sourceRank: 2,
     },
     {
       selectedMarket: asObject(liveProof?.selectedMarket),
       source: LIVE_PROOF_PATH,
       generatedAt: liveProof?.generatedAt,
       usable: bool(liveProof?.pass),
+      sourceRank: 1,
     },
   ]
-    .filter((candidate) => candidate.usable && candidate.selectedMarket)
+    .filter((candidate): candidate is { selectedMarket: JsonObject; source: string; generatedAt: unknown; usable: boolean; sourceRank: number } =>
+      candidate.usable && candidate.selectedMarket != null,
+    )
     .sort((left, right) => timestampMs(right.generatedAt) - timestampMs(left.generatedAt));
-
-  const current = candidates[0];
-  return {
-    selectedMarket: current?.selectedMarket ?? null,
-    source: current?.source ?? null,
-    generatedAt: current?.generatedAt ?? null,
-  };
 }
 
 function processProofRunning(summary: JsonObject | null, key: "supervisor" | "resultPoller") {
@@ -318,21 +315,50 @@ async function main() {
     kind: "result-poller",
   });
 
-  const selectedMarketSource = selectedMarketEvidence(makerSeed, liveProof);
-  const currentSelectedMarket = selectedMarketSource.selectedMarket;
+  const selectedMarketCandidates = await Promise.all(
+    selectedMarketEvidence(makerSeed, liveProof).map(async (candidate) => {
+      const marketId = stringValue(candidate.selectedMarket.id);
+      const outcomeId = stringValue(candidate.selectedMarket.outcomeId);
+      const route = marketId
+        ? await fetchRaw(`${baseUrl}/api/markets/${encodeURIComponent(marketId)}/quote`)
+        : null;
+      const quote = quoteForOutcome(route, outcomeId);
+      const quoteReady = {
+        outcomeId,
+        quoteFound: quote != null,
+        showsBid: hasDisplayedPrice(quote?.bestBid),
+        showsAsk: hasDisplayedPrice(quote?.bestAsk),
+        bid: quote?.bestBid ?? null,
+        ask: quote?.bestAsk ?? null,
+      };
+      const quoteVisibleScore = Number(quoteReady.quoteFound) + Number(quoteReady.showsBid) + Number(quoteReady.showsAsk);
+      return {
+        ...candidate,
+        route,
+        quoteReady,
+        quoteVisibleScore,
+      };
+    }),
+  );
+  const selectedMarketSource =
+    selectedMarketCandidates
+      .slice()
+      .sort((left, right) =>
+        right.quoteVisibleScore - left.quoteVisibleScore ||
+        right.sourceRank - left.sourceRank ||
+        timestampMs(right.generatedAt) - timestampMs(left.generatedAt),
+      )[0] ?? null;
+  const currentSelectedMarket = selectedMarketSource?.selectedMarket ?? null;
   const selectedMarketId = stringValue(currentSelectedMarket?.id);
   const selectedOutcomeId = stringValue(currentSelectedMarket?.outcomeId);
-  const quoteRoute = selectedMarketId
-    ? await fetchRaw(`${baseUrl}/api/markets/${encodeURIComponent(selectedMarketId)}/quote`)
-    : null;
-  const selectedOutcomeQuote = quoteForOutcome(quoteRoute, selectedOutcomeId);
-  const selectedOutcomeQuoteReady = {
+  const quoteRoute = selectedMarketSource?.route ?? null;
+  const selectedOutcomeQuoteReady = selectedMarketSource?.quoteReady ?? {
     outcomeId: selectedOutcomeId,
-    quoteFound: selectedOutcomeQuote != null,
-    showsBid: hasDisplayedPrice(selectedOutcomeQuote?.bestBid),
-    showsAsk: hasDisplayedPrice(selectedOutcomeQuote?.bestAsk),
-    bid: selectedOutcomeQuote?.bestBid ?? null,
-    ask: selectedOutcomeQuote?.bestAsk ?? null,
+    quoteFound: false,
+    showsBid: false,
+    showsAsk: false,
+    bid: null,
+    ask: null,
   };
   const health = await fetchRaw(`${baseUrl}/api/health`);
   const liveProofAgeHours = ageHours(liveProof?.generatedAt);
@@ -505,7 +531,23 @@ async function main() {
     continuityAnswer,
     event: liveProof?.event ?? runtimeLaunch?.provider?.proof?.event ?? null,
     selectedMarket: currentSelectedMarket,
-    selectedMarketSource,
+    selectedMarketSource: {
+      selectedMarket: selectedMarketSource?.selectedMarket ?? null,
+      source: selectedMarketSource?.source ?? null,
+      generatedAt: selectedMarketSource?.generatedAt ?? null,
+      quoteVisibleScore: selectedMarketSource?.quoteVisibleScore ?? 0,
+      selectionReason:
+        selectedMarketSource?.quoteVisibleScore === 3
+          ? "freshest quote-visible selected outcome"
+          : "best available selected outcome evidence",
+      candidates: selectedMarketCandidates.map((candidate) => ({
+        source: candidate.source,
+        generatedAt: candidate.generatedAt,
+        selectedMarket: candidate.selectedMarket,
+        quoteVisibleScore: candidate.quoteVisibleScore,
+        quoteReady: candidate.quoteReady,
+      })),
+    },
     backend: {
       health,
     },

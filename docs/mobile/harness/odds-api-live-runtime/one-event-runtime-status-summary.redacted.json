@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T03:29:46.329Z",
+  "generatedAt": "2026-07-14T04:03:30.455Z",
   "scope": "odds-api-one-event-runtime-status",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -9,8 +9,8 @@
     "latestSupervisorRunProfileOnly": true,
     "liveProviderRefreshContinuousWhileSupervisorRuns": false,
     "liveProviderRefreshQuotaCappedWhileSupervisorRuns": false,
-    "makerRefreshContinuousWhileSupervisorRuns": true,
-    "lifecycleSchedulerContinuousWhileSupervisorRuns": true,
+    "makerRefreshContinuousWhileSupervisorRuns": false,
+    "lifecycleSchedulerContinuousWhileSupervisorRuns": false,
     "unattendedServiceInstalled": false
   },
   "provenCapabilities": {
@@ -61,9 +61,9 @@
       "checked": true,
       "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json",
       "known": true,
-      "pid": 43308,
-      "running": true,
-      "startedAt": "2026-07-14T02:47:37.8126431Z",
+      "pid": 67348,
+      "running": false,
+      "startedAt": "2026-07-14T03:44:22.4971899Z",
       "continuous": true,
       "maxIterations": 0,
       "intervalSeconds": 15,
@@ -82,7 +82,7 @@
       "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json",
       "known": true,
       "pid": 69656,
-      "running": true,
+      "running": false,
       "startedAt": "2026-07-14T02:47:38.0879157Z",
       "continuous": true,
       "maxIterations": 0,
@@ -93,14 +93,14 @@
         "approvedResultSettlement": false
       }
     },
-    "allLoopsRunning": true,
+    "allLoopsRunning": false,
     "quotaSpendingLoopRunning": false,
-    "localTesterReadyRightNow": true,
+    "localTesterReadyRightNow": false,
     "source": "local .runtime process state plus OS pid check"
   },
   "continuityAnswer": {
     "latestSupervisorRunProfileOnly": true,
-    "currentLoopsRunningNow": true,
+    "currentLoopsRunningNow": false,
     "currentLoopsQuotaSpending": false,
     "marketMakerContinuousWhileSupervisorRuns": true,
     "lifecycleSchedulerContinuousWhileSupervisorRuns": true,
@@ -122,9 +122,9 @@
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
-    "outcomeId": "30fbc915-74ca-4809-a0c4-cd54c3236aa4",
-    "outcomeName": "Over +2.5",
-    "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4"
+    "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
+    "outcomeName": "Over 2.5",
+    "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e"
   },
   "selectedMarketSource": {
     "selectedMarket": {
@@ -134,12 +134,64 @@
       "marketType": "total_goals",
       "marketGroupKey": "totals",
       "line": "2.5",
-      "outcomeId": "30fbc915-74ca-4809-a0c4-cd54c3236aa4",
-      "outcomeName": "Over +2.5",
-      "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4"
+      "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
+      "outcomeName": "Over 2.5",
+      "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e"
     },
-    "source": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
-    "generatedAt": "2026-07-14T03:29:19.428Z"
+    "source": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
+    "generatedAt": "2026-07-14T04:03:10.398Z",
+    "quoteVisibleScore": 3,
+    "selectionReason": "freshest quote-visible selected outcome",
+    "candidates": [
+      {
+        "source": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
+        "generatedAt": "2026-07-14T04:03:10.398Z",
+        "selectedMarket": {
+          "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+          "slug": "odds-api-single-soccer-test-totals-7439c2d603",
+          "title": "Spain vs. France: Total Goals 2.5",
+          "marketType": "total_goals",
+          "marketGroupKey": "totals",
+          "line": "2.5",
+          "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
+          "outcomeName": "Over 2.5",
+          "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e"
+        },
+        "quoteVisibleScore": 3,
+        "quoteReady": {
+          "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
+          "quoteFound": true,
+          "showsBid": true,
+          "showsAsk": true,
+          "bid": "0.58",
+          "ask": "0.6"
+        }
+      },
+      {
+        "source": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
+        "generatedAt": "2026-07-14T03:29:19.428Z",
+        "selectedMarket": {
+          "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+          "slug": "odds-api-single-soccer-test-totals-7439c2d603",
+          "title": "Spain vs. France: Total Goals 2.5",
+          "marketType": "total_goals",
+          "marketGroupKey": "totals",
+          "line": "2.5",
+          "outcomeId": "30fbc915-74ca-4809-a0c4-cd54c3236aa4",
+          "outcomeName": "Over +2.5",
+          "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4"
+        },
+        "quoteVisibleScore": 0,
+        "quoteReady": {
+          "outcomeId": "30fbc915-74ca-4809-a0c4-cd54c3236aa4",
+          "quoteFound": false,
+          "showsBid": false,
+          "showsAsk": false,
+          "bid": null,
+          "ask": null
+        }
+      }
+    ]
   },
   "backend": {
     "health": {
@@ -149,7 +201,7 @@
         "status": "ok",
         "db": "connected",
         "env": "development",
-        "timestamp": "2026-07-14T03:29:46.327Z"
+        "timestamp": "2026-07-14T04:03:30.453Z"
       },
       "error": null
     }
@@ -157,7 +209,7 @@
   "provider": {
     "liveProofPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
     "liveProofGeneratedAt": "2026-07-14T03:29:19.428Z",
-    "liveProofAgeHours": 0.01,
+    "liveProofAgeHours": 0.57,
     "maxLiveProofAgeHours": 24,
     "quota": {
       "totalLastCost": 13,
@@ -180,8 +232,8 @@
   },
   "maker": {
     "makerSeedPath": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
-    "makerSeedGeneratedAt": "2026-07-14T02:47:12.695Z",
-    "makerSeedAgeHours": 0.71,
+    "makerSeedGeneratedAt": "2026-07-14T04:03:10.398Z",
+    "makerSeedAgeHours": 0.01,
     "quoteRoute": {
       "ok": true,
       "status": 200,
@@ -189,19 +241,19 @@
         "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
         "quotes": [
           {
-            "outcomeId": "30fbc915-74ca-4809-a0c4-cd54c3236aa4",
-            "outcomeName": "Over +2.5",
-            "bestBid": "0.46",
-            "bestAsk": "0.54",
-            "bestBidSize": 200,
+            "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
+            "outcomeName": "Over 2.5",
+            "bestBid": "0.58",
+            "bestAsk": "0.6",
+            "bestBidSize": 36.9,
             "bestAskSize": 200,
-            "midPrice": "0.5",
-            "lastPrice": "0.46",
-            "lastTradeAt": "2026-07-14T03:29:18.960Z"
+            "midPrice": "0.59",
+            "lastPrice": "0.58",
+            "lastTradeAt": "2026-07-14T03:48:58.930Z"
           },
           {
-            "outcomeId": "fe72ef40-ee22-4cc8-9830-bb46a4bf6c15",
-            "outcomeName": "Under +2.5",
+            "outcomeId": "2b498cd2-1a06-4b2d-918e-76199969e093",
+            "outcomeName": "Under 2.5",
             "bestBid": null,
             "bestAsk": null,
             "bestBidSize": null,
@@ -215,18 +267,18 @@
       "error": null
     },
     "selectedOutcomeQuote": {
-      "outcomeId": "30fbc915-74ca-4809-a0c4-cd54c3236aa4",
+      "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
       "quoteFound": true,
       "showsBid": true,
       "showsAsk": true,
-      "bid": "0.46",
-      "ask": "0.54"
+      "bid": "0.58",
+      "ask": "0.6"
     }
   },
   "lifecycle": {
     "schedulerRunPath": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
-    "schedulerGeneratedAt": "2026-07-14T02:25:12.199Z",
-    "schedulerAgeHours": 1.08,
+    "schedulerGeneratedAt": "2026-07-14T04:03:18.164Z",
+    "schedulerAgeHours": 0,
     "schedulerAction": "none",
     "schedulerReason": "Event is not inside the suspend/close window.",
     "schedulerCandidateMarketCount": 3
@@ -235,9 +287,9 @@
     "resultSettlementExecutionPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
     "resultSettlementLiveBlockedPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json",
     "resultSettlementExecutionGeneratedAt": "2026-07-13T12:32:50.663Z",
-    "resultSettlementExecutionAgeHours": 14.95,
+    "resultSettlementExecutionAgeHours": 15.51,
     "resultSettlementLiveBlockedGeneratedAt": "2026-07-13T12:32:49.154Z",
-    "resultSettlementLiveBlockedAgeHours": 14.95,
+    "resultSettlementLiveBlockedAgeHours": 15.51,
     "maxSettlementProofAgeHours": 24,
     "resultSettlementExecutionFresh": true,
     "resultSettlementLiveBlockedFresh": true,
@@ -261,22 +313,22 @@
   },
   "supervisor": {
     "supervisorPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json",
-    "generatedAt": "2026-07-14T02:16:56.5220092Z",
+    "generatedAt": "2026-07-14T04:03:19.0417586Z",
     "completedIterations": 1,
     "runtimeTruth": {
       "backendContinuousWhileSupervisorRuns": true,
       "providerRefreshContinuousWhileSupervisorRuns": false,
       "providerRefreshQuotaCappedWhileSupervisorRuns": false,
-      "dataHygieneContinuousWhileSupervisorRuns": true,
-      "marketMakerRefreshContinuousWhileSupervisorRuns": true,
-      "lifecycleSchedulerContinuousWhileSupervisorRuns": true,
+      "dataHygieneContinuousWhileSupervisorRuns": false,
+      "marketMakerRefreshContinuousWhileSupervisorRuns": false,
+      "lifecycleSchedulerContinuousWhileSupervisorRuns": false,
       "staleGuardContinuousWhileSupervisorRuns": false,
       "staleGuardMode": "disabled",
-      "resultIngestionContinuousWhileSupervisorRuns": true,
+      "resultIngestionContinuousWhileSupervisorRuns": false,
       "resultIngestionMode": "provider-shaped result ingestion replay while supervisor runs; no provider quota spent",
       "liveResultIngestionContinuousWhileSupervisorRuns": false,
       "liveResultIngestionQuotaCappedWhileSupervisorRuns": false,
-      "resultSettlementContinuousWhileSupervisorRuns": true,
+      "resultSettlementContinuousWhileSupervisorRuns": false,
       "resultSettlementMode": "approved trusted-result scheduler; waits until CLOSED before execution",
       "unattendedServiceInstalled": false,
       "providerRefreshMode": "cached provider proof verification; no provider quota spent",

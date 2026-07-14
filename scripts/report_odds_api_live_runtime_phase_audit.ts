@@ -222,30 +222,29 @@ function timestampMs(value: unknown) {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
-function selectedMarketEvidence(entries: { makerSeed?: JsonObject | null; liveProof?: JsonObject | null }) {
-  const candidates = [
+function selectedMarketEvidence(
+  entries: { makerSeed?: JsonObject | null; liveProof?: JsonObject | null },
+): Array<{ selectedMarket: JsonObject; source: string; generatedAt: unknown; sourceRank: number }> {
+  return [
     {
       selectedMarket: asObject(entries.makerSeed?.selectedMarket),
       source: PATHS.makerSeed,
       generatedAt: entries.makerSeed?.generatedAt,
       usable: pass(entries.makerSeed ?? null),
+      sourceRank: 2,
     },
     {
       selectedMarket: asObject(entries.liveProof?.selectedMarket),
       source: PATHS.liveProof,
       generatedAt: entries.liveProof?.generatedAt,
       usable: pass(entries.liveProof ?? null),
+      sourceRank: 1,
     },
   ]
-    .filter((candidate) => candidate.usable && candidate.selectedMarket)
+    .filter((candidate): candidate is { selectedMarket: JsonObject; source: string; generatedAt: unknown; usable: boolean; sourceRank: number } =>
+      candidate.usable && candidate.selectedMarket != null,
+    )
     .sort((left, right) => timestampMs(right.generatedAt) - timestampMs(left.generatedAt));
-
-  const current = candidates[0];
-  return {
-    selectedMarket: current?.selectedMarket ?? null,
-    source: current?.source ?? null,
-    generatedAt: current?.generatedAt ?? null,
-  };
 }
 
 async function fetchJson(url: string, init?: RequestInit) {
@@ -351,13 +350,44 @@ async function main() {
     internalTesterRuntimeScript.includes("replaceExternalExpoAvailable") &&
     internalTesterRuntimeScript.includes("Use -Force -ReplaceExternalExpo");
   const health = await fetchJson(`${baseUrl}/api/health`);
-  const currentSelectedMarketSource = selectedMarketEvidence(entries);
-  const currentSelectedMarket = currentSelectedMarketSource.selectedMarket;
+  const selectedMarketCandidates = await Promise.all(
+    selectedMarketEvidence(entries).map(async (candidate) => {
+      const marketId = text(candidate.selectedMarket.id);
+      const outcomeId = text(candidate.selectedMarket.outcomeId);
+      const route = marketId
+        ? await fetchJson(`${baseUrl}/api/markets/${encodeURIComponent(marketId)}/quote`)
+        : null;
+      const quote = quoteForOutcome(route, outcomeId);
+      const quoteReady = {
+        outcomeId,
+        quoteFound: quote != null,
+        showsBid: hasDisplayedPrice(quote?.bestBid),
+        showsAsk: hasDisplayedPrice(quote?.bestAsk),
+        bid: quote?.bestBid ?? null,
+        ask: quote?.bestAsk ?? null,
+      };
+      const quoteVisibleScore =
+        Number(quoteReady.quoteFound) + Number(quoteReady.showsBid) + Number(quoteReady.showsAsk);
+      return {
+        ...candidate,
+        route,
+        quoteReady,
+        quoteVisibleScore,
+      };
+    }),
+  );
+  const currentSelectedMarketSource =
+    selectedMarketCandidates
+      .slice()
+      .sort((left, right) =>
+        right.quoteVisibleScore - left.quoteVisibleScore ||
+        right.sourceRank - left.sourceRank ||
+        timestampMs(right.generatedAt) - timestampMs(left.generatedAt),
+      )[0] ?? null;
+  const currentSelectedMarket = currentSelectedMarketSource?.selectedMarket ?? null;
   const selectedMarketId = text(currentSelectedMarket?.id);
   const selectedOutcomeId = text(currentSelectedMarket?.outcomeId);
-  const quote = selectedMarketId
-    ? await fetchJson(`${baseUrl}/api/markets/${encodeURIComponent(selectedMarketId)}/quote`)
-    : null;
+  const quote = currentSelectedMarketSource?.route ?? null;
   const selectedOutcomeQuote = quoteForOutcome(quote, selectedOutcomeId);
   const selectedOutcomeQuoteFound = selectedOutcomeQuote != null;
   const selectedOutcomeBidVisible = hasDisplayedPrice(selectedOutcomeQuote?.bestBid);
@@ -779,14 +809,16 @@ async function main() {
         "A local result polling runner repeatedly ingests provider-shaped score evidence and runs trusted-result settlement scheduling safely.",
       achieved:
         getPath(completionChecks, ["durableRuntimeRunsKnown"]) === true ||
-        pass(entries.resultPoller) &&
-        getPath(entries.resultPoller, ["runtimeTruth", "resultPollingRunnerAvailable"]) === true &&
-        (getPath(entries.resultPoller, ["runtimeTruth", "resultPollingContinuousWhileRunnerRuns"]) === true ||
-          getPath(continuousResultPollerTruth, ["resultPollingWhileProcessRuns"]) === true) &&
-        (getPath(entries.resultPoller, ["runtimeTruth", "settlementSchedulerContinuousWhileRunnerRuns"]) === true ||
-          getPath(continuousResultPollerTruth, ["settlementSchedulerWhileProcessRuns"]) === true) &&
-        getPath(entries.resultPoller, ["runtimeTruth", "activeTesterSettlementExecution"]) === false &&
-        getPath(entries.resultPoller, ["settings", "defaultModeUsesQuota"]) === false,
+        ((pass(entries.resultPoller) ||
+          (pass(entries.continuousResultPoller) &&
+            getPath(continuousResultPollerTruth, ["resultPollingWhileProcessRuns"]) === true)) &&
+          getPath(entries.resultPoller, ["runtimeTruth", "resultPollingRunnerAvailable"]) === true &&
+          (getPath(entries.resultPoller, ["runtimeTruth", "resultPollingContinuousWhileRunnerRuns"]) === true ||
+            getPath(continuousResultPollerTruth, ["resultPollingWhileProcessRuns"]) === true) &&
+          (getPath(entries.resultPoller, ["runtimeTruth", "settlementSchedulerContinuousWhileRunnerRuns"]) === true ||
+            getPath(continuousResultPollerTruth, ["settlementSchedulerWhileProcessRuns"]) === true) &&
+          getPath(entries.resultPoller, ["runtimeTruth", "activeTesterSettlementExecution"]) === false &&
+          getPath(entries.resultPoller, ["settings", "defaultModeUsesQuota"]) === false),
       evidence: [PATHS.resultPoller, PATHS.resultIngestion, PATHS.resultSettlementRun],
       notes:
         "This proves a dedicated local result-polling loop in replay/no-quota mode. Live score polling remains explicit and quota-capped through the same runner; installed unattended official-result polling remains P1.",
@@ -1297,7 +1329,23 @@ async function main() {
     event: entries.liveProof?.event ?? null,
     selectedMarket: entries.liveProof?.selectedMarket ?? null,
     currentSelectedMarket,
-    currentSelectedMarketSource,
+    currentSelectedMarketSource: {
+      selectedMarket: currentSelectedMarketSource?.selectedMarket ?? null,
+      source: currentSelectedMarketSource?.source ?? null,
+      generatedAt: currentSelectedMarketSource?.generatedAt ?? null,
+      quoteVisibleScore: currentSelectedMarketSource?.quoteVisibleScore ?? 0,
+      selectionReason:
+        currentSelectedMarketSource?.quoteVisibleScore === 3
+          ? "freshest quote-visible selected outcome"
+          : "best available selected outcome evidence",
+      candidates: selectedMarketCandidates.map((candidate) => ({
+        source: candidate.source,
+        generatedAt: candidate.generatedAt,
+        selectedMarket: candidate.selectedMarket,
+        quoteVisibleScore: candidate.quoteVisibleScore,
+        quoteReady: candidate.quoteReady,
+      })),
+    },
     health,
     quote,
     selectedOutcomeQuote: {
