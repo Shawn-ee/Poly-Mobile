@@ -19,7 +19,7 @@
     "conditionId": "odds-api-00c86ad8b5e6561e27f78508"
   },
   "outcome": {
-    "id": "24515f22-3717-4b61-82a2-c072febc8f5b",
+    "id": "5a3f04ff-6efd-42c5-a225-8fae8070b509",
     "name": "Over 2.5",
     "side": "over",
     "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e",
@@ -27,10 +27,19 @@
   },
   "cleanupOnly": false,
   "maker": {
-    "id": "899f0f2e-addb-4b28-9fdc-cc741f840fed",
-    "username": "mobile_route_fill_maker_c835fdc8"
+    "id": "5d259a53-e26d-4b65-8e5c-3fef25eb5f21",
+    "username": "mobile_route_fill_maker_f2aa489b"
   },
   "cleanup": {
+    "resetSelectedMarketState": {
+      "requested": false,
+      "canonicalEventsPreserved": true,
+      "deletedFills": 0,
+      "deletedTrades": 0,
+      "deletedOrders": 0,
+      "deletedPositions": 0,
+      "collateralReset": false
+    },
     "enabled": false,
     "proofUserPrefix": "holiwyn-mobile-",
     "canceledProofBids": [],
@@ -44,35 +53,19 @@
     "cleanupBlockingAsks": true,
     "canceledBlockingAsks": [
       {
-        "id": "41c12500-ba6c-4dfb-a085-47869aee2801",
-        "username": "mobile_route_fill_maker_9602fea2",
+        "id": "8040dce5-3fb7-4dde-bedb-2cfafeb9b1cf",
+        "username": "mobile_route_fill_maker_89292ce4",
         "previousStatus": "PARTIAL",
         "price": "0.58",
         "remaining": "56.9",
-        "canceledStatus": "CANCELED"
-      },
-      {
-        "id": "890126af-21fd-43fa-a6d5-ea8bf3f962f4",
-        "username": "mobile_route_fill_maker_029a17fe",
-        "previousStatus": "OPEN",
-        "price": "0.58",
-        "remaining": "100",
-        "canceledStatus": "CANCELED"
-      },
-      {
-        "id": "6b088548-58cc-4d5f-8d85-cf71ee401b85",
-        "username": "mobile_route_fill_maker_c9edd053",
-        "previousStatus": "OPEN",
-        "price": "0.58",
-        "remaining": "100",
         "canceledStatus": "CANCELED"
       }
     ]
   },
   "makerOrder": {
-    "id": "01c91a7e-1d96-4daf-976e-f3dedb241e9e",
+    "id": "2f198817-89a8-40a8-a7e3-06f9346d2fef",
     "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-    "outcomeId": "24515f22-3717-4b61-82a2-c072febc8f5b",
+    "outcomeId": "5a3f04ff-6efd-42c5-a225-8fae8070b509",
     "side": "BUY",
     "price": "0.58",
     "size": "80",

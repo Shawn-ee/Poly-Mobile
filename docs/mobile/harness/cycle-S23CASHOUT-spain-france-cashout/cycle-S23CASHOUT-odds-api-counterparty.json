@@ -19,7 +19,7 @@
     "conditionId": "odds-api-00c86ad8b5e6561e27f78508"
   },
   "outcome": {
-    "id": "24515f22-3717-4b61-82a2-c072febc8f5b",
+    "id": "5a3f04ff-6efd-42c5-a225-8fae8070b509",
     "name": "Over 2.5",
     "side": "over",
     "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e",
@@ -27,10 +27,19 @@
   },
   "cleanupOnly": false,
   "maker": {
-    "id": "e7c70bad-afd1-4479-bea4-70a0612359f1",
-    "username": "mobile_route_fill_maker_c9edd053"
+    "id": "79d9fe90-e61b-4fe3-81ae-6c6652796071",
+    "username": "mobile_route_fill_maker_89292ce4"
   },
   "cleanup": {
+    "resetSelectedMarketState": {
+      "requested": true,
+      "canonicalEventsPreserved": true,
+      "deletedFills": 0,
+      "deletedTrades": 0,
+      "deletedOrders": 0,
+      "deletedPositions": 0,
+      "collateralReset": true
+    },
     "enabled": true,
     "proofUserPrefix": "holiwyn-mobile-",
     "canceledProofBids": [],
@@ -45,9 +54,9 @@
     "canceledBlockingAsks": []
   },
   "makerOrder": {
-    "id": "6b088548-58cc-4d5f-8d85-cf71ee401b85",
+    "id": "8040dce5-3fb7-4dde-bedb-2cfafeb9b1cf",
     "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-    "outcomeId": "24515f22-3717-4b61-82a2-c072febc8f5b",
+    "outcomeId": "5a3f04ff-6efd-42c5-a225-8fae8070b509",
     "side": "SELL",
     "price": "0.58",
     "size": "100",
