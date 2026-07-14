@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T06:17:02.910Z",
+  "generatedAt": "2026-07-14T07:18:43.793Z",
   "scope": "holiwyn-internal-tester-operator-snapshot",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -18,10 +18,10 @@
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
-    "outcomeId": "30fbc915-74ca-4809-a0c4-cd54c3236aa4",
+    "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
     "outcomeName": "Over 2.5",
-    "referenceOutcomeLabel": "Over +2.5",
-    "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4"
+    "referenceOutcomeLabel": "Over 2.5",
+    "referenceTokenId": "odds-api-6ec5620aa25c4fcd08f1d70e"
   },
   "backend": {
     "ok": true,
@@ -30,7 +30,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-14T06:17:01.286Z"
+      "timestamp": "2026-07-14T07:18:42.916Z"
     },
     "error": null
   },
@@ -127,9 +127,9 @@
     "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
     "reason": null,
     "snapshotCount": 4,
-    "latestFetchedAt": "2026-07-14T06:03:32.787Z",
-    "latestAgeHours": 0.23,
-    "latestAgeSeconds": 810,
+    "latestFetchedAt": "2026-07-14T06:03:35.211Z",
+    "latestAgeHours": 1.25,
+    "latestAgeSeconds": 4509,
     "maxAgeHours": 24,
     "sources": [
       "sportsbook-odds"
@@ -137,15 +137,15 @@
     "acceptingOrderSnapshotCount": 4,
     "mmEligibleSnapshotCount": 0,
     "latestQualityStatus": "approved",
-    "latestReason": "temporary_sportsbook_odds_single_event_provider",
+    "latestReason": "cached_live_runtime_restore",
     "mobileRouteFresh": false,
     "mobileRouteRefreshDue": false,
     "mobileRouteStale": true,
     "mobileLifecycleStatus": "stale",
     "mobileRefreshDueSeconds": 60,
     "mobileStaleAfterSeconds": 90,
-    "mobileRefreshDueAt": "2026-07-14T06:04:32.787Z",
-    "mobileStaleAt": "2026-07-14T06:05:02.787Z",
+    "mobileRefreshDueAt": "2026-07-14T06:04:35.211Z",
+    "mobileStaleAt": "2026-07-14T06:05:05.211Z",
     "nextProviderAction": "refresh_provider_snapshots_or_keep_cached_test_mode"
   },
   "operatorNextActions": {
@@ -224,14 +224,14 @@
     "title": "Spain vs. France",
     "status": "active",
     "liveStatus": "LIVE",
-    "sportKey": "soccer",
-    "leagueKey": "world_cup",
+    "sportKey": "soccer_fifa_world_cup",
+    "leagueKey": "soccer_fifa_world_cup",
     "source": "the-odds-api",
     "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
-    "sourceUpdatedAt": "2026-07-14T06:03:32.787Z",
-    "now": "2026-07-14T06:17:02.900Z",
+    "sourceUpdatedAt": "2026-07-14T06:03:35.211Z",
+    "now": "2026-07-14T07:18:43.785Z",
     "startTime": "2026-07-14T19:00:00.000Z",
-    "secondsUntilStart": 45777,
+    "secondsUntilStart": 42076,
     "startAgeSeconds": 0,
     "suspendBeforeStartSeconds": 300,
     "insideSuspendWindow": false,

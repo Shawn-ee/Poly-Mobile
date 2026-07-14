@@ -13,9 +13,9 @@ This phase is complete for local internal testing.
 - Real upcoming test event: Spain vs. France.
 - Mobile proof device: Samsung S23 `SM_S911U1`.
 - Runtime type: local fake-token internal runtime, not production real-money infrastructure.
-- Latest S23 runtime proof refresh: Cycle ZAI warm-runtime S23 trading flow.
-- Latest operator snapshot refresh: Cycle ZAK internal tester readiness gate refresh.
-- Latest live-odds freshness pulse: Cycle ZAJ refreshed the Spain vs. France selected market through the secret-wrapper provider command, moved the mobile quote lifecycle from stale to ready, spent 13 credits under the 16-credit cap, and left 268 provider requests remaining.
+- Latest S23 runtime proof refresh: Cycle ZAN Spain vs. France cashout proof, covering Home -> Event Detail -> Total Goals 2.5 -> buy -> Portfolio -> close-position cashout -> History on Samsung S23.
+- Latest operator snapshot/readiness refresh: `npm run mobile:internal-tester-readiness-gate` at `2026-07-14T07:18:43.855Z`, with ordered audit gate pass, operator snapshot pass, warm no-quota runtime observed, and zero P0 gaps.
+- Latest live-odds freshness pulse: the selected market was refreshed through the secret-wrapper provider command at `2026-07-14T06:03:35.211Z`, moved the mobile quote lifecycle from stale to ready at that time, spent 13 credits under the 16-credit cap, and left 268 provider requests remaining. Current cached testing remains ready; mobile-route live-display freshness is now stale under the 90-second UI window until the explicit provider-refresh command is run again.
 
 ## Requirement Evidence
 
@@ -30,17 +30,18 @@ This phase is complete for local internal testing.
 | Build/document one-command onboarding | Quota-free cached onboarding and explicit live-provider onboarding are documented. Runtime-loop proof mode starts and stops local loops. Current operator status also reports when the cached supervisor/result-poller loops are already warm, so testers know whether to keep cached mode or intentionally refresh live odds. | `docs/mobile/EVENT_LIFECYCLE_RUNBOOK.md`; `docs/mobile/ODDS_PROVIDER_REFRESH_POLICY.md`; `docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json` |
 | Support one real upcoming soccer event locally | Spain vs. France is imported/restored as the reusable one-event runtime target. | `docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json` |
 | Prove mobile can trade the event end-to-end | S23 proof covers Home -> Event Detail -> line market -> ticket -> buy -> Portfolio -> cashout/sell -> History, including close-position cashout Max using owned shares and no Yes/No selector. | `docs/mobile/harness/cycle-ZAN-spain-france-cashout-proof/cycle-ZAN-odds-api-s23-visible-flow.json` |
+| Provide tester-facing go/no-go handoff | The readiness gate refreshes runtime audit evidence first, then emits one operator snapshot/checklist from backend status. It reports cached trading ready, live odds not currently fresh for the mobile 90-second display window, warm no-quota runtime loops running, and no P0 gaps. | `docs/mobile/harness/odds-api-live-runtime/internal-tester-readiness-gate-summary.redacted.json`; `docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json` |
 | Document lifecycle open/suspended/closed/settled | Open, paused, closed, and settlement readiness are documented and proven locally. Active event settlement remains guarded. | `docs/mobile/EVENT_LIFECYCLE_RUNBOOK.md`; `docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-matrix-summary.redacted.json` |
 
 ## Current Runtime Truth
 
 - Backend health is proven locally on port `3002`.
 - Expo can be started in server-backed S23 mode on port `8081`. The one-command proof path can use `-ReplaceExternalExpo` to replace stale Metro with verified manager-owned server-mode Expo for S23.
-- Current operator snapshots prove the supervisor and result-poller local loops can run in warm no-quota mode; after proof cleanup they may be stopped and should be started with the cached runtime command for manual testing.
+- Current operator snapshots prove the supervisor and result-poller local loops can run in warm no-quota mode. The latest readiness gate observed both loops running from local `.runtime` process state, with no quota-spending loop.
 - Supervisor/result-poller loops are local foreground/background processes, not installed services.
 - Local maker quote proof and provider-to-maker handoff are durable.
 - Cached internal testing is ready right now. Mobile-visible live odds freshness is not ready under the 90-second route threshold unless the explicit provider-refresh command is run.
-- After Cycle ZAJ, mobile-visible live odds were proven ready immediately after the bounded provider refresh. This is an operational freshness window, not a background quota-spending loop.
+- After the latest bounded provider refresh, mobile-visible live odds were proven ready immediately afterward. That readiness is an operational freshness window, not a background quota-spending loop; once it ages past the mobile 90-second route threshold, cached internal trading remains usable and the status route recommends the explicit provider refresh only when live-display freshness is needed.
 - Official result review and settlement queue APIs are read-only, dev-only, and quota-free.
 - Active event settlement execution is blocked until market close plus exact confirmation.
 
