@@ -16745,3 +16745,15 @@ Known limitations:
   - `npm run test:ci`
   - `npm --prefix mobile run typecheck`
 - Known limitations: this does not make live mobile odds fresh, start warm loops, or install unattended runtime services. It only prevents a tester-ready summary from omitting the actual local exchange readiness proof.
+
+## Cycle ZCA - Operator Doc Gate Alignment
+
+- Feature/runtime worked on: operator-facing documentation for the internal tester readiness gate.
+- Frontend components touched: none.
+- Backend/routes touched: no HTTP route, Prisma schema, mobile UI, order, provider refresh, runtime process, or settlement execution changes.
+- Important functions/services touched: documentation only: `docs/mobile/EVENT_LIFECYCLE_RUNBOOK.md`, `docs/mobile/BACKEND_LIVE_RUNTIME_COMPLETION_AUDIT_MATRIX.md`, and `docs/mobile/INTERNAL_TESTER_OPERATOR_HANDOFF.md`.
+- User/runtime interactions supported: operators can now read one consistent explanation of the three-stage readiness gate and understand that cached internal trading can pass while supervisor/result-poller loops are stopped after proof cleanup.
+- State transitions: none.
+- API/data dependencies: documents existing fields in `internal-tester-readiness-gate-summary.redacted.json`: `orderInvariant.requiredOrder`, `testerReady.exchangeReadiness`, `testerReady.routeWarmNoQuotaRuntime`, `testerReady.allLoopsRunning`, and `testerReady.runtimeNextAction`.
+- Proof: `npm run mobile:internal-tester-readiness-gate -- --summaryPath docs/mobile/harness/odds-api-live-runtime/current-readiness-probe.redacted.json` passed locally; timestamp-only generated summaries were restored instead of committed.
+- Known limitations: this is a documentation alignment cycle. It does not start warm loops, refresh live odds, perform S23 proof, or install unattended services.

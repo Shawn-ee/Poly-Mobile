@@ -10,6 +10,7 @@ This handoff is the short, current operating guide for the one-event Holiwyn loc
 - Selected proof outcome: `Over 2.5`
 - Runtime route of truth: `GET /api/internal/live-runtime/status`
 - Tester gate of truth: `npm run mobile:internal-tester-readiness-gate`
+- Gate order: ordered runtime audit -> sportsbook exchange readiness -> operator snapshot
 
 ## Readiness Modes
 
@@ -18,6 +19,8 @@ This handoff is the short, current operating guide for the one-event Holiwyn loc
 | Cached internal testing | Backend, Expo, supervisor/result-poller, maker liquidity, fake-token trading, portfolio/cashout/history are locally usable from stored provider evidence. | No | Default internal tester mode |
 | Fresh live-display odds | Mobile-visible provider quote snapshots are fresh under the 60/90-second live display thresholds. | Yes, only when explicitly refreshed | Use immediately before a live-odds visual test |
 | Production unattended runtime | Installed, always-on provider/maker/lifecycle service ownership. | N/A | Not claimed; tracked as P1 |
+
+The readiness gate can pass cached internal testing even when `allLoopsRunning=false`, because it distinguishes proven local capability from processes that are currently warm. If a tester session needs the supervisor and result poller running right now, use `npm run mobile:internal-tester-runtime:cached-start` and then rerun the gate.
 
 ## Why Live Odds Become Stale Quickly
 
