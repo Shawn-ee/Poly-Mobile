@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T03:09:17.029Z",
+  "generatedAt": "2026-07-14T03:22:41.188Z",
   "scope": "holiwyn-internal-tester-operator-snapshot",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -29,7 +29,7 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-14T03:09:16.197Z"
+      "timestamp": "2026-07-14T03:22:39.847Z"
     },
     "error": null
   },
@@ -127,8 +127,8 @@
     "reason": null,
     "snapshotCount": 4,
     "latestFetchedAt": "2026-07-14T03:07:23.278Z",
-    "latestAgeHours": 0.03,
-    "latestAgeSeconds": 114,
+    "latestAgeHours": 0.25,
+    "latestAgeSeconds": 918,
     "maxAgeHours": 24,
     "sources": [
       "sportsbook-odds"
@@ -228,9 +228,9 @@
     "source": "the-odds-api",
     "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
     "sourceUpdatedAt": "2026-07-14T03:07:23.278Z",
-    "now": "2026-07-14T03:09:17.023Z",
+    "now": "2026-07-14T03:22:41.176Z",
     "startTime": "2026-07-14T19:00:00.000Z",
-    "secondsUntilStart": 57043,
+    "secondsUntilStart": 56239,
     "startAgeSeconds": 0,
     "suspendBeforeStartSeconds": 300,
     "insideSuspendWindow": false,

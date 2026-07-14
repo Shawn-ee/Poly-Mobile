@@ -16159,3 +16159,18 @@ Known limitations:
   - `npm run mobile:one-event-lifecycle-matrix`
   - `npm run mobile:live-runtime-audit-gate`
 - Known limitations: lifecycle scheduling is proven under the local foreground supervisor, not as an installed unattended service. Production official-result auto-settlement remains P1.
+
+## Cycle ZX - Current Runtime Operator Handoff
+
+- Feature/runtime worked on: read-only current-runtime operator handoff for the `Spain vs. France` internal tester event.
+- Frontend components touched: none.
+- Backend/routes touched: no route implementation changes. Existing health/status/reporting routes were exercised.
+- Important functions/services touched: no source implementation changes. Re-ran `scripts/report_odds_api_one_event_runtime_status.ts`, `scripts/report_holiwyn_local_runtime_launch_profile.ts`, and `scripts/report_holiwyn_internal_tester_operator_snapshot.ts`.
+- User/runtime interactions supported: internal testers now have refreshed handoff evidence showing cached fake-token trading is ready, supervisor/result-poller loops are currently warm, live mobile odds freshness requires explicit provider refresh, and active-event settlement remains guarded while the market is `LIVE`.
+- State transitions: none. This cycle is read-only, spends no provider quota, and does not execute settlement.
+- API/data dependencies: local backend health, `/api/internal/live-runtime/status`, selected event/market metadata, quote route evidence, current `.runtime` loop process state, and existing settlement readiness artifacts.
+- Proof:
+  - `npm run mobile:one-event-runtime-status`
+  - `npm run mobile:local-runtime-launch-profile`
+  - `npm run mobile:internal-tester-operator-snapshot`
+- Known limitations: installed unattended service ownership and production official-result auto-settlement remain P1. Live mobile odds freshness is intentionally not refreshed without the explicit quota-spending provider command.

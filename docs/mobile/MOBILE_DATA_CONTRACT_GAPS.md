@@ -10945,3 +10945,12 @@ Future migration concern:
 - Schema mismatch: none. No Prisma schema or model changes.
 - Temporary mock/static data: none added. The matrix reads current DB state and existing proof artifacts.
 - Remaining gaps: installed unattended lifecycle service ownership and production official-result auto-settlement remain P1.
+
+## Cycle ZX - Current Runtime Operator Handoff
+
+- Fields confirmed for tooling: operator snapshot reports `localTesterReadyRightNow`, `cachedTesterReadyRightNow`, `liveOddsReadyRightNow`, `currentRuntimeState.mode`, supervisor/result-poller `running`, `quotaSpendingLoopRunning`, mobile provider freshness fields, selected event/market/outcome identity, and settlement execution blockers.
+- Closed or narrowed: tester handoff now separates cached internal trading readiness from mobile-visible live odds freshness, avoiding the earlier ambiguity where a passing live-provider proof could be mistaken for currently fresh route data.
+- Route mismatch: none. Existing `/api/internal/live-runtime/status` already surfaces the fields needed for the operator snapshot.
+- Schema mismatch: none. No Prisma schema or model changes.
+- Temporary mock/static data: none added. This is a read-only current-state report and uses existing proof/runtime artifacts.
+- Remaining gaps: live mobile odds freshness still requires the explicit quota-spending provider refresh command when real-time odds display matters. Installed unattended service ownership and production official-result auto-settlement remain P1.
