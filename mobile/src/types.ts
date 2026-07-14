@@ -240,6 +240,7 @@ export type EventDetail = {
 export type Quote = {
   outcomeId: string;
   outcomeName: string;
+  referenceOutcomeLabel?: string | null;
   bestBid: string | number | null;
   bestAsk: string | number | null;
   bestBidSize?: string | number | null;

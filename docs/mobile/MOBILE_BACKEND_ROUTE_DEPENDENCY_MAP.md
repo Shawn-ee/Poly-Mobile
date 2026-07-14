@@ -2,6 +2,12 @@
 
 Purpose: document what the mobile app needs from backend routes, auth, request/response contracts, database models, and mock fallbacks for each feature cycle.
 
+## Cycle ZAM - Quote Display Label Contract
+
+| Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Trade ticket quote display labels | `/api/markets/:marketId/quote?outcomeId=:outcomeId` | `GET` | Public/optional user context; existing market visibility guard applies | Query parameters only; no body | `quotes[].outcomeName` is the Holiwyn display label, `quotes[].referenceOutcomeLabel` preserves the raw provider label, plus `bestBid`, `bestAsk`, sizes, midpoint, and last price | Existing `Market.marketType`, `Market.line`, `Outcome.side`, `Outcome.label`, `Outcome.referenceOutcomeLabel`, orderbook snapshot, and fills; no schema change | None. Mobile still matches quotes primarily by `outcomeId`; if optional `referenceOutcomeLabel` is absent, display still falls back to `outcomeName` | Broader market-family display normalization may be extended later. This cycle covers totals/team totals because those were leaking raw sportsbook `+2.5` labels into quote payloads. |
+
 ## Cycle ZAD - Server Cashout Estimate Contract
 
 | Mobile/runtime feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/runtime | Database tables/models implied | Mock fallback behavior | Missing backend support |

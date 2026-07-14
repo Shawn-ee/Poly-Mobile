@@ -1,5 +1,13 @@
 # Mobile Data Contract Gaps
 
+## Cycle ZAM - Quote Display Label Contract
+
+- Closed or narrowed: `/api/markets/:marketId/quote` now separates mobile display labels from raw provider labels for totals/team-total markets. `outcomeName` is clean for mobile, while `referenceOutcomeLabel` preserves raw sportsbook evidence.
+- Backend-supported fields used: `Market.marketType`, `Market.line`, `Outcome.side`, `Outcome.label`, `Outcome.referenceOutcomeLabel`, and existing orderbook quote fields.
+- Route mismatch: narrowed. The live-detail route already exposed clean `Over 2.5`; the quote route now agrees for ticket pricing.
+- Temporary mock/static data: none added.
+- Future migration concern: extend the same display-label contract to additional line market families if provider labels for spreads/team lines leak raw sportsbook notation into ticket-facing labels.
+
 ## Cycle ZL - One-Command Onboarding Aliases
 
 - Closed or narrowed: one-event onboarding now has explicit cached-runtime and live-provider-runtime package scripts, so operators do not need to remember the runtime-loop proof flags.

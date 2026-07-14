@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { quoteOutcomeDisplayLabel } from "@/server/services/quoteDisplayLabel";
 
 const getUserId = jest.fn();
 const getCanonicalMarketQuote = jest.fn();
@@ -21,6 +22,7 @@ describe("GET /api/markets/[id]/quote", () => {
         {
           outcomeId: "outcome-1",
           outcomeName: "Home",
+          referenceOutcomeLabel: null,
           bestBid: "0.41",
           bestAsk: "0.45",
           bestBidSize: 120,
@@ -51,6 +53,7 @@ describe("GET /api/markets/[id]/quote", () => {
         {
           outcomeId: "outcome-1",
           outcomeName: "Home",
+          referenceOutcomeLabel: null,
           bestBid: "0.41",
           bestAsk: "0.45",
           bestBidSize: 120,
@@ -72,5 +75,27 @@ describe("GET /api/markets/[id]/quote", () => {
     expect(response.status).toBe(400);
     expect(body.error.code).toBe("INVALID_REQUEST");
     expect(getCanonicalMarketQuote).not.toHaveBeenCalled();
+  });
+
+  test("normalizes sportsbook totals labels for mobile quote display", () => {
+    expect(
+      quoteOutcomeDisplayLabel({
+        marketType: "total_goals",
+        line: "2.5000",
+        outcomeName: "Over +2.5",
+        outcomeLabel: "Over +2.5",
+        outcomeSide: "over",
+      })
+    ).toBe("Over 2.5");
+
+    expect(
+      quoteOutcomeDisplayLabel({
+        marketType: "team_total_goals",
+        line: "1.5",
+        outcomeName: "Under +1.5",
+        outcomeLabel: null,
+        outcomeSide: "under",
+      })
+    ).toBe("Under 1.5");
   });
 });

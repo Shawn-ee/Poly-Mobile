@@ -4,6 +4,7 @@ import { MarketGuardError } from "@/lib/marketGuards";
 import { assertMarketVisibleToUser } from "@/lib/marketAccess";
 import { getCustodyBalance } from "@/lib/wallet";
 import { buildPublicOrderbookSnapshot } from "@/server/services/orderbookSnapshot";
+import { quoteOutcomeDisplayLabel } from "@/server/services/quoteDisplayLabel";
 
 const ZERO = new Prisma.Decimal(0);
 const ONE = new Prisma.Decimal(1);
@@ -357,7 +358,7 @@ export const getCanonicalMarketQuote = async (params: {
           ...(params.outcomeId ? { id: params.outcomeId } : {}),
         },
         orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }],
-        select: { id: true, name: true },
+        select: { id: true, name: true, label: true, side: true, referenceOutcomeLabel: true },
       },
     },
   });
@@ -406,7 +407,14 @@ export const getCanonicalMarketQuote = async (params: {
 
       return {
         outcomeId: outcome.id,
-        outcomeName: outcome.name,
+        outcomeName: quoteOutcomeDisplayLabel({
+          marketType: market.marketType,
+          line: market.line,
+          outcomeName: outcome.name,
+          outcomeLabel: outcome.label,
+          outcomeSide: outcome.side,
+        }),
+        referenceOutcomeLabel: outcome.referenceOutcomeLabel ?? null,
         bestBid: bid,
         bestAsk: ask,
         bestBidSize: bestBid?.size ?? null,

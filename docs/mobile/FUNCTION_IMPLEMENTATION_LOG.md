@@ -16388,3 +16388,20 @@ Known limitations:
   - `docs/mobile/LIVE_RUNTIME_GAP_LIST.md`
   - `docs/mobile/ODDS_PROVIDER_REFRESH_POLICY.md`
 - Known limitations: installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1. Multi-event polling remains P2.
+
+## Cycle ZAM - Quote Display Label Contract
+
+- Feature/runtime worked on: canonical market quote labels for the current Odds API sportsbook totals markets.
+- Frontend components touched: no visible component layout changes. Mobile quote typing and quote normalization service now preserve optional `referenceOutcomeLabel` from the backend quote payload.
+- Backend/routes touched: `GET /api/markets/:marketId/quote` through `getCanonicalMarketQuote`.
+- Important functions/services touched: `quoteOutcomeDisplayLabel` in `src/server/services/quoteDisplayLabel.ts`, `getCanonicalMarketQuote` in `src/server/services/canonicalApi.ts`, and mobile `quoteToTicketQuote`.
+- User/runtime interactions supported: trade ticket and quote-driven mobile surfaces can display clean prediction-market labels such as `Over 2.5` instead of raw sportsbook labels such as `Over +2.5`, while still keeping the raw provider label in `referenceOutcomeLabel`.
+- State transitions: none. Quote reads still use the same orderbook snapshot, bid/ask, last fill, and market visibility checks. No orders, positions, provider snapshots, or settlement records are mutated.
+- API/data dependencies: `Market.marketType`, `Market.line`, `Outcome.side`, `Outcome.label`, `Outcome.referenceOutcomeLabel`, `GET /api/markets/:marketId/quote`, and mobile `Quote.referenceOutcomeLabel`.
+- Proof:
+  - `npx jest --runInBand src/__tests__/market.quote.route.test.ts`
+  - `npx tsc --noEmit --pretty false --incremental false`
+  - `npm --prefix mobile run typecheck`
+  - `npm run mobile:one-event-runtime-status`
+  - `docs/mobile/audits/cycle-ZAM-quote-display-label-contract.md`
+- Known limitations: quote route still uses the current orderbook price source. Installed unattended service ownership and production official-result auto-settlement remain P1.

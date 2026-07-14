@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T06:17:00.782Z",
+  "generatedAt": "2026-07-14T06:33:28.273Z",
   "scope": "holiwyn-live-runtime-ordered-audit-gate",
   "pass": true,
   "providerQuotaUsedByThisGate": false,
@@ -16,8 +16,8 @@
       "id": "runtime-status",
       "command": "npm run mobile:one-event-runtime-status",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
-      "startedAt": "2026-07-14T06:16:51.460Z",
-      "finishedAt": "2026-07-14T06:16:54.172Z",
+      "startedAt": "2026-07-14T06:33:21.783Z",
+      "finishedAt": "2026-07-14T06:33:25.213Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -26,8 +26,8 @@
       "id": "phase-audit",
       "command": "npm run mobile:one-event-phase-audit",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/live-runtime-phase-audit-summary.redacted.json",
-      "startedAt": "2026-07-14T06:16:54.173Z",
-      "finishedAt": "2026-07-14T06:16:59.770Z",
+      "startedAt": "2026-07-14T06:33:25.214Z",
+      "finishedAt": "2026-07-14T06:33:27.220Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -36,8 +36,8 @@
       "id": "completion-audit",
       "command": "npm run mobile:live-runtime-completion-audit",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json",
-      "startedAt": "2026-07-14T06:16:59.770Z",
-      "finishedAt": "2026-07-14T06:17:00.776Z",
+      "startedAt": "2026-07-14T06:33:27.221Z",
+      "finishedAt": "2026-07-14T06:33:28.268Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false

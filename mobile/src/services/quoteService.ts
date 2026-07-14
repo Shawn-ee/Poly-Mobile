@@ -4,6 +4,7 @@ import type { Quote } from "../types";
 export type TicketQuote = {
   outcomeId: string;
   outcomeName: string;
+  referenceOutcomeLabel?: string | null;
   probability: number;
   bestBid: number | null;
   bestAsk: number | null;
@@ -63,6 +64,7 @@ export const quoteToTicketQuote = (quote: Quote): TicketQuote => {
   return {
     outcomeId: quote.outcomeId,
     outcomeName: quote.outcomeName,
+    referenceOutcomeLabel: quote.referenceOutcomeLabel ?? null,
     probability,
     bestBid: toProbability(bestBid),
     bestAsk: toProbability(bestAsk),
