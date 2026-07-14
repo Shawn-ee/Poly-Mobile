@@ -15964,3 +15964,14 @@ Known limitations:
 - State transitions: read-only reporting only. It spends no provider quota, prints no provider key, starts no loops, imports no markets, places no orders, and executes no settlement.
 - Proof summary: `docs/mobile/harness/odds-api-live-runtime/live-odds-refresh-preflight-summary.redacted.json`.
 - Known limitations: this does not make live odds fresh by itself. It only makes the live-refresh decision explicit and safe before an operator intentionally spends provider quota.
+
+## Cycle CASHOUTS23D - Spain vs France Cashout S23 Proof
+
+- Feature/page worked on: proof and audit refresh for the internal tester mobile trading path, focused on Portfolio Cash out -> close-position ticket -> Max -> SELL -> History for `Spain vs. France`.
+- Frontend components touched: no source implementation changes in this cycle. Verified existing `Portfolio`, `TradeTicket`, and position-ticket wiring on the real S23 runtime.
+- Backend/routes touched: no route implementation changes. Existing `GET /api/health`, `GET /api/events`, `GET /api/mobile/events/:slug/live-detail`, `GET /api/markets/:marketId/quote`, `POST /api/orders`, `GET /api/portfolio`, and `GET /api/portfolio/history` were exercised by the proof.
+- Important functions/services touched: no source implementation changes. The proof exercised `openPositionTrade`, `loadTicketQuotes`, `buildPositionTradeTicketIdentity`, `availablePositionShares`, and `submitTicketOrder`.
+- User interactions supported/proved: Home showed Spain vs. France; Event Detail loaded backend Game Lines; Over 2.5 opened a Buy ticket; swipe buy reached Portfolio; Portfolio Cash out opened close-position mode; Max used `43.1` owned shares instead of wallet balance; the cashout ticket hid the Yes/No selector; swipe cashout submitted a SELL; Portfolio History showed sold activity.
+- State transitions: server-backed fake-token BUY filled into a Portfolio position, then server-backed SELL closed the owned outcome position and appended History.
+- Proof: `docs/mobile/harness/cycle-CASHOUTS23D-spain-france-cashout/cycle-CASHOUTS23D-odds-api-s23-visible-flow.json`.
+- Known limitations: proof uses deterministic local maker liquidity for the cashout bid. A dedicated close-position quote endpoint remains P1 polish.
