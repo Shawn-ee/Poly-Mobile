@@ -1,17 +1,17 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-14T14:30:26.168Z",
+  "generatedAt": "2026-07-15T06:55:19.246Z",
   "scope": "odds-api-one-event-data-hygiene",
   "mode": "apply",
   "event": {
     "id": "bdd748d4-8784-459d-a612-a54903892c89",
     "slug": "odds-api-single-soccer-test",
-    "title": "Spain vs. France",
-    "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
-    "startTime": "2026-07-14T19:00:00.000Z"
+    "title": "Argentina vs. England",
+    "externalEventId": "ced22494ae0bbb8cc4f7108bf6f493df",
+    "startTime": "2026-07-15T19:00:00.000Z"
   },
   "policy": {
-    "mobileVisibleMarketTitlePrefix": "Spain vs. France:",
+    "mobileVisibleMarketTitlePrefix": "Argentina vs. England:",
     "referenceSources": [
       "sportsbook-odds",
       "contract-fixture"
@@ -20,13 +20,13 @@
     "providerQuotaUsed": false
   },
   "before": {
-    "totalProviderMarketCount": 19,
+    "totalProviderMarketCount": 22,
     "visibleProviderMarketCount": 19,
     "staleVisibleMarketCount": 0,
     "staleVisibleMarkets": []
   },
   "after": {
-    "totalProviderMarketCount": 19,
+    "totalProviderMarketCount": 22,
     "visibleProviderMarketCount": 19,
     "staleVisibleMarketCount": 0,
     "validVisibleMarketCount": 19

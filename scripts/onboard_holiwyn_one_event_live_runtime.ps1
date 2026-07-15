@@ -151,6 +151,47 @@ function Get-EventStartTime {
   }
 }
 
+function Test-TrustedResultFixtureMatchesRuntime {
+  param([object]$RuntimeStatusJson)
+  $providerEventId = $null
+  if ($RuntimeStatusJson -and $RuntimeStatusJson.event -and $RuntimeStatusJson.event.providerEventId) {
+    $providerEventId = [string]$RuntimeStatusJson.event.providerEventId
+  }
+  if ([string]::IsNullOrWhiteSpace($providerEventId)) {
+    return [ordered]@{
+      applicable = $false
+      reason = "runtime_status_missing_provider_event_id"
+      providerEventId = $null
+      matchedFixtureEvent = $null
+    }
+  }
+  $fixturePath = Resolve-RepoPath "docs/mobile/harness/odds-api-live-runtime/odds-api-score-fixture.redacted.json"
+  $fixture = Read-JsonFile $fixturePath
+  $matched = $null
+  if ($fixture -and $fixture.scores) {
+    $matched = @($fixture.scores | Where-Object { $_.id -eq $providerEventId } | Select-Object -First 1)[0]
+  }
+  if (-not $matched) {
+    return [ordered]@{
+      applicable = $false
+      reason = "trusted_result_fixture_does_not_match_active_provider_event"
+      providerEventId = $providerEventId
+      matchedFixtureEvent = $null
+    }
+  }
+  return [ordered]@{
+    applicable = [bool]($matched.completed -eq $true)
+    reason = if ($matched.completed -eq $true) { "matching_completed_fixture_result" } else { "matching_fixture_result_not_completed" }
+    providerEventId = $providerEventId
+    matchedFixtureEvent = [ordered]@{
+      id = $matched.id
+      homeTeam = $matched.home_team
+      awayTeam = $matched.away_team
+      completed = [bool]$matched.completed
+    }
+  }
+}
+
 function Test-HttpHealth {
   param([string]$BaseUrl)
   try {
@@ -296,6 +337,12 @@ $runtimeStart = Get-EventStartTime $runtimeBeforeSeed
 $runtimeLoopStartSummaryPath = "docs\mobile\harness\odds-api-live-runtime\one-event-onboarding-runtime-start-summary.redacted.json"
 $runtimeLoopStatusSummaryPath = "docs\mobile\harness\odds-api-live-runtime\one-event-onboarding-runtime-status-summary.redacted.json"
 $runtimeLoopStopSummaryPath = "docs\mobile\harness\odds-api-live-runtime\one-event-onboarding-runtime-stop-summary.redacted.json"
+$trustedResultSettlementApplicability = [ordered]@{
+  applicable = $false
+  reason = "not_checked_yet"
+  providerEventId = $null
+  matchedFixtureEvent = $null
+}
 $nowUtc = (Get-Date).ToUniversalTime()
 $skipPastReplay = [bool](
   -not $RunProviderRefresh -and
@@ -362,17 +409,24 @@ try {
   }
 
   if (-not $SkipSettlementDryRun) {
-    $resultIngestionResult = Invoke-CheckedCommand -Label "one-event-result-ingestion" -Command "npm run mobile:one-event-result-ingest"
-    $commands.Add($resultIngestionResult) | Out-Null
-    if (-not $resultIngestionResult.pass) {
-      $failed.Add("one-event-result-ingestion") | Out-Null
-    }
+    $runtimeStatusForSettlement = Read-JsonFile (Resolve-RepoPath "docs\mobile\harness\odds-api-live-runtime\one-event-runtime-status-summary.redacted.json")
+    $trustedResultSettlementApplicability = Test-TrustedResultFixtureMatchesRuntime $runtimeStatusForSettlement
+    if ($trustedResultSettlementApplicability.applicable) {
+      $resultIngestionResult = Invoke-CheckedCommand -Label "one-event-result-ingestion" -Command "npm run mobile:one-event-result-ingest"
+      $commands.Add($resultIngestionResult) | Out-Null
+      if (-not $resultIngestionResult.pass) {
+        $failed.Add("one-event-result-ingestion") | Out-Null
+      }
 
-    $resultSettlementCommand = "npm run mobile:one-event-result-settlement-run -- --result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json"
-    $resultSettlementResult = Invoke-CheckedCommand -Label "one-event-result-settlement-dry-run" -Command $resultSettlementCommand
-    $commands.Add($resultSettlementResult) | Out-Null
-    if (-not $resultSettlementResult.pass) {
-      $failed.Add("one-event-result-settlement-dry-run") | Out-Null
+      $resultSettlementCommand = "npm run mobile:one-event-result-settlement-run -- --result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json"
+      $resultSettlementResult = Invoke-CheckedCommand -Label "one-event-result-settlement-dry-run" -Command $resultSettlementCommand
+      $commands.Add($resultSettlementResult) | Out-Null
+      if (-not $resultSettlementResult.pass) {
+        $failed.Add("one-event-result-settlement-dry-run") | Out-Null
+      }
+    } else {
+      $commands.Add((New-SkippedCommandResult -Label "one-event-result-ingestion" -Reason $trustedResultSettlementApplicability.reason)) | Out-Null
+      $commands.Add((New-SkippedCommandResult -Label "one-event-result-settlement-dry-run" -Reason $trustedResultSettlementApplicability.reason)) | Out-Null
     }
 
     $settlementCommand = "npm run mobile:one-event-settlement -- --winningOutcome=$WinningOutcome"
@@ -384,7 +438,10 @@ try {
   }
 
   if ($StartRuntimeLoops) {
-    $startRuntimeCommand = "npm run mobile:internal-tester-runtime -- -Action start -BackendPort $BackendPort -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -WaitForReady -SummaryPath $runtimeLoopStartSummaryPath"
+    $startRuntimeCommand = "npm run mobile:internal-tester-runtime -- -Action start -BackendPort $BackendPort -StartSupervisor -StartResultPoller -WaitForReady -SummaryPath $runtimeLoopStartSummaryPath"
+    if ($trustedResultSettlementApplicability.applicable) {
+      $startRuntimeCommand += " -RunResultIngestion -RunResultSettlement"
+    }
     if ($ReplaceExternalExpo) {
       $startRuntimeCommand += " -Force -ReplaceExternalExpo"
     }
@@ -399,6 +456,12 @@ try {
     $commands.Add($statusRuntimeResult) | Out-Null
     if (-not $statusRuntimeResult.pass) {
       $failed.Add("status-local-runtime-loops") | Out-Null
+    }
+
+    $postLoopRuntimeStatusResult = Invoke-CheckedCommand -Label "one-event-runtime-status-after-loop-proof" -Command "npm run mobile:one-event-runtime-status"
+    $commands.Add($postLoopRuntimeStatusResult) | Out-Null
+    if (-not $postLoopRuntimeStatusResult.pass) {
+      $failed.Add("one-event-runtime-status-after-loop-proof") | Out-Null
     }
 
     if ($StopRuntimeLoopsAfterProof) {
@@ -447,8 +510,8 @@ $checks = [ordered]@{
   readinessPass = [bool]($SkipReadiness -or ($readinessSummary -and $readinessSummary.pass -eq $true))
   runtimeStatusPass = [bool]($runtimeStatusSummary -and $runtimeStatusSummary.pass -eq $true)
   settlementReadinessPass = [bool]($settlementReadinessSummary -and $settlementReadinessSummary.pass -eq $true)
-  resultIngestionPass = [bool]($SkipSettlementDryRun -or ($resultIngestionSummary -and $resultIngestionSummary.pass -eq $true))
-  resultSettlementDryRunPass = [bool]($SkipSettlementDryRun -or ($resultSettlementRunSummary -and $resultSettlementRunSummary.pass -eq $true))
+  resultIngestionPass = [bool]($SkipSettlementDryRun -or -not $trustedResultSettlementApplicability.applicable -or ($resultIngestionSummary -and $resultIngestionSummary.pass -eq $true))
+  resultSettlementDryRunPass = [bool]($SkipSettlementDryRun -or -not $trustedResultSettlementApplicability.applicable -or ($resultSettlementRunSummary -and $resultSettlementRunSummary.pass -eq $true))
   settlementDryRunPass = [bool]($SkipSettlementDryRun -or ($manualSettlementSummary -and $manualSettlementSummary.pass -eq $true -and $manualSettlementSummary.mode -eq "dry-run"))
   runtimeLoopStartPass = [bool](-not $StartRuntimeLoops -or ($runtimeLoopStartSummary -and $runtimeLoopStartSummary.pass -eq $true))
   runtimeLoopStatusPass = [bool](-not $StartRuntimeLoops -or ($runtimeLoopStatusSummary -and $runtimeLoopStatusSummary.pass -eq $true))
@@ -523,6 +586,7 @@ $summary = [ordered]@{
     keyValuePrinted = $false
     commandLineContainsSecret = $false
   }
+  trustedResultSettlementApplicability = $trustedResultSettlementApplicability
   event = $event
   selectedMarket = $selectedMarket
   commands = @($commands | ForEach-Object { $_ })

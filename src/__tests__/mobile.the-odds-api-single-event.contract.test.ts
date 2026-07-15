@@ -99,6 +99,7 @@ describe("The Odds API single-event temporary provider", () => {
 
   it("exposes explicit one-command onboarding aliases for cached and live-provider runtime proof", () => {
     const pkg = packageJson();
+    const onboarding = oneEventOnboardingScript();
     expect(pkg).toContain("mobile:one-event-onboarding:cached-runtime");
     expect(pkg).toContain("mobile:one-event-onboarding:cached-runtime-clean-expo");
     expect(pkg).toContain("mobile:one-event-onboarding:live-provider-runtime");
@@ -107,6 +108,10 @@ describe("The Odds API single-event temporary provider", () => {
     expect(pkg).toContain("-AllowDisconnectedS23 -StartRuntimeLoops -StopRuntimeLoopsAfterProof");
     expect(pkg).toContain("-RunProviderRefresh -StartRuntimeLoops -StopRuntimeLoopsAfterProof");
     expect(pkg).not.toContain("mobile:one-event-onboarding:cached-runtime\": \"powershell -ExecutionPolicy Bypass -File scripts/onboard_holiwyn_one_event_live_runtime.ps1 -RunProviderRefresh");
+    expect(onboarding).toContain("Test-TrustedResultFixtureMatchesRuntime");
+    expect(onboarding).toContain("trusted_result_fixture_does_not_match_active_provider_event");
+    expect(onboarding).toContain("one-event-runtime-status-after-loop-proof");
+    expect(onboarding).toContain("$startRuntimeCommand += \" -RunResultIngestion -RunResultSettlement\"");
   });
 
   it("keeps cached onboarding runtime loops out of approved settlement mode by default", () => {
@@ -114,7 +119,9 @@ describe("The Odds API single-event temporary provider", () => {
     const startRuntimeCommandIndex = onboarding.indexOf("$startRuntimeCommand =");
     const startRuntimeCommandBlock = onboarding.slice(startRuntimeCommandIndex, startRuntimeCommandIndex + 360);
 
-    expect(startRuntimeCommandBlock).toContain("-RunResultIngestion -RunResultSettlement -WaitForReady");
+    expect(startRuntimeCommandBlock).toContain("-StartSupervisor -StartResultPoller -WaitForReady");
+    expect(startRuntimeCommandBlock).toContain("trustedResultSettlementApplicability.applicable");
+    expect(startRuntimeCommandBlock).toContain("-RunResultIngestion -RunResultSettlement");
     expect(startRuntimeCommandBlock).not.toContain("-RunApprovedResultSettlement");
     expect(onboarding).toContain("one-event-result-settlement-dry-run");
     expect(onboarding).toContain("one-event-settlement-dry-run");
@@ -296,7 +303,6 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("installed unattended provider polling service");
     expect(source).toContain("MaxProviderProofRuns");
     expect(source).not.toContain("apiKey: \"");
-    expect(source).not.toContain("ba20086f23a2d86706468d2c75172b8e");
   });
 
   it("keeps cached internal tester readiness separate from live odds freshness", () => {

@@ -11069,6 +11069,15 @@ Future migration concern:
 - Schema mismatch: none. No database model or migration change.
 - Temporary mock/static data: none. The report reads package/source files and does not call The Odds API.
 - Future migration concern: installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1 and should not be treated as complete just because local continuous commands exist.
+
+## Cycle ZCG - Cached One-Event Onboarding Proof Repair
+
+- Fields confirmed for mobile/runtime: `trustedResultSettlementApplicability`, `runtimeLoopsStartedByOnboarding`, `runtimeLoopsRunningDuringProof`, `runtimeLoopsStoppedAfterProof`, and post-loop runtime status proof are now part of the cached onboarding evidence.
+- Closed or narrowed: cached one-command onboarding now passes for the current `Argentina vs. England` event without spending provider quota. It no longer fails because a stale Spain/France score fixture is not applicable to the active provider event.
+- Route mismatch: none. The proof uses existing health/runtime/readiness routes and local scripts.
+- Schema mismatch: none. No Prisma model or migration change.
+- Temporary mock/static data: the trusted result fixture remains provider-shaped replay data, but it is not applied to the active event unless the fixture provider event id matches.
+- Future migration concern: a matching live or replay official-result source is still required before trusted-result settlement can run against the active event. Loop cleanup is slow and should be optimized before long unattended runs.
 - Remaining gaps: no P0 for the backend/route readiness gate. Fresh S23 UI proof for Argentina vs. England remains to be run before claiming a fresh-device visual pass. Installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1; multi-event polling/dashboard remains P2.
 
 ## Cycle ZCD-S23-LIVE - Fresh Event S23 Trading Proof

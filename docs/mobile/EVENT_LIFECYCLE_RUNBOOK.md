@@ -18,6 +18,7 @@
 | Need to prove | Command | Provider quota | Active event mutation |
 | --- | --- | --- | --- |
 | Runtime capability truth | `npm run mobile:runtime-capability-matrix` | No | No |
+| Cached one-event onboarding with loop proof | `npm run mobile:one-event-onboarding:cached-runtime` | No | Starts supervisor/result-poller for proof, then stops them |
 | Current lifecycle matrix | `npm run mobile:one-event-lifecycle-matrix` | No | No |
 | Canonical result ingestion evidence | `npm run mobile:one-event-result-ingestion-audit-event-proof` | No | No settlement execution |
 | Canonical settlement preflight evidence | `npm run mobile:one-event-settlement-audit-event-proof` | No | No settlement execution |
@@ -32,7 +33,7 @@ Run the result-ingestion, settlement-preflight, approval, result-review, and act
 1. Start Postgres and backend.
 2. For a quota-free one-command onboarding pass, run `npm run mobile:one-event-onboarding`. It blocks stale replay by default and restores the cached live-runtime event if the redacted replay fixture is older than the selected upcoming event.
 3. For the same onboarding pass with a live provider refresh, set `THE_ODDS_API_KEY` in the local process environment or store the raw key in ignored `.runtime/secrets/the-odds-api-key.txt`, then run `npm run mobile:one-event-onboarding -- -RunProviderRefresh`.
-3a. For a quota-free onboarding pass that also proves supervisor/result-poller startup and cleanup, run `npm run mobile:one-event-onboarding:cached-runtime`.
+3a. For a quota-free onboarding pass that also proves supervisor/result-poller startup and cleanup, run `npm run mobile:one-event-onboarding:cached-runtime`. If the trusted-result fixture does not match the active provider event, result ingestion/settlement dry-run is skipped explicitly instead of using stale result data.
 3b. For the same runtime-loop proof with an intentional live provider refresh, set `THE_ODDS_API_KEY` or store the raw key in ignored `.runtime/secrets/the-odds-api-key.txt`, then run `npm run mobile:one-event-onboarding:live-provider-runtime`.
 4. For only a quota-free consolidated readiness pass, run `npm run mobile:one-event-live-readiness`.
 5. For only a quota-free restart check, run `npm run mobile:one-event-live-runtime`.

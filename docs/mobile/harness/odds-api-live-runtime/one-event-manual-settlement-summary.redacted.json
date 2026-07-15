@@ -1,39 +1,39 @@
 {
-  "generatedAt": "2026-07-14T02:24:33.784Z",
+  "generatedAt": "2026-07-15T06:53:13.979Z",
   "scope": "odds-api-one-event-manual-settlement",
   "pass": true,
   "mode": "dry-run",
   "event": {
-    "id": "3722a197-6584-41e8-ab71-bfede8eedbf0",
+    "id": "bdd748d4-8784-459d-a612-a54903892c89",
     "slug": "odds-api-single-soccer-test",
-    "title": "Spain vs. France",
-    "startTime": "2026-07-14T19:00:00.000Z",
+    "title": "Argentina vs. England",
+    "startTime": "2026-07-15T19:00:00.000Z",
     "status": "active",
     "liveStatus": "LIVE"
   },
   "selectedMarket": {
-    "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-    "slug": "odds-api-single-soccer-test-totals-7439c2d603",
-    "title": "Spain vs. France: Total Goals 2.5",
+    "id": "38664599-1911-40b4-9c57-382498da8efb",
+    "slug": "odds-api-single-soccer-test-alternate-totals-f03de7d488",
+    "title": "Argentina vs. England: Total Goals 2.5",
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
     "statusBefore": "LIVE",
     "resolvedOutcomeIdBefore": null,
-    "collateralUSDCBefore": "2000"
+    "collateralUSDCBefore": "2550"
   },
   "winningOutcome": {
-    "id": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
+    "id": "f57b22fb-7dc8-412c-95b9-9ebf79639f03",
     "name": "Over 2.5",
     "label": "Over 2.5",
     "side": "over"
   },
   "preview": {
     "marketStatus": "LIVE",
-    "totalShares": "4000",
-    "totalWinningShares": "2000",
-    "totalPayout": "2000",
-    "collateralUSDC": "2000",
+    "totalShares": "5100",
+    "totalWinningShares": "2550",
+    "totalPayout": "2550",
+    "collateralUSDC": "2550",
     "payoutConservationPass": true,
     "blockers": [],
     "openOrderCleanup": {
@@ -41,25 +41,25 @@
       "buyOrderLockedUSDCToRelease": "104",
       "sellOrderSharesToRelease": "200"
     },
-    "payoutCount": 10,
-    "loserPositionCount": 10,
+    "payoutCount": 14,
+    "loserPositionCount": 13,
     "mutation": "none"
   },
   "execution": {
     "attempted": false,
     "reason": "dry_run_default",
-    "requiredConfirm": "SETTLE:78ea76f1-fc8f-419b-ac21-2554d79093f6:cf189c8a-cadc-4742-9f1f-e64a4911f228"
+    "requiredConfirm": "SETTLE:38664599-1911-40b4-9c57-382498da8efb:f57b22fb-7dc8-412c-95b9-9ebf79639f03"
   },
   "postMarket": {
     "status": "LIVE",
     "resolvedOutcomeId": null,
     "settlementStatus": null,
-    "collateralUSDC": "2000"
+    "collateralUSDC": "2550"
   },
   "controls": {
     "dryRunIsDefault": true,
     "executeRequiresFlag": "--execute",
-    "executeRequiresConfirm": "SETTLE:78ea76f1-fc8f-419b-ac21-2554d79093f6:cf189c8a-cadc-4742-9f1f-e64a4911f228",
+    "executeRequiresConfirm": "SETTLE:38664599-1911-40b4-9c57-382498da8efb:f57b22fb-7dc8-412c-95b9-9ebf79639f03",
     "actorUserId": "holiwyn-local-settlement-operator",
     "officialResultProvider": null,
     "officialResultProviderStatus": "missing"

@@ -20,6 +20,24 @@ Current machine-readable truth:
 - Lifecycle scheduling is one-shot by itself, and becomes repeated only through the supervisor loop.
 - Installed unattended service ownership is still missing and remains P1.
 
+## Cycle ZCG - Cached One-Command Runtime Proof
+
+`npm run mobile:one-event-onboarding:cached-runtime` was rerun against the current `Argentina vs. England` event and passed with 0 P0 gaps.
+
+Evidence:
+
+- Cached live restore was used because the redacted replay fixture is older than the current live-runtime event.
+- No provider quota was spent.
+- Supervisor and result-poller loops started and were observed running during proof.
+- Runtime status was refreshed after loop proof and before cleanup.
+- Loops stopped after proof and no Holiwyn loop process remained.
+- Trusted-result ingestion/settlement was skipped because the local score fixture references a different provider event id. This avoids settling or previewing the active event with stale result data.
+
+Open runtime observations:
+
+- Stop cleanup completed but took roughly 139 seconds. This is not a P0 blocker, but the stop path should be tightened before long unattended local runs.
+- Installed always-on provider refresh and market-maker daemon ownership remains P1.
+
 ## Existing Pieces
 
 | Area | Existing implementation | Current runtime status |

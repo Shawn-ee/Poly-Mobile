@@ -14,6 +14,16 @@ The Local MVP has deterministic one-shot maker liquidity. A true production daem
 - Provider proof inside the supervisor is opt-in and capped by `MaxProviderProofRuns`.
 - The remaining gap is not maker logic itself; it is installed unattended service ownership.
 
+## Cycle ZCG - Cached Onboarding Runtime Loop Proof
+
+The cached onboarding proof started the local supervisor and result-poller, observed both running, refreshed runtime status, and stopped both loops. In this mode the supervisor did not run provider refresh and did not run trusted-result settlement because the trusted result fixture did not match the active event.
+
+Maker implication:
+
+- The local maker path is now proven through one-command onboarding in cached/no-quota mode.
+- Repeated maker reseeding is available while the supervisor process is running.
+- Installed daemon ownership remains P1; the loop is still a local process, not a service.
+
 ## Existing Modes
 
 | Mode | Status | Notes |

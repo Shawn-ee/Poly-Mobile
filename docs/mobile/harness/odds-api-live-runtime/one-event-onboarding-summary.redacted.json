@@ -1,9 +1,9 @@
 {
-    "generatedAt":  "2026-07-14T02:25:41.0794256Z",
+    "generatedAt":  "2026-07-15T06:56:59.8793891Z",
     "scope":  "holiwyn-one-event-live-onboarding",
     "pass":  true,
-    "startedAt":  "2026-07-14T02:24:12.1831769Z",
-    "completedAt":  "2026-07-14T02:25:41.0804696Z",
+    "startedAt":  "2026-07-15T06:52:49.6593702Z",
+    "completedAt":  "2026-07-15T06:56:59.8803890Z",
     "mode":  "quota-free-replay",
     "providerPolicy":  {
                            "providerSource":  "the-odds-api",
@@ -18,30 +18,37 @@
                            "allowPastReplay":  false,
                            "skippedPastReplay":  true,
                            "replayEventStartTime":  "2026-07-12T01:00:00.0000000+00:00",
-                           "existingLiveRuntimeStartTime":  "2026-07-14T19:00:00.0000000+00:00",
+                           "existingLiveRuntimeStartTime":  "2026-07-15T19:00:00.0000000+00:00",
                            "keySource":  "not_required",
                            "secretFilePath":  ".runtime/secrets/the-odds-api-key.txt",
                            "secretFileSupported":  true,
                            "keyValuePrinted":  false,
                            "commandLineContainsSecret":  false
                        },
+    "trustedResultSettlementApplicability":  {
+                                                 "applicable":  false,
+                                                 "reason":  "trusted_result_fixture_does_not_match_active_provider_event",
+                                                 "providerEventId":  "ced22494ae0bbb8cc4f7108bf6f493df",
+                                                 "matchedFixtureEvent":  null
+                                             },
     "event":  {
-                  "providerEventId":  "f9aa13a662d1658e5a02cfc06d6a2d73",
+                  "providerEventId":  "ced22494ae0bbb8cc4f7108bf6f493df",
                   "sportKey":  "soccer_fifa_world_cup",
-                  "title":  "Spain vs. France",
-                  "commenceTime":  "2026-07-14T19:00:00Z",
+                  "title":  "Argentina vs. England",
+                  "commenceTime":  "2026-07-15T19:00:00Z",
                   "localSlug":  "odds-api-single-soccer-test"
               },
     "selectedMarket":  {
-                           "id":  "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-                           "slug":  "odds-api-single-soccer-test-totals-7439c2d603",
-                           "title":  "Spain vs. France: Total Goals 2.5",
+                           "id":  "38664599-1911-40b4-9c57-382498da8efb",
+                           "slug":  "odds-api-single-soccer-test-alternate-totals-f03de7d488",
+                           "title":  "Argentina vs. England: Total Goals 2.5",
                            "marketType":  "total_goals",
                            "marketGroupKey":  "totals",
                            "line":  "2.5",
-                           "outcomeId":  "cf189c8a-cadc-4742-9f1f-e64a4911f228",
+                           "outcomeId":  "f57b22fb-7dc8-412c-95b9-9ebf79639f03",
                            "outcomeName":  "Over 2.5",
-                           "referenceTokenId":  "odds-api-6ec5620aa25c4fcd08f1d70e"
+                           "referenceOutcomeLabel":  "Over 2.5",
+                           "referenceTokenId":  "odds-api-ff0162910c11835d3531adfe"
                        },
     "commands":  [
                      {
@@ -51,8 +58,8 @@
                          "pass":  true,
                          "skipped":  true,
                          "reason":  "Redacted replay fixture is older than current UTC and a newer live-runtime event summary exists; pass -AllowPastReplay to intentionally overwrite local one-event state with the replay fixture.",
-                         "startedAt":  "2026-07-14T02:24:12.2188707Z",
-                         "finishedAt":  "2026-07-14T02:24:12.2188707Z"
+                         "startedAt":  "2026-07-15T06:52:49.6955844Z",
+                         "finishedAt":  "2026-07-15T06:52:49.6955844Z"
                      },
                      {
                          "label":  "cached-live-runtime-restore",
@@ -61,8 +68,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-14T02:24:12.2273789Z",
-                         "finishedAt":  "2026-07-14T02:24:13.5373555Z"
+                         "startedAt":  "2026-07-15T06:52:49.7038073Z",
+                         "finishedAt":  "2026-07-15T06:52:51.2589069Z"
                      },
                      {
                          "label":  "one-event-live-readiness",
@@ -71,8 +78,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-14T02:24:13.5373555Z",
-                         "finishedAt":  "2026-07-14T02:24:23.3163357Z"
+                         "startedAt":  "2026-07-15T06:52:51.2599101Z",
+                         "finishedAt":  "2026-07-15T06:53:10.5751280Z"
                      },
                      {
                          "label":  "one-event-runtime-status",
@@ -81,8 +88,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-14T02:24:23.3163357Z",
-                         "finishedAt":  "2026-07-14T02:24:24.8164960Z"
+                         "startedAt":  "2026-07-15T06:53:10.5751280Z",
+                         "finishedAt":  "2026-07-15T06:53:12.2560030Z"
                      },
                      {
                          "label":  "one-event-settlement-readiness",
@@ -91,28 +98,28 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-14T02:24:24.8175003Z",
-                         "finishedAt":  "2026-07-14T02:24:25.5751985Z"
+                         "startedAt":  "2026-07-15T06:53:12.2560030Z",
+                         "finishedAt":  "2026-07-15T06:53:13.1844867Z"
                      },
                      {
                          "label":  "one-event-result-ingestion",
-                         "command":  "npm run mobile:one-event-result-ingest",
+                         "command":  "skipped",
                          "exitCode":  0,
-                         "timedOut":  false,
-                         "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-14T02:24:25.5751985Z",
-                         "finishedAt":  "2026-07-14T02:24:26.3122864Z"
+                         "skipped":  true,
+                         "reason":  "trusted_result_fixture_does_not_match_active_provider_event",
+                         "startedAt":  "2026-07-15T06:53:13.1971885Z",
+                         "finishedAt":  "2026-07-15T06:53:13.1971885Z"
                      },
                      {
                          "label":  "one-event-result-settlement-dry-run",
-                         "command":  "npm run mobile:one-event-result-settlement-run -- --result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
+                         "command":  "skipped",
                          "exitCode":  0,
-                         "timedOut":  false,
-                         "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-14T02:24:26.3128584Z",
-                         "finishedAt":  "2026-07-14T02:24:27.4707716Z"
+                         "skipped":  true,
+                         "reason":  "trusted_result_fixture_does_not_match_active_provider_event",
+                         "startedAt":  "2026-07-15T06:53:13.1971885Z",
+                         "finishedAt":  "2026-07-15T06:53:13.1971885Z"
                      },
                      {
                          "label":  "one-event-settlement-dry-run",
@@ -121,18 +128,18 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-14T02:24:27.4707716Z",
-                         "finishedAt":  "2026-07-14T02:24:33.8441871Z"
+                         "startedAt":  "2026-07-15T06:53:13.1971885Z",
+                         "finishedAt":  "2026-07-15T06:53:14.0333508Z"
                      },
                      {
                          "label":  "start-local-runtime-loops",
-                         "command":  "npm run mobile:internal-tester-runtime -- -Action start -BackendPort 3002 -StartSupervisor -StartResultPoller -RunResultIngestion -RunResultSettlement -WaitForReady -SummaryPath docs\\mobile\\harness\\odds-api-live-runtime\\one-event-onboarding-runtime-start-summary.redacted.json",
+                         "command":  "npm run mobile:internal-tester-runtime -- -Action start -BackendPort 3002 -StartSupervisor -StartResultPoller -WaitForReady -SummaryPath docs\\mobile\\harness\\odds-api-live-runtime\\one-event-onboarding-runtime-start-summary.redacted.json",
                          "exitCode":  0,
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-14T02:24:33.8451873Z",
-                         "finishedAt":  "2026-07-14T02:25:28.4406752Z"
+                         "startedAt":  "2026-07-15T06:53:14.0333508Z",
+                         "finishedAt":  "2026-07-15T06:54:15.1617569Z"
                      },
                      {
                          "label":  "status-local-runtime-loops",
@@ -141,8 +148,18 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-14T02:25:28.4416794Z",
-                         "finishedAt":  "2026-07-14T02:25:33.2038627Z"
+                         "startedAt":  "2026-07-15T06:54:15.1617569Z",
+                         "finishedAt":  "2026-07-15T06:54:33.0552615Z"
+                     },
+                     {
+                         "label":  "one-event-runtime-status-after-loop-proof",
+                         "command":  "npm run mobile:one-event-runtime-status",
+                         "exitCode":  0,
+                         "timedOut":  false,
+                         "timeoutSeconds":  180,
+                         "pass":  true,
+                         "startedAt":  "2026-07-15T06:54:33.0552615Z",
+                         "finishedAt":  "2026-07-15T06:54:35.7214391Z"
                      },
                      {
                          "label":  "stop-local-runtime-loops-after-proof",
@@ -151,8 +168,8 @@
                          "timedOut":  false,
                          "timeoutSeconds":  180,
                          "pass":  true,
-                         "startedAt":  "2026-07-14T02:25:33.2038627Z",
-                         "finishedAt":  "2026-07-14T02:25:40.8229925Z"
+                         "startedAt":  "2026-07-15T06:54:35.7214391Z",
+                         "finishedAt":  "2026-07-15T06:56:54.6962759Z"
                      }
                  ],
     "backend":  {
@@ -163,24 +180,25 @@
                                                 "status":  "ok",
                                                 "db":  "connected",
                                                 "env":  "development",
-                                                "timestamp":  "2026-07-14T02:25:40.871Z"
+                                                "timestamp":  "2026-07-15T06:56:54.742Z"
                                             },
                                    "error":  null
                                }
                 },
     "dockerPostgres":  {
                            "ok":  true,
-                           "status":  "poly_postgres|Up 9 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp",
+                           "status":  "poly_postgres|Up 10 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp",
                            "raw":  [
-                                       "poly_postgres|Up 9 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
+                                       "poly_postgres|Up 10 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
                                    ]
                        },
     "s23":  {
-                "connected":  true,
-                "deviceId":  "172.16.200.27:44029",
-                "model":  "SM_S911U1",
-                "raw":  "172.16.200.27:44029    device product:dm1quew model:SM_S911U1 device:dm1q transport_id:2",
-                "adbTimedOut":  false
+                "connected":  false,
+                "deviceId":  null,
+                "model":  null,
+                "raw":  "",
+                "adbTimedOut":  true,
+                "error":  "adb timed out after 5s"
             },
     "checks":  {
                    "seedOrReplayPass":  true,

@@ -1,26 +1,26 @@
 {
-  "generatedAt": "2026-07-14T02:24:25.521Z",
+  "generatedAt": "2026-07-15T06:53:13.128Z",
   "scope": "odds-api-one-event-settlement-readiness",
   "pass": true,
   "event": {
-    "id": "3722a197-6584-41e8-ab71-bfede8eedbf0",
+    "id": "bdd748d4-8784-459d-a612-a54903892c89",
     "slug": "odds-api-single-soccer-test",
-    "title": "Spain vs. France",
-    "startTime": "2026-07-14T19:00:00.000Z",
+    "title": "Argentina vs. England",
+    "startTime": "2026-07-15T19:00:00.000Z",
     "status": "active",
     "liveStatus": "LIVE"
   },
   "selectedMarket": {
-    "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-    "slug": "odds-api-single-soccer-test-totals-7439c2d603",
-    "title": "Spain vs. France: Total Goals 2.5",
+    "id": "38664599-1911-40b4-9c57-382498da8efb",
+    "slug": "odds-api-single-soccer-test-alternate-totals-f03de7d488",
+    "title": "Argentina vs. England: Total Goals 2.5",
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
     "status": "LIVE",
     "resolvedOutcomeId": null,
     "settlementStatus": null,
-    "collateralUSDC": "2000"
+    "collateralUSDC": "2550"
   },
   "settlementPath": {
     "previewService": "previewOrderbookSettlement",
@@ -37,7 +37,7 @@
   "previews": [
     {
       "outcome": {
-        "id": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
+        "id": "f57b22fb-7dc8-412c-95b9-9ebf79639f03",
         "name": "Over 2.5",
         "label": "Over 2.5",
         "side": "over"
@@ -45,14 +45,14 @@
       "result": {
         "ok": true,
         "preview": {
-          "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+          "marketId": "38664599-1911-40b4-9c57-382498da8efb",
           "marketStatus": "LIVE",
-          "winningOutcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
+          "winningOutcomeId": "f57b22fb-7dc8-412c-95b9-9ebf79639f03",
           "winningOutcomeName": "Over 2.5",
-          "collateralUSDC": "2000",
-          "totalShares": "4000",
-          "totalWinningShares": "2000",
-          "totalPayout": "2000",
+          "collateralUSDC": "2550",
+          "totalShares": "5100",
+          "totalWinningShares": "2550",
+          "totalPayout": "2550",
           "payoutConservationPass": true,
           "blockers": [],
           "openOrderCleanup": {
@@ -60,8 +60,8 @@
             "buyOrderLockedUSDCToRelease": "104",
             "sellOrderSharesToRelease": "200"
           },
-          "payoutCount": 10,
-          "loserPositionCount": 10,
+          "payoutCount": 14,
+          "loserPositionCount": 13,
           "mutation": "none"
         },
         "serviceAvailable": true,
@@ -72,7 +72,7 @@
     },
     {
       "outcome": {
-        "id": "2b498cd2-1a06-4b2d-918e-76199969e093",
+        "id": "0e18af6b-11be-476d-a5f8-58e8aef48d6f",
         "name": "Under 2.5",
         "label": "Under 2.5",
         "side": "under"
@@ -80,14 +80,14 @@
       "result": {
         "ok": true,
         "preview": {
-          "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+          "marketId": "38664599-1911-40b4-9c57-382498da8efb",
           "marketStatus": "LIVE",
-          "winningOutcomeId": "2b498cd2-1a06-4b2d-918e-76199969e093",
+          "winningOutcomeId": "0e18af6b-11be-476d-a5f8-58e8aef48d6f",
           "winningOutcomeName": "Under 2.5",
-          "collateralUSDC": "2000",
-          "totalShares": "4000",
-          "totalWinningShares": "2000",
-          "totalPayout": "2000",
+          "collateralUSDC": "2550",
+          "totalShares": "5100",
+          "totalWinningShares": "2550",
+          "totalPayout": "2550",
           "payoutConservationPass": true,
           "blockers": [],
           "openOrderCleanup": {
@@ -95,8 +95,8 @@
             "buyOrderLockedUSDCToRelease": "104",
             "sellOrderSharesToRelease": "200"
           },
-          "payoutCount": 10,
-          "loserPositionCount": 10,
+          "payoutCount": 13,
+          "loserPositionCount": 14,
           "mutation": "none"
         },
         "serviceAvailable": true,
@@ -110,7 +110,7 @@
     "status": "LIVE",
     "resolvedOutcomeId": null,
     "settlementStatus": null,
-    "collateralUSDC": "2000"
+    "collateralUSDC": "2550"
   },
   "checks": {
     "eventLoaded": true,

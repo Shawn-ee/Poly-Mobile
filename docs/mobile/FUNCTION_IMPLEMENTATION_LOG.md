@@ -16879,3 +16879,17 @@ Known limitations:
   - `npm run mobile:runtime-capability-matrix`
 - Result: capability matrix passed with cached onboarding ready, live-provider onboarding operator-triggered, supervisor/result-poller continuous while their commands run, maker/lifecycle one-shot by default, and installed unattended service ownership still P1.
 - Known limitations: no S23 proof was required because this cycle changes runtime documentation/proof infrastructure only. It does not install a production daemon or spend Odds API quota.
+
+## Cycle ZCG - Cached One-Event Onboarding Proof Repair
+
+- Feature/runtime worked on: one-command cached one-event onboarding proof for the Backend Live Runtime Survey / One Event Live Pipeline.
+- Frontend components touched: none.
+- Backend/routes touched: no HTTP route, Prisma schema, mobile UI, provider fetch, order, portfolio, or settlement execution logic changed.
+- Important functions/services touched: `scripts/onboard_holiwyn_one_event_live_runtime.ps1` and `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`.
+- User/runtime interactions supported: `npm run mobile:one-event-onboarding:cached-runtime` now skips trusted-result ingestion/settlement when the local score fixture does not match the active backend provider event, starts local supervisor/result-poller loops without stale settlement work, refreshes runtime status after loop proof, and then stops the loops.
+- State transitions: local supervisor/result-poller processes are started for proof, observed running, and stopped. No provider quota is spent and no settlement execution is attempted.
+- API/data dependencies: existing backend health, Postgres health, runtime status, cached live restore, readiness, settlement readiness, manual settlement dry-run, and runtime manager artifacts. The active event remains `Argentina vs. England`; the trusted result fixture remains non-applicable because it references a different provider event id.
+- Proof:
+  - `npm run mobile:one-event-onboarding:cached-runtime`
+- Result: onboarding proof passed with 0 P0 gaps. Runtime loops started, were observed running during proof, and stopped after proof. Trusted-result settlement was skipped with reason `trusted_result_fixture_does_not_match_active_provider_event`.
+- Known limitations: S23 was disconnected for this backend-runtime proof; that is accepted by the command's `-AllowDisconnectedS23` mode. Loop cleanup is slow (`stop-local-runtime-loops-after-proof` took about 139 seconds) but completed. Installed always-on provider refresh and market-maker daemons remain P1.

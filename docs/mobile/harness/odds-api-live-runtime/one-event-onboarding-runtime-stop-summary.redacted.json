@@ -1,10 +1,10 @@
 {
-    "generatedAt":  "2026-07-14T02:25:40.7255565Z",
+    "generatedAt":  "2026-07-15T06:56:54.5924857Z",
     "scope":  "holiwyn-internal-tester-runtime-manager",
     "pass":  true,
     "action":  "stop",
-    "startedAt":  "2026-07-14T02:25:33.6749512Z",
-    "completedAt":  "2026-07-14T02:25:40.7270856Z",
+    "startedAt":  "2026-07-15T06:54:36.7949419Z",
+    "completedAt":  "2026-07-15T06:56:54.5970018Z",
     "operations":  [
                        {
                            "target":  "supervisor",
@@ -34,12 +34,12 @@
                                    "status":  "ok",
                                    "db":  "connected",
                                    "env":  "development",
-                                   "timestamp":  "2026-07-14T02:25:40.717Z",
+                                   "timestamp":  "2026-07-15T06:56:54.582Z",
                                    "error":  null
                                },
                     "portOwner":  {
                                       "port":  3002,
-                                      "pid":  43088,
+                                      "pid":  7196,
                                       "processName":  "node"
                                   },
                     "ownedByManager":  false,
@@ -49,7 +49,7 @@
                  "port":  8081,
                  "portOwner":  {
                                    "port":  8081,
-                                   "pid":  73524,
+                                   "pid":  7928,
                                    "processName":  "node"
                                },
                  "ownedByManager":  false,
@@ -60,15 +60,15 @@
              },
     "dockerPostgres":  {
                            "ok":  true,
-                           "status":  "poly_postgres|Up 9 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
+                           "status":  "poly_postgres|Up 10 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
                        },
     "s23":  {
-                "connected":  true,
-                "deviceId":  "172.16.200.27:44029",
-                "model":  "SM_S911U1",
-                "raw":  "172.16.200.27:44029    device product:dm1quew model:SM_S911U1 device:dm1q transport_id:2",
-                "adbTimedOut":  false,
-                "error":  null
+                "connected":  false,
+                "deviceId":  null,
+                "model":  null,
+                "raw":  null,
+                "adbTimedOut":  true,
+                "error":  "adb timed out after 5s"
             },
     "supervisor":  {
                        "startRequested":  false,
@@ -82,11 +82,11 @@
                                                             },
                                               "process":  {
                                                               "before":  {
-                                                                             "pid":  46624,
+                                                                             "pid":  71780,
                                                                              "running":  false
                                                                          },
                                                               "after":  {
-                                                                            "pid":  46624,
+                                                                            "pid":  71780,
                                                                             "running":  false
                                                                         }
                                                           }
@@ -104,11 +104,11 @@
                                                               },
                                                 "process":  {
                                                                 "before":  {
-                                                                               "pid":  57920,
+                                                                               "pid":  50188,
                                                                                "running":  false
                                                                            },
                                                                 "after":  {
-                                                                              "pid":  57920,
+                                                                              "pid":  50188,
                                                                               "running":  false
                                                                           }
                                                             }
@@ -119,7 +119,7 @@
                       "backendReady":  true,
                       "expoReady":  true,
                       "postgresReady":  true,
-                      "s23Connected":  true
+                      "s23Connected":  false
                   },
     "liveRuntimeStatus":  {
                               "checked":  true,
@@ -127,10 +127,10 @@
                               "warmRuntimeObserved":  false,
                               "statusDigest":  {
                                                    "ok":  false,
-                                                   "status":  503,
+                                                   "status":  null,
                                                    "currentRuntimeState":  null,
                                                    "providerQuotaUsedByStatus":  null,
-                                                   "error":  "The remote server returned an error: (503) Server Unavailable."
+                                                   "error":  "The request was aborted: The connection was closed unexpectedly."
                                                }
                           },
     "runtimeTruth":  {

@@ -1,35 +1,30 @@
 {
-    "generatedAt":  "2026-07-14T02:25:28.3631345Z",
+    "generatedAt":  "2026-07-15T06:54:15.0830002Z",
     "scope":  "holiwyn-internal-tester-runtime-manager",
     "pass":  true,
     "action":  "start",
-    "startedAt":  "2026-07-14T02:24:36.7266619Z",
-    "completedAt":  "2026-07-14T02:25:28.3641356Z",
+    "startedAt":  "2026-07-15T06:53:14.8866678Z",
+    "completedAt":  "2026-07-15T06:54:15.0840001Z",
     "operations":  [
-                       {
-                           "target":  "s23-adb-reverse",
-                           "result":  "configured",
-                           "pid":  null
-                       },
                        {
                            "target":  "backend",
                            "result":  "external_listener_reused",
-                           "pid":  43088
+                           "pid":  7196
                        },
                        {
                            "target":  "expo",
                            "result":  "external_listener_reused",
-                           "pid":  73524
+                           "pid":  7928
                        },
                        {
                            "target":  "supervisor",
                            "result":  "started_direct",
-                           "pid":  46624
+                           "pid":  71780
                        },
                        {
                            "target":  "result-poller",
                            "result":  "started_direct",
-                           "pid":  57920
+                           "pid":  50188
                        }
                    ],
     "backend":  {
@@ -39,12 +34,12 @@
                                    "status":  "ok",
                                    "db":  "connected",
                                    "env":  "development",
-                                   "timestamp":  "2026-07-14T02:25:28.334Z",
+                                   "timestamp":  "2026-07-15T06:54:15.051Z",
                                    "error":  null
                                },
                     "portOwner":  {
                                       "port":  3002,
-                                      "pid":  43088,
+                                      "pid":  7196,
                                       "processName":  "node"
                                   },
                     "ownedByManager":  false,
@@ -54,7 +49,7 @@
                  "port":  8081,
                  "portOwner":  {
                                    "port":  8081,
-                                   "pid":  73524,
+                                   "pid":  7928,
                                    "processName":  "node"
                                },
                  "ownedByManager":  false,
@@ -65,15 +60,15 @@
              },
     "dockerPostgres":  {
                            "ok":  true,
-                           "status":  "poly_postgres|Up 9 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
+                           "status":  "poly_postgres|Up 10 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
                        },
     "s23":  {
-                "connected":  true,
-                "deviceId":  "172.16.200.27:44029",
-                "model":  "SM_S911U1",
-                "raw":  "172.16.200.27:44029    device product:dm1quew model:SM_S911U1 device:dm1q transport_id:2",
-                "adbTimedOut":  false,
-                "error":  null
+                "connected":  false,
+                "deviceId":  null,
+                "model":  null,
+                "raw":  null,
+                "adbTimedOut":  true,
+                "error":  "adb timed out after 5s"
             },
     "supervisor":  {
                        "startRequested":  true,
@@ -87,11 +82,11 @@
                                                             },
                                               "process":  {
                                                               "before":  {
-                                                                             "pid":  46624,
+                                                                             "pid":  71780,
                                                                              "running":  true
                                                                          },
                                                               "after":  {
-                                                                            "pid":  46624,
+                                                                            "pid":  71780,
                                                                             "running":  true
                                                                         }
                                                           }
@@ -109,11 +104,11 @@
                                                               },
                                                 "process":  {
                                                                 "before":  {
-                                                                               "pid":  57920,
+                                                                               "pid":  50188,
                                                                                "running":  true
                                                                            },
                                                                 "after":  {
-                                                                              "pid":  57920,
+                                                                              "pid":  50188,
                                                                               "running":  true
                                                                           }
                                                             }
@@ -124,7 +119,7 @@
                       "backendReady":  true,
                       "expoReady":  true,
                       "postgresReady":  true,
-                      "s23Connected":  true
+                      "s23Connected":  false
                   },
     "liveRuntimeStatus":  {
                               "checked":  true,
@@ -132,10 +127,10 @@
                               "warmRuntimeObserved":  false,
                               "statusDigest":  {
                                                    "ok":  false,
-                                                   "status":  503,
+                                                   "status":  null,
                                                    "currentRuntimeState":  null,
                                                    "providerQuotaUsedByStatus":  null,
-                                                   "error":  "The remote server returned an error: (503) Server Unavailable."
+                                                   "error":  "The request was aborted: The connection was closed unexpectedly."
                                                }
                           },
     "runtimeTruth":  {

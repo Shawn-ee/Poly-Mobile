@@ -1,21 +1,21 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-14T02:24:20.848Z",
+  "generatedAt": "2026-07-15T06:53:03.551Z",
   "scope": "odds-api-one-event-lifecycle-scheduler",
   "event": {
-    "id": "3722a197-6584-41e8-ab71-bfede8eedbf0",
+    "id": "bdd748d4-8784-459d-a612-a54903892c89",
     "slug": "odds-api-single-soccer-test",
-    "title": "Spain vs. France",
-    "originalStartTime": "2026-07-14T19:00:00.000Z"
+    "title": "Argentina vs. England",
+    "originalStartTime": "2026-07-15T19:00:00.000Z"
   },
   "selectedMarket": {
-    "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-    "slug": "odds-api-single-soccer-test-totals-7439c2d603",
-    "title": "Spain vs. France: Total Goals 2.5",
+    "id": "38664599-1911-40b4-9c57-382498da8efb",
+    "slug": "odds-api-single-soccer-test-alternate-totals-f03de7d488",
+    "title": "Argentina vs. England: Total Goals 2.5",
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
-    "outcomeId": "cf189c8a-cadc-4742-9f1f-e64a4911f228",
+    "outcomeId": "f57b22fb-7dc8-412c-95b9-9ebf79639f03",
     "outcomeName": "Over 2.5"
   },
   "schedulerPolicy": {
@@ -27,24 +27,24 @@
   },
   "runs": {
     "noAction": {
-      "generatedAt": "2026-07-14T02:24:20.667Z",
+      "generatedAt": "2026-07-15T06:53:03.335Z",
       "eventSlug": "odds-api-single-soccer-test",
-      "eventTitle": "Spain vs. France",
+      "eventTitle": "Argentina vs. England",
       "eventStatus": "active",
       "eventLiveStatus": "SCHEDULED",
-      "eventStartTime": "2026-07-14T03:24:20.652Z",
+      "eventStartTime": "2026-07-15T07:53:03.320Z",
       "status": "completed",
       "dryRun": false,
-      "now": "2026-07-14T02:24:20.652Z",
+      "now": "2026-07-15T06:53:03.320Z",
       "suspendBeforeStartSeconds": 300,
       "referenceSource": "sportsbook-odds",
       "action": "none",
       "reason": "Event is not inside the suspend/close window.",
       "timing": {
-        "now": "2026-07-14T02:24:20.652Z",
-        "startTime": "2026-07-14T03:24:20.652Z",
-        "pauseAt": "2026-07-14T03:19:20.652Z",
-        "closeAt": "2026-07-14T03:24:20.652Z",
+        "now": "2026-07-15T06:53:03.320Z",
+        "startTime": "2026-07-15T07:53:03.320Z",
+        "pauseAt": "2026-07-15T07:48:03.320Z",
+        "closeAt": "2026-07-15T07:53:03.320Z",
         "secondsUntilStart": 3600,
         "startAgeSeconds": 0,
         "secondsUntilPause": 3300,
@@ -54,7 +54,7 @@
         "tradingWindow": "pre_start_open",
         "schedulerActionNow": "none",
         "nextLifecycleAction": "pause",
-        "nextLifecycleActionAt": "2026-07-14T03:19:20.652Z",
+        "nextLifecycleActionAt": "2026-07-15T07:48:03.320Z",
         "secondsUntilNextLifecycleAction": 3300,
         "operatorNextAction": "wait_until_suspend_window"
       },
@@ -68,24 +68,24 @@
       "changes": []
     },
     "pauseRun": {
-      "generatedAt": "2026-07-14T02:24:20.686Z",
+      "generatedAt": "2026-07-15T06:53:03.358Z",
       "eventSlug": "odds-api-single-soccer-test",
-      "eventTitle": "Spain vs. France",
+      "eventTitle": "Argentina vs. England",
       "eventStatus": "active",
       "eventLiveStatus": "SCHEDULED",
-      "eventStartTime": "2026-07-14T02:25:20.652Z",
+      "eventStartTime": "2026-07-15T06:54:03.320Z",
       "status": "completed",
       "dryRun": false,
-      "now": "2026-07-14T02:24:20.652Z",
+      "now": "2026-07-15T06:53:03.320Z",
       "suspendBeforeStartSeconds": 300,
       "referenceSource": "sportsbook-odds",
       "action": "pause",
       "reason": "Event is inside the pre-start suspend window; pause trading.",
       "timing": {
-        "now": "2026-07-14T02:24:20.652Z",
-        "startTime": "2026-07-14T02:25:20.652Z",
-        "pauseAt": "2026-07-14T02:20:20.652Z",
-        "closeAt": "2026-07-14T02:25:20.652Z",
+        "now": "2026-07-15T06:53:03.320Z",
+        "startTime": "2026-07-15T06:54:03.320Z",
+        "pauseAt": "2026-07-15T06:49:03.320Z",
+        "closeAt": "2026-07-15T06:54:03.320Z",
         "secondsUntilStart": 60,
         "startAgeSeconds": 0,
         "secondsUntilPause": -240,
@@ -95,7 +95,7 @@
         "tradingWindow": "pre_start_suspend_window",
         "schedulerActionNow": "pause",
         "nextLifecycleAction": "pause",
-        "nextLifecycleActionAt": "2026-07-14T02:20:20.652Z",
+        "nextLifecycleActionAt": "2026-07-15T06:49:03.320Z",
         "secondsUntilNextLifecycleAction": 0,
         "operatorNextAction": "pause_trading_before_kickoff"
       },
@@ -108,24 +108,24 @@
       "canceledOrderCount": 0,
       "changes": [
         {
-          "marketId": "378abc5d-144e-4797-9f07-8b271103468b",
-          "title": "Spain vs. France: Regulation Time Winner",
+          "marketId": "b1aa1fae-39dd-48df-b9f4-cba8a51d5901",
+          "title": "Argentina vs. England: Regulation Time Winner",
           "fromStatus": "LIVE",
           "toStatus": "PAUSED",
           "closeTimeBefore": null,
           "closeTimeAfter": null
         },
         {
-          "marketId": "528f1f87-cc1c-44a0-8732-876ef0676071",
-          "title": "Spain vs. France: Regulation Time Winner",
+          "marketId": "1d81bd81-85ef-436a-949c-979d0cb2ff20",
+          "title": "Argentina vs. England: Regulation Time Winner",
           "fromStatus": "LIVE",
           "toStatus": "PAUSED",
           "closeTimeBefore": null,
           "closeTimeAfter": null
         },
         {
-          "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-          "title": "Spain vs. France: Total Goals 2.5",
+          "marketId": "38664599-1911-40b4-9c57-382498da8efb",
+          "title": "Argentina vs. England: Total Goals 2.5",
           "fromStatus": "LIVE",
           "toStatus": "PAUSED",
           "closeTimeBefore": null,
@@ -134,24 +134,24 @@
       ]
     },
     "closeRun": {
-      "generatedAt": "2026-07-14T02:24:20.771Z",
+      "generatedAt": "2026-07-15T06:53:03.459Z",
       "eventSlug": "odds-api-single-soccer-test",
-      "eventTitle": "Spain vs. France",
+      "eventTitle": "Argentina vs. England",
       "eventStatus": "active",
       "eventLiveStatus": "LIVE",
-      "eventStartTime": "2026-07-14T02:24:19.652Z",
+      "eventStartTime": "2026-07-15T06:53:02.320Z",
       "status": "completed",
       "dryRun": false,
-      "now": "2026-07-14T02:24:20.652Z",
+      "now": "2026-07-15T06:53:03.320Z",
       "suspendBeforeStartSeconds": 300,
       "referenceSource": "sportsbook-odds",
       "action": "close",
       "reason": "Event startTime has passed or is now; close mobile-tradable markets.",
       "timing": {
-        "now": "2026-07-14T02:24:20.652Z",
-        "startTime": "2026-07-14T02:24:19.652Z",
-        "pauseAt": "2026-07-14T02:19:19.652Z",
-        "closeAt": "2026-07-14T02:24:19.652Z",
+        "now": "2026-07-15T06:53:03.320Z",
+        "startTime": "2026-07-15T06:53:02.320Z",
+        "pauseAt": "2026-07-15T06:48:02.320Z",
+        "closeAt": "2026-07-15T06:53:02.320Z",
         "secondsUntilStart": -1,
         "startAgeSeconds": 1,
         "secondsUntilPause": -301,
@@ -161,7 +161,7 @@
         "tradingWindow": "past_start",
         "schedulerActionNow": "close",
         "nextLifecycleAction": "close",
-        "nextLifecycleActionAt": "2026-07-14T02:24:19.652Z",
+        "nextLifecycleActionAt": "2026-07-15T06:53:02.320Z",
         "secondsUntilNextLifecycleAction": 0,
         "operatorNextAction": "close_markets_before_settlement"
       },
@@ -174,28 +174,28 @@
       "canceledOrderCount": 2,
       "changes": [
         {
-          "marketId": "378abc5d-144e-4797-9f07-8b271103468b",
-          "title": "Spain vs. France: Regulation Time Winner",
+          "marketId": "b1aa1fae-39dd-48df-b9f4-cba8a51d5901",
+          "title": "Argentina vs. England: Regulation Time Winner",
           "fromStatus": "LIVE",
           "toStatus": "CLOSED",
           "closeTimeBefore": null,
-          "closeTimeAfter": "2026-07-14T02:24:20.652Z"
+          "closeTimeAfter": "2026-07-15T06:53:03.320Z"
         },
         {
-          "marketId": "528f1f87-cc1c-44a0-8732-876ef0676071",
-          "title": "Spain vs. France: Regulation Time Winner",
+          "marketId": "1d81bd81-85ef-436a-949c-979d0cb2ff20",
+          "title": "Argentina vs. England: Regulation Time Winner",
           "fromStatus": "LIVE",
           "toStatus": "CLOSED",
           "closeTimeBefore": null,
-          "closeTimeAfter": "2026-07-14T02:24:20.652Z"
+          "closeTimeAfter": "2026-07-15T06:53:03.320Z"
         },
         {
-          "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-          "title": "Spain vs. France: Total Goals 2.5",
+          "marketId": "38664599-1911-40b4-9c57-382498da8efb",
+          "title": "Argentina vs. England: Total Goals 2.5",
           "fromStatus": "LIVE",
           "toStatus": "CLOSED",
           "closeTimeBefore": null,
-          "closeTimeAfter": "2026-07-14T02:24:20.652Z"
+          "closeTimeAfter": "2026-07-15T06:53:03.320Z"
         }
       ]
     }

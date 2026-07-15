@@ -1,5 +1,5 @@
 {
-    "generatedAt":  "2026-07-14T02:24:23.2496049Z",
+    "generatedAt":  "2026-07-15T06:53:10.5053103Z",
     "scope":  "holiwyn-one-event-live-readiness",
     "pass":  true,
     "commands":  [
@@ -8,32 +8,32 @@
                          "command":  "npm run mobile:one-event-data-hygiene-proof",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-14T02:24:14.0270106Z",
-                         "finishedAt":  "2026-07-14T02:24:14.5300834Z"
+                         "startedAt":  "2026-07-15T06:52:52.2278941Z",
+                         "finishedAt":  "2026-07-15T06:52:52.7839110Z"
                      },
                      {
                          "label":  "runtime",
                          "command":  "npm run mobile:one-event-live-runtime -- -BackendPort 3002 -SeedMaker",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-14T02:24:14.5330830Z",
-                         "finishedAt":  "2026-07-14T02:24:17.4379400Z"
+                         "startedAt":  "2026-07-15T06:52:52.7880194Z",
+                         "finishedAt":  "2026-07-15T06:53:00.6884843Z"
                      },
                      {
                          "label":  "lifecycle",
                          "command":  "npm run mobile:one-event-lifecycle-proof -- --baseUrl=http://127.0.0.1:3002",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-14T02:24:17.4394448Z",
-                         "finishedAt":  "2026-07-14T02:24:19.0326066Z"
+                         "startedAt":  "2026-07-15T06:53:00.6894838Z",
+                         "finishedAt":  "2026-07-15T06:53:01.8388684Z"
                      },
                      {
                          "label":  "lifecycle-scheduler",
                          "command":  "npm run mobile:one-event-lifecycle-scheduler-proof",
                          "exitCode":  0,
                          "pass":  true,
-                         "startedAt":  "2026-07-14T02:24:19.0326066Z",
-                         "finishedAt":  "2026-07-14T02:24:21.9523572Z"
+                         "startedAt":  "2026-07-15T06:53:01.8403720Z",
+                         "finishedAt":  "2026-07-15T06:53:04.6690422Z"
                      }
                  ],
     "backend":  {
@@ -44,54 +44,56 @@
                                                 "status":  "ok",
                                                 "db":  "connected",
                                                 "env":  "development",
-                                                "timestamp":  "2026-07-14T02:24:22.096Z"
+                                                "timestamp":  "2026-07-15T06:53:04.790Z"
                                             },
                                    "error":  null
                                }
                 },
     "dockerPostgres":  {
                            "ok":  true,
-                           "status":  "poly_postgres|Up 9 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp",
+                           "status":  "poly_postgres|Up 10 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp",
                            "raw":  [
-                                       "poly_postgres|Up 9 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
+                                       "poly_postgres|Up 10 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
                                    ]
                        },
     "s23":  {
-                "connected":  true,
-                "deviceId":  "172.16.200.27:44029",
-                "model":  "SM_S911U1",
-                "raw":  "172.16.200.27:44029    device product:dm1quew model:SM_S911U1 device:dm1q transport_id:2",
-                "adbTimedOut":  false
+                "connected":  false,
+                "deviceId":  null,
+                "model":  null,
+                "raw":  "",
+                "adbTimedOut":  true,
+                "error":  "adb timed out after 5s"
             },
     "listeners":  [
                       {
                           "LocalAddress":  "::",
                           "LocalPort":  8081,
-                          "OwningProcess":  73524
+                          "OwningProcess":  7928
                       },
                       {
                           "LocalAddress":  "::",
                           "LocalPort":  3002,
-                          "OwningProcess":  43088
+                          "OwningProcess":  7196
                       }
                   ],
     "event":  {
-                  "providerEventId":  "f9aa13a662d1658e5a02cfc06d6a2d73",
+                  "providerEventId":  "ced22494ae0bbb8cc4f7108bf6f493df",
                   "sportKey":  "soccer_fifa_world_cup",
-                  "title":  "Spain vs. France",
-                  "commenceTime":  "2026-07-14T19:00:00Z",
+                  "title":  "Argentina vs. England",
+                  "commenceTime":  "2026-07-15T19:00:00Z",
                   "localSlug":  "odds-api-single-soccer-test"
               },
     "selectedMarket":  {
-                           "id":  "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-                           "slug":  "odds-api-single-soccer-test-totals-7439c2d603",
-                           "title":  "Spain vs. France: Total Goals 2.5",
+                           "id":  "38664599-1911-40b4-9c57-382498da8efb",
+                           "slug":  "odds-api-single-soccer-test-alternate-totals-f03de7d488",
+                           "title":  "Argentina vs. England: Total Goals 2.5",
                            "marketType":  "total_goals",
                            "marketGroupKey":  "totals",
                            "line":  "2.5",
-                           "outcomeId":  "be4cfe8b-fa1e-4109-a627-2c13189a92a0",
-                           "outcomeName":  "Over +2.5",
-                           "referenceTokenId":  "odds-api-88263b2c42d6b2f5c6dbbda4"
+                           "outcomeId":  "8578db7a-e01c-442b-8480-95d36a6a946e",
+                           "outcomeName":  "Over 2.5",
+                           "referenceOutcomeLabel":  "Over +2.5",
+                           "referenceTokenId":  "odds-api-de78e5a62c5db9e0c43ab08f"
                        },
     "artifacts":  {
                       "liveProviderProof":  "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
@@ -100,7 +102,7 @@
                       "dataHygiene":  "docs/mobile/harness/odds-api-live-runtime/one-event-data-hygiene-summary.redacted.json",
                       "lifecycleControls":  "docs/mobile/harness/odds-api-live-runtime/event-lifecycle-controls-summary.redacted.json",
                       "lifecycleScheduler":  "docs/mobile/harness/odds-api-live-runtime/event-lifecycle-scheduler-summary.redacted.json",
-                      "s23VisibleFlow":  "docs/mobile/harness/cycle-S23CASHOUTNOW2-spain-france-cashout/cycle-S23CASHOUTNOW2-odds-api-s23-visible-flow.json"
+                      "s23VisibleFlow":  "docs/mobile/harness/cycle-ZBO-spain-france-cashout-s23/cycle-ZBO-odds-api-s23-visible-flow.json"
                   },
     "runtimeTruth":  {
                          "backendContinuous":  true,

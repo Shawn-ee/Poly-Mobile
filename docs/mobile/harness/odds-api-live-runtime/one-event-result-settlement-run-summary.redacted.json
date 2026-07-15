@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-14T14:32:01.096Z",
+  "generatedAt": "2026-07-15T06:41:48.007Z",
   "scope": "odds-api-one-event-result-settlement-scheduler-run",
-  "pass": true,
+  "pass": false,
   "eventSlug": "odds-api-single-soccer-test",
   "resultInput": {
     "path": "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
@@ -25,29 +25,17 @@
       "scripts/settle_odds_api_one_event_from_result.ts",
       "--eventSlug=odds-api-single-soccer-test",
       "--result=docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
-      "--output=docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json"
+      "--output=docs\\mobile\\harness\\odds-api-live-runtime\\one-event-result-settlement-summary.redacted.json"
     ],
-    "exitCode": 0,
+    "exitCode": 1,
     "stdoutTail": [
-      "    \"executeRequiresFlag\": \"--execute\",",
-      "    \"executeRequiresConfirm\": \"SETTLE_FROM_RESULT:78ea76f1-fc8f-419b-ac21-2554d79093f6:caa93a28-258a-4bc7-8dc0-10afe9f342b8:f3a5743c73f2\",",
-      "    \"executeRequiresMarketStatus\": \"CLOSED\",",
-      "    \"currentMarketStatus\": \"LIVE\",",
-      "    \"resultDigest\": \"f3a5743c73f2\",",
-      "    \"actorUserId\": \"holiwyn-local-result-settlement-operator\",",
-      "    \"providerStatus\": \"trusted_external_input\"",
-      "  },",
-      "  \"auditEvent\": null,",
-      "  \"gaps\": {",
-      "    \"p0\": [],",
-      "    \"p1\": [",
-      "      \"Provider-shaped result ingestion can produce trusted result JSON, but this command intentionally consumes only reviewed trusted result JSON.\",",
-      "      \"Automatic unattended result polling and settlement execution are not installed.\"",
-      "    ],",
-      "    \"p2\": [",
-      "      \"Operator settlement UI and multi-event settlement queue remain future work.\"",
-      "    ]",
-      "  }",
+      "[config] loaded {",
+      "  env: 'development',",
+      "  strict: false,",
+      "  logLevel: 'info',",
+      "  hasDatabaseUrl: true,",
+      "  hasAuthSecret: false,",
+      "  adminEmailsConfigured: false",
       "}"
     ],
     "stderrTail": [
@@ -59,11 +47,12 @@
       "    'POLYGON_USDC_ADDRESS is not set; Polygon deposit monitor is disabled',",
       "    'DEPOSIT_WALLET_ENCRYPTION_KEY is not set; deposit wallet generation is disabled'",
       "  ]",
-      "}"
+      "}",
+      "Trusted result sourceEventId f9aa13a662d1658e5a02cfc06d6a2d73 does not match backend event ced22494ae0bbb8cc4f7108bf6f493df."
     ]
   },
   "previewCommand": null,
-  "settlementSummaryPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-summary.redacted.json",
+  "settlementSummaryPath": "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-result-settlement-summary.redacted.json",
   "previewSettlementDigest": null,
   "settlementDigest": {
     "pass": true,
@@ -131,7 +120,9 @@
     "fakeTokenOnly": true
   },
   "gaps": {
-    "p0": [],
+    "p0": [
+      "Trusted result settlement command failed."
+    ],
     "p1": [
       "This scheduler consumes trusted result JSON; provider-shaped result ingestion is available as a separate explicit step.",
       "Dry-run preview is the default; execution requires either explicit confirmation or an exact local approval file."
