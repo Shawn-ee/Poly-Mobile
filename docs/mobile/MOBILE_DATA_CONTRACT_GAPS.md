@@ -11097,3 +11097,12 @@ Future migration concern:
 - Schema mismatch: none. No Prisma model or migration changed.
 - Temporary mock/static data: none. The proofs read local scripts and mutate only proof OS entries that are removed before completion.
 - Remaining gaps: Scheduled Task registration requires elevated/task-registration permission in this shell. User Startup launcher is local/user-logon scoped and not a production service. Production monitoring and multi-event service ownership remain P1/P2.
+
+## Cycle ZCI - Completion Audit Local Persistence Gate
+
+- Fields confirmed for runtime/tooling: `live-runtime-completion-audit-summary.redacted.json` now includes `checks.runtimeCapabilityMatrixKnown=true`, includes `runtime-capability-matrix.redacted.json` in `completionRequirements.runtimeLaunch.evidence`, and keeps `gaps.p0=[]`.
+- Closed or narrowed: runtime launch completion can no longer pass while omitting the local Scheduled Task and Startup launcher capability rows.
+- Route mismatch: none. No mobile or backend HTTP API contract changed.
+- Schema mismatch: none. No Prisma model or migration changed.
+- Temporary mock/static data: none. The audit reads committed/local redacted proof artifacts and spends no provider quota.
+- Remaining gaps: production service ownership and production official-result auto-settlement remain P1.

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-15T06:23:04.800Z",
+  "generatedAt": "2026-07-15T07:18:57.935Z",
   "scope": "holiwyn-live-runtime-completion-audit",
   "pass": true,
   "providerQuotaUsed": false,
@@ -26,11 +26,11 @@
       "oneEventOnly": true
     },
     "freshness": {
-      "liveProofAgeHours": 1.06,
+      "liveProofAgeHours": 1.58,
       "maxLiveProofAgeHours": 24,
-      "watchdogAgeHours": 15.85,
+      "watchdogAgeHours": 16.78,
       "maxWatchdogAgeHours": 24,
-      "s23ProofAgeHours": 0.75,
+      "s23ProofAgeHours": 1.69,
       "maxS23ProofAgeHours": 24
     },
     "staleHandling": "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",
@@ -47,6 +47,7 @@
     "runtimeRuns": "Supervisor and result-poller loops emit worker-owned RuntimeServiceRun rows when a run finishes; local runtime status requires latest passed rows for both services without quota spend, active settlement execution, or installed-service claims.",
     "currentRuntimeState": "Local runtime status now separates proven capability from current warm-runtime state, including whether the supervisor/result-poller are running now, whether any running loop spends provider quota, and what operator action should happen next.",
     "currentRuntimeWarmProof": "A local proof starts backend/Expo plus supervisor/result-poller loops, verifies /api/internal/live-runtime/status reports warm_no_quota_runtime with both loops running and no provider quota, then stops the loops again.",
+    "localPersistenceOptions": "Runtime capability matrix reports two local persistence options: a Windows Scheduled Task path that may require elevated/task-registration rights, and a current-user Startup launcher fallback. Both default to no provider quota and remain local internal-testing tools, not production services.",
     "oneCommandRuntimeLoopProof": "The one-command onboarding wrapper can explicitly start the local supervisor/result-poller loops, prove both are running, and stop both afterward without spending provider quota.",
     "localWatchdog": "Internal tester watchdog verifies backend/Expo/Postgres readiness, repeated supervisor proof, background result-poller proof, no-quota default mode, and loop cleanup."
   },
@@ -59,7 +60,7 @@
     "activeTesterSettlementExecutionAttempted": false,
     "activeEventClosedStateEligibilityProven": true,
     "s23ProofDevice": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
-    "s23ProofAgeHours": 0.75,
+    "s23ProofAgeHours": 1.69,
     "maxS23ProofAgeHours": 24
   },
   "sourceEvidence": {
@@ -71,6 +72,7 @@
     "onboardingRuntimeStop": "docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-runtime-stop-summary.redacted.json",
     "liveProviderProof": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
     "liveReadiness": "docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json",
+    "runtimeCapabilityMatrix": "docs/mobile/harness/odds-api-live-runtime/runtime-capability-matrix.redacted.json",
     "localRuntimeLaunchProfile": "docs/mobile/harness/odds-api-live-runtime/local-runtime-launch-profile-summary.redacted.json",
     "internalTesterWatchdog": "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json",
     "internalTesterOperatorSnapshot": "docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json",
@@ -114,6 +116,7 @@
     "currentRuntimeWarmStateProofKnown": true,
     "oneCommandRuntimeLoopProofKnown": true,
     "mobileS23EndToEndTradeProofPass": true,
+    "runtimeCapabilityMatrixKnown": true,
     "launchProfileKnown": true,
     "internalTesterWatchdogKnown": true,
     "internalTesterWatchdogFresh": true,
@@ -179,8 +182,9 @@
     },
     "runtimeLaunch": {
       "pass": true,
-      "answer": "Local runtime can be launched through documented no-quota commands, observed warm with supervisor and result poller running, starts managed Expo in server-backed S23 mode, flags reused external Expo listeners as unverified, provides an explicit -Force -ReplaceExternalExpo path for verified manager-owned S23 startup, exposes explicit foreground-vs-installed service ownership plus read-only operator-control boundaries, provides a compact operator snapshot, and cleans up after proof.",
+      "answer": "Local runtime can be launched through documented no-quota commands, observed warm with supervisor and result poller running, starts managed Expo in server-backed S23 mode, flags reused external Expo listeners as unverified, provides an explicit -Force -ReplaceExternalExpo path for verified manager-owned S23 startup, exposes explicit foreground-vs-installed service ownership plus read-only operator-control boundaries, documents Scheduled Task and Startup launcher persistence options, provides a compact operator snapshot, and cleans up after proof.",
       "evidence": [
+        "docs/mobile/harness/odds-api-live-runtime/runtime-capability-matrix.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/local-runtime-launch-profile-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/internal-tester-watchdog-summary.redacted.json",
         "docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json",

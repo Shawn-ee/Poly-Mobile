@@ -16,6 +16,8 @@ const PATHS = {
     "docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-runtime-stop-summary.redacted.json",
   liveProviderProof: "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
   liveReadiness: "docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json",
+  runtimeCapabilityMatrix:
+    "docs/mobile/harness/odds-api-live-runtime/runtime-capability-matrix.redacted.json",
   localRuntimeLaunchProfile:
     "docs/mobile/harness/odds-api-live-runtime/local-runtime-launch-profile-summary.redacted.json",
   internalTesterWatchdog:
@@ -1420,6 +1422,26 @@ async function main() {
       truthy(getPath(entries.s23Visible, ["assertions", "cashoutTicketHidesYesNoSelector"])) &&
       truthy(getPath(entries.s23Visible, ["assertions", "cashoutSellSubmitted"])) &&
       truthy(getPath(entries.s23Visible, ["assertions", "historyPreservesSportsbookLineIdentity"])),
+      runtimeCapabilityMatrixKnown:
+        pass(entries.runtimeCapabilityMatrix) &&
+        getPath(entries.runtimeCapabilityMatrix, ["providerQuotaUsedByThisReport"]) === false &&
+        getPath(entries.runtimeCapabilityMatrix, ["capabilityCounts", "localPersistenceOptions"]) === 2 &&
+        (getPath(entries.runtimeCapabilityMatrix, ["capabilities"]) as unknown[] | null)?.some(
+          (entry) =>
+            entry &&
+            typeof entry === "object" &&
+            getPath(entry, ["id"]) === "local-runtime-scheduled-task" &&
+            getPath(entry, ["runtimeMode"]) === "local-os-scheduled-task" &&
+            getPath(entry, ["spendsProviderQuota"]) === false,
+        ) === true &&
+        (getPath(entries.runtimeCapabilityMatrix, ["capabilities"]) as unknown[] | null)?.some(
+          (entry) =>
+            entry &&
+            typeof entry === "object" &&
+            getPath(entry, ["id"]) === "local-runtime-startup-launcher" &&
+            getPath(entry, ["runtimeMode"]) === "user-startup-launcher" &&
+            getPath(entry, ["spendsProviderQuota"]) === false,
+        ) === true,
       launchProfileKnown:
         pass(entries.localRuntimeLaunchProfile) &&
         truthy(getPath(entries.localRuntimeLaunchProfile, ["runtimeTruth", "localOperatorLaunchProfileDocumented"])) &&
@@ -1573,10 +1595,12 @@ async function main() {
         checks.currentRuntimeWarmStateProofKnown &&
         checks.oneCommandRuntimeLoopProofKnown &&
         checks.internalTesterOperatorSnapshotKnown &&
+        checks.runtimeCapabilityMatrixKnown &&
         checks.managedS23ServerModeStartupKnown,
         answer:
-          "Local runtime can be launched through documented no-quota commands, observed warm with supervisor and result poller running, starts managed Expo in server-backed S23 mode, flags reused external Expo listeners as unverified, provides an explicit -Force -ReplaceExternalExpo path for verified manager-owned S23 startup, exposes explicit foreground-vs-installed service ownership plus read-only operator-control boundaries, provides a compact operator snapshot, and cleans up after proof.",
+          "Local runtime can be launched through documented no-quota commands, observed warm with supervisor and result poller running, starts managed Expo in server-backed S23 mode, flags reused external Expo listeners as unverified, provides an explicit -Force -ReplaceExternalExpo path for verified manager-owned S23 startup, exposes explicit foreground-vs-installed service ownership plus read-only operator-control boundaries, documents Scheduled Task and Startup launcher persistence options, provides a compact operator snapshot, and cleans up after proof.",
       evidence: [
+        PATHS.runtimeCapabilityMatrix,
         PATHS.localRuntimeLaunchProfile,
         PATHS.internalTesterWatchdog,
         PATHS.internalTesterOperatorSnapshot,
@@ -1657,6 +1681,8 @@ async function main() {
         "Local runtime status now separates proven capability from current warm-runtime state, including whether the supervisor/result-poller are running now, whether any running loop spends provider quota, and what operator action should happen next.",
       currentRuntimeWarmProof:
         "A local proof starts backend/Expo plus supervisor/result-poller loops, verifies /api/internal/live-runtime/status reports warm_no_quota_runtime with both loops running and no provider quota, then stops the loops again.",
+      localPersistenceOptions:
+        "Runtime capability matrix reports two local persistence options: a Windows Scheduled Task path that may require elevated/task-registration rights, and a current-user Startup launcher fallback. Both default to no provider quota and remain local internal-testing tools, not production services.",
       oneCommandRuntimeLoopProof:
         "The one-command onboarding wrapper can explicitly start the local supervisor/result-poller loops, prove both are running, and stop both afterward without spending provider quota.",
       localWatchdog:

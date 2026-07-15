@@ -520,6 +520,10 @@ describe("The Odds API single-event temporary provider", () => {
     expect(completionAuditScript()).toContain("currentManagedProcesses");
     expect(completionAuditScript()).toContain("continuityAnswer");
     expect(completionAuditScript()).toContain("currentLoopsQuotaSpending");
+    expect(completionAuditScript()).toContain("runtimeCapabilityMatrixKnown");
+    expect(completionAuditScript()).toContain("runtime-capability-matrix.redacted.json");
+    expect(completionAuditScript()).toContain("local-runtime-scheduled-task");
+    expect(completionAuditScript()).toContain("local-runtime-startup-launcher");
   });
 
   it("limits discovery to preferred active soccer sport keys", () => {

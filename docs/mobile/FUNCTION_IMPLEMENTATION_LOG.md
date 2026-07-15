@@ -16909,3 +16909,17 @@ Known limitations:
   - `npm run mobile:local-runtime-startup:install-proof`
 - Result: capability matrix passed with two local persistence options; Startup launcher install/uninstall passed; Scheduled Task proof passed with a P1 Windows permission blocker.
 - Known limitations: local persistence is still operator-triggered and local-machine scoped. Production service ownership, monitoring, and multi-event runtime remain P1/P2.
+
+## Cycle ZCI - Completion Audit Local Persistence Gate
+
+- Feature/runtime worked on: top-level live-runtime completion audit gate for local persistence capability.
+- Frontend components touched: none.
+- Backend/routes touched: no HTTP route, Prisma schema, mobile UI, provider fetch, order, portfolio, or settlement execution logic changed.
+- Important functions/services touched: `scripts/report_holiwyn_live_runtime_completion_audit.ts` and `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`.
+- User/runtime interactions supported: operators can trust that `mobile:live-runtime-completion-audit` now includes the Scheduled Task and Startup launcher capability truth before runtime launch completion passes.
+- State transitions: none. The command regenerated a redacted summary only and spent no provider quota.
+- API/data dependencies: no API dependency change. The completion audit now reads `docs/mobile/harness/odds-api-live-runtime/runtime-capability-matrix.redacted.json`.
+- Proof:
+  - `npm run mobile:live-runtime-completion-audit`
+- Result: completion audit passed with `runtimeCapabilityMatrixKnown=true`, `completionRequirements.runtimeLaunch.pass=true`, and `gaps.p0=[]`.
+- Known limitations: production service ownership and production official-result auto-settlement remain P1.
