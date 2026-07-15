@@ -299,6 +299,11 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("one-event-maker-seed");
     expect(source).toContain("one-event-onboarding-live-provider");
     expect(source).toContain("continuous-while-command-runs");
+    expect(source).toContain("local-runtime-scheduled-task");
+    expect(source).toContain("local-runtime-startup-launcher");
+    expect(source).toContain("localPersistenceOptions");
+    expect(source).toContain("local-os-scheduled-task");
+    expect(source).toContain("user-startup-launcher");
     expect(source).toContain("operator-triggered");
     expect(source).toContain("installed unattended provider polling service");
     expect(source).toContain("MaxProviderProofRuns");

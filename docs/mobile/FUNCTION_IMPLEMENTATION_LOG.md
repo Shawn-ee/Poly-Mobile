@@ -16893,3 +16893,19 @@ Known limitations:
   - `npm run mobile:one-event-onboarding:cached-runtime`
 - Result: onboarding proof passed with 0 P0 gaps. Runtime loops started, were observed running during proof, and stopped after proof. Trusted-result settlement was skipped with reason `trusted_result_fixture_does_not_match_active_provider_event`.
 - Known limitations: S23 was disconnected for this backend-runtime proof; that is accepted by the command's `-AllowDisconnectedS23` mode. Loop cleanup is slow (`stop-local-runtime-loops-after-proof` took about 139 seconds) but completed. Installed always-on provider refresh and market-maker daemons remain P1.
+
+## Cycle ZCH - Local Runtime Persistence Capability
+
+- Feature/runtime worked on: backend live-runtime capability reporting and local persistence proof.
+- Frontend components touched: none.
+- Backend/routes touched: no HTTP route, Prisma schema, mobile UI, provider fetch, order, portfolio, or settlement execution logic changed.
+- Important functions/services touched: `scripts/report_holiwyn_runtime_capability_matrix.ts` and `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts`.
+- User/runtime interactions supported: operators can now see the Windows Scheduled Task and user Startup launcher persistence paths in the quota-free capability matrix instead of reading the scripts by hand.
+- State transitions: proof installed and removed a proof-only Startup launcher; attempted Scheduled Task registration was denied by Windows permissions and left no task installed. No provider quota was spent and no event/market/order/settlement state changed.
+- API/data dependencies: none. Generated artifacts are `runtime-capability-matrix.redacted.json`, `local-runtime-task-install-uninstall-summary.redacted.json`, and `local-runtime-startup-install-uninstall-summary.redacted.json`.
+- Proof:
+  - `npm run mobile:runtime-capability-matrix`
+  - `npm run mobile:local-runtime-task:install-proof`
+  - `npm run mobile:local-runtime-startup:install-proof`
+- Result: capability matrix passed with two local persistence options; Startup launcher install/uninstall passed; Scheduled Task proof passed with a P1 Windows permission blocker.
+- Known limitations: local persistence is still operator-triggered and local-machine scoped. Production service ownership, monitoring, and multi-event runtime remain P1/P2.

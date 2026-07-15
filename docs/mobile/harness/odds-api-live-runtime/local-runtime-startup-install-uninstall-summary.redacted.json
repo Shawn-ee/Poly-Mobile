@@ -1,9 +1,9 @@
 {
-    "generatedAt":  "2026-07-12T13:47:04.8728093Z",
+    "generatedAt":  "2026-07-15T07:10:20.4481318Z",
     "scope":  "holiwyn-local-runtime-user-startup-launcher-install-uninstall-proof",
     "pass":  true,
-    "startedAt":  "2026-07-12T13:47:04.2747505Z",
-    "completedAt":  "2026-07-12T13:47:04.8738548Z",
+    "startedAt":  "2026-07-15T07:10:19.8542328Z",
+    "completedAt":  "2026-07-15T07:10:20.4491321Z",
     "launcherName":  "HoliwynInternalTesterRuntimeProof.cmd",
     "before":  {
                    "installed":  false,
@@ -12,8 +12,8 @@
     "installStep":  {
                         "action":  "install",
                         "exitCode":  0,
-                        "startedAt":  "2026-07-12T13:47:04.2917899Z",
-                        "finishedAt":  "2026-07-12T13:47:04.5779671Z",
+                        "startedAt":  "2026-07-15T07:10:19.8715605Z",
+                        "finishedAt":  "2026-07-15T07:10:20.1535800Z",
                         "outputTail":  [
                                            "                         \"fakeTokenOnly\":  true,",
                                            "                         \"activeTesterSettlementExecution\":  false,",
@@ -45,8 +45,8 @@
     "uninstallStep":  {
                           "action":  "uninstall",
                           "exitCode":  0,
-                          "startedAt":  "2026-07-12T13:47:04.5792017Z",
-                          "finishedAt":  "2026-07-12T13:47:04.8396919Z",
+                          "startedAt":  "2026-07-15T07:10:20.1555805Z",
+                          "finishedAt":  "2026-07-15T07:10:20.4161176Z",
                           "outputTail":  [
                                              "                         \"fakeTokenOnly\":  true,",
                                              "                         \"activeTesterSettlementExecution\":  false,",
@@ -76,21 +76,21 @@
                            "launcherPath":  "C:\\Users\\hecto\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\HoliwynInternalTesterRuntimeProof.cmd"
                        },
     "installSummary":  {
-                           "generatedAt":  "2026-07-12T13:47:04.5427085Z",
+                           "generatedAt":  "2026-07-15T07:10:20.1205419Z",
                            "scope":  "holiwyn-local-runtime-user-startup-launcher",
                            "pass":  true,
                            "operation":  {
                                              "action":  "install",
                                              "apply":  true,
-                                             "startedAt":  "2026-07-12T13:47:04.4752619Z",
+                                             "startedAt":  "2026-07-15T07:10:20.0429030Z",
                                              "result":  "installed_or_updated"
                                          },
                            "plan":  {
                                         "launcherName":  "HoliwynInternalTesterRuntimeProof.cmd",
                                         "startupDirectory":  "C:\\Users\\hecto\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup",
                                         "launcherPath":  "C:\\Users\\hecto\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\HoliwynInternalTesterRuntimeProof.cmd",
-                                        "repoRoot":  "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main",
-                                        "launcherContentPreview":  "@echo off\r\ncd /d \"C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\"\r\nstart \"Holiwyn Internal Tester Runtime\" /min powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts\\manage_holiwyn_internal_tester_runtime.ps1 -Action start -BackendPort 3002 -ExpoPort 8081 -WaitForReady -StartSupervisor -StartResultPoller -ResultPollerIntervalSeconds 15 -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -ResultSettlementPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -ResultSettlementApprovalPath docs/mobile/harness/odds-api-live-runtime/trusted-result-settlement-approval.redacted.json",
+                                        "repoRoot":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout",
+                                        "launcherContentPreview":  "@echo off\r\ncd /d \"C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\"\r\nstart \"Holiwyn Internal Tester Runtime\" /min powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts\\manage_holiwyn_internal_tester_runtime.ps1 -Action start -BackendPort 3002 -ExpoPort 8081 -WaitForReady -StartSupervisor -StartResultPoller -ResultPollerIntervalSeconds 15 -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -ResultSettlementPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -ResultSettlementApprovalPath docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
                                         "providerQuotaMode":  "default user Startup launcher spends no provider quota",
                                         "resultPollerMode":  "dedicated result poller will be started by the internal tester runtime manager at user logon",
                                         "settlementMode":  "approved trusted-result settlement scheduler is requested; execution still waits for CLOSED market and exact approval match",
@@ -108,7 +108,7 @@
                                          "launcherName":  "HoliwynInternalTesterRuntimeProof.cmd",
                                          "startupDirectory":  "C:\\Users\\hecto\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup",
                                          "launcherPath":  "C:\\Users\\hecto\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\HoliwynInternalTesterRuntimeProof.cmd",
-                                         "contentSha256":  "B7340B7E45DA1DF791BCA620246988871EFE6D1A3DE2FA7852B6CC66A4F085D3"
+                                         "contentSha256":  "1EA3C6881D3FB38EE9FCA00B8292D6B8444BC324D1FDFE8296CCC159C73920E3"
                                      },
                            "runtimeTruth":  {
                                                 "startupLauncherManagerAvailable":  true,
@@ -137,21 +137,21 @@
                                     }
                        },
     "uninstallSummary":  {
-                             "generatedAt":  "2026-07-12T13:47:04.8068266Z",
+                             "generatedAt":  "2026-07-15T07:10:20.3805029Z",
                              "scope":  "holiwyn-local-runtime-user-startup-launcher",
                              "pass":  true,
                              "operation":  {
                                                "action":  "uninstall",
                                                "apply":  true,
-                                               "startedAt":  "2026-07-12T13:47:04.7415747Z",
+                                               "startedAt":  "2026-07-15T07:10:20.3144192Z",
                                                "result":  "uninstalled_if_present"
                                            },
                              "plan":  {
                                           "launcherName":  "HoliwynInternalTesterRuntimeProof.cmd",
                                           "startupDirectory":  "C:\\Users\\hecto\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup",
                                           "launcherPath":  "C:\\Users\\hecto\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\HoliwynInternalTesterRuntimeProof.cmd",
-                                          "repoRoot":  "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main",
-                                          "launcherContentPreview":  "@echo off\r\ncd /d \"C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main\"\r\nstart \"Holiwyn Internal Tester Runtime\" /min powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts\\manage_holiwyn_internal_tester_runtime.ps1 -Action start -BackendPort 3002 -ExpoPort 8081 -WaitForReady -StartSupervisor -StartResultPoller -ResultPollerIntervalSeconds 15 -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -ResultSettlementPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -ResultSettlementApprovalPath docs/mobile/harness/odds-api-live-runtime/trusted-result-settlement-approval.redacted.json",
+                                          "repoRoot":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout",
+                                          "launcherContentPreview":  "@echo off\r\ncd /d \"C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\"\r\nstart \"Holiwyn Internal Tester Runtime\" /min powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts\\manage_holiwyn_internal_tester_runtime.ps1 -Action start -BackendPort 3002 -ExpoPort 8081 -WaitForReady -StartSupervisor -StartResultPoller -ResultPollerIntervalSeconds 15 -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -ResultSettlementPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -ResultSettlementApprovalPath docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
                                           "providerQuotaMode":  "default user Startup launcher spends no provider quota",
                                           "resultPollerMode":  "dedicated result poller will be started by the internal tester runtime manager at user logon",
                                           "settlementMode":  "approved trusted-result settlement scheduler is requested; execution still waits for CLOSED market and exact approval match",
@@ -162,7 +162,7 @@
                                             "launcherName":  "HoliwynInternalTesterRuntimeProof.cmd",
                                             "startupDirectory":  "C:\\Users\\hecto\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup",
                                             "launcherPath":  "C:\\Users\\hecto\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\HoliwynInternalTesterRuntimeProof.cmd",
-                                            "contentSha256":  "B7340B7E45DA1DF791BCA620246988871EFE6D1A3DE2FA7852B6CC66A4F085D3"
+                                            "contentSha256":  "1EA3C6881D3FB38EE9FCA00B8292D6B8444BC324D1FDFE8296CCC159C73920E3"
                                         },
                              "after":  {
                                            "installed":  false,

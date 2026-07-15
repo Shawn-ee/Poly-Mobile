@@ -11088,3 +11088,12 @@ Future migration concern:
 - Schema mismatch: none. Cached restore idempotency was fixed in script logic by matching existing outcomes on same-market slug; no model or migration change was needed.
 - Temporary mock/static data: none added. Counterparty liquidity was locally seeded for fake-token proof, but event/market/outcome data came from the backend-owned sportsbook bridge and latest live summary.
 - Remaining gaps: reusable local slug remains P2 before multi-event onboarding. Installed unattended service ownership and production official-result auto-settlement remain P1.
+
+## Cycle ZCH - Local Runtime Persistence Capability
+
+- Fields confirmed for runtime/tooling: `runtime-capability-matrix.redacted.json` now includes `local-runtime-scheduled-task`, `local-runtime-startup-launcher`, `runtimeMode`, `spendsProviderQuota=false`, proof commands, stop commands, and `capabilityCounts.localPersistenceOptions=2`.
+- Closed or narrowed: the local runtime story no longer stops at "foreground command only." It now records two local persistence options and their proof results.
+- Route mismatch: none. No mobile or backend HTTP API contract changed.
+- Schema mismatch: none. No Prisma model or migration changed.
+- Temporary mock/static data: none. The proofs read local scripts and mutate only proof OS entries that are removed before completion.
+- Remaining gaps: Scheduled Task registration requires elevated/task-registration permission in this shell. User Startup launcher is local/user-logon scoped and not a production service. Production monitoring and multi-event service ownership remain P1/P2.

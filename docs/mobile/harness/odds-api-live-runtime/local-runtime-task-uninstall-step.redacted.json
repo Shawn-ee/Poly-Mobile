@@ -1,16 +1,16 @@
 {
-    "generatedAt":  "2026-07-12T17:18:07.3537359Z",
+    "generatedAt":  "2026-07-15T07:10:07.7323433Z",
     "scope":  "holiwyn-local-runtime-scheduled-task",
     "pass":  true,
     "operation":  {
                       "action":  "uninstall",
                       "apply":  true,
-                      "startedAt":  "2026-07-12T17:18:06.0232252Z",
+                      "startedAt":  "2026-07-15T07:10:06.1817050Z",
                       "result":  "uninstalled_if_present"
                   },
     "plan":  {
                  "taskName":  "HoliwynInternalTesterRuntimeProof",
-                 "workingDirectory":  "C:\\Users\\hecto\\projects\\agent-workspaces\\Poly-main",
+                 "workingDirectory":  "C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout",
                  "executable":  "powershell.exe",
                  "arguments":  "-NoProfile -ExecutionPolicy Bypass -File scripts\\manage_holiwyn_internal_tester_runtime.ps1 -Action start -BackendPort 3002 -ExpoPort 8081 -WaitForReady -StartSupervisor -StartResultPoller -ResultPollerIntervalSeconds 15 -RunResultIngestion -RunResultSettlement -RunApprovedResultSettlement -ResultSettlementPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -ResultSettlementApprovalPath docs/mobile/harness/odds-api-live-runtime/trusted-result-audit-approved.redacted.json",
                  "logs":  {

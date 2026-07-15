@@ -8,7 +8,13 @@ type Capability = {
   id: string;
   area: string;
   status: "ready" | "proof-only" | "operator-triggered" | "missing";
-  runtimeMode: "one-shot" | "continuous-while-command-runs" | "installed-service-missing" | "read-only-report";
+  runtimeMode:
+    | "one-shot"
+    | "continuous-while-command-runs"
+    | "local-os-scheduled-task"
+    | "user-startup-launcher"
+    | "installed-service-missing"
+    | "read-only-report";
   spendsProviderQuota: boolean;
   quotaProtection: string;
   startCommand: string | null;
@@ -58,6 +64,8 @@ async function main() {
   const resultPollerScript = await readText("scripts/run_holiwyn_one_event_result_poller.ps1");
   const onboardingScript = await readText("scripts/onboard_holiwyn_one_event_live_runtime.ps1");
   const secretWrapper = await readText("scripts/run_holiwyn_one_event_live_runtime_with_secret.ps1");
+  const localRuntimeTaskManager = await readText("scripts/manage_holiwyn_local_runtime_task.ps1");
+  const localRuntimeStartupManager = await readText("scripts/manage_holiwyn_local_runtime_startup.ps1");
 
   const requiredScripts = [
     "mobile:one-event-onboarding:cached-runtime",
@@ -73,6 +81,11 @@ async function main() {
     "mobile:internal-tester-runtime:cached-start",
     "mobile:internal-tester-runtime:live-provider-start",
     "mobile:internal-tester-runtime:stop",
+    "mobile:local-runtime-task",
+    "mobile:local-runtime-task:install-proof",
+    "mobile:local-runtime-startup",
+    "mobile:local-runtime-startup:install-proof",
+    "mobile:local-runtime-launch-profile",
   ];
 
   const capabilities: Capability[] = [
@@ -178,6 +191,46 @@ async function main() {
       ],
       currentLimitation: "Scheduler can be repeated by the supervisor, but installed unattended ownership remains P1.",
     },
+    {
+      id: "local-runtime-scheduled-task",
+      area: "local OS persistence for internal tester runtime",
+      status: scriptExists(packageScripts, "mobile:local-runtime-task") ? "operator-triggered" : "missing",
+      runtimeMode: "local-os-scheduled-task",
+      spendsProviderQuota: false,
+      quotaProtection:
+        "Default scheduled-task plan starts cached backend/Expo/supervisor/result-poller flow without provider proof; live provider modes require explicit flags and THE_ODDS_API_KEY.",
+      startCommand:
+        "npm run mobile:local-runtime-task -- -Action install -StartSupervisor -StartResultPoller -Apply",
+      proofCommand: "npm run mobile:local-runtime-task:install-proof",
+      stopCommand: "npm run mobile:local-runtime-task -- -Action uninstall -Apply",
+      evidenceFiles: [
+        "scripts/manage_holiwyn_local_runtime_task.ps1",
+        "scripts/prove_holiwyn_local_runtime_task_install_uninstall.ps1",
+        "docs/mobile/harness/odds-api-live-runtime/local-runtime-task-install-uninstall-summary.redacted.json",
+      ],
+      currentLimitation:
+        "Local Windows Scheduled Task path is operator-triggered and machine/user specific; it is not production service monitoring.",
+    },
+    {
+      id: "local-runtime-startup-launcher",
+      area: "user-logon fallback for internal tester runtime",
+      status: scriptExists(packageScripts, "mobile:local-runtime-startup") ? "operator-triggered" : "missing",
+      runtimeMode: "user-startup-launcher",
+      spendsProviderQuota: false,
+      quotaProtection:
+        "Default Startup launcher starts cached backend/Expo/supervisor/result-poller flow without provider proof; live provider modes require explicit flags and THE_ODDS_API_KEY.",
+      startCommand:
+        "npm run mobile:local-runtime-startup -- -Action install -StartSupervisor -StartResultPoller -Apply",
+      proofCommand: "npm run mobile:local-runtime-startup:install-proof",
+      stopCommand: "npm run mobile:local-runtime-startup -- -Action uninstall -Apply",
+      evidenceFiles: [
+        "scripts/manage_holiwyn_local_runtime_startup.ps1",
+        "scripts/prove_holiwyn_local_runtime_startup_install_uninstall.ps1",
+        "docs/mobile/harness/odds-api-live-runtime/local-runtime-startup-install-uninstall-summary.redacted.json",
+      ],
+      currentLimitation:
+        "User Startup launcher runs only when the Windows user logs in; it is a local fallback, not a scheduled daemon or production service.",
+    },
   ];
 
   const missingScripts = requiredScripts.filter((name) => !scriptExists(packageScripts, name));
@@ -189,10 +242,16 @@ async function main() {
     onboardingStartsRuntimeLoops: onboardingScript.includes("[switch]$StartRuntimeLoops"),
     onboardingStopsRuntimeLoops: onboardingScript.includes("[switch]$StopRuntimeLoopsAfterProof"),
     providerSecretWrapperUsesLocalSecret: secretWrapper.includes(".runtime") && secretWrapper.includes("the-odds-api-key.txt"),
+    localScheduledTaskManagerRequiresApply: localRuntimeTaskManager.includes("[switch]$Apply"),
+    localScheduledTaskDefaultNoQuota: localRuntimeTaskManager.includes("default scheduled task plan spends no provider quota"),
+    localStartupManagerRequiresApply: localRuntimeStartupManager.includes("[switch]$Apply"),
+    localStartupDefaultNoQuota: localRuntimeStartupManager.includes("default user Startup launcher spends no provider quota"),
     noHardcodedProviderKey:
       !supervisorScript.includes("THE_ODDS_API_KEY=") &&
       !onboardingScript.includes("THE_ODDS_API_KEY=") &&
-      !secretWrapper.includes("THE_ODDS_API_KEY="),
+      !secretWrapper.includes("THE_ODDS_API_KEY=") &&
+      !localRuntimeTaskManager.includes("THE_ODDS_API_KEY=") &&
+      !localRuntimeStartupManager.includes("THE_ODDS_API_KEY="),
   };
 
   const pass = missingScripts.length === 0 && Object.values(sourceChecks).every(Boolean);
@@ -209,11 +268,14 @@ async function main() {
       operatorTriggered: capabilities.filter((item) => item.status === "operator-triggered").length,
       missing: capabilities.filter((item) => item.status === "missing").length,
       continuousWhileCommandRuns: capabilities.filter((item) => item.runtimeMode === "continuous-while-command-runs").length,
+      localPersistenceOptions: capabilities.filter((item) =>
+        item.runtimeMode === "local-os-scheduled-task" || item.runtimeMode === "user-startup-launcher",
+      ).length,
       installedServiceMissing: capabilities.filter((item) => item.currentLimitation?.includes("installed")).length,
     },
     capabilities,
     conclusion: pass
-      ? "Local runtime has quota-free cached onboarding, operator-triggered live-provider onboarding, continuous-while-command-runs supervisor/result-poller loops, one-shot maker/lifecycle commands, and no installed unattended service ownership yet."
+      ? "Local runtime has quota-free cached onboarding, operator-triggered live-provider onboarding, continuous-while-command-runs supervisor/result-poller loops, one-shot maker/lifecycle commands, and two operator-triggered local persistence options. No production service ownership exists yet."
       : "Runtime capability matrix is incomplete; inspect missingScripts/sourceChecks.",
   };
 
