@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-15T05:26:58.957Z",
+  "generatedAt": "2026-07-15T05:57:55.311Z",
   "scope": "holiwyn-live-runtime-completion-audit",
   "pass": true,
   "providerQuotaUsed": false,
@@ -26,11 +26,11 @@
       "oneEventOnly": true
     },
     "freshness": {
-      "liveProofAgeHours": 0.12,
+      "liveProofAgeHours": 0.64,
       "maxLiveProofAgeHours": 24,
-      "watchdogAgeHours": 14.91,
+      "watchdogAgeHours": 15.43,
       "maxWatchdogAgeHours": 24,
-      "s23ProofAgeHours": 0.4,
+      "s23ProofAgeHours": 0.34,
       "maxS23ProofAgeHours": 24
     },
     "staleHandling": "Routes classify ready/refresh_due/stale/unavailable; stale guard proof pauses stale markets and order placement rejects with MARKET_UNAVAILABLE, then restores.",
@@ -58,8 +58,8 @@
     "providerQuotaUsedByThisAudit": false,
     "activeTesterSettlementExecutionAttempted": false,
     "activeEventClosedStateEligibilityProven": true,
-    "s23ProofDevice": "172.16.200.27:42495",
-    "s23ProofAgeHours": 0.4,
+    "s23ProofDevice": "adb-R3CW20LFMLW-7OpoO6._adb-tls-connect._tcp",
+    "s23ProofAgeHours": 0.34,
     "maxS23ProofAgeHours": 24
   },
   "sourceEvidence": {
@@ -82,7 +82,7 @@
     "activeSettlementReadiness": "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-readiness-summary.redacted.json",
     "activeSettlementClosedEligibility": "docs/mobile/harness/odds-api-live-runtime/one-event-active-settlement-closed-eligibility-summary.redacted.json",
     "providerMakerHandoff": "docs/mobile/harness/odds-api-live-runtime/provider-maker-handoff-summary.redacted.json",
-    "s23Visible": "docs/mobile/harness/cycle-ZCC-cashout-max-runtime-alignment/cycle-ZCC-odds-api-s23-visible-flow.json"
+    "s23Visible": "docs/mobile/harness/cycle-ZCD-s23-live-event-proof/cycle-ZCD-S23-LIVE-odds-api-s23-visible-flow.json"
   },
   "checks": {
     "backendRuntimeStatusPass": true,
@@ -174,7 +174,7 @@
       "answer": "One real upcoming soccer event is visible and tradable from S23 through event detail, quote, buy, portfolio, cashout/sell, and history proof.",
       "evidence": [
         "docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json",
-        "docs/mobile/harness/cycle-ZCC-cashout-max-runtime-alignment/cycle-ZCC-odds-api-s23-visible-flow.json"
+        "docs/mobile/harness/cycle-ZCD-s23-live-event-proof/cycle-ZCD-S23-LIVE-odds-api-s23-visible-flow.json"
       ]
     },
     "runtimeLaunch": {

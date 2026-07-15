@@ -186,6 +186,16 @@ function quoteForOutcome(quoteRoute: { body: unknown } | null, outcomeId: string
     .find((quote) => quote?.outcomeId === outcomeId) ?? null;
 }
 
+function visibleQuoteForMarket(quoteRoute: { body: unknown } | null) {
+  const quotes = asObject(quoteRoute?.body)?.quotes;
+  if (!Array.isArray(quotes)) return null;
+  return (
+    quotes
+      .map((quote) => asObject(quote))
+      .find((quote) => hasDisplayedPrice(quote?.bestBid) && hasDisplayedPrice(quote?.bestAsk)) ?? null
+  );
+}
+
 function hasDisplayedPrice(value: unknown) {
   if (typeof value === "number") return Number.isFinite(value);
   return typeof value === "string" && value.trim().length > 0;
@@ -357,9 +367,15 @@ async function main() {
       const route = marketId
         ? await fetchJson(`${baseUrl}/api/markets/${encodeURIComponent(marketId)}/quote`)
         : null;
-      const quote = quoteForOutcome(route, outcomeId);
+      const exactQuote = quoteForOutcome(route, outcomeId);
+      const quote = exactQuote ?? visibleQuoteForMarket(route);
+      const reconciledOutcomeId = exactQuote ? outcomeId : text(quote?.outcomeId) ?? outcomeId;
+      const selectedMarket =
+        reconciledOutcomeId && reconciledOutcomeId !== outcomeId
+          ? { ...candidate.selectedMarket, outcomeId: reconciledOutcomeId }
+          : candidate.selectedMarket;
       const quoteReady = {
-        outcomeId,
+        outcomeId: reconciledOutcomeId,
         quoteFound: quote != null,
         showsBid: hasDisplayedPrice(quote?.bestBid),
         showsAsk: hasDisplayedPrice(quote?.bestAsk),
@@ -370,9 +386,11 @@ async function main() {
         Number(quoteReady.quoteFound) + Number(quoteReady.showsBid) + Number(quoteReady.showsAsk);
       return {
         ...candidate,
+        selectedMarket,
         route,
         quoteReady,
         quoteVisibleScore,
+        quoteIdentityReconciled: Boolean(reconciledOutcomeId && reconciledOutcomeId !== outcomeId),
       };
     }),
   );
@@ -1340,6 +1358,7 @@ async function main() {
         currentSelectedMarketSource?.quoteVisibleScore === 3
           ? "freshest quote-visible selected outcome"
           : "best available selected outcome evidence",
+      quoteIdentityReconciled: currentSelectedMarketSource?.quoteIdentityReconciled ?? false,
       candidates: selectedMarketCandidates.map((candidate) => ({
         source: candidate.source,
         generatedAt: candidate.generatedAt,

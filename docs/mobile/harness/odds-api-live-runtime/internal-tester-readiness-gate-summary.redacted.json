@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-15T05:27:02.367Z",
+  "generatedAt": "2026-07-15T05:57:59.619Z",
   "scope": "holiwyn-internal-tester-readiness-gate",
   "pass": true,
   "providerQuotaUsedByThisGate": false,
@@ -16,8 +16,8 @@
       "id": "ordered-live-runtime-audit",
       "command": "npm run mobile:live-runtime-audit-gate",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/live-runtime-audit-gate-summary.redacted.json",
-      "startedAt": "2026-07-15T05:26:47.356Z",
-      "finishedAt": "2026-07-15T05:26:59.065Z",
+      "startedAt": "2026-07-15T05:57:44.942Z",
+      "finishedAt": "2026-07-15T05:57:55.426Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -26,8 +26,8 @@
       "id": "sportsbook-exchange-readiness",
       "command": "npm run mobile:internal-exchange-readiness -- --summaryPath docs/mobile/harness/odds-api-live-runtime/mobile-internal-exchange-readiness-summary.redacted.json",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/mobile-internal-exchange-readiness-summary.redacted.json",
-      "startedAt": "2026-07-15T05:26:59.066Z",
-      "finishedAt": "2026-07-15T05:27:00.312Z",
+      "startedAt": "2026-07-15T05:57:55.427Z",
+      "finishedAt": "2026-07-15T05:57:56.742Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -36,8 +36,8 @@
       "id": "operator-snapshot",
       "command": "npm run mobile:internal-tester-operator-snapshot",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json",
-      "startedAt": "2026-07-15T05:27:00.312Z",
-      "finishedAt": "2026-07-15T05:27:02.362Z",
+      "startedAt": "2026-07-15T05:57:56.742Z",
+      "finishedAt": "2026-07-15T05:57:59.600Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -45,9 +45,9 @@
   ],
   "testerReady": {
     "event": {
-      "title": "Argentina vs. England",
       "providerEventId": "ced22494ae0bbb8cc4f7108bf6f493df",
       "sportKey": "soccer_fifa_world_cup",
+      "title": "Argentina vs. England",
       "commenceTime": "2026-07-15T19:00:00Z",
       "localSlug": "odds-api-single-soccer-test"
     },
@@ -58,7 +58,7 @@
       "marketType": "total_goals",
       "marketGroupKey": "totals",
       "line": "2.5",
-      "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
+      "outcomeId": "f57b22fb-7dc8-412c-95b9-9ebf79639f03",
       "outcomeName": "Over 2.5",
       "referenceOutcomeLabel": "Over +2.5",
       "referenceTokenId": "odds-api-de78e5a62c5db9e0c43ab08f"
@@ -169,7 +169,7 @@
       "referenceSource": "sportsbook-odds",
       "mobileVisibleProviderEventCount": 2,
       "providerMarketCount": 4,
-      "snapshotReadyCount": 3,
+      "snapshotReadyCount": 6,
       "localMmReadyCount": 1,
       "openOrderBackedCount": 1,
       "blockers": []
@@ -177,6 +177,7 @@
   },
   "evidence": {
     "auditGate": "docs/mobile/harness/odds-api-live-runtime/live-runtime-audit-gate-summary.redacted.json",
+    "runtimeStatus": "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json",
     "exchangeReadiness": "docs/mobile/harness/odds-api-live-runtime/mobile-internal-exchange-readiness-summary.redacted.json",
     "operatorSnapshot": "docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json"
   },

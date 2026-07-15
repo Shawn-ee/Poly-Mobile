@@ -4,9 +4,9 @@ This handoff is the short, current operating guide for the one-event Holiwyn loc
 
 ## Current Event
 
-- Event: `Spain vs. France`
+- Event: `Argentina vs. England`
 - Event slug: `odds-api-single-soccer-test`
-- Selected proof market: `Spain vs. France: Total Goals 2.5`
+- Selected proof market: `Argentina vs. England: Total Goals 2.5`
 - Selected proof outcome: `Over 2.5`
 - Runtime route of truth: `GET /api/internal/live-runtime/status`
 - Tester gate of truth: `npm run mobile:internal-tester-readiness-gate`
@@ -62,7 +62,7 @@ exp://172.16.200.14:8081
 
 ## Manual S23 Flow
 
-1. Home: confirm `Spain vs. France` is visible.
+1. Home: confirm `Argentina vs. England` is visible.
 2. Event Detail: open the event and confirm backend markets load.
 3. Market line: select the `Total Goals 2.5` proof market or another backend-owned line.
 4. Ticket: enter a fake-token amount and swipe to buy.

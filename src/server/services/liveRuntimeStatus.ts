@@ -453,22 +453,34 @@ async function selectCurrentMarketForStatus(
     orderBy: { startedAt: "desc" },
     take: 25,
   });
+  const quoteReadyRuns = quoteRuns.filter(
+    (run) =>
+      run.status === "passed" &&
+      run.quoteRouteStatus === 200 &&
+      run.quoteRouteShowsBid === true &&
+      run.quoteRouteShowsAsk === true,
+  );
 
   const ranked = usableCandidates
     .map((candidate) => {
-      const matchingReadyQuoteRun = quoteRuns.find(
-        (run) =>
-          run.marketId === candidate.marketId &&
-          (!candidate.outcomeId || run.outcomeId === candidate.outcomeId) &&
-          run.status === "passed" &&
-          run.quoteRouteStatus === 200 &&
-          run.quoteRouteShowsBid === true &&
-          run.quoteRouteShowsAsk === true,
+      const exactReadyQuoteRun = quoteReadyRuns.find(
+        (run) => run.marketId === candidate.marketId && (!candidate.outcomeId || run.outcomeId === candidate.outcomeId),
       );
+      const marketReadyQuoteRun = exactReadyQuoteRun ?? quoteReadyRuns.find((run) => run.marketId === candidate.marketId);
+      const reconciledOutcomeId =
+        candidate.outcomeId && marketReadyQuoteRun && marketReadyQuoteRun.outcomeId !== candidate.outcomeId
+          ? marketReadyQuoteRun.outcomeId
+          : null;
+      const selectedMarket = reconciledOutcomeId
+        ? { ...candidate.selectedMarket, outcomeId: reconciledOutcomeId }
+        : candidate.selectedMarket;
       return {
         ...candidate,
-        quoteReadyScore: matchingReadyQuoteRun ? 1 : 0,
-        matchingReadyQuoteRunStartedAt: matchingReadyQuoteRun?.startedAt.getTime() ?? 0,
+        selectedMarket,
+        outcomeId: reconciledOutcomeId ?? candidate.outcomeId,
+        quoteReadyScore: marketReadyQuoteRun ? 1 : 0,
+        quoteIdentityReconciled: Boolean(reconciledOutcomeId),
+        matchingReadyQuoteRunStartedAt: marketReadyQuoteRun?.startedAt.getTime() ?? 0,
       };
     })
     .sort(
@@ -486,6 +498,7 @@ async function selectCurrentMarketForStatus(
         marketId: selected.marketId,
         source: selected.source,
         quoteReady: selected.quoteReadyScore === 1,
+        quoteIdentityReconciled: selected.quoteIdentityReconciled,
       }
     : null;
 }

@@ -6,6 +6,8 @@ const DEFAULT_OUTPUT_PATH =
   "docs/mobile/harness/odds-api-live-runtime/internal-tester-readiness-gate-summary.redacted.json";
 const EXCHANGE_READINESS_PATH =
   "docs/mobile/harness/odds-api-live-runtime/mobile-internal-exchange-readiness-summary.redacted.json";
+const RUNTIME_STATUS_PATH =
+  "docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json";
 
 const STAGES = [
   {
@@ -114,6 +116,7 @@ async function main() {
   const auditGate = await readJson(STAGES[0].summaryPath);
   const exchangeReadiness = await readJson(EXCHANGE_READINESS_PATH);
   const operatorSnapshot = await readJson(STAGES[2].summaryPath);
+  const runtimeStatus = await readJson(RUNTIME_STATUS_PATH);
   const exchangeReady = exchangeReadiness?.readyForInternalMobileExchange === true;
   const exchangeBlockers = stringArray(getPath(exchangeReadiness, ["blockers"]));
   const p0 = [
@@ -173,8 +176,12 @@ async function main() {
     },
     stages,
     testerReady: {
-      event: getPath(operatorSnapshot, ["event"]) ?? null,
-      selectedMarket: getPath(operatorSnapshot, ["selectedMarket"]) ?? null,
+      event: getPath(runtimeStatus, ["event"]) ?? getPath(operatorSnapshot, ["event"]) ?? null,
+      selectedMarket:
+        getPath(runtimeStatus, ["selectedMarket"]) ??
+        getPath(runtimeStatus, ["currentSelectedMarket"]) ??
+        getPath(operatorSnapshot, ["selectedMarket"]) ??
+        null,
       recommendedFirstAction: getPath(operatorSnapshot, ["operatorNextActions", "recommendedFirstAction"]) ?? null,
       recommendedCommand: getPath(operatorSnapshot, ["operatorNextActions", "recommendedCommand"]) ?? null,
       localTesterReadyRightNow: operatorLocalTesterReady || cachedInternalTestingReady,
@@ -222,6 +229,7 @@ async function main() {
     },
     evidence: {
       auditGate: STAGES[0].summaryPath,
+      runtimeStatus: RUNTIME_STATUS_PATH,
       exchangeReadiness: EXCHANGE_READINESS_PATH,
       operatorSnapshot: STAGES[2].summaryPath,
     },

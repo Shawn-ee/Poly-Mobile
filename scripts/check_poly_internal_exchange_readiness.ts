@@ -377,7 +377,8 @@ function deriveSnapshotBlockers(params: {
   ].filter((value): value is string => Boolean(value));
 
   const reason = latest.reason?.trim();
-  if (reason && !(allowCachedProviderSnapshot && reason === "temporary_sportsbook_odds_single_event_provider")) {
+  const allowedCachedReasons = new Set(["temporary_sportsbook_odds_single_event_provider", "cached_live_runtime_restore"]);
+  if (reason && !(allowCachedProviderSnapshot && allowedCachedReasons.has(reason))) {
     blockers.push(`snapshot_reason_${reason}`);
   }
 
