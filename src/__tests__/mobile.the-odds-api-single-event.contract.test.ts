@@ -419,12 +419,12 @@ describe("The Odds API single-event temporary provider", () => {
   it("gates one-event readiness on the fresh S23 close-position cashout proof", () => {
     expect(phaseAuditScript()).toContain("resolveLatestS23VisibleProofPath");
     expect(completionAuditScript()).toContain("resolveLatestS23VisibleProofPath");
-    expect(phaseAuditScript()).toContain("isSpainFranceOddsApiVisibleProof");
-    expect(completionAuditScript()).toContain("isSpainFranceOddsApiVisibleProof");
+    expect(phaseAuditScript()).toContain("isCurrentOddsApiVisibleProof");
+    expect(completionAuditScript()).toContain("isCurrentOddsApiVisibleProof");
     expect(phaseAuditScript()).toContain('eventSlug === "odds-api-single-soccer-test"');
     expect(completionAuditScript()).toContain('eventSlug === "odds-api-single-soccer-test"');
-    expect(phaseAuditScript()).toContain('expectedTitle === "Spain vs. France"');
-    expect(completionAuditScript()).toContain('expectedTitle === "Spain vs. France"');
+    expect(phaseAuditScript()).toContain('expectedTitle === "Argentina vs. England"');
+    expect(completionAuditScript()).toContain('expectedTitle === "Argentina vs. England"');
     expect(phaseAuditScript()).toContain('getPath(proof, ["selectedMarket", "referenceSource"]) === "sportsbook-odds"');
     expect(completionAuditScript()).toContain('getPath(proof, ["selectedMarket", "referenceSource"]) === "sportsbook-odds"');
     expect(liveReadinessScript()).toContain("Resolve-LatestS23VisibleProofPath");
@@ -436,6 +436,9 @@ describe("The Odds API single-event temporary provider", () => {
     expect(liveReadinessScript()).toContain("cashoutTicketHidesYesNoSelector");
     expect(readFileSync("scripts/prove_mobile_odds_api_s23_visible_flow.ps1", "utf8")).toContain("MaxExpectedCashoutShares");
     expect(readFileSync("scripts/prove_mobile_odds_api_s23_visible_flow.ps1", "utf8")).toContain("observedCashoutShares");
+    expect(readFileSync("scripts/prove_mobile_odds_api_s23_visible_flow.ps1", "utf8")).toContain("Resolve-CurrentExpectedEvent");
+    expect(readFileSync("scripts/prove_mobile_odds_api_s23_visible_flow.ps1", "utf8")).toContain("internal-tester-readiness-gate-summary.redacted.json");
+    expect(readFileSync("scripts/start_holiwyn_one_event_live_runtime.ps1", "utf8")).toContain('s23VisibleProof = "npm run mobile:the-odds-api-s23-visible-flow -- -SkipReplaySeed"');
     expect(liveReadinessScript()).toContain("Set-LocalDatabaseEnv");
     expect(phaseAuditScript()).toContain("cashoutTicketIsClosePositionMode");
     expect(phaseAuditScript()).toContain("cashoutMaxUsesOwnedShares");
@@ -731,6 +734,16 @@ describe("The Odds API single-event temporary provider", () => {
     const activeOutcomeId = readinessSummary.testerReady?.selectedMarket?.outcomeId;
     const handoff = readFileSync("docs/mobile/INTERNAL_TESTER_OPERATOR_HANDOFF.md", "utf8");
     const closeout = readFileSync("docs/mobile/BACKEND_LIVE_RUNTIME_PHASE_CLOSEOUT.md", "utf8");
+    const activeDocs = [
+      handoff,
+      closeout,
+      readFileSync("docs/mobile/BACKEND_LIVE_RUNTIME_COMPLETION_AUDIT_MATRIX.md", "utf8"),
+      readFileSync("docs/mobile/INTERNAL_TESTER_RUNTIME_LAUNCH.md", "utf8"),
+      readFileSync("docs/mobile/INTERNAL_TESTER_CURRENT_STATE.md", "utf8"),
+      readFileSync("docs/mobile/MARKET_MAKER_LIVE_RUNTIME_REPORT.md", "utf8"),
+      readFileSync("docs/mobile/ODDS_PROVIDER_REFRESH_POLICY.md", "utf8"),
+      readFileSync("docs/mobile/LIVE_RUNTIME_GAP_LIST.md", "utf8"),
+    ];
 
     expect(activeEventTitle).toBeTruthy();
     expect(activeMarketTitle).toBeTruthy();
@@ -739,9 +752,11 @@ describe("The Odds API single-event temporary provider", () => {
     expect(handoff).toContain(`Selected proof market: \`${activeMarketTitle}\``);
     expect(closeout).toContain(`Real upcoming test event: ${activeEventTitle}.`);
     expect(closeout).toContain(`${activeEventTitle} is imported/restored as the reusable one-event runtime target.`);
-    expect(handoff).not.toContain("Spain vs. France");
-    expect(closeout).not.toContain("Spain vs. France");
-    expect(handoff).not.toContain("8578db7a-e01c-442b-8480-95d36a6a946e");
-    expect(closeout).not.toContain("8578db7a-e01c-442b-8480-95d36a6a946e");
+    for (const doc of activeDocs) {
+      expect(doc).not.toContain("Spain vs. France");
+      expect(doc).not.toContain("8578db7a-e01c-442b-8480-95d36a6a946e");
+      expect(doc).not.toContain("78ea76f1-fc8f-419b-ac21-2554d79093f6");
+      expect(doc).not.toContain("cycle-ZAN-spain-france-cashout-proof");
+    }
   });
 });

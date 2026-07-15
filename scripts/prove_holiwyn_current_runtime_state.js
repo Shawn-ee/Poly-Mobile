@@ -29,6 +29,16 @@ function readJson(filePath) {
   }
 }
 
+function currentExpectedEventTitle() {
+  const readiness = readJson(readinessGateSummaryPath);
+  const liveRuntime = readJson(path.join(repoRoot, "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json"));
+  return (
+    readiness?.testerReady?.event?.title ||
+    liveRuntime?.event?.title ||
+    "Argentina vs. England"
+  );
+}
+
 function writeJson(filePath, value) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`);
@@ -196,7 +206,7 @@ async function main() {
     ]),
     restoresBackendOwnedEvent: true,
     restoresFrom: "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
-    expectedEvent: "Spain vs. France",
+    expectedEvent: currentExpectedEventTitle(),
   };
   commands.push(restoreCommand);
 

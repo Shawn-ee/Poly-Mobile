@@ -123,10 +123,10 @@ If the provider fails, quota is low, or no upcoming event has supported markets:
   - `docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-runtime-status-summary.redacted.json`
   - `docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-runtime-stop-summary.redacted.json`
 - Result: pass.
-- Event: Spain vs. France, `soccer_fifa_world_cup`, `2026-07-14T19:00:00Z`.
+- Event: Argentina vs. England, `soccer_fifa_world_cup`, `2026-07-15T19:00:00Z`.
 - Provider calls: one sports scan, quota-free event scans, one event-markets call, and two event-odds refreshes.
 - Quota used by provider headers: 13 credits, under the 16-credit cap.
-- Latest remaining quota at proof time: 268.
+- Latest remaining quota at proof time: 229.
 - Stale handling proof: selected market quote lifecycle changed from stale before refresh to ready after refresh.
 - Repeatability proof: provider outcome seeding now handles legacy/global outcome slug collisions with deterministic per-market suffixes instead of failing repeat imports.
 - Local proof-state hygiene: the live proof records `marketMaker.collateralRepair` if a balanced public `sportsbook-odds` orderbook market needs local collateral metadata reconciled before fake-token maker seeding.

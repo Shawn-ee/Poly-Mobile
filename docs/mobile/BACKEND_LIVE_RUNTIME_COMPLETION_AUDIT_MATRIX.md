@@ -36,12 +36,12 @@ Last refreshed from `main` evidence after `npm run mobile:one-event-live-runtime
 - Current selected event: Argentina vs. England.
 - Current selected proof market: Argentina vs. England: Total Goals 2.5.
 - Current selected outcome: Over 2.5.
-- Current selected outcome id: `8578db7a-e01c-442b-8480-95d36a6a946e`.
+- Current selected outcome id: `f57b22fb-7dc8-412c-95b9-9ebf79639f03`.
 - Cached internal trading readiness: ready.
 - Warm no-quota runtime loops: read `testerReady.routeWarmNoQuotaRuntime`, `testerReady.allLoopsRunning`, and `testerReady.runtimeNextAction` in the current readiness summary. Cached trading can remain ready even when the loops are stopped after proof cleanup.
 - Source-aware sportsbook exchange readiness: current gate requires `testerReady.exchangeReadiness.readyForInternalMobileExchange=true`.
 - Provider quota spending loop: none.
-- Selected outcome quote: bid `0.35`, ask `0.43`.
+- Selected outcome quote: bid `0.35`, ask `0.58`.
 - Mobile-route live-display odds freshness: proven ready immediately after the latest explicit provider-secret refresh pulse, but expected to age back to refresh-due/stale under the 60/90-second live-display thresholds. Treat `GET /api/internal/live-runtime/status` as the current authority.
 - Live-display odds refresh action: run the explicit provider-secret command only when fresh display odds are required again.
 - Active settlement action: wait for/apply market close before exact-confirmed settlement execution.

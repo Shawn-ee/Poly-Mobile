@@ -18,9 +18,9 @@ param(
   [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-ODDSAPIS23-odds-api-s23-visible-flow",
   [string]$DotenvPath = "",
   [switch]$SkipReplaySeed,
-  [string]$HomeExpectedTitle = "Spain vs. France",
-  [string]$TeamAExpected = "France",
-  [string]$TeamBExpected = "Spain"
+  [string]$HomeExpectedTitle = "",
+  [string]$TeamAExpected = "",
+  [string]$TeamBExpected = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -32,6 +32,48 @@ $resolvedHierarchyOutputDir = Join-Path $repoRoot $HierarchyOutputDir
 $expoOut = Join-Path $repoRoot ".runtime\mobile-odds-api-s23-expo.out.log"
 $expoErr = Join-Path $repoRoot ".runtime\mobile-odds-api-s23-expo.err.log"
 $adb = "adb"
+
+function Read-JsonFile {
+  param([string]$Path)
+  if (-not (Test-Path -LiteralPath $Path)) {
+    return $null
+  }
+  return Get-Content -Raw -LiteralPath $Path | ConvertFrom-Json
+}
+
+function Get-FirstJsonValue {
+  param([object[]]$Values)
+  foreach ($value in $Values) {
+    if ($value -and "$value".Trim().Length -gt 0) {
+      return "$value"
+    }
+  }
+  return $null
+}
+
+function Resolve-CurrentExpectedEvent {
+  $readiness = Read-JsonFile -Path (Join-Path $repoRoot "docs\mobile\harness\odds-api-live-runtime\internal-tester-readiness-gate-summary.redacted.json")
+  $liveRuntime = Read-JsonFile -Path (Join-Path $repoRoot "docs\mobile\harness\odds-api-live-runtime\one-event-live-runtime-summary.redacted.json")
+  $title = Get-FirstJsonValue -Values @(
+    $HomeExpectedTitle,
+    $readiness.testerReady.event.title,
+    $liveRuntime.event.title,
+    "Argentina vs. England"
+  )
+  $parts = $title -split "\s+vs\.\s+", 2
+  $teamA = Get-FirstJsonValue -Values @($TeamAExpected, $(if ($parts.Count -ge 1) { $parts[0] } else { $null }), "Argentina")
+  $teamB = Get-FirstJsonValue -Values @($TeamBExpected, $(if ($parts.Count -ge 2) { $parts[1] } else { $null }), "England")
+  return [ordered]@{
+    title = $title
+    teamA = $teamA
+    teamB = $teamB
+  }
+}
+
+$expectedEvent = Resolve-CurrentExpectedEvent
+$HomeExpectedTitle = $expectedEvent.title
+$TeamAExpected = $expectedEvent.teamA
+$TeamBExpected = $expectedEvent.teamB
 
 New-Item -ItemType Directory -Force -Path $resolvedOutputDir | Out-Null
 New-Item -ItemType Directory -Force -Path $resolvedHierarchyOutputDir | Out-Null

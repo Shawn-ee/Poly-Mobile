@@ -55,13 +55,13 @@ async function readJson(filePath: string): Promise<JsonObject | null> {
   }
 }
 
-function isSpainFranceOddsApiVisibleProof(proof: JsonObject | null) {
+function isCurrentOddsApiVisibleProof(proof: JsonObject | null) {
   if (!pass(proof)) return false;
   const eventSlug = getPath(proof, ["eventSlug"]);
   const expectedTitle = getPath(proof, ["expectedTitle"]);
   return (
     eventSlug === "odds-api-single-soccer-test" ||
-    expectedTitle === "Spain vs. France" ||
+    expectedTitle === "Argentina vs. England" ||
     getPath(proof, ["selectedMarket", "referenceSource"]) === "sportsbook-odds"
   );
 }
@@ -87,7 +87,7 @@ async function resolveLatestS23VisibleProofPath() {
         const proofPath = path.join(dirPath, proofFile).replace(/\\/g, "/");
         const proof = await readJson(proofPath);
         if (
-          !isSpainFranceOddsApiVisibleProof(proof) ||
+          !isCurrentOddsApiVisibleProof(proof) ||
           !truthy(getPath(proof, ["assertions", "cashoutTicketIsClosePositionMode"])) ||
           !truthy(getPath(proof, ["assertions", "cashoutMaxUsesOwnedShares"])) ||
           !truthy(getPath(proof, ["assertions", "cashoutTicketHidesYesNoSelector"]))

@@ -357,7 +357,7 @@ $summary = [ordered]@{
     cachedCheck = "npm run mobile:one-event-live-runtime"
     cachedCheckWithMaker = "npm run mobile:one-event-live-runtime -- -SeedMaker"
     liveProviderProof = "set THE_ODDS_API_KEY in the local process, then npm run mobile:one-event-live-runtime:provider"
-    s23VisibleProof = "npm run mobile:the-odds-api-s23-visible-flow -- -SkipReplaySeed -HomeExpectedTitle `"Spain vs. France`" -TeamAExpected `"France`" -TeamBExpected `"Spain`""
+    s23VisibleProof = "npm run mobile:the-odds-api-s23-visible-flow -- -SkipReplaySeed"
   }
 }
 

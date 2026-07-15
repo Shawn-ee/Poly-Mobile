@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-15T05:57:59.619Z",
+  "generatedAt": "2026-07-15T06:14:48.771Z",
   "scope": "holiwyn-internal-tester-readiness-gate",
   "pass": true,
   "providerQuotaUsedByThisGate": false,
@@ -16,8 +16,8 @@
       "id": "ordered-live-runtime-audit",
       "command": "npm run mobile:live-runtime-audit-gate",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/live-runtime-audit-gate-summary.redacted.json",
-      "startedAt": "2026-07-15T05:57:44.942Z",
-      "finishedAt": "2026-07-15T05:57:55.426Z",
+      "startedAt": "2026-07-15T06:14:35.782Z",
+      "finishedAt": "2026-07-15T06:14:45.746Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -26,8 +26,8 @@
       "id": "sportsbook-exchange-readiness",
       "command": "npm run mobile:internal-exchange-readiness -- --summaryPath docs/mobile/harness/odds-api-live-runtime/mobile-internal-exchange-readiness-summary.redacted.json",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/mobile-internal-exchange-readiness-summary.redacted.json",
-      "startedAt": "2026-07-15T05:57:55.427Z",
-      "finishedAt": "2026-07-15T05:57:56.742Z",
+      "startedAt": "2026-07-15T06:14:45.747Z",
+      "finishedAt": "2026-07-15T06:14:46.847Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
@@ -36,8 +36,8 @@
       "id": "operator-snapshot",
       "command": "npm run mobile:internal-tester-operator-snapshot",
       "summaryPath": "docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json",
-      "startedAt": "2026-07-15T05:57:56.742Z",
-      "finishedAt": "2026-07-15T05:57:59.600Z",
+      "startedAt": "2026-07-15T06:14:46.847Z",
+      "finishedAt": "2026-07-15T06:14:48.768Z",
       "exitCode": 0,
       "pass": true,
       "providerQuotaUsedByStage": false
