@@ -1,7 +1,7 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-14T14:50:46.070Z",
-  "startedAt": "2026-07-14T14:50:42.758Z",
+  "generatedAt": "2026-07-15T05:19:31.770Z",
+  "startedAt": "2026-07-15T05:19:28.323Z",
   "scope": "odds-api-one-event-live-runtime",
   "policy": {
     "fakeTokenOnly": true,
@@ -15,10 +15,10 @@
     "quoteOffsetTicks": 2
   },
   "event": {
-    "providerEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
+    "providerEventId": "ced22494ae0bbb8cc4f7108bf6f493df",
     "sportKey": "soccer_fifa_world_cup",
-    "title": "Spain vs. France",
-    "commenceTime": "2026-07-14T19:00:00Z",
+    "title": "Argentina vs. England",
+    "commenceTime": "2026-07-15T19:00:00Z",
     "localSlug": "odds-api-single-soccer-test"
   },
   "provider": {
@@ -29,52 +29,52 @@
         "path": "/v4/sports",
         "status": 200,
         "quota": {
-          "requestsUsed": "245",
-          "requestsRemaining": "255",
+          "requestsUsed": "258",
+          "requestsRemaining": "242",
           "requestsLast": "0"
         }
       },
       {
         "name": "events:soccer_fifa_world_cup",
         "method": "GET",
-        "path": "/v4/sports/soccer_fifa_world_cup/events?dateFormat=iso&commenceTimeFrom=2026-07-14T00%3A00%3A00Z&commenceTimeTo=2026-07-15T00%3A00%3A00Z",
+        "path": "/v4/sports/soccer_fifa_world_cup/events?dateFormat=iso&commenceTimeFrom=2026-07-15T00%3A00%3A00Z&commenceTimeTo=2026-07-16T00%3A00%3A00Z",
         "status": 200,
         "quota": {
-          "requestsUsed": "245",
-          "requestsRemaining": "255",
+          "requestsUsed": "258",
+          "requestsRemaining": "242",
           "requestsLast": "0"
         }
       },
       {
         "name": "event-markets",
         "method": "GET",
-        "path": "/v4/sports/soccer_fifa_world_cup/events/f9aa13a662d1658e5a02cfc06d6a2d73/markets?regions=us&dateFormat=iso",
+        "path": "/v4/sports/soccer_fifa_world_cup/events/ced22494ae0bbb8cc4f7108bf6f493df/markets?regions=us&dateFormat=iso",
         "status": 200,
         "quota": {
-          "requestsUsed": "246",
-          "requestsRemaining": "254",
+          "requestsUsed": "259",
+          "requestsRemaining": "241",
           "requestsLast": "1"
         }
       },
       {
         "name": "event-odds",
         "method": "GET",
-        "path": "/v4/sports/soccer_fifa_world_cup/events/f9aa13a662d1658e5a02cfc06d6a2d73/odds?regions=us&markets=h2h%2Cspreads%2Ctotals%2Ch2h_3_way%2Calternate_spreads%2Calternate_totals&oddsFormat=decimal&dateFormat=iso",
+        "path": "/v4/sports/soccer_fifa_world_cup/events/ced22494ae0bbb8cc4f7108bf6f493df/odds?regions=us&markets=h2h%2Cspreads%2Ctotals%2Ch2h_3_way%2Calternate_spreads%2Calternate_totals&oddsFormat=decimal&dateFormat=iso",
         "status": 200,
         "quota": {
-          "requestsUsed": "252",
-          "requestsRemaining": "248",
+          "requestsUsed": "265",
+          "requestsRemaining": "235",
           "requestsLast": "6"
         }
       },
       {
         "name": "event-odds",
         "method": "GET",
-        "path": "/v4/sports/soccer_fifa_world_cup/events/f9aa13a662d1658e5a02cfc06d6a2d73/odds?regions=us&markets=h2h%2Cspreads%2Ctotals%2Ch2h_3_way%2Calternate_spreads%2Calternate_totals&oddsFormat=decimal&dateFormat=iso",
+        "path": "/v4/sports/soccer_fifa_world_cup/events/ced22494ae0bbb8cc4f7108bf6f493df/odds?regions=us&markets=h2h%2Cspreads%2Ctotals%2Ch2h_3_way%2Calternate_spreads%2Calternate_totals&oddsFormat=decimal&dateFormat=iso",
         "status": 200,
         "quota": {
-          "requestsUsed": "258",
-          "requestsRemaining": "242",
+          "requestsUsed": "271",
+          "requestsRemaining": "229",
           "requestsLast": "6"
         }
       }
@@ -82,8 +82,8 @@
     "quota": {
       "totalLastCost": 13,
       "latest": {
-        "requestsUsed": "258",
-        "requestsRemaining": "242",
+        "requestsUsed": "271",
+        "requestsRemaining": "229",
         "requestsLast": "6"
       }
     },
@@ -97,7 +97,7 @@
     ],
     "importedMarketKeys": [
       "h2h",
-      "totals",
+      "alternate_totals",
       "h2h_3_way"
     ],
     "normalizedMarketCount": 3,
@@ -105,33 +105,33 @@
       "event": {
         "id": "bdd748d4-8784-459d-a612-a54903892c89",
         "slug": "odds-api-single-soccer-test",
-        "title": "Spain vs. France"
+        "title": "Argentina vs. England"
       },
       "marketCount": 19,
       "outcomeCount": 40,
       "markets": [
         {
-          "id": "378abc5d-144e-4797-9f07-8b271103468b",
-          "slug": "odds-api-single-soccer-test-h2h-c08243d06d",
-          "title": "Spain vs. France: Regulation Time Winner",
+          "id": "b1aa1fae-39dd-48df-b9f4-cba8a51d5901",
+          "slug": "odds-api-single-soccer-test-h2h-ca4dab431e",
+          "title": "Argentina vs. England: Regulation Time Winner",
           "marketType": "match_winner_1x2",
           "marketGroupTitle": "Regulation Time Winner",
           "line": null,
           "outcomeCount": 3
         },
         {
-          "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-          "slug": "odds-api-single-soccer-test-totals-7439c2d603",
-          "title": "Spain vs. France: Total Goals 2.5",
+          "id": "38664599-1911-40b4-9c57-382498da8efb",
+          "slug": "odds-api-single-soccer-test-alternate-totals-f03de7d488",
+          "title": "Argentina vs. England: Total Goals 2.5",
           "marketType": "total_goals",
           "marketGroupTitle": "Total Goals",
           "line": "2.5",
           "outcomeCount": 2
         },
         {
-          "id": "528f1f87-cc1c-44a0-8732-876ef0676071",
-          "slug": "odds-api-single-soccer-test-h2h-3-way-aa0047f81b",
-          "title": "Spain vs. France: Regulation Time Winner",
+          "id": "1d81bd81-85ef-436a-949c-979d0cb2ff20",
+          "slug": "odds-api-single-soccer-test-h2h-3-way-41e7135e5f",
+          "title": "Argentina vs. England: Regulation Time Winner",
           "marketType": "match_winner_1x2",
           "marketGroupTitle": "Regulation Time Winner",
           "line": null,
@@ -140,7 +140,7 @@
         {
           "id": "b0dc1afa-c034-47d0-9add-b15458e6f184",
           "slug": "odds-api-single-soccer-test-holiwyn-advance",
-          "title": "Spain vs. France: Team to advance",
+          "title": "Argentina vs. England: Team to advance",
           "marketType": "to_advance",
           "marketGroupTitle": "Team To Advance",
           "line": null,
@@ -149,7 +149,7 @@
         {
           "id": "c914da40-17fe-4928-ab46-17ef85e7b8c4",
           "slug": "odds-api-single-soccer-test-holiwyn-regulation-home",
-          "title": "Spain vs. France: France in regulation",
+          "title": "Argentina vs. England: England in regulation",
           "marketType": "match_winner_1x2",
           "marketGroupTitle": "Regulation Time Winner",
           "line": null,
@@ -158,7 +158,7 @@
         {
           "id": "f780218c-bd1b-4902-9f5f-2ed12386dd17",
           "slug": "odds-api-single-soccer-test-holiwyn-regulation-away",
-          "title": "Spain vs. France: Spain in regulation",
+          "title": "Argentina vs. England: Argentina in regulation",
           "marketType": "match_winner_1x2",
           "marketGroupTitle": "Regulation Time Winner",
           "line": null,
@@ -167,7 +167,7 @@
         {
           "id": "92afd515-f2b0-4c7c-b7b6-b5bca26a35d3",
           "slug": "odds-api-single-soccer-test-holiwyn-regulation-draw",
-          "title": "Spain vs. France: Draw in regulation",
+          "title": "Argentina vs. England: Draw in regulation",
           "marketType": "match_winner_1x2",
           "marketGroupTitle": "Regulation Time Winner",
           "line": null,
@@ -176,7 +176,7 @@
         {
           "id": "209569b6-9737-4e8c-8667-1cc49ac72c9a",
           "slug": "odds-api-single-soccer-test-holiwyn-spread-home-neg-3-5",
-          "title": "Spain vs. France: France -3.5",
+          "title": "Argentina vs. England: England -3.5",
           "marketType": "spread",
           "marketGroupTitle": "Spread",
           "line": "-3.5",
@@ -185,7 +185,7 @@
         {
           "id": "4d03dd95-181c-4731-a61d-cec9baadb09d",
           "slug": "odds-api-single-soccer-test-holiwyn-spread-home-neg-2-5",
-          "title": "Spain vs. France: France -2.5",
+          "title": "Argentina vs. England: England -2.5",
           "marketType": "spread",
           "marketGroupTitle": "Spread",
           "line": "-2.5",
@@ -194,7 +194,7 @@
         {
           "id": "702668f8-ad0d-43f0-93e7-f78a78b41771",
           "slug": "odds-api-single-soccer-test-holiwyn-spread-home-neg-1-5",
-          "title": "Spain vs. France: France -1.5",
+          "title": "Argentina vs. England: England -1.5",
           "marketType": "spread",
           "marketGroupTitle": "Spread",
           "line": "-1.5",
@@ -203,7 +203,7 @@
         {
           "id": "79edc202-09df-48e7-8d0d-b8fe5c920aeb",
           "slug": "odds-api-single-soccer-test-holiwyn-spread-home-1-5",
-          "title": "Spain vs. France: France +1.5",
+          "title": "Argentina vs. England: England +1.5",
           "marketType": "spread",
           "marketGroupTitle": "Spread",
           "line": "1.5",
@@ -212,7 +212,7 @@
         {
           "id": "bed4fbbd-0f0d-4bf4-8301-d7dfa9872633",
           "slug": "odds-api-single-soccer-test-holiwyn-spread-home-2-5",
-          "title": "Spain vs. France: France +2.5",
+          "title": "Argentina vs. England: England +2.5",
           "marketType": "spread",
           "marketGroupTitle": "Spread",
           "line": "2.5",
@@ -221,7 +221,7 @@
         {
           "id": "19a4f839-f116-4f25-b246-b78b2d5c450c",
           "slug": "odds-api-single-soccer-test-holiwyn-spread-home-3-5",
-          "title": "Spain vs. France: France +3.5",
+          "title": "Argentina vs. England: England +3.5",
           "marketType": "spread",
           "marketGroupTitle": "Spread",
           "line": "3.5",
@@ -230,7 +230,7 @@
         {
           "id": "6d3271fe-f343-4f31-9dc1-33243eba4385",
           "slug": "odds-api-single-soccer-test-holiwyn-total-goals-0-5",
-          "title": "Spain vs. France: Total goals 0.5",
+          "title": "Argentina vs. England: Total goals 0.5",
           "marketType": "total_goals",
           "marketGroupTitle": "Total Goals",
           "line": "0.5",
@@ -239,7 +239,7 @@
         {
           "id": "a98c138f-4c07-4e17-befa-32bd90d87c57",
           "slug": "odds-api-single-soccer-test-holiwyn-total-goals-1-5",
-          "title": "Spain vs. France: Total goals 1.5",
+          "title": "Argentina vs. England: Total goals 1.5",
           "marketType": "total_goals",
           "marketGroupTitle": "Total Goals",
           "line": "1.5",
@@ -248,7 +248,7 @@
         {
           "id": "cc4f4d02-4acc-48a8-aaa5-437652454c3c",
           "slug": "odds-api-single-soccer-test-holiwyn-total-goals-2-5",
-          "title": "Spain vs. France: Total goals 2.5",
+          "title": "Argentina vs. England: Total goals 2.5",
           "marketType": "total_goals",
           "marketGroupTitle": "Total Goals",
           "line": "2.5",
@@ -257,7 +257,7 @@
         {
           "id": "b1876310-e042-4f26-9ff2-0449b06fc5c2",
           "slug": "odds-api-single-soccer-test-holiwyn-total-goals-3-5",
-          "title": "Spain vs. France: Total goals 3.5",
+          "title": "Argentina vs. England: Total goals 3.5",
           "marketType": "total_goals",
           "marketGroupTitle": "Total Goals",
           "line": "3.5",
@@ -266,7 +266,7 @@
         {
           "id": "6bce0fd1-9603-4bf5-8a14-5e1df6a95996",
           "slug": "odds-api-single-soccer-test-holiwyn-total-goals-4-5",
-          "title": "Spain vs. France: Total goals 4.5",
+          "title": "Argentina vs. England: Total goals 4.5",
           "marketType": "total_goals",
           "marketGroupTitle": "Total Goals",
           "line": "4.5",
@@ -275,7 +275,7 @@
         {
           "id": "1ee4cd52-dffd-4f8e-a03a-fee55701aee7",
           "slug": "odds-api-single-soccer-test-holiwyn-total-goals-5-5",
-          "title": "Spain vs. France: Total goals 5.5",
+          "title": "Argentina vs. England: Total goals 5.5",
           "marketType": "total_goals",
           "marketGroupTitle": "Total Goals",
           "line": "5.5",
@@ -285,19 +285,19 @@
     }
   },
   "selectedMarket": {
-    "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-    "slug": "odds-api-single-soccer-test-totals-7439c2d603",
-    "title": "Spain vs. France: Total Goals 2.5",
+    "id": "38664599-1911-40b4-9c57-382498da8efb",
+    "slug": "odds-api-single-soccer-test-alternate-totals-f03de7d488",
+    "title": "Argentina vs. England: Total Goals 2.5",
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
-    "outcomeId": "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
+    "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
     "outcomeName": "Over 2.5",
     "referenceOutcomeLabel": "Over +2.5",
-    "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4"
+    "referenceTokenId": "odds-api-de78e5a62c5db9e0c43ab08f"
   },
   "lifecycle": {
-    "forcedStaleAt": "2026-07-14T14:45:42.973Z",
+    "forcedStaleAt": "2026-07-15T05:14:29.434Z",
     "beforeRefresh": {
       "source": "mobile-live-detail-market",
       "status": "stale",
@@ -313,14 +313,14 @@
       "fallbackApplied": false,
       "fallbackReason": null,
       "reason": "Provider quote snapshot is older than 90 seconds.",
-      "nextRefreshAt": "2026-07-14T14:46:42.973Z",
-      "lastFetchedAt": "2026-07-14T14:45:42.973Z",
+      "nextRefreshAt": "2026-07-15T05:15:29.434Z",
+      "lastFetchedAt": "2026-07-15T05:14:29.434Z",
       "quote": {
         "source": "sportsbook-odds",
         "status": "stale",
         "reason": "Provider quote snapshot is older than 90 seconds.",
-        "nextRefreshAt": "2026-07-14T14:46:42.973Z",
-        "lastFetchedAt": "2026-07-14T14:45:42.973Z",
+        "nextRefreshAt": "2026-07-15T05:15:29.434Z",
+        "lastFetchedAt": "2026-07-15T05:14:29.434Z",
         "stalenessSeconds": 300,
         "shouldRefresh": true,
         "ready": false,
@@ -376,14 +376,14 @@
       "fallbackApplied": false,
       "fallbackReason": null,
       "reason": "No provider orderbook depth snapshot is available.",
-      "nextRefreshAt": "2026-07-14T14:51:44.370Z",
-      "lastFetchedAt": "2026-07-14T14:50:44.370Z",
+      "nextRefreshAt": "2026-07-15T05:20:29.683Z",
+      "lastFetchedAt": "2026-07-15T05:19:29.683Z",
       "quote": {
         "source": "sportsbook-odds",
         "status": "ready",
         "reason": "Provider quote snapshot is fresh.",
-        "nextRefreshAt": "2026-07-14T14:51:44.370Z",
-        "lastFetchedAt": "2026-07-14T14:50:44.370Z",
+        "nextRefreshAt": "2026-07-15T05:20:29.683Z",
+        "lastFetchedAt": "2026-07-15T05:19:29.683Z",
         "stalenessSeconds": 1,
         "shouldRefresh": false,
         "ready": true,
@@ -444,77 +444,69 @@
   "marketMaker": {
     "continuous": false,
     "mode": "bounded-proof-local-shifted-maker",
-    "makerUserId": "73dbf98f-4ab4-49c8-aa49-7d91972eec87",
-    "bidOrderId": "b7c6fafb-7ba0-4b7a-ad4f-447f03e5f234",
-    "askOrderId": "c17e4ba7-fa55-45cb-8ecb-f77cdd5096d1",
-    "referenceBid": 0.48,
-    "referenceAsk": 0.52,
+    "makerUserId": "0b1c7da4-59ba-46fc-ba73-51c7d2125f91",
+    "bidOrderId": "edbc8f28-f5fa-4e39-a4b6-5176e2cce0da",
+    "askOrderId": "4b4f4931-a2cc-46d5-938d-a99b4748cc13",
+    "referenceBid": 0.3688,
+    "referenceAsk": 0.4088,
     "preSeedBook": {
-      "bestBid": 0.58,
-      "bestAsk": 0.59,
-      "openOrderCount": 3,
+      "bestBid": 0.35,
+      "bestAsk": 0.43,
+      "openOrderCount": 2,
       "orders": [
         {
           "side": "BUY",
-          "price": "0.45",
+          "price": "0.35",
           "remaining": "200",
-          "username": "odds_live_runtime_shifted_maker_6fbb8d54"
+          "username": "odds_live_runtime_shifted_maker_8072ef1f"
         },
         {
           "side": "SELL",
-          "price": "0.59",
+          "price": "0.43",
           "remaining": "200",
-          "username": "odds_live_runtime_shifted_maker_6fbb8d54"
-        },
-        {
-          "side": "BUY",
-          "price": "0.58",
-          "remaining": "36.9",
-          "username": "mobile_route_fill_maker_ba580843"
+          "username": "odds_live_runtime_shifted_maker_8072ef1f"
         }
       ]
     },
     "collateralRepair": {
       "repaired": false,
-      "before": "7750",
-      "after": "7750",
+      "before": "200",
+      "after": "200",
       "byOutcome": [
         {
-          "outcomeId": "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
+          "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
           "code": "over-2-5",
-          "shares": "7750"
+          "shares": "200"
         },
         {
-          "outcomeId": "db047bba-39bc-4be0-8cb7-1f130e4bf397",
+          "outcomeId": "787117a3-3eb3-4f6b-8b6a-07bb9af27afc",
           "code": "under-2-5",
-          "shares": "7750"
+          "shares": "200"
         }
       ]
     },
-    "adjustments": [
-      "plannedAsk moved above existing best bid 0.58"
-    ],
-    "plannedBid": 0.46,
-    "plannedAsk": 0.59
+    "adjustments": [],
+    "plannedBid": 0.35,
+    "plannedAsk": 0.43
   },
   "flow": {
     "buyOrder": {
-      "id": "8824e03d-2509-43a0-8b80-0632c14102e5",
-      "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-      "outcomeId": "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
+      "id": "8966a81e-3025-4dcb-8662-64539b2c3075",
+      "marketId": "38664599-1911-40b4-9c57-382498da8efb",
+      "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
       "side": "BUY",
-      "price": "0.59",
+      "price": "0.43",
       "size": "1",
       "remaining": "0",
       "reservedNotional": "0",
       "status": "FILLED",
       "type": "LIMIT",
-      "clientOrderId": "odds-live-runtime-buy-0afcb623-22c3-4cfd-a67f-dfc4522ac905",
+      "clientOrderId": "odds-live-runtime-buy-3ae68dbb-ed73-42f6-a57d-1151696d3759",
       "apiKeyId": "[redacted]",
       "contractSide": "YES",
       "selection": {
-        "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-        "outcomeId": "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
+        "marketId": "38664599-1911-40b4-9c57-382498da8efb",
+        "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
         "marketGroupId": "totals",
         "marketType": "totals",
         "line": "2.5",
@@ -524,33 +516,33 @@
         "contractSide": "yes",
         "referenceSource": "sportsbook-odds",
         "providerSource": "sportsbook-odds",
-        "externalSlug": "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
-        "externalMarketId": "f9aa13a662d1658e5a02cfc06d6a2d73:betonlineag:totals:2.5",
-        "conditionId": "odds-api-7439c2d6033826e21400f068",
+        "externalSlug": "soccer_fifa_world_cup-ced22494ae0bbb8cc4f7108bf6f493df",
+        "externalMarketId": "ced22494ae0bbb8cc4f7108bf6f493df:betonlineag:alternate_totals:2.5",
+        "conditionId": "odds-api-f03de7d48812b4e2402f91d3",
         "referenceTokenId": "[redacted]",
         "tokenId": "[redacted]",
         "referenceOutcomeLabel": "Over +2.5",
-        "limitPrice": 0.59,
+        "limitPrice": 0.43,
         "limitSide": "ask"
       }
     },
     "sellOrder": {
-      "id": "9ce2e400-0fb2-494a-b24b-bf0cc436cf0f",
-      "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-      "outcomeId": "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
+      "id": "9b381ef3-3bd9-4bb0-8e7e-4325c8767e04",
+      "marketId": "38664599-1911-40b4-9c57-382498da8efb",
+      "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
       "side": "SELL",
-      "price": "0.46",
+      "price": "0.35",
       "size": "1",
       "remaining": "0",
       "reservedNotional": "0",
       "status": "FILLED",
       "type": "LIMIT",
-      "clientOrderId": "odds-live-runtime-cashout-sell-12fca946-4974-4a27-9c5a-15c39673827a",
+      "clientOrderId": "odds-live-runtime-cashout-sell-4afdd39a-47a5-4131-8eab-835742adef77",
       "apiKeyId": "[redacted]",
       "contractSide": "YES",
       "selection": {
-        "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-        "outcomeId": "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
+        "marketId": "38664599-1911-40b4-9c57-382498da8efb",
+        "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
         "marketGroupId": "totals",
         "marketType": "totals",
         "line": "2.5",
@@ -560,31 +552,31 @@
         "contractSide": "yes",
         "referenceSource": "sportsbook-odds",
         "providerSource": "sportsbook-odds",
-        "externalSlug": "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
-        "externalMarketId": "f9aa13a662d1658e5a02cfc06d6a2d73:betonlineag:totals:2.5",
-        "conditionId": "odds-api-7439c2d6033826e21400f068",
+        "externalSlug": "soccer_fifa_world_cup-ced22494ae0bbb8cc4f7108bf6f493df",
+        "externalMarketId": "ced22494ae0bbb8cc4f7108bf6f493df:betonlineag:alternate_totals:2.5",
+        "conditionId": "odds-api-f03de7d48812b4e2402f91d3",
         "referenceTokenId": "[redacted]",
         "tokenId": "[redacted]",
         "referenceOutcomeLabel": "Over +2.5",
-        "limitPrice": 0.46,
+        "limitPrice": 0.35,
         "limitSide": "bid"
       }
     },
     "positionAfterBuy": {
       "market": {
-        "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-        "title": "Spain vs. France: Total Goals 2.5",
-        "eventTitle": "Spain vs. France",
+        "id": "38664599-1911-40b4-9c57-382498da8efb",
+        "title": "Argentina vs. England: Total Goals 2.5",
+        "eventTitle": "Argentina vs. England",
         "eventSlug": "odds-api-single-soccer-test",
         "status": "LIVE",
         "resolveTime": null,
-        "createdAt": "2026-07-14T12:45:38.687Z"
+        "createdAt": "2026-07-15T05:19:28.863Z"
       },
-      "outcomeId": "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
+      "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
       "outcome": "Over +2.5",
       "selection": {
-        "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-        "outcomeId": "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
+        "marketId": "38664599-1911-40b4-9c57-382498da8efb",
+        "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
         "marketGroupId": "totals",
         "marketType": "totals",
         "line": "2.5",
@@ -594,21 +586,21 @@
         "contractSide": "yes",
         "referenceSource": "sportsbook-odds",
         "providerSource": "sportsbook-odds",
-        "externalSlug": "soccer_fifa_world_cup-f9aa13a662d1658e5a02cfc06d6a2d73",
-        "externalMarketId": "f9aa13a662d1658e5a02cfc06d6a2d73:betonlineag:totals:2.5",
-        "conditionId": "odds-api-7439c2d6033826e21400f068",
+        "externalSlug": "soccer_fifa_world_cup-ced22494ae0bbb8cc4f7108bf6f493df",
+        "externalMarketId": "ced22494ae0bbb8cc4f7108bf6f493df:betonlineag:alternate_totals:2.5",
+        "conditionId": "odds-api-f03de7d48812b4e2402f91d3",
         "referenceTokenId": "[redacted]",
         "tokenId": "[redacted]",
         "referenceOutcomeLabel": "Over +2.5",
-        "limitPrice": 0.59,
+        "limitPrice": 0.43,
         "limitSide": "ask"
       },
       "shares": 1,
-      "avgCost": 0.59,
-      "currentPrice": 0.52,
-      "bestBid": 0.45,
-      "bestAsk": 0.59,
-      "bestBidSize": 200,
+      "avgCost": 0.43,
+      "currentPrice": 0.39,
+      "bestBid": 0.35,
+      "bestAsk": 0.43,
+      "bestBidSize": 400,
       "bestAskSize": 399,
       "valueTokens": "[redacted]",
       "costBasisTokens": "[redacted]",

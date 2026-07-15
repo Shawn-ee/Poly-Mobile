@@ -1,5 +1,5 @@
 {
-    "generatedAt":  "2026-07-14T14:50:47.0171570Z",
+    "generatedAt":  "2026-07-15T05:19:35.0405277Z",
     "scope":  "holiwyn-one-event-live-runtime-launch",
     "pass":  true,
     "backend":  {
@@ -10,7 +10,7 @@
                                                       "status":  "ok",
                                                       "db":  "connected",
                                                       "env":  "development",
-                                                      "timestamp":  "2026-07-14T14:50:41.621Z"
+                                                      "timestamp":  "2026-07-15T05:19:24.752Z"
                                                   },
                                          "error":  null
                                      },
@@ -20,7 +20,7 @@
                                                      "status":  "ok",
                                                      "db":  "connected",
                                                      "env":  "development",
-                                                     "timestamp":  "2026-07-14T14:50:41.640Z"
+                                                     "timestamp":  "2026-07-15T05:19:24.777Z"
                                                  },
                                         "error":  null
                                     },
@@ -28,9 +28,9 @@
                 },
     "dockerPostgres":  {
                            "ok":  true,
-                           "status":  "poly_postgres|Up 9 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp",
+                           "status":  "poly_postgres|Up 10 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp",
                            "raw":  [
-                                       "poly_postgres|Up 9 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
+                                       "poly_postgres|Up 10 days (healthy)|0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp"
                                    ]
                        },
     "s23":  {
@@ -54,7 +54,7 @@
                                          "cachedModeUsesQuota":  false,
                                          "checksNoQuotaRuntimePreflightBeforeProviderRefresh":  false,
                                          "refusesConcurrentQuotaSpendingLoop":  true,
-                                         "forceProviderRefresh":  false,
+                                         "forceProviderRefresh":  true,
                                          "liveOddsPreflightBlockedReason":  null,
                                          "liveOddsPreflight":  null
                                      },
@@ -63,84 +63,78 @@
                                    "pass":  true,
                                    "fresh":  true,
                                    "reason":  "fresh",
-                                   "generatedAt":  "2026-07-14T14:50:46.070Z",
+                                   "generatedAt":  "2026-07-15T05:19:31.770Z",
                                    "ageHours":  0,
                                    "maxAgeHours":  24,
                                    "summaryPath":  "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
                                    "event":  {
-                                                 "providerEventId":  "f9aa13a662d1658e5a02cfc06d6a2d73",
+                                                 "providerEventId":  "ced22494ae0bbb8cc4f7108bf6f493df",
                                                  "sportKey":  "soccer_fifa_world_cup",
-                                                 "title":  "Spain vs. France",
-                                                 "commenceTime":  "2026-07-14T19:00:00Z",
+                                                 "title":  "Argentina vs. England",
+                                                 "commenceTime":  "2026-07-15T19:00:00Z",
                                                  "localSlug":  "odds-api-single-soccer-test"
                                              },
                                    "selectedMarket":  {
-                                                          "id":  "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-                                                          "slug":  "odds-api-single-soccer-test-totals-7439c2d603",
-                                                          "title":  "Spain vs. France: Total Goals 2.5",
+                                                          "id":  "38664599-1911-40b4-9c57-382498da8efb",
+                                                          "slug":  "odds-api-single-soccer-test-alternate-totals-f03de7d488",
+                                                          "title":  "Argentina vs. England: Total Goals 2.5",
                                                           "marketType":  "total_goals",
                                                           "marketGroupKey":  "totals",
                                                           "line":  "2.5",
-                                                          "outcomeId":  "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
+                                                          "outcomeId":  "8578db7a-e01c-442b-8480-95d36a6a946e",
                                                           "outcomeName":  "Over 2.5",
                                                           "referenceOutcomeLabel":  "Over +2.5",
-                                                          "referenceTokenId":  "odds-api-88263b2c42d6b2f5c6dbbda4"
+                                                          "referenceTokenId":  "odds-api-de78e5a62c5db9e0c43ab08f"
                                                       },
                                    "marketMaker":  {
                                                        "continuous":  false,
                                                        "mode":  "bounded-proof-local-shifted-maker",
-                                                       "makerUserId":  "73dbf98f-4ab4-49c8-aa49-7d91972eec87",
-                                                       "bidOrderId":  "b7c6fafb-7ba0-4b7a-ad4f-447f03e5f234",
-                                                       "askOrderId":  "c17e4ba7-fa55-45cb-8ecb-f77cdd5096d1",
-                                                       "referenceBid":  0.48,
-                                                       "referenceAsk":  0.52,
+                                                       "makerUserId":  "0b1c7da4-59ba-46fc-ba73-51c7d2125f91",
+                                                       "bidOrderId":  "edbc8f28-f5fa-4e39-a4b6-5176e2cce0da",
+                                                       "askOrderId":  "4b4f4931-a2cc-46d5-938d-a99b4748cc13",
+                                                       "referenceBid":  0.3688,
+                                                       "referenceAsk":  0.4088,
                                                        "preSeedBook":  {
-                                                                           "bestBid":  0.58,
-                                                                           "bestAsk":  0.59,
-                                                                           "openOrderCount":  3,
+                                                                           "bestBid":  0.35,
+                                                                           "bestAsk":  0.43,
+                                                                           "openOrderCount":  2,
                                                                            "orders":  [
                                                                                           {
                                                                                               "side":  "BUY",
-                                                                                              "price":  "0.45",
+                                                                                              "price":  "0.35",
                                                                                               "remaining":  "200",
-                                                                                              "username":  "odds_live_runtime_shifted_maker_6fbb8d54"
+                                                                                              "username":  "odds_live_runtime_shifted_maker_8072ef1f"
                                                                                           },
                                                                                           {
                                                                                               "side":  "SELL",
-                                                                                              "price":  "0.59",
+                                                                                              "price":  "0.43",
                                                                                               "remaining":  "200",
-                                                                                              "username":  "odds_live_runtime_shifted_maker_6fbb8d54"
-                                                                                          },
-                                                                                          {
-                                                                                              "side":  "BUY",
-                                                                                              "price":  "0.58",
-                                                                                              "remaining":  "36.9",
-                                                                                              "username":  "mobile_route_fill_maker_ba580843"
+                                                                                              "username":  "odds_live_runtime_shifted_maker_8072ef1f"
                                                                                           }
                                                                                       ]
                                                                        },
                                                        "collateralRepair":  {
                                                                                 "repaired":  false,
-                                                                                "before":  "7750",
-                                                                                "after":  "7750",
+                                                                                "before":  "200",
+                                                                                "after":  "200",
                                                                                 "byOutcome":  [
                                                                                                   {
-                                                                                                      "outcomeId":  "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
+                                                                                                      "outcomeId":  "8578db7a-e01c-442b-8480-95d36a6a946e",
                                                                                                       "code":  "over-2-5",
-                                                                                                      "shares":  "7750"
+                                                                                                      "shares":  "200"
                                                                                                   },
                                                                                                   {
-                                                                                                      "outcomeId":  "db047bba-39bc-4be0-8cb7-1f130e4bf397",
+                                                                                                      "outcomeId":  "787117a3-3eb3-4f6b-8b6a-07bb9af27afc",
                                                                                                       "code":  "under-2-5",
-                                                                                                      "shares":  "7750"
+                                                                                                      "shares":  "200"
                                                                                                   }
                                                                                               ]
                                                                             },
                                                        "adjustments":  [
-                                                                           "plannedAsk moved above existing best bid 0.58"
+
                                                                        ],
-                                                       "plannedBid":  0.46,
-                                                       "plannedAsk":  0.59
+                                                       "plannedBid":  0.35,
+                                                       "plannedAsk":  0.43
                                                    },
                                    "gaps":  {
                                                 "p0":  [
@@ -175,12 +169,12 @@
                       {
                           "LocalAddress":  "::",
                           "LocalPort":  8081,
-                          "OwningProcess":  60648
+                          "OwningProcess":  7928
                       },
                       {
                           "LocalAddress":  "::",
                           "LocalPort":  3002,
-                          "OwningProcess":  43088
+                          "OwningProcess":  7196
                       }
                   ],
     "commands":  {

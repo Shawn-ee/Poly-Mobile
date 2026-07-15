@@ -1,27 +1,27 @@
 {
-  "generatedAt": "2026-07-14T15:43:16.542Z",
+  "generatedAt": "2026-07-15T05:27:02.297Z",
   "scope": "holiwyn-internal-tester-operator-snapshot",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
   "providerQuotaUsedByThisReport": false,
   "event": {
-    "title": "Spain vs. France",
-    "providerEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
+    "title": "Argentina vs. England",
+    "providerEventId": "ced22494ae0bbb8cc4f7108bf6f493df",
     "sportKey": "soccer_fifa_world_cup",
-    "commenceTime": "2026-07-14T19:00:00Z",
+    "commenceTime": "2026-07-15T19:00:00Z",
     "localSlug": "odds-api-single-soccer-test"
   },
   "selectedMarket": {
-    "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-    "slug": "odds-api-single-soccer-test-totals-7439c2d603",
-    "title": "Spain vs. France: Total Goals 2.5",
+    "id": "38664599-1911-40b4-9c57-382498da8efb",
+    "slug": "odds-api-single-soccer-test-alternate-totals-f03de7d488",
+    "title": "Argentina vs. England: Total Goals 2.5",
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
-    "outcomeId": "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
+    "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
     "outcomeName": "Over 2.5",
     "referenceOutcomeLabel": "Over +2.5",
-    "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4"
+    "referenceTokenId": "odds-api-de78e5a62c5db9e0c43ab08f"
   },
   "backend": {
     "ok": true,
@@ -30,23 +30,23 @@
       "status": "ok",
       "db": "connected",
       "env": "development",
-      "timestamp": "2026-07-14T15:43:15.366Z"
+      "timestamp": "2026-07-15T05:27:01.207Z"
     },
     "error": null
   },
   "runtime": {
-    "status": "ready",
-    "localInternalRuntimeReady": true,
+    "status": "needs_attention",
+    "localInternalRuntimeReady": false,
     "localTesterReadyRightNow": true,
     "cachedTesterReadyRightNow": true,
     "liveOddsReadyRightNow": false,
     "cachedInternalTestingReady": true,
-    "runtimeStatusAcceptedAsCachedInternalTesting": false,
+    "runtimeStatusAcceptedAsCachedInternalTesting": true,
     "currentRuntimeState": {
       "checked": true,
-      "mode": "warm_no_quota_runtime",
-      "localCapabilityReady": true,
-      "warmNoQuotaRuntime": true,
+      "mode": "not_ready",
+      "localCapabilityReady": false,
+      "warmNoQuotaRuntime": false,
       "allLoopsRunning": true,
       "anyLoopRunning": true,
       "supervisorRunning": true,
@@ -54,14 +54,16 @@
       "quotaSpendingLoopRunning": false,
       "backendProofFresh": true,
       "providerSnapshotFresh": false,
-      "cachedTesterReadyRightNow": true,
+      "cachedTesterReadyRightNow": false,
       "liveOddsReadyRightNow": false,
-      "testerReadyRightNow": true,
-      "p0": [],
+      "testerReadyRightNow": false,
+      "p0": [
+        "local_capability_not_ready"
+      ],
       "p1": [
         "mobile_provider_snapshot_not_fresh"
       ],
-      "nextAction": "keep_cached_testing_or_refresh_live_odds",
+      "nextAction": "rerun_batch_readiness_and_phase_audit",
       "note": "This separates proven local capability, cached internal tester warmth, and live mobile odds freshness. Cached tester readiness requires warm no-quota loops; live odds readiness additionally requires fresh mobile-visible provider snapshots."
     },
     "managedProcesses": {
@@ -70,9 +72,9 @@
         "checked": true,
         "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json",
         "known": true,
-        "pid": 49176,
+        "pid": 44168,
         "running": true,
-        "startedAt": "2026-07-14T15:42:47.4354952Z",
+        "startedAt": "2026-07-14T15:53:14.2055733Z",
         "continuous": true,
         "maxIterations": 0,
         "intervalSeconds": 15,
@@ -95,9 +97,9 @@
         "checked": true,
         "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json",
         "known": true,
-        "pid": 60456,
+        "pid": 64976,
         "running": true,
-        "startedAt": "2026-07-14T15:42:47.7352780Z",
+        "startedAt": "2026-07-14T15:54:16.2643786Z",
         "continuous": true,
         "maxIterations": 0,
         "intervalSeconds": 15,
@@ -126,17 +128,17 @@
     "checked": true,
     "fresh": true,
     "freshnessBasis": "local_proof_window",
-    "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+    "marketId": "38664599-1911-40b4-9c57-382498da8efb",
     "reason": null,
-    "snapshotCount": 4,
-    "latestFetchedAt": "2026-07-14T14:50:44.370Z",
-    "latestAgeHours": 0.88,
-    "latestAgeSeconds": 3152,
+    "snapshotCount": 2,
+    "latestFetchedAt": "2026-07-15T05:19:29.683Z",
+    "latestAgeHours": 0.13,
+    "latestAgeSeconds": 453,
     "maxAgeHours": 24,
     "sources": [
       "sportsbook-odds"
     ],
-    "acceptingOrderSnapshotCount": 4,
+    "acceptingOrderSnapshotCount": 2,
     "mmEligibleSnapshotCount": 0,
     "latestQualityStatus": "approved",
     "latestReason": "temporary_sportsbook_odds_single_event_provider",
@@ -146,8 +148,8 @@
     "mobileLifecycleStatus": "stale",
     "mobileRefreshDueSeconds": 60,
     "mobileStaleAfterSeconds": 90,
-    "mobileRefreshDueAt": "2026-07-14T14:51:44.370Z",
-    "mobileStaleAt": "2026-07-14T14:52:14.370Z",
+    "mobileRefreshDueAt": "2026-07-15T05:20:29.683Z",
+    "mobileStaleAt": "2026-07-15T05:20:59.683Z",
     "nextProviderAction": "refresh_provider_snapshots_or_keep_cached_test_mode"
   },
   "operatorNextActions": {
@@ -223,17 +225,17 @@
     "found": true,
     "eventSlug": "odds-api-single-soccer-test",
     "eventId": "bdd748d4-8784-459d-a612-a54903892c89",
-    "title": "Spain vs. France",
+    "title": "Argentina vs. England",
     "status": "active",
     "liveStatus": "LIVE",
     "sportKey": "soccer",
     "leagueKey": "world_cup",
     "source": "the-odds-api",
-    "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
-    "sourceUpdatedAt": "2026-07-14T14:50:44.370Z",
-    "now": "2026-07-14T15:43:16.536Z",
-    "startTime": "2026-07-14T19:00:00.000Z",
-    "secondsUntilStart": 11803,
+    "externalEventId": "ced22494ae0bbb8cc4f7108bf6f493df",
+    "sourceUpdatedAt": "2026-07-15T05:19:29.683Z",
+    "now": "2026-07-15T05:27:02.286Z",
+    "startTime": "2026-07-15T19:00:00.000Z",
+    "secondsUntilStart": 48778,
     "startAgeSeconds": 0,
     "suspendBeforeStartSeconds": 300,
     "insideSuspendWindow": false,
@@ -247,9 +249,9 @@
     "generatedFrom": "/api/internal/live-runtime/status?phaseAuditInProgress=1",
     "providerQuotaUsedByChecklist": false,
     "eventToOpen": {
-      "title": "Spain vs. France",
+      "title": "Argentina vs. England",
       "localSlug": "odds-api-single-soccer-test",
-      "selectedMarket": "Spain vs. France: Total Goals 2.5",
+      "selectedMarket": "Argentina vs. England: Total Goals 2.5",
       "selectedOutcome": "Over 2.5"
     },
     "launch": [
@@ -257,7 +259,7 @@
         "step": "Start or verify local tester runtime",
         "expected": "npm run mobile:one-event-onboarding",
         "pass": true,
-        "notes": "Runtime loops are currently warm in no-quota mode."
+        "notes": "Cached internal testing is ready because both local loops are running without provider quota; live mobile odds refresh remains explicit and quota-gated."
       },
       {
         "step": "Open Holiwyn on Samsung S23",
@@ -269,14 +271,14 @@
     "manualTradingFlow": [
       {
         "step": "Home",
-        "expected": "Home shows Spain vs. France.",
+        "expected": "Home shows Argentina vs. England.",
         "routeDependency": "GET /api/events",
         "pass": true,
         "notes": "Tap the event card to open Event Detail."
       },
       {
         "step": "Event Detail",
-        "expected": "Markets load from backend for odds-api-single-soccer-test; selected proof market is Spain vs. France: Total Goals 2.5.",
+        "expected": "Markets load from backend for odds-api-single-soccer-test; selected proof market is Argentina vs. England: Total Goals 2.5.",
         "routeDependency": "GET /api/mobile/events/odds-api-single-soccer-test/live-detail",
         "pass": true,
         "notes": "Cached mode is usable for internal testing; live mobile odds refresh requires the explicit provider-refresh command."
@@ -309,7 +311,7 @@
         "expected": "Event remains open for internal testing until the next lifecycle action.",
         "routeDependency": "GET /api/internal/live-runtime/status",
         "pass": true,
-        "notes": "Current window: pre_start_open; next lifecycle action: pause at 2026-07-14T18:55:00.000Z."
+        "notes": "Current window: pre_start_open; next lifecycle action: pause at 2026-07-15T18:55:00.000Z."
       },
       {
         "step": "Stale odds",

@@ -1,5 +1,5 @@
 {
-    "generatedAt":  "2026-07-14T14:50:47.0543996Z",
+    "generatedAt":  "2026-07-15T05:19:35.0879800Z",
     "scope":  "holiwyn-live-provider-secret-preflight",
     "pass":  true,
     "providerQuotaUsedByPreflight":  false,
@@ -10,8 +10,8 @@
     "providerBlockedReason":  null,
     "runtimePreflight":  {
                              "path":  ".runtime/live-odds-refresh-preflight.redacted.json",
-                             "pass":  true,
-                             "canRunLiveRefreshNow":  true,
+                             "pass":  false,
+                             "canRunLiveRefreshNow":  false,
                              "liveOddsReady":  false,
                              "providerSnapshotFresh":  false,
                              "quotaSpendingLoopRunning":  false,

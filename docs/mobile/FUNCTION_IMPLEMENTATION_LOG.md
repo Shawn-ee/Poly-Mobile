@@ -16816,3 +16816,19 @@ Known limitations:
   - `docs/mobile/audits/cycle-ZCC-cashout-max-runtime-alignment.md`
 - Result: S23 proof passed on `SM-S911U1`; observed cashout Max was `43.1` shares, not wallet balance; close ticket hid Yes/No; SELL cashout and history proof passed.
 - Known limitations: proof used Expo Go and the stable IP ADB id because the preferred mDNS alias intermittently hung. Expo/dev-build hardening remains future work.
+
+## Cycle ZCD - Fresh One-Event Live Runtime Proof
+
+- Feature/runtime worked on: explicit quota-gated Odds API refresh and cached internal tester readiness for the current backend-owned soccer event.
+- Frontend components touched: none.
+- Backend/routes touched: no HTTP route contract or Prisma schema changes. Runtime status selection logic changed in `src/server/services/liveRuntimeStatus.ts` so fresher matching quote evidence outranks older source-specific proof when selecting the operator checklist market.
+- Important functions/services touched: `selectCurrentMarketForStatus` and `scripts/run_holiwyn_one_event_live_runtime_with_secret.ps1`.
+- User/runtime interactions supported: operators can force a deliberate one-event provider refresh after stale cached evidence blocks the normal preflight, while the wrapper still blocks concurrent quota-spending loops. The readiness gate now reports the fresh Argentina vs. England event and its selected Total Goals 2.5 market instead of stale Spain vs. France proof.
+- State transitions: the provider proof refreshed one upcoming soccer event, wrote fresh provider quote snapshots, seeded local maker quotes, executed fake-token BUY/SELL proof, verified portfolio/history, and refreshed internal tester readiness summaries. No settlement execution or mobile UI source change occurred.
+- API/data dependencies: The Odds API soccer endpoints for the selected one-event refresh; local `/api/health`, `/api/internal/live-runtime/status`, `/api/events`, `/api/mobile/events/:slug/live-detail`, `/api/markets/:marketId/quote`, `/api/orders`, `/api/portfolio`, and `/api/portfolio/history`.
+- Proof:
+  - `powershell -ExecutionPolicy Bypass -File scripts\run_holiwyn_one_event_live_runtime_with_secret.ps1 -RunProviderProof -ForceProviderRefresh -SkipSleep`
+  - `npm run mobile:one-event-live-maker-seed`
+  - `npm run mobile:internal-tester-readiness-gate`
+- Result: readiness gate passed with zero P0 gaps for Argentina vs. England, market `Argentina vs. England: Total Goals 2.5`, outcome `Over 2.5`. Provider refresh spent 13 credits and the latest reported remaining quota was 229.
+- Known limitations: this was backend/route/fake-token proof, not a new S23 screenshot proof. Installed unattended provider/maker/lifecycle services and production official-result auto-settlement remain P1.

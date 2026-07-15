@@ -474,9 +474,9 @@ async function selectCurrentMarketForStatus(
     .sort(
       (left, right) =>
         right.quoteReadyScore - left.quoteReadyScore ||
-        right.sourceRank - left.sourceRank ||
         right.matchingReadyQuoteRunStartedAt - left.matchingReadyQuoteRunStartedAt ||
-        timestampMs(right.generatedAt) - timestampMs(left.generatedAt),
+        timestampMs(right.generatedAt) - timestampMs(left.generatedAt) ||
+        right.sourceRank - left.sourceRank,
     );
 
   const selected = ranked[0];

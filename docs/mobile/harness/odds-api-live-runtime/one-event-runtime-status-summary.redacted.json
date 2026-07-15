@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-14T15:43:10.731Z",
+  "generatedAt": "2026-07-15T05:26:54.142Z",
   "scope": "odds-api-one-event-runtime-status",
   "pass": true,
   "baseUrl": "http://127.0.0.1:3002",
@@ -61,9 +61,9 @@
       "checked": true,
       "statePath": ".runtime/one-event-live-supervisor/supervisor-process-state.json",
       "known": true,
-      "pid": 49176,
+      "pid": 44168,
       "running": true,
-      "startedAt": "2026-07-14T15:42:47.4354952Z",
+      "startedAt": "2026-07-14T15:53:14.2055733Z",
       "continuous": true,
       "maxIterations": 0,
       "intervalSeconds": 15,
@@ -81,9 +81,9 @@
       "checked": true,
       "statePath": ".runtime/one-event-result-poller/result-poller-process-state.json",
       "known": true,
-      "pid": 60456,
+      "pid": 64976,
       "running": true,
-      "startedAt": "2026-07-14T15:42:47.7352780Z",
+      "startedAt": "2026-07-14T15:54:16.2643786Z",
       "continuous": true,
       "maxIterations": 0,
       "intervalSeconds": 15,
@@ -109,90 +109,90 @@
     "operatorMeaning": "Holiwyn has proven continuous local foreground/background loops while the supervisor/result-poller are running; it does not have an installed unattended production daemon."
   },
   "event": {
-    "providerEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
+    "providerEventId": "ced22494ae0bbb8cc4f7108bf6f493df",
     "sportKey": "soccer_fifa_world_cup",
-    "title": "Spain vs. France",
-    "commenceTime": "2026-07-14T19:00:00Z",
+    "title": "Argentina vs. England",
+    "commenceTime": "2026-07-15T19:00:00Z",
     "localSlug": "odds-api-single-soccer-test"
   },
   "selectedMarket": {
-    "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-    "slug": "odds-api-single-soccer-test-totals-7439c2d603",
-    "title": "Spain vs. France: Total Goals 2.5",
+    "id": "38664599-1911-40b4-9c57-382498da8efb",
+    "slug": "odds-api-single-soccer-test-alternate-totals-f03de7d488",
+    "title": "Argentina vs. England: Total Goals 2.5",
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
-    "outcomeId": "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
+    "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
     "outcomeName": "Over 2.5",
     "referenceOutcomeLabel": "Over +2.5",
-    "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4"
+    "referenceTokenId": "odds-api-de78e5a62c5db9e0c43ab08f"
   },
   "selectedMarketSource": {
     "selectedMarket": {
-      "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-      "slug": "odds-api-single-soccer-test-totals-7439c2d603",
-      "title": "Spain vs. France: Total Goals 2.5",
+      "id": "38664599-1911-40b4-9c57-382498da8efb",
+      "slug": "odds-api-single-soccer-test-alternate-totals-f03de7d488",
+      "title": "Argentina vs. England: Total Goals 2.5",
       "marketType": "total_goals",
       "marketGroupKey": "totals",
       "line": "2.5",
-      "outcomeId": "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
+      "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
       "outcomeName": "Over 2.5",
       "referenceOutcomeLabel": "Over +2.5",
-      "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4"
+      "referenceTokenId": "odds-api-de78e5a62c5db9e0c43ab08f"
     },
     "source": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
-    "generatedAt": "2026-07-14T14:30:28.447Z",
+    "generatedAt": "2026-07-15T05:22:01.642Z",
     "quoteVisibleScore": 3,
     "selectionReason": "freshest quote-visible selected outcome",
     "candidates": [
       {
-        "source": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
-        "generatedAt": "2026-07-14T14:50:46.070Z",
+        "source": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
+        "generatedAt": "2026-07-15T05:22:01.642Z",
         "selectedMarket": {
-          "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-          "slug": "odds-api-single-soccer-test-totals-7439c2d603",
-          "title": "Spain vs. France: Total Goals 2.5",
+          "id": "38664599-1911-40b4-9c57-382498da8efb",
+          "slug": "odds-api-single-soccer-test-alternate-totals-f03de7d488",
+          "title": "Argentina vs. England: Total Goals 2.5",
           "marketType": "total_goals",
           "marketGroupKey": "totals",
           "line": "2.5",
-          "outcomeId": "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
+          "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
           "outcomeName": "Over 2.5",
           "referenceOutcomeLabel": "Over +2.5",
-          "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4"
+          "referenceTokenId": "odds-api-de78e5a62c5db9e0c43ab08f"
         },
         "quoteVisibleScore": 3,
         "quoteReady": {
-          "outcomeId": "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
+          "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
           "quoteFound": true,
           "showsBid": true,
           "showsAsk": true,
-          "bid": "0.58",
-          "ask": "0.59"
+          "bid": "0.35",
+          "ask": "0.43"
         }
       },
       {
-        "source": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
-        "generatedAt": "2026-07-14T14:30:28.447Z",
+        "source": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
+        "generatedAt": "2026-07-15T05:19:31.770Z",
         "selectedMarket": {
-          "id": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
-          "slug": "odds-api-single-soccer-test-totals-7439c2d603",
-          "title": "Spain vs. France: Total Goals 2.5",
+          "id": "38664599-1911-40b4-9c57-382498da8efb",
+          "slug": "odds-api-single-soccer-test-alternate-totals-f03de7d488",
+          "title": "Argentina vs. England: Total Goals 2.5",
           "marketType": "total_goals",
           "marketGroupKey": "totals",
           "line": "2.5",
-          "outcomeId": "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
+          "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
           "outcomeName": "Over 2.5",
           "referenceOutcomeLabel": "Over +2.5",
-          "referenceTokenId": "odds-api-88263b2c42d6b2f5c6dbbda4"
+          "referenceTokenId": "odds-api-de78e5a62c5db9e0c43ab08f"
         },
         "quoteVisibleScore": 3,
         "quoteReady": {
-          "outcomeId": "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
+          "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
           "quoteFound": true,
           "showsBid": true,
           "showsAsk": true,
-          "bid": "0.58",
-          "ask": "0.59"
+          "bid": "0.35",
+          "ask": "0.43"
         }
       }
     ]
@@ -205,20 +205,20 @@
         "status": "ok",
         "db": "connected",
         "env": "development",
-        "timestamp": "2026-07-14T15:43:10.730Z"
+        "timestamp": "2026-07-15T05:26:54.141Z"
       },
       "error": null
     }
   },
   "provider": {
     "liveProofPath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
-    "liveProofGeneratedAt": "2026-07-14T14:50:46.070Z",
-    "liveProofAgeHours": 0.87,
+    "liveProofGeneratedAt": "2026-07-15T05:19:31.770Z",
+    "liveProofAgeHours": 0.12,
     "maxLiveProofAgeHours": 24,
     "quota": {
       "totalLastCost": 13,
-      "requestsUsed": "258",
-      "requestsRemaining": "242",
+      "requestsUsed": "271",
+      "requestsRemaining": "229",
       "requestsLast": "6"
     },
     "policy": {
@@ -236,28 +236,28 @@
   },
   "maker": {
     "makerSeedPath": "docs/mobile/harness/odds-api-live-runtime/shifted-maker-seed-summary.redacted.json",
-    "makerSeedGeneratedAt": "2026-07-14T14:30:28.447Z",
-    "makerSeedAgeHours": 1.21,
+    "makerSeedGeneratedAt": "2026-07-15T05:22:01.642Z",
+    "makerSeedAgeHours": 0.08,
     "quoteRoute": {
       "ok": true,
       "status": 200,
       "body": {
-        "marketId": "78ea76f1-fc8f-419b-ac21-2554d79093f6",
+        "marketId": "38664599-1911-40b4-9c57-382498da8efb",
         "quotes": [
           {
-            "outcomeId": "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
+            "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
             "outcomeName": "Over 2.5",
             "referenceOutcomeLabel": "Over +2.5",
-            "bestBid": "0.58",
-            "bestAsk": "0.59",
-            "bestBidSize": 35.9,
+            "bestBid": "0.35",
+            "bestAsk": "0.43",
+            "bestBidSize": 200,
             "bestAskSize": 200,
-            "midPrice": "0.585",
-            "lastPrice": "0.58",
-            "lastTradeAt": "2026-07-14T14:50:45.880Z"
+            "midPrice": "0.39",
+            "lastPrice": "0.35",
+            "lastTradeAt": "2026-07-15T05:19:31.521Z"
           },
           {
-            "outcomeId": "db047bba-39bc-4be0-8cb7-1f130e4bf397",
+            "outcomeId": "787117a3-3eb3-4f6b-8b6a-07bb9af27afc",
             "outcomeName": "Under 2.5",
             "referenceOutcomeLabel": "Under +2.5",
             "bestBid": null,
@@ -273,18 +273,18 @@
       "error": null
     },
     "selectedOutcomeQuote": {
-      "outcomeId": "caa93a28-258a-4bc7-8dc0-10afe9f342b8",
+      "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
       "quoteFound": true,
       "showsBid": true,
       "showsAsk": true,
-      "bid": "0.58",
-      "ask": "0.59"
+      "bid": "0.35",
+      "ask": "0.43"
     }
   },
   "lifecycle": {
     "schedulerRunPath": "docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-scheduler-run-summary.redacted.json",
     "schedulerGeneratedAt": "2026-07-14T14:30:32.920Z",
-    "schedulerAgeHours": 1.21,
+    "schedulerAgeHours": 14.94,
     "schedulerAction": "none",
     "schedulerReason": "Event is not inside the suspend/close window.",
     "schedulerCandidateMarketCount": 3
@@ -293,9 +293,9 @@
     "resultSettlementExecutionPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-summary.redacted.json",
     "resultSettlementLiveBlockedPath": "docs/mobile/harness/odds-api-live-runtime/one-event-result-settlement-scheduler-execution-live-blocked.redacted.json",
     "resultSettlementExecutionGeneratedAt": "2026-07-14T13:34:12.765Z",
-    "resultSettlementExecutionAgeHours": 2.15,
+    "resultSettlementExecutionAgeHours": 15.88,
     "resultSettlementLiveBlockedGeneratedAt": "2026-07-14T13:34:10.496Z",
-    "resultSettlementLiveBlockedAgeHours": 2.15,
+    "resultSettlementLiveBlockedAgeHours": 15.88,
     "maxSettlementProofAgeHours": 24,
     "resultSettlementExecutionFresh": true,
     "resultSettlementLiveBlockedFresh": true,

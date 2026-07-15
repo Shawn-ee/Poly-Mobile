@@ -78,13 +78,14 @@ if ($RunProviderProof) {
     }
 
     & npm.cmd run mobile:live-odds-refresh-preflight -- "--summaryPath=$(ConvertTo-RepoPath $runtimePreflightPath)" | Out-Null
-    if ($LASTEXITCODE -ne 0) {
-      throw "Live odds refresh preflight failed; refusing to spend provider quota."
-    }
+    $runtimePreflightExitCode = $LASTEXITCODE
     $runtimePreflight = Get-Content -Raw -LiteralPath $runtimePreflightPath | ConvertFrom-Json
     if ($runtimePreflight.readiness.quotaSpendingLoopRunning -eq $true) {
       $providerBlockedReason = "quota_spending_loop_already_running"
       throw "A quota-spending loop is already reported running; refusing to start another live provider refresh."
+    }
+    if ($runtimePreflightExitCode -ne 0 -and -not $ForceProviderRefresh) {
+      throw "Live odds refresh preflight failed; refusing to spend provider quota."
     }
     if ($runtimePreflight.canRunLiveRefreshNow -ne $true -and -not $ForceProviderRefresh) {
       $providerBlockedReason = "live_refresh_preflight_not_ready"

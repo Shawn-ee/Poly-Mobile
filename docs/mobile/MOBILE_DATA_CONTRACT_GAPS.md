@@ -11052,3 +11052,12 @@ Future migration concern:
 - Schema mismatch: none. Raw provider/closed rows may remain in storage for audit/debug; mobile display filters them by contract.
 - Temporary mock/static data: none added. The flow used existing local fake-token exchange state and backend-owned contract-fixture markets.
 - Remaining gaps: richer cashout preview and dev-build/APK proof stability remain P1/P2. Fresh live odds still require explicit quota-gated provider refresh when needed.
+
+## Cycle ZCD - Fresh One-Event Live Runtime Proof
+
+- Fields confirmed for mobile/runtime: the current runtime summaries now agree on `eventSlug=odds-api-single-soccer-test`, event `Argentina vs. England`, provider source `sportsbook-odds`, selected market `Argentina vs. England: Total Goals 2.5`, outcome `Over 2.5`, and local maker bid/ask evidence for the same market/outcome.
+- Closed or narrowed: stale Spain vs. France selected-market evidence no longer outranks fresher matching quote proof in `/api/internal/live-runtime/status` and the operator checklist. The provider-refresh wrapper now honors an explicit `-ForceProviderRefresh` after checking that no quota-spending loop is running.
+- Route mismatch: no route contract mismatch found after refresh. `/api/internal/live-runtime/status`, live-detail, quote, order, portfolio, and history proof all point at the same fresh event/market identity.
+- Schema mismatch: none. The fix uses existing event, market, outcome, provider snapshot, maker quote, order, and portfolio tables.
+- Temporary mock/static data: none added. The proof used a real Odds API response for one upcoming event plus local fake-token trading state.
+- Remaining gaps: no P0 for the backend/route readiness gate. Fresh S23 UI proof for Argentina vs. England remains to be run before claiming a fresh-device visual pass. Installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1; multi-event polling/dashboard remains P2.
