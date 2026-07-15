@@ -716,4 +716,32 @@ describe("The Odds API single-event temporary provider", () => {
     expect(proof).toContain("GET /api/portfolio/history");
     expect(proof).toContain("one-shot deterministic local maker liquidity");
   });
+
+  it("keeps active tester handoff docs aligned with the latest readiness summary event", () => {
+    const readinessSummary = JSON.parse(
+      readFileSync("docs/mobile/harness/odds-api-live-runtime/internal-tester-readiness-gate-summary.redacted.json", "utf8"),
+    ) as {
+      testerReady?: {
+        event?: { title?: string };
+        selectedMarket?: { title?: string; outcomeId?: string };
+      };
+    };
+    const activeEventTitle = readinessSummary.testerReady?.event?.title;
+    const activeMarketTitle = readinessSummary.testerReady?.selectedMarket?.title;
+    const activeOutcomeId = readinessSummary.testerReady?.selectedMarket?.outcomeId;
+    const handoff = readFileSync("docs/mobile/INTERNAL_TESTER_OPERATOR_HANDOFF.md", "utf8");
+    const closeout = readFileSync("docs/mobile/BACKEND_LIVE_RUNTIME_PHASE_CLOSEOUT.md", "utf8");
+
+    expect(activeEventTitle).toBeTruthy();
+    expect(activeMarketTitle).toBeTruthy();
+    expect(activeOutcomeId).toBeTruthy();
+    expect(handoff).toContain(`Event: \`${activeEventTitle}\``);
+    expect(handoff).toContain(`Selected proof market: \`${activeMarketTitle}\``);
+    expect(closeout).toContain(`Real upcoming test event: ${activeEventTitle}.`);
+    expect(closeout).toContain(`${activeEventTitle} is imported/restored as the reusable one-event runtime target.`);
+    expect(handoff).not.toContain("Spain vs. France");
+    expect(closeout).not.toContain("Spain vs. France");
+    expect(handoff).not.toContain("8578db7a-e01c-442b-8480-95d36a6a946e");
+    expect(closeout).not.toContain("8578db7a-e01c-442b-8480-95d36a6a946e");
+  });
 });

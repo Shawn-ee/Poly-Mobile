@@ -10,12 +10,12 @@ This phase is complete for local internal testing.
 - Completion audit: passed.
 - Open P0 gaps: none.
 - Provider quota used by the latest audits: none.
-- Real upcoming test event: Spain vs. France.
+- Real upcoming test event: Argentina vs. England.
 - Mobile proof device: Samsung S23 `SM_S911U1`.
 - Runtime type: local fake-token internal runtime, not production real-money infrastructure.
-- Latest S23 runtime proof refresh: Cycle ZAN Spain vs. France cashout proof, covering Home -> Event Detail -> Total Goals 2.5 -> buy -> Portfolio -> close-position cashout -> History on Samsung S23.
-- Latest operator snapshot/readiness refresh: `npm run mobile:internal-tester-readiness-gate` at `2026-07-14T07:18:43.855Z`, with ordered audit gate pass, operator snapshot pass, warm no-quota runtime observed, and zero P0 gaps.
-- Latest live-odds freshness pulse: the selected market was refreshed through the secret-wrapper provider command at `2026-07-14T06:03:35.211Z`, moved the mobile quote lifecycle from stale to ready at that time, spent 13 credits under the 16-credit cap, and left 268 provider requests remaining. Current cached testing remains ready; mobile-route live-display freshness is now stale under the 90-second UI window until the explicit provider-refresh command is run again.
+- Latest S23 runtime proof refresh: Cycle ZCD Argentina vs. England cashout proof, covering Home -> Event Detail -> Total Goals 2.5 -> buy -> Portfolio -> close-position cashout -> History on Samsung S23.
+- Latest operator snapshot/readiness refresh: `npm run mobile:internal-tester-readiness-gate` at `2026-07-15T05:57:59.619Z`, with ordered audit gate pass, source-aware exchange readiness pass, operator snapshot pass, warm no-quota runtime observed, and zero P0 gaps.
+- Latest live-odds freshness pulse: the selected market was refreshed through the secret-wrapper provider command at `2026-07-15T05:19:31.770Z`, moved the mobile quote lifecycle from stale to ready at that time, spent 13 credits under the 16-credit cap, and left 229 provider requests remaining. Current cached testing remains ready; mobile-route live-display freshness ages under the 90-second UI window until the explicit provider-refresh command is run again.
 
 ## Requirement Evidence
 
@@ -28,8 +28,8 @@ This phase is complete for local internal testing.
 | Prove quota protection | Latest audits spend no provider quota. Live provider paths require explicit key/flags and enforce max credits/min remaining. | `docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json`; `docs/mobile/ODDS_PROVIDER_REFRESH_POLICY.md` |
 | Prove stale odds handling | Routes classify `ready`, `refresh_due`, `stale`, and `unavailable`; stale guard can pause markets and order placement rejects stale/paused markets. | `docs/mobile/harness/odds-api-live-runtime/one-event-stale-guard-summary.redacted.json`; `docs/mobile/harness/odds-api-live-runtime/one-event-runtime-status-summary.redacted.json` |
 | Build/document one-command onboarding | Quota-free cached onboarding and explicit live-provider onboarding are documented. Runtime-loop proof mode starts and stops local loops. Current operator status also reports when the cached supervisor/result-poller loops are already warm, so testers know whether to keep cached mode or intentionally refresh live odds. | `docs/mobile/EVENT_LIFECYCLE_RUNBOOK.md`; `docs/mobile/ODDS_PROVIDER_REFRESH_POLICY.md`; `docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json` |
-| Support one real upcoming soccer event locally | Spain vs. France is imported/restored as the reusable one-event runtime target. | `docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json` |
-| Prove mobile can trade the event end-to-end | S23 proof covers Home -> Event Detail -> line market -> ticket -> buy -> Portfolio -> cashout/sell -> History, including close-position cashout Max using owned shares and no Yes/No selector. | `docs/mobile/harness/cycle-ZAN-spain-france-cashout-proof/cycle-ZAN-odds-api-s23-visible-flow.json` |
+| Support one real upcoming soccer event locally | Argentina vs. England is imported/restored as the reusable one-event runtime target. | `docs/mobile/harness/odds-api-live-runtime/live-runtime-completion-audit-summary.redacted.json` |
+| Prove mobile can trade the event end-to-end | S23 proof covers Home -> Event Detail -> line market -> ticket -> buy -> Portfolio -> cashout/sell -> History, including close-position cashout Max using owned shares and no Yes/No selector. | `docs/mobile/harness/cycle-ZCD-s23-live-event-proof/cycle-ZCD-S23-LIVE-odds-api-s23-visible-flow.json` |
 | Provide tester-facing go/no-go handoff | The readiness gate refreshes runtime audit evidence first, then emits one operator snapshot/checklist from backend status. It reports cached trading ready, live odds not currently fresh for the mobile 90-second display window, warm no-quota runtime loops running, and no P0 gaps. | `docs/mobile/harness/odds-api-live-runtime/internal-tester-readiness-gate-summary.redacted.json`; `docs/mobile/harness/odds-api-live-runtime/internal-tester-operator-snapshot.redacted.json` |
 | Document lifecycle open/suspended/closed/settled | Open, paused, closed, and settlement readiness are documented and proven locally. Active event settlement remains guarded. | `docs/mobile/EVENT_LIFECYCLE_RUNBOOK.md`; `docs/mobile/harness/odds-api-live-runtime/one-event-lifecycle-matrix-summary.redacted.json` |
 
