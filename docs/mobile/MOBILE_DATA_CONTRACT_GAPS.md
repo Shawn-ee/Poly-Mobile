@@ -11061,3 +11061,12 @@ Future migration concern:
 - Schema mismatch: none. The fix uses existing event, market, outcome, provider snapshot, maker quote, order, and portfolio tables.
 - Temporary mock/static data: none added. The proof used a real Odds API response for one upcoming event plus local fake-token trading state.
 - Remaining gaps: no P0 for the backend/route readiness gate. Fresh S23 UI proof for Argentina vs. England remains to be run before claiming a fresh-device visual pass. Installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1; multi-event polling/dashboard remains P2.
+
+## Cycle ZCD-S23-LIVE - Fresh Event S23 Trading Proof
+
+- Fields confirmed for mobile/runtime: S23 proof confirms `eventSlug=odds-api-single-soccer-test`, event `Argentina vs. England`, `marketGroupKey=totals`, `marketType=totals`, `line=2.5`, `outcomeSide=over`, `outcomeLabel=Over 2.5`, `referenceSource=sportsbook-odds`, and close-position `observedCashoutShares=43.1`.
+- Closed or narrowed: the fresh provider event is now proven on the physical S23 through Home, Event Detail, trade ticket, fake-token buy, Portfolio, close-position cashout, and History. The earlier "fresh S23 proof remains to be run" gap is closed for this one-event runtime.
+- Route mismatch: none found. Mobile stayed on Holiwyn backend routes and preserved selected market/outcome/line identity through the full flow.
+- Schema mismatch: none. Cached restore idempotency was fixed in script logic by matching existing outcomes on same-market slug; no model or migration change was needed.
+- Temporary mock/static data: none added. Counterparty liquidity was locally seeded for fake-token proof, but event/market/outcome data came from the backend-owned sportsbook bridge and latest live summary.
+- Remaining gaps: reusable local slug remains P2 before multi-event onboarding. Installed unattended service ownership and production official-result auto-settlement remain P1.

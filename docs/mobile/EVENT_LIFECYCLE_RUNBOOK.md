@@ -159,7 +159,7 @@ This runbook supports internal fake-token testing. It does not approve real-mone
 - Consolidated readiness summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-readiness-summary.redacted.json`
 - Supervisor summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-summary.redacted.json`
 - Supervisor process summary: `docs/mobile/harness/odds-api-live-runtime/one-event-live-supervisor-process-summary.redacted.json`
-- S23 visible proof: `docs/mobile/harness/cycle-ZBR-odds-api-live-refresh-s23-flow/cycle-ZBR-odds-api-s23-visible-flow.json`. The readiness and audit gates discover the newest passing Spain vs. France cashout proof with close-position mode, owned-share Max, no Yes/No selector assertions, and the current selected `Over 2.5` outcome identity.
+- S23 visible proof: `docs/mobile/harness/cycle-ZCD-s23-live-event-proof/cycle-ZCD-S23-LIVE-odds-api-s23-visible-flow.json`. The current passing proof covers Argentina vs. England with close-position mode, owned-share Max, no Yes/No selector assertions, and the selected `Over 2.5` outcome identity.
 - Open state: selected market was `LIVE`, visible on Home, visible on Event Detail, and accepted fake-token orders.
 - Stale state: proof forced selected quote snapshots stale, Event Detail reported stale provider quote lifecycle, and the stale guard paused trading so order placement failed with `MARKET_UNAVAILABLE`.
 - Refreshed state: live Odds API refresh restored selected quote lifecycle to ready.

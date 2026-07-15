@@ -1,0 +1,73 @@
+{
+  "pass": true,
+  "liquidityPurpose": "buy-fill",
+  "routeContract": {
+    "mobileFlow": "Event Detail line market -> generic Buy ticket -> /api/orders BUY -> Portfolio History",
+    "expectedRestingSide": "SELL",
+    "source": "local-mvp-internal-liquidity"
+  },
+  "eventSlug": "odds-api-single-soccer-test",
+  "market": {
+    "id": "38664599-1911-40b4-9c57-382498da8efb",
+    "title": "Argentina vs. England: Total Goals 2.5",
+    "marketType": "total_goals",
+    "marketGroupKey": "totals",
+    "period": "regulation",
+    "line": "2.5",
+    "referenceSource": "sportsbook-odds",
+    "externalMarketId": "ced22494ae0bbb8cc4f7108bf6f493df:total_goals:2.5",
+    "conditionId": "odds-api-70d6351ac412dad458d9da75"
+  },
+  "outcome": {
+    "id": "f57b22fb-7dc8-412c-95b9-9ebf79639f03",
+    "name": "Over 2.5",
+    "side": "over",
+    "referenceTokenId": "odds-api-ff0162910c11835d3531adfe",
+    "referenceOutcomeLabel": "Over 2.5"
+  },
+  "cleanupOnly": false,
+  "maker": {
+    "id": "2f1b7c9c-933b-4c1b-b288-8af4921d270f",
+    "username": "mobile_route_fill_maker_a90d405d"
+  },
+  "cleanup": {
+    "resetSelectedMarketState": {
+      "requested": true,
+      "canonicalEventsPreserved": true,
+      "deletedFills": 2,
+      "deletedTrades": 4,
+      "deletedOrders": 8,
+      "deletedPositions": 7,
+      "collateralReset": true
+    },
+    "enabled": true,
+    "proofUserPrefix": "holiwyn-mobile-",
+    "canceledProofBids": [],
+    "cleanupBlockingBids": true,
+    "canceledBlockingBids": [],
+    "cleanupBlockingMarketBids": true,
+    "cleanupBlockingMarketBidsForcedByPurpose": false,
+    "canceledBlockingMarketBids": [],
+    "cleanupProofAsks": false,
+    "canceledProofAsks": [],
+    "cleanupBlockingAsks": false,
+    "canceledBlockingAsks": []
+  },
+  "makerOrder": {
+    "id": "268fde2a-48ee-46a7-bb9b-014b74257095",
+    "marketId": "38664599-1911-40b4-9c57-382498da8efb",
+    "outcomeId": "f57b22fb-7dc8-412c-95b9-9ebf79639f03",
+    "side": "SELL",
+    "price": "0.58",
+    "size": "100",
+    "remaining": "100",
+    "reservedNotional": "0",
+    "status": "OPEN"
+  },
+  "seededAsk": {
+    "side": "SELL",
+    "price": "0.58",
+    "size": "100",
+    "intendedMobileTaker": "BUY $25 route-backed totals ticket"
+  }
+}

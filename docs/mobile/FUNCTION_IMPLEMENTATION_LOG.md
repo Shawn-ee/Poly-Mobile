@@ -16832,3 +16832,19 @@ Known limitations:
   - `npm run mobile:internal-tester-readiness-gate`
 - Result: readiness gate passed with zero P0 gaps for Argentina vs. England, market `Argentina vs. England: Total Goals 2.5`, outcome `Over 2.5`. Provider refresh spent 13 credits and the latest reported remaining quota was 229.
 - Known limitations: this was backend/route/fake-token proof, not a new S23 screenshot proof. Installed unattended provider/maker/lifecycle services and production official-result auto-settlement remain P1.
+
+## Cycle ZCD-S23-LIVE - Fresh Event S23 Trading Proof
+
+- Feature/runtime worked on: real Android proof for the current Argentina vs. England one-event runtime.
+- Frontend components touched: none.
+- Backend/routes touched: no HTTP route or Prisma schema changes. Restore repeatability changed in `scripts/restore_odds_api_one_event_from_live_summary.ts` so cached one-event restore reuses existing outcomes by market slug as well as market/code before creating new rows.
+- Important functions/services touched: `upsertOutcomesAndSnapshots` in the cached live-runtime restore helper, plus the existing S23 proof harness `scripts/prove_mobile_odds_api_s23_visible_flow.ps1`.
+- User/runtime interactions supported: S23 opens Home, opens Argentina vs. England, selects the backend-owned Total Goals 2.5 Over line, opens the swipe ticket, submits a fake-token buy, sees Portfolio, opens close-position cashout, uses Max based on owned shares, submits cashout, and sees History.
+- State transitions: cached restore restored 19 visible Argentina vs. England markets and closed 3 stale replay rows; S23 proof created a fake-token buy position and then sold/cashed it out. No provider quota was spent by the S23 proof.
+- API/data dependencies: `GET /api/events`, `GET /api/mobile/events/:slug/live-detail`, `GET /api/markets/:marketId/quote`, `POST /api/orders`, `GET /api/portfolio`, `GET /api/portfolio/history`, and local counterparty seeding for the selected line.
+- Proof:
+  - `docs/mobile/harness/cycle-ZCD-s23-live-event-proof/cycle-ZCD-S23-LIVE-odds-api-s23-visible-flow.json`
+  - `docs/mobile/screenshots/cycle-ZCD-s23-live-event-proof/`
+  - `docs/mobile/audits/cycle-ZCD-s23-live-event-proof.md`
+- Result: S23 proof passed on `SM-S911U1`; observed cashout Max was `43.1` shares, not wallet balance; close ticket hid Yes/No; SELL cashout and History proof passed for `Argentina vs. England: Total Goals 2.5`.
+- Known limitations: proof uses Expo Go and the reusable local slug `odds-api-single-soccer-test`. Per-provider-event slugs remain P2 before multi-event onboarding.

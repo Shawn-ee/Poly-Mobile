@@ -174,8 +174,14 @@ async function upsertOutcomesAndSnapshots(params: {
   const specs = outcomeSpecsFor(params.seedMarket, params.teams);
   const outcomeIds: string[] = [];
   for (const [index, spec] of specs.entries()) {
+    const slug = `${params.market.slug}-${slugify(spec.code)}`;
     const existing = await prisma.outcome.findFirst({
-      where: { marketId: params.market.id, code: spec.code },
+      where: {
+        OR: [
+          { marketId: params.market.id, code: spec.code },
+          { marketId: params.market.id, slug },
+        ],
+      },
       select: { id: true },
     });
     const tokenPrefix = params.referenceSource === "contract-fixture" ? "holiwyn-contract" : "odds-api";
@@ -203,7 +209,7 @@ async function upsertOutcomesAndSnapshots(params: {
           data: {
             marketId: params.market.id,
             code: spec.code,
-            slug: `${params.market.slug}-${slugify(spec.code)}`,
+            slug,
             ...data,
           },
         });
