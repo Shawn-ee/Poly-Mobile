@@ -2,6 +2,33 @@
 
 Purpose: document the app functions, services, API calls, state transitions, and limitations involved in each mobile feature cycle.
 
+## Cycle ZCC - Cashout Max Runtime Alignment
+
+- Feature/runtime worked on: current internal tester mobile trading flow for `Spain vs. France`, focused on preventing Portfolio Cash out -> Max from using wallet-sized or stale estimate-sized values.
+- Frontend components touched: `mobile/App.tsx`; `mobile/src/services/positionCloseService.ts`.
+- Backend/API routes touched: none.
+- Important functions/services touched:
+  - `openPositionTrade` in `mobile/App.tsx`
+  - `resolveClosePositionAvailableShares` in `mobile/src/services/positionCloseService.ts`
+  - cashout contract tests in `mobile/src/__tests__/positionCloseService.test.ts` and `mobile/src/__tests__/cashoutGenericSellOnlyContract.test.ts`
+  - `scripts/prove_mobile_odds_api_s23_visible_flow.ps1` now rejects wallet-sized/stale-sized cashout share values with `MaxExpectedCashoutShares`.
+  - `scripts/manage_holiwyn_internal_tester_runtime.ps1` for safer Expo listener replacement after Windows taskkill child-process warnings.
+  - `mobile/scripts/connect-s23-wireless-debug.ps1` and `npm --prefix mobile run connect:s23` for fresh S23 wireless reconnect/model verification before proof.
+- User interactions supported: Portfolio -> Cash out -> close-position Trade Ticket -> Max. Max is now capped to the currently visible owned position shares, even if the backend estimate reports a larger quantity.
+- State transitions: no schema or backend route state changed. The ticket state now resolves `closePosition.availableShares` from the safer minimum of owned position shares and optional backend cashout estimate shares.
+- API/data dependencies: `GET /api/portfolio` remains authoritative for the visible owned position; `GET /api/portfolio/cash-out/estimate` can improve close price/quantity but cannot inflate sellable size above owned shares; `POST /api/orders` still receives explicit SELL `sizeShares`.
+- Proof:
+  - `docs/mobile/audits/cycle-ZCC-cashout-max-runtime-alignment.md`
+  - Root typecheck passed.
+  - Mobile typecheck passed.
+  - Focused mobile cashout tests passed.
+  - Backend cashout service/route tests passed.
+  - `npm run test:ci` passed.
+  - S23 proof script parse check passed.
+  - S23 reconnect helper parse check passed.
+  - Runtime manager status passed with backend/Postgres/Expo/supervisor/result-poller healthy.
+- Known limitations: S23 proof is still pending because ADB currently sees no connected device, ADB mDNS sees no wireless-debugging service, and the last known Wireless debugging ports refused connection. DB-backed canonical order submission tests require a safe test `DATABASE_URL`; this shell did not have one and the destructive test was not pointed at the running dev DB.
+
 ## Cycle ZBO - Spain vs. France Fresh S23 Cashout Proof
 
 - Feature/runtime worked on: current internal tester mobile trading flow for `Spain vs. France`, focused on fresh S23 proof that Portfolio Cash out opens the close-position ticket and Max uses owned shares.
@@ -16773,3 +16800,19 @@ Known limitations:
   - `npm run mobile:internal-tester-readiness-gate`
 - Result: readiness gate passed with `routeWarmNoQuotaRuntime=true`, `allLoopsRunning=true`, `quotaSpendingLoopRunning=false`, `internalExchangeReady=true`, `cachedTradingReady=true`, `liveOddsReady=false`, and zero P0 gaps.
 - Known limitations: S23 is disconnected, so no new mobile UI proof. Live odds freshness still requires the explicit provider-secret refresh. Installed unattended services and production official-result auto-settlement remain P1.
+
+## Cycle ZCC - Cashout Max Runtime Alignment
+
+- Feature/runtime worked on: internal tester buy -> Portfolio -> Cash out flow for the Spain vs. France Local MVP event.
+- Frontend components touched: `mobile/App.tsx`, `mobile/src/services/positionCloseService.ts`, `mobile/src/adapters/worldCupAdapter.ts`, and `mobile/src/services/eventMarketCatalogService.ts`.
+- Backend/routes touched: `src/app/api/events/route.ts` and `src/app/api/events/[slug]/route.ts`.
+- Important functions/services touched: `resolveClosePositionAvailableShares`, `loadEventMarketCatalog`, `normalizeEventSummary`, and the S23 proof harness `scripts/prove_mobile_odds_api_s23_visible_flow.ps1`.
+- User/runtime interactions supported: Home opens the backend-owned Spain vs. France event; Event Detail line market opens the buy ticket; buy order submits through server mode; Portfolio shows the position; Cash out opens a close-position SELL ticket; Max uses owned shares only; cashout submits and Portfolio History updates.
+- State transitions: BUY creates a fake-token position; close-position SELL reduces/closes the owned position; history records the sold activity. Closed duplicate provider markets are filtered before mobile rendering and before ticket handoff.
+- API/data dependencies: `GET /api/events?includeMobileMarkets=1`, `GET /api/mobile/events/:slug/live-detail`, `GET /api/events/:slug/markets`, `GET /api/portfolio`, `GET /api/portfolio/cash-out/estimate`, `GET /api/markets/:marketId/quote`, and `POST /api/orders`.
+- Proof:
+  - `docs/mobile/harness/cycle-ZCC-cashout-max-runtime-alignment/cycle-ZCC-odds-api-s23-visible-flow.json`
+  - `docs/mobile/screenshots/cycle-ZCC-cashout-max-runtime-alignment/`
+  - `docs/mobile/audits/cycle-ZCC-cashout-max-runtime-alignment.md`
+- Result: S23 proof passed on `SM-S911U1`; observed cashout Max was `43.1` shares, not wallet balance; close ticket hid Yes/No; SELL cashout and history proof passed.
+- Known limitations: proof used Expo Go and the stable IP ADB id because the preferred mDNS alias intermittently hung. Expo/dev-build hardening remains future work.

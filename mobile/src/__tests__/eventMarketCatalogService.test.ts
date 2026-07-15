@@ -92,6 +92,24 @@ describe("eventMarketCatalogService", () => {
     expect(result).toEqual({ source: "server-route", markets: [] });
   });
 
+  test("drops closed backend markets before Event Detail can render or tap them", async () => {
+    const result = await loadEventMarketCatalog({
+      api: {
+        getEventMarkets: vi.fn(async () => ({
+          markets: [
+            backendMarket({ id: "closed-provider-total", status: "CLOSED", title: "Total Goals 2.5", marketType: "total_goals", line: "2.5" }),
+            backendMarket({ id: "live-contract-total", status: "LIVE", title: "Total goals 2.5", marketType: "total_goals", line: "2.5" }),
+          ],
+        })),
+      },
+      slug: "spain-france",
+      fallbackMarkets: [fallbackMarket],
+    });
+
+    expect(result.source).toBe("server-route");
+    expect(result.markets.map((market) => market.id)).toEqual(["live-contract-total"]);
+  });
+
   test("uses explicit local fallback only when route loading is unavailable", async () => {
     await expect(
       loadEventMarketCatalog({

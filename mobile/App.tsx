@@ -34,7 +34,7 @@ import {
 import type { PortfolioValueHistoryRange } from "./src/types";
 import { OrderMode, submitTicketOrder } from "./src/services/orderService";
 import { appendUniqueActivity, cancelOpenOrderOnServer, openOrderCanceledActivity } from "./src/services/openOrderService";
-import { assertCanSellPositionShares, availablePositionShares } from "./src/services/positionCloseService";
+import { assertCanSellPositionShares, availablePositionShares, resolveClosePositionAvailableShares } from "./src/services/positionCloseService";
 import { serverBackendOnlyPortfolioFixture, serverHydratedPortfolioFixture } from "./src/services/portfolioFixtureService";
 import { applyServerPortfolioState } from "./src/services/portfolioStateApplyService";
 import { loadServerPortfolioState } from "./src/services/portfolioSyncService";
@@ -1845,9 +1845,7 @@ export default function App() {
         latestCashoutQuote = undefined;
       }
     }
-    const positionAvailableShares = serverCashoutAvailableShares && serverCashoutAvailableShares > 0
-      ? serverCashoutAvailableShares
-      : availablePositionShares(position);
+    const positionAvailableShares = resolveClosePositionAvailableShares(position, serverCashoutAvailableShares);
     const positionSellPrice = serverCashoutSellPrice && serverCashoutSellPrice > 0
       ? normalizeProbabilityPrice(serverCashoutSellPrice)
       : cashoutSellPriceFromQuote(latestCashoutQuote, fallbackPositionSellPrice);

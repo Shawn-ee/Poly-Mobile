@@ -82,6 +82,51 @@ describe("world cup adapter", () => {
     ]);
   });
 
+  test("filters closed backend markets before Home can hand them to Event Detail", () => {
+    const normalized = normalizeEventSummary({
+      id: "spain-france",
+      slug: "spain-vs-france",
+      title: "Spain vs. France",
+      description: null,
+      category: "sports",
+      sportKey: "soccer",
+      leagueKey: "world_cup",
+      homeTeamName: "Spain",
+      awayTeamName: "France",
+      startTime: "2026-07-07T20:00:00.000Z",
+      status: "active",
+      liveStatus: null,
+      period: null,
+      clock: null,
+      homeScore: null,
+      awayScore: null,
+      imageUrl: null,
+      marketCount: 2,
+      activeMarketCount: 1,
+    }, [
+      {
+        ...baseMarket,
+        id: "closed-total",
+        status: "CLOSED",
+        title: "Total Goals 2.5",
+        marketType: "total_goals",
+        line: "2.5",
+        outcomes: [{ id: "closed-over", name: "Over 2.5", label: "Over 2.5", side: "over", price: 0.56, bestBid: 0.54, bestAsk: 0.58, isTradable: true }],
+      },
+      {
+        ...baseMarket,
+        id: "live-total",
+        status: "LIVE",
+        title: "Total goals 2.5",
+        marketType: "total_goals",
+        line: "2.5",
+        outcomes: [{ id: "live-over", name: "Over 2.5", label: "Over 2.5", side: "over", price: 0.56, bestBid: 0.54, bestAsk: 0.58, isTradable: true }],
+      },
+    ]);
+
+    expect(normalized.markets.map((market) => market.id)).toEqual(["live-total"]);
+  });
+
   test("uses positive bid ask midpoint when backend outcome price is zero", () => {
     const normalized = normalizeMarket({
       ...baseMarket,

@@ -1,0 +1,82 @@
+{
+  "pass": true,
+  "liquidityPurpose": "cashout-sell-fill",
+  "routeContract": {
+    "mobileFlow": "Portfolio cashout/generic Sell ticket -> /api/orders SELL -> Portfolio History",
+    "expectedRestingSide": "BUY",
+    "source": "local-mvp-internal-liquidity"
+  },
+  "eventSlug": "odds-api-single-soccer-test",
+  "market": {
+    "id": "cc4f4d02-4acc-48a8-aaa5-437652454c3c",
+    "title": "Spain vs. France: Total goals 2.5",
+    "marketType": "total_goals",
+    "marketGroupKey": "totals",
+    "period": "regulation",
+    "line": "2.5",
+    "referenceSource": "contract-fixture",
+    "externalMarketId": "holiwyn-contract-odds-api-single-soccer-test-holiwyn-total-goals-2-5",
+    "conditionId": "holiwyn-contract-9bc32d6123104b042fc4f8e0"
+  },
+  "outcome": {
+    "id": "a323ced9-44cd-4aef-9a45-5ecbf3f2c351",
+    "name": "Over 2.5",
+    "side": "over",
+    "referenceTokenId": "holiwyn-contract-63df0b0d809f42d33af61576",
+    "referenceOutcomeLabel": "Over 2.5"
+  },
+  "cleanupOnly": false,
+  "maker": {
+    "id": "d427d7ca-190f-4320-b2f1-1850d04076f7",
+    "username": "mobile_route_fill_maker_64457d83"
+  },
+  "cleanup": {
+    "resetSelectedMarketState": {
+      "requested": false,
+      "canonicalEventsPreserved": true,
+      "deletedFills": 0,
+      "deletedTrades": 0,
+      "deletedOrders": 0,
+      "deletedPositions": 0,
+      "collateralReset": false
+    },
+    "enabled": false,
+    "proofUserPrefix": "holiwyn-mobile-",
+    "canceledProofBids": [],
+    "cleanupBlockingBids": false,
+    "canceledBlockingBids": [],
+    "cleanupBlockingMarketBids": true,
+    "cleanupBlockingMarketBidsForcedByPurpose": false,
+    "canceledBlockingMarketBids": [],
+    "cleanupProofAsks": true,
+    "canceledProofAsks": [],
+    "cleanupBlockingAsks": true,
+    "canceledBlockingAsks": [
+      {
+        "id": "6c8ca1e0-1759-453d-8c04-1a8062759b7c",
+        "username": "mobile_route_fill_maker_10afbd8f",
+        "previousStatus": "PARTIAL",
+        "price": "0.58",
+        "remaining": "56.9",
+        "canceledStatus": "CANCELED"
+      }
+    ]
+  },
+  "makerOrder": {
+    "id": "39eb7ee0-4e15-4622-909e-7a5284108844",
+    "marketId": "cc4f4d02-4acc-48a8-aaa5-437652454c3c",
+    "outcomeId": "a323ced9-44cd-4aef-9a45-5ecbf3f2c351",
+    "side": "BUY",
+    "price": "0.58",
+    "size": "80",
+    "remaining": "80",
+    "reservedNotional": "46.4",
+    "status": "OPEN"
+  },
+  "seededAsk": {
+    "side": "BUY",
+    "price": "0.58",
+    "size": "80",
+    "intendedMobileTaker": "SELL/cashout route-backed totals position"
+  }
+}

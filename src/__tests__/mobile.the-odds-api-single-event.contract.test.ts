@@ -434,6 +434,8 @@ describe("The Odds API single-event temporary provider", () => {
     expect(liveReadinessScript()).toContain("cashoutTicketIsClosePositionMode");
     expect(liveReadinessScript()).toContain("cashoutMaxUsesOwnedShares");
     expect(liveReadinessScript()).toContain("cashoutTicketHidesYesNoSelector");
+    expect(readFileSync("scripts/prove_mobile_odds_api_s23_visible_flow.ps1", "utf8")).toContain("MaxExpectedCashoutShares");
+    expect(readFileSync("scripts/prove_mobile_odds_api_s23_visible_flow.ps1", "utf8")).toContain("observedCashoutShares");
     expect(liveReadinessScript()).toContain("Set-LocalDatabaseEnv");
     expect(phaseAuditScript()).toContain("cashoutTicketIsClosePositionMode");
     expect(phaseAuditScript()).toContain("cashoutMaxUsesOwnedShares");

@@ -7,6 +7,7 @@ const mockPrisma = {
   },
   market: {
     create: jest.fn(),
+    count: jest.fn(),
   },
 };
 
@@ -66,6 +67,8 @@ beforeEach(() => {
   mockPrisma.event.findMany.mockReset();
   mockPrisma.event.findUnique.mockReset();
   mockPrisma.market.create.mockReset();
+  mockPrisma.market.count.mockReset();
+  mockPrisma.market.count.mockResolvedValue(0);
   jest.mocked(getOutcomeQuotes).mockResolvedValue(new Map());
   jest.mocked(parseReferenceReview).mockReturnValue({});
   jest.mocked(getReferenceSummaryForMarket).mockResolvedValue(null);
@@ -79,6 +82,7 @@ describe("sports event market model", () => {
         markets: [{ status: "LIVE", title: "Match Winner", referenceMetadata: null }],
       },
     ]);
+    mockPrisma.market.count.mockResolvedValueOnce(1);
 
     const response = await listEvents(
       new NextRequest("http://localhost/api/events?category=sports&sportKey=soccer&leagueKey=world_cup&status=scheduled"),
@@ -176,6 +180,7 @@ describe("sports event market model", () => {
         },
       ],
     });
+    mockPrisma.market.count.mockResolvedValueOnce(1).mockResolvedValueOnce(0);
 
     const response = await getEventDetail(new Request("http://localhost/api/events/france-vs-argentina"), {
       params: Promise.resolve({ slug: "france-vs-argentina" }),

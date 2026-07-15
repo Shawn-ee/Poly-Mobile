@@ -21,6 +21,15 @@ const closeSize = (position: Position) => {
 export const availablePositionShares = (position: Position) =>
   typeof position.shares === "number" && Number.isFinite(position.shares) ? Math.max(0, position.shares) : 0;
 
+export const resolveClosePositionAvailableShares = (position: Position, serverEstimateShares?: number) => {
+  const ownedShares = availablePositionShares(position);
+  if (!Number.isFinite(serverEstimateShares) || serverEstimateShares === undefined || serverEstimateShares <= 0) {
+    return ownedShares;
+  }
+  if (ownedShares <= 0) return 0;
+  return Math.min(ownedShares, serverEstimateShares);
+};
+
 export const canCashOutPosition = (position: Position) => {
   if (typeof position.shares === "number") {
     return Number.isFinite(position.shares) && position.shares > 0;

@@ -11043,3 +11043,12 @@ Future migration concern:
 - Schema mismatch: none. No Prisma schema or model change.
 - Temporary mock/static data: none added. Cached provider-shaped snapshots remain explicitly labeled as cached/local MVP evidence, not fresh live odds.
 - Remaining gaps: live odds freshness, installed unattended service ownership, production official-result auto-settlement, and multi-event polling remain outside this no-quota gate change.
+
+## Cycle ZCC - Cashout Max Runtime Alignment
+
+- Fields confirmed for mobile/runtime: mobile-facing event payloads and market catalog refreshes must not expose closed/resolved/suspended markets for default Event Detail trading. The proof selected live contract fixture market `cc4f4d02-4acc-48a8-aaa5-437652454c3c` for `Over 2.5`, while the closed duplicate provider market `78ea76f1-fc8f-419b-ac21-2554d79093f6` stayed out of the tap path.
+- Closed or narrowed: Portfolio cashout `availableShares` is now bounded by visible owned position shares even when the cashout estimate route returns a larger or stale quantity. S23 proof observed `43.1` shares and no wallet-sized Max value.
+- Route mismatch: legacy event routes, mobile live-detail, and event market catalog now agree on excluding non-tradable closed market rows from the mobile default trading surface.
+- Schema mismatch: none. Raw provider/closed rows may remain in storage for audit/debug; mobile display filters them by contract.
+- Temporary mock/static data: none added. The flow used existing local fake-token exchange state and backend-owned contract-fixture markets.
+- Remaining gaps: richer cashout preview and dev-build/APK proof stability remain P1/P2. Fresh live odds still require explicit quota-gated provider refresh when needed.

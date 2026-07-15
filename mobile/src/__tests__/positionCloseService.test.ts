@@ -1,7 +1,7 @@
 import { describe, expect, test, vi } from "vitest";
 import type { PolyApi } from "../api";
 import type { Position } from "../components/Portfolio";
-import { assertCanSellPositionShares, canCashOutPosition, closePositionOnServer } from "../services/positionCloseService";
+import { assertCanSellPositionShares, canCashOutPosition, closePositionOnServer, resolveClosePositionAvailableShares } from "../services/positionCloseService";
 
 const position: Position = {
   id: "server-world-cup-winner-France",
@@ -147,6 +147,19 @@ describe("position close service", () => {
 
   test("allows cash out when sell size is within available shares", () => {
     expect(() => assertCanSellPositionShares({ ...position, shares: 2 }, 2)).not.toThrow();
+  });
+
+  test("caps cashout Max to the Portfolio-owned shares when a server estimate is larger", () => {
+    expect(resolveClosePositionAvailableShares({ ...position, shares: 12.345678 }, 9000)).toBe(12.345678);
+  });
+
+  test("uses the server estimate only when it is below the Portfolio-owned shares", () => {
+    expect(resolveClosePositionAvailableShares({ ...position, shares: 12.345678 }, 3.5)).toBe(3.5);
+  });
+
+  test("falls back to Portfolio-owned shares when the server estimate is missing or invalid", () => {
+    expect(resolveClosePositionAvailableShares({ ...position, shares: 12.345678 }, undefined)).toBe(12.345678);
+    expect(resolveClosePositionAvailableShares({ ...position, shares: 12.345678 }, Number.NaN)).toBe(12.345678);
   });
 
   test("shows cash out for local positions without share identity", () => {

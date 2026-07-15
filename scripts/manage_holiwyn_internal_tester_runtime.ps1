@@ -17,6 +17,8 @@ param(
   [switch]$ReplaceExternalExpo,
   [switch]$WaitForReady,
   [switch]$RuntimeOnlyArtifacts,
+  [string]$BackendEnvFile = "",
+  [switch]$EnableInternalTradingBeta,
   [int]$WaitSeconds = 45,
   [string]$SummaryPath = "docs\mobile\harness\odds-api-live-runtime\internal-tester-runtime-manager-summary.redacted.json"
 )
@@ -312,13 +314,41 @@ function Stop-ExternalExpoListener {
   }
   $output = & taskkill /PID ([int]$PortOwner.pid) /T /F 2>&1
   if ($LASTEXITCODE -ne 0) {
-    throw "Failed to stop external Expo listener pid=$($PortOwner.pid): $output"
+    Start-Sleep -Seconds 2
+    $stillRunning = [bool](Get-Process -Id ([int]$PortOwner.pid) -ErrorAction SilentlyContinue)
+    $currentOwner = Get-PortOwner $ExpoPort
+    $stillOwnsPort = [bool]($currentOwner -and [int]$currentOwner.pid -eq [int]$PortOwner.pid)
+    if ($stillRunning -and $stillOwnsPort) {
+      throw "Failed to stop external Expo listener pid=$($PortOwner.pid): $output"
+    }
+    return "stopped_external_expo_listener_after_taskkill_warning"
   }
   return "stopped_external_expo_listener"
 }
 
 function Start-OwnedBackend {
-  $args = @("-NoProfile", "-Command", "npm run dev -- -p $BackendPort")
+  $backendCommand = @"
+if ('$BackendEnvFile' -and (Test-Path -LiteralPath '$BackendEnvFile')) {
+  Get-Content -LiteralPath '$BackendEnvFile' | ForEach-Object {
+    if (`$_ -match '^\s*#' -or `$_ -notmatch '=') { return }
+    `$key, `$value = `$_.Split('=', 2)
+    `$key = `$key.Trim()
+    if (-not `$key) { return }
+    `$value = `$value.Trim()
+    if (`$value.Length -ge 2 -and ((`$value.StartsWith('"') -and `$value.EndsWith('"')) -or (`$value.StartsWith("'") -and `$value.EndsWith("'")))) {
+      `$value = `$value.Substring(1, `$value.Length - 2)
+    }
+    [Environment]::SetEnvironmentVariable(`$key, `$value, 'Process')
+  }
+}
+if ('$EnableInternalTradingBeta' -eq 'True') {
+  [Environment]::SetEnvironmentVariable('INTERNAL_TRADING_BETA_ENABLED', 'true', 'Process')
+  [Environment]::SetEnvironmentVariable('TRADING_KILL_SWITCH', 'false', 'Process')
+  [Environment]::SetEnvironmentVariable('NEXT_PUBLIC_INTERNAL_TRADING_BETA_ENABLED', 'true', 'Process')
+}
+npm run dev -- -p $BackendPort
+"@
+  $args = @("-NoProfile", "-Command", $backendCommand)
   $process = Start-Process `
     -FilePath "powershell" `
     -ArgumentList $args `
@@ -331,6 +361,8 @@ function Start-OwnedBackend {
     owned = $true
     pid = $process.Id
     command = "npm run dev -- -p $BackendPort"
+    envFile = if ($BackendEnvFile) { ConvertTo-RepoPath $BackendEnvFile } else { $null }
+    internalTradingBetaEnabledForLocalProof = [bool]$EnableInternalTradingBeta
     stdout = ConvertTo-RepoPath $BackendOutPath
     stderr = ConvertTo-RepoPath $BackendErrPath
     startedAt = (Get-Date).ToUniversalTime().ToString("o")
@@ -668,7 +700,15 @@ if ($Action -eq "stop") {
 } elseif ($Action -eq "start") {
   $backendOwner = Get-PortOwner $BackendPort
   $expoOwner = Get-PortOwner $ExpoPort
-  $backendOwnedByManager = [bool]($state.backend -and $state.backend.owned -and $backendOwner -and $state.backend.pid -eq $backendOwner.pid)
+  $backendOwnedByManager = [bool](
+    $state.backend -and
+    $state.backend.owned -and
+    $backendOwner -and
+    (
+      [int]$state.backend.pid -eq [int]$backendOwner.pid -or
+      (Test-ProcessDescendant -ChildPid ([int]$backendOwner.pid) -AncestorPid ([int]$state.backend.pid))
+    )
+  )
   $expoOwnedByManager = [bool]($state.expo -and $state.expo.owned -and $expoOwner -and $state.expo.pid -eq $expoOwner.pid)
   if ($backendOwner -and (-not $Force -or -not $backendOwnedByManager)) {
     $state.backend = [ordered]@{ owned = $false; pid = $backendOwner.pid; command = "external-listener"; detected = $backendOwner }

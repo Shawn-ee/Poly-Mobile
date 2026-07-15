@@ -5,6 +5,9 @@ const mockPrisma = {
     findMany: jest.fn(),
     findUnique: jest.fn(),
   },
+  market: {
+    count: jest.fn(),
+  },
 };
 
 jest.mock("@/lib/db", () => ({
@@ -213,6 +216,10 @@ describe("public event API no-leak checks", () => {
   beforeEach(() => {
     mockPrisma.event.findMany.mockReset();
     mockPrisma.event.findUnique.mockReset();
+    mockPrisma.market.count.mockReset();
+    mockPrisma.market.count
+      .mockResolvedValueOnce(1)
+      .mockResolvedValueOnce(0);
     jest.mocked(getOutcomeQuotes).mockResolvedValue(new Map());
     jest.mocked(parseReferenceReview).mockReturnValue({});
     jest.mocked(getReferenceSummaryForMarket).mockResolvedValue(null);
@@ -280,6 +287,15 @@ describe("public event API no-leak checks", () => {
     );
 
     expect(response.status).toBe(200);
+    expect(mockPrisma.event.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        include: expect.objectContaining({
+          markets: expect.objectContaining({
+            where: { visibility: "PUBLIC", isListed: true, status: "LIVE" },
+          }),
+        }),
+      }),
+    );
     const body = await response.json();
     expectOnlyKeys(body, ["events", "nextCursor", "page"]);
     expect(body.events).toHaveLength(1);
@@ -314,7 +330,7 @@ describe("public event API no-leak checks", () => {
     mockPrisma.event.findMany.mockResolvedValue([
       {
         ...baseEvent,
-        startTime: new Date("2026-07-14T16:00:00.000Z"),
+        startTime: new Date("2026-07-20T16:00:00.000Z"),
         status: "active",
         liveStatus: "LIVE",
         markets: [mobileListMarket],
@@ -594,6 +610,26 @@ describe("public event API no-leak checks", () => {
     });
 
     expect(response.status).toBe(200);
+    expect(mockPrisma.event.findUnique).toHaveBeenCalledWith(
+      expect.objectContaining({
+        include: expect.objectContaining({
+          markets: expect.objectContaining({
+            where: { visibility: "PUBLIC", isListed: true, status: "LIVE" },
+          }),
+        }),
+      }),
+    );
+    expect(mockPrisma.market.count).toHaveBeenCalledWith({
+      where: { eventId: "event-1", visibility: "PUBLIC", isListed: true, status: "LIVE" },
+    });
+    expect(mockPrisma.market.count).toHaveBeenCalledWith({
+      where: {
+        eventId: "event-1",
+        visibility: "PUBLIC",
+        isListed: true,
+        status: { in: ["CLOSED", "RESOLVED"] },
+      },
+    });
 
     const body = await response.json();
     expectOnlyKeys(body, ["event", "markets"]);

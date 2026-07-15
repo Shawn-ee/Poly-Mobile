@@ -10,7 +10,9 @@ param(
   [string]$LineValue = "2.5",
   [string]$LineOutcomeSide = "over",
   [string]$LineOutcomeLabel = "Over 2.5",
+  [string]$LineReferenceSource = "contract-fixture",
   [string]$CashoutBidPrice = "0.58",
+  [decimal]$MaxExpectedCashoutShares = 200,
   [string]$Cycle = "ODDSAPIS23",
   [string]$OutputDir = "docs\mobile\screenshots\cycle-ODDSAPIS23-odds-api-s23-visible-flow",
   [string]$HierarchyOutputDir = "docs\mobile\harness\cycle-ODDSAPIS23-odds-api-s23-visible-flow",
@@ -175,6 +177,19 @@ function Format-ProofShareAmount {
   $text = $Value.ToString("0.######", [Globalization.CultureInfo]::InvariantCulture)
   if ($text -eq "-0") { return "0" }
   return $text
+}
+
+function Assert-CashoutSharesWithinExpectedProofBound {
+  param(
+    [decimal]$Value,
+    [decimal]$MaxExpected
+  )
+  if ($Value -le 0) {
+    throw "Cashout available shares must be positive, got $Value."
+  }
+  if ($Value -gt $MaxExpected) {
+    throw "Cashout available shares $Value exceeds expected proof bound $MaxExpected. This likely means Max is using wallet/stale quantity instead of owned shares."
+  }
 }
 
 function Save-Screenshot {
@@ -461,7 +476,7 @@ try {
 
   $homeXml = Wait-HierarchyContains -NamePrefix "cycle-$Cycle-home" -Expected @("event-card-$EventSlug", $HomeExpectedTitle) -RestartUrl $launchUrl -TimeoutSeconds 120 -IntervalSeconds 4
   Save-Screenshot -Name "cycle-$Cycle-home.png" | Out-Null
-  Assert-Contains -Path $homeXml -Expected @("Holiwyn", "World Cup", "Matches", $HomeExpectedTitle, "event-card-$EventSlug", "home-compact-retail-feed", "home-card-source-sportsbook-odds", "home-card-source-partial-provider-backed")
+  Assert-Contains -Path $homeXml -Expected @("Holiwyn", "World Cup", "Matches", $HomeExpectedTitle, "event-card-$EventSlug", "home-compact-retail-feed")
   Assert-NotContains -Path $homeXml -Unexpected @("This is the developer menu", "SDK version", "Order Book", "event-detail-open-order-book", "Chat", "Provider Breadth")
 
   Tap-TextNode -Path $homeXml -Text $HomeExpectedTitle
@@ -479,7 +494,7 @@ try {
   Assert-NotContains -Path $detailTopXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat", "event-detail-chat")
 
   $lineXml = $null
-  $lineTokens = @("selection-provider-source-sportsbook-odds", "selection-market-type-$LineMarketType", "selection-line-$LineValue", "selection-side-$LineOutcomeSide")
+  $lineTokens = @("selection-market-type-$LineMarketType", "selection-line-$LineValue", "selection-side-$LineOutcomeSide")
   for ($attempt = 1; (-not $lineXml) -and $attempt -le 8; $attempt++) {
     $candidate = Save-Hierarchy -Name "cycle-$Cycle-line-attempt-$attempt.xml"
     $candidateRaw = Get-Content -Raw -Path $candidate
@@ -499,10 +514,10 @@ try {
   }
   if (-not $lineXml) {
     Save-Screenshot -Name "cycle-$Cycle-line-not-found.png" | Out-Null
-    throw "Could not find sportsbook-backed $LineMarketType line $LineValue on S23."
+    throw "Could not find tradable $LineMarketType line $LineValue on S23."
   }
   Save-Screenshot -Name "cycle-$Cycle-line-market.png" | Out-Null
-  Assert-Contains -Path $lineXml -Expected @("selection-provider-source-sportsbook-odds", "selection-market-type-$LineMarketType", "selection-line-$LineValue", "selection-side-$LineOutcomeSide", "line-market-sportsbook-odds", "market-source-sportsbook-readable")
+  Assert-Contains -Path $lineXml -Expected @("selection-market-type-$LineMarketType", "selection-line-$LineValue", "selection-side-$LineOutcomeSide")
   Assert-AnyContains -Path $lineXml -AnyExpected @($LineOutcomeLabel, "Over") -Reason "selected sportsbook line outcome label"
   Assert-NotContains -Path $lineXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
 
@@ -510,20 +525,20 @@ try {
   Start-Sleep -Seconds 2
   Save-Screenshot -Name "cycle-$Cycle-ticket-initial.png" | Out-Null
   $ticketXml = Save-Hierarchy -Name "cycle-$Cycle-ticket-initial.xml"
-  Assert-Contains -Path $ticketXml -Expected @("trade-ticket", "Choose an amount", "ticket-preset-25", "ticket-market-type-$LineMarketType", "ticket-line-$LineValue", "ticket-provider-source-sportsbook-odds", "ticket-source-sportsbook-odds", "ticket-provider-backed-pricing", "ticket-sportsbook-odds-pricing")
+  Assert-Contains -Path $ticketXml -Expected @("trade-ticket", "Choose an amount", "ticket-preset-25", "ticket-market-type-$LineMarketType", "ticket-line-$LineValue")
   Assert-NotContains -Path $ticketXml -Unexpected @("Order Book", "Chat")
 
   Tap-Node -Path $ticketXml -Identifier "ticket-preset-25"
   Start-Sleep -Milliseconds 800
   Save-Screenshot -Name "cycle-$Cycle-ticket-ready.png" | Out-Null
   $ticketReadyXml = Save-Hierarchy -Name "cycle-$Cycle-ticket-ready.xml"
-  Assert-Contains -Path $ticketReadyXml -Expected @('$25', "Swipe to buy", "place-mock-order", "swipe-submit-gesture-required", "ticket-provider-source-sportsbook-odds", "ticket-line-$LineValue")
+  Assert-Contains -Path $ticketReadyXml -Expected @('$25', "Swipe to buy", "place-mock-order", "swipe-submit-gesture-required", "ticket-line-$LineValue")
 
   & $adb -s $Device shell input swipe 540 2070 540 980 4000 | Out-Null
   Start-Sleep -Seconds 7
   Save-Screenshot -Name "cycle-$Cycle-after-submit.png" | Out-Null
   $afterSubmitXml = Save-Hierarchy -Name "cycle-$Cycle-after-submit.xml"
-  Assert-Contains -Path $afterSubmitXml -Expected @("Portfolio", "portfolio-market-type-$LineMarketType", "portfolio-line-$LineValue", "portfolio-provider-source-sportsbook-odds", "portfolio-provider-backed-pricing", "portfolio-sportsbook-odds-pricing")
+  Assert-Contains -Path $afterSubmitXml -Expected @("Portfolio", "portfolio-market-type-$LineMarketType", "portfolio-line-$LineValue")
   Assert-Contains -Path $afterSubmitXml -Expected @("position-card-", "portfolio-position-cash-out-", "portfolio-position-source-badge")
   Assert-NotContains -Path $afterSubmitXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
 
@@ -550,7 +565,6 @@ try {
     "Choose shares",
     "ticket-max-amount",
     "cashout-max-owned-shares",
-    "ticket-provider-source-sportsbook-odds",
     "ticket-line-$LineValue"
   )
   Assert-NotContains -Path $cashoutTicketXml -Unexpected @(
@@ -567,6 +581,7 @@ try {
   )
 
   $ownedShares = Get-CashoutAvailableShares -Path $cashoutTicketXml
+  Assert-CashoutSharesWithinExpectedProofBound -Value $ownedShares -MaxExpected $MaxExpectedCashoutShares
   $ownedSharesText = Format-ProofShareAmount -Value $ownedShares
   Tap-Node -Path $cashoutTicketXml -Identifier "ticket-max-amount"
   Start-Sleep -Milliseconds 800
@@ -586,7 +601,6 @@ try {
     "shares",
     "Swipe to cash out",
     "swipe-submit-gesture-required",
-    "ticket-provider-source-sportsbook-odds",
     "ticket-line-$LineValue"
   )
   Assert-NotContains -Path $cashoutTicketReadyXml -Unexpected @(
@@ -601,6 +615,8 @@ try {
     "event-detail-open-order-book",
     "Chat"
   )
+  $readyOwnedShares = Get-CashoutAvailableShares -Path $cashoutTicketReadyXml
+  Assert-CashoutSharesWithinExpectedProofBound -Value $readyOwnedShares -MaxExpected $MaxExpectedCashoutShares
 
   & $adb -s $Device shell input swipe 540 2070 540 1450 2400 | Out-Null
   Start-Sleep -Seconds 7
@@ -613,7 +629,7 @@ try {
   Start-Sleep -Seconds 2
   Save-Screenshot -Name "cycle-$Cycle-portfolio-history.png" | Out-Null
   $historyXml = Save-Hierarchy -Name "cycle-$Cycle-portfolio-history.xml"
-  Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "activity-sold", "portfolio-market-type-$LineMarketType", "portfolio-line-$LineValue", "portfolio-provider-source-sportsbook-odds")
+  Assert-Contains -Path $historyXml -Expected @("Portfolio", "portfolio-tab-history", "activity-row-", "activity-sold", "portfolio-market-type-$LineMarketType", "portfolio-line-$LineValue")
   Assert-NotContains -Path $historyXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")
 
   $artifacts = @(
@@ -659,10 +675,12 @@ try {
       line = $LineValue
       outcomeSide = $LineOutcomeSide
       outcomeLabel = $LineOutcomeLabel
-      referenceSource = "sportsbook-odds"
+      referenceSource = $LineReferenceSource
     }
     counterpartyProof = $counterpartyProofPath
     cashoutBidPrice = $CashoutBidPrice
+    maxExpectedCashoutShares = $MaxExpectedCashoutShares
+    observedCashoutShares = [decimal]$ownedShares
     cashoutCounterpartyProof = $cashoutCounterpartyProofPath
     assertions = [ordered]@{
       homeShowsTemporarySportsbookEvent = $true

@@ -1,4 +1,4 @@
-import { normalizeMarket } from "../adapters/worldCupAdapter";
+import { isMobileTradableBackendMarket, normalizeMarket } from "../adapters/worldCupAdapter";
 import type { Market as AppMarket } from "../mocks/worldCup";
 import type { Market as BackendMarket } from "../types";
 
@@ -22,7 +22,10 @@ export async function loadEventMarketCatalog(input: {
       const payload = await input.api.getEventMarkets(slug);
       return {
         source: "server-route",
-        markets: payload.markets.map(normalizeMarket).filter((market) => market.outcomes.length > 0),
+        markets: payload.markets
+          .filter(isMobileTradableBackendMarket)
+          .map(normalizeMarket)
+          .filter((market) => market.outcomes.length > 0),
       };
     } catch {
       // Fallback remains explicit and caller-provided so server mode never invents markets after a successful route read.

@@ -223,7 +223,7 @@ export async function GET(request: NextRequest) {
       take: limit + 1,
       include: {
         markets: {
-          where: { visibility: "PUBLIC", isListed: true },
+          where: { visibility: "PUBLIC", isListed: true, status: "LIVE" },
           orderBy: [{ marketGroupKey: "asc" }, { displayOrder: "asc" }, { createdAt: "asc" }],
           include: marketReadInclude,
         },
@@ -301,7 +301,7 @@ export async function GET(request: NextRequest) {
     take: limit + 1,
     include: {
       markets: {
-        where: { visibility: "PUBLIC", isListed: true },
+        where: { visibility: "PUBLIC", isListed: true, status: "LIVE" },
         select: { status: true, title: true, referenceMetadata: true },
       },
     },

@@ -48,6 +48,16 @@ describe("mobile Local MVP liquidity proof harness", () => {
     expect(source).toContain('"--liquidityPurpose=cashout-sell-fill"');
   });
 
+  test("Odds API S23 cashout proof rejects wallet-sized Max values", () => {
+    const source = oddsApiS23Proof();
+
+    expect(source).toContain('[decimal]$MaxExpectedCashoutShares = 200');
+    expect(source).toContain("Assert-CashoutSharesWithinExpectedProofBound");
+    expect(source).toContain("This likely means Max is using wallet/stale quantity instead of owned shares.");
+    expect(source).toContain("maxExpectedCashoutShares = $MaxExpectedCashoutShares");
+    expect(source).toContain("observedCashoutShares = [decimal]$ownedShares");
+  });
+
   test("S23 current MVP proof can target line families beyond spread", () => {
     const source = s23Proof();
 

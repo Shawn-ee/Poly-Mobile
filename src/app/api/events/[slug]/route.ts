@@ -15,6 +15,11 @@ export async function GET(_request: Request, context: Ctx) {
         select: { markets: true },
       },
       markets: {
+        where: {
+          visibility: "PUBLIC",
+          isListed: true,
+          status: "LIVE",
+        },
         include: marketReadInclude,
         orderBy: [{ marketGroupKey: "asc" }, { displayOrder: "asc" }, { createdAt: "asc" }],
       },
@@ -25,10 +30,19 @@ export async function GET(_request: Request, context: Ctx) {
     return NextResponse.json({ error: "Event not found." }, { status: 404 });
   }
 
-  const activeMarketCount = event.markets.filter((market) => market.status === "LIVE").length;
-  const closedMarketCount = event.markets.filter(
-    (market) => market.status === "CLOSED" || market.status === "RESOLVED",
-  ).length;
+  const [activeMarketCount, closedMarketCount] = await Promise.all([
+    prisma.market.count({
+      where: { eventId: event.id, visibility: "PUBLIC", isListed: true, status: "LIVE" },
+    }),
+    prisma.market.count({
+      where: {
+        eventId: event.id,
+        visibility: "PUBLIC",
+        isListed: true,
+        status: { in: ["CLOSED", "RESOLVED"] },
+      },
+    }),
+  ]);
   const markets = await Promise.all(event.markets.map((market) => serializeMarketReadModel(market)));
 
   return NextResponse.json({

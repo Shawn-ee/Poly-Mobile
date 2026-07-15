@@ -23,7 +23,7 @@ describe("cashout generic Sell ticket contract", () => {
     expect(app).toContain("await loadTicketQuotes(api, position.marketId, position.outcomeId)");
     expect(app).toContain("serverCashoutAvailableShares");
     expect(app).toContain("serverCashoutSellPrice");
-    expect(app).toContain(": availablePositionShares(position)");
+    expect(app).toContain("resolveClosePositionAvailableShares(position, serverCashoutAvailableShares)");
     expect(app).toContain("cashoutSellPriceFromQuote(latestCashoutQuote, fallbackPositionSellPrice)");
     expect(app).toContain("outcomeWithCashoutQuote(target.outcome, latestCashoutQuote)");
     expect(app).toContain("ticket.sourcePositionId &&");

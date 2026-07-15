@@ -168,6 +168,13 @@ const zhPassthrough = (value: string) => value;
 
 const isGenericFixtureTitle = (title: string) => /^fixture\b/i.test(title.trim());
 
+const NON_TRADABLE_MARKET_STATUSES = new Set(["CLOSED", "RESOLVED", "SETTLED", "CANCELED", "CANCELLED", "SUSPENDED", "PAUSED", "INACTIVE"]);
+
+export const isMobileTradableBackendMarket = (market: Pick<BackendMarket, "status" | "outcomes">) => {
+  const status = `${market.status ?? ""}`.trim().toUpperCase();
+  return market.outcomes.length > 0 && !NON_TRADABLE_MARKET_STATUSES.has(status);
+};
+
 const teamCode = (name: string) => {
   const clean = name
     .replace(/\([^)]*\)/g, "")
@@ -352,7 +359,10 @@ export const normalizeEventSummary = (event: BackendEventSummary, markets: Backe
   const home = event.homeTeamName || event.title.split(/\s+vs\.?\s+/i)[0] || "Home";
   const away = event.awayTeamName || event.title.split(/\s+vs\.?\s+/i)[1] || "Away";
   const status = eventStatus(event);
-  const normalizedMarkets = markets.map(normalizeMarket).filter((market) => market.outcomes.length > 0);
+  const normalizedMarkets = markets
+    .filter(isMobileTradableBackendMarket)
+    .map(normalizeMarket)
+    .filter((market) => market.outcomes.length > 0);
   const rules = deriveMarketRules(event, normalizedMarkets);
   const depthMarket = normalizedMarkets.find((market) => (market.orderbookDepth?.length ?? 0) > 0);
   const isFuturesBundle = normalizedMarkets.length > 0 && normalizedMarkets.every((market) => market.type === "future");
