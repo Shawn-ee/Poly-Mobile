@@ -16848,3 +16848,20 @@ Known limitations:
   - `docs/mobile/audits/cycle-ZCD-s23-live-event-proof.md`
 - Result: S23 proof passed on `SM-S911U1`; observed cashout Max was `43.1` shares, not wallet balance; close ticket hid Yes/No; SELL cashout and History proof passed for `Argentina vs. England: Total Goals 2.5`.
 - Known limitations: proof uses Expo Go and the reusable local slug `odds-api-single-soccer-test`. Per-provider-event slugs remain P2 before multi-event onboarding.
+
+## Cycle ZCE - Current Event Contract Doc Guard
+
+- Feature/runtime worked on: active-event identity alignment for the Backend Live Runtime Survey / One Event Live Pipeline audit trail.
+- Frontend components touched: none.
+- Backend/routes touched: no HTTP route, Prisma schema, order, portfolio, provider refresh, settlement, or mobile UI logic changed.
+- Important functions/services touched: `scripts/prove_mobile_odds_api_s23_visible_flow.ps1`, `scripts/prove_holiwyn_current_runtime_state.js`, `scripts/report_holiwyn_live_runtime_completion_audit.ts`, `scripts/report_odds_api_live_runtime_phase_audit.ts`, and `scripts/start_holiwyn_one_event_live_runtime.ps1`.
+- User/runtime interactions supported: operators and proof runners no longer need to pass old hardcoded `Spain vs. France` S23 proof arguments. The S23 proof harness resolves the expected event title and team labels from current readiness/live-runtime summaries, and current docs now point at the quote-visible Argentina vs. England `Over 2.5` outcome.
+- State transitions: none. The no-quota readiness gate regenerated read-only summaries only; no provider refresh, settlement execution, or mobile order was triggered.
+- API/data dependencies: existing `internal-tester-readiness-gate-summary.redacted.json`, `one-event-live-runtime-summary.redacted.json`, `/api/internal/live-runtime/status`, and `/api/markets/:marketId/quote` evidence. The current selected quote-visible outcome is `f57b22fb-7dc8-412c-95b9-9ebf79639f03`.
+- Proof:
+  - `npm run mobile:internal-tester-readiness-gate`
+  - `npx tsc --noEmit --pretty false --incremental false`
+  - `npm run test:ci`
+  - `npm --prefix mobile run typecheck`
+- Result: no unresolved P0 gaps. Cached internal testing remains ready for Argentina vs. England; live mobile odds freshness remains an explicit provider-secret action.
+- Known limitations: no new S23 proof was run in this doc/guard cycle. Installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1; multi-event provider polling/dashboard remains P2.

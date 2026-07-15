@@ -11010,7 +11010,7 @@ Future migration concern:
 
 ## Cycle ZBA - No-Quota Live Runtime Readiness Refresh
 
-- Fields confirmed for mobile/runtime: the current gates still report `cachedTradingReady=true`, `liveOddsReady=false`, `providerSnapshotFresh=false`, `quotaSpendingLoopRunning=false`, `recommendedFirstAction=cached_internal_testing`, and selected Spain vs. France market/outcome identity for `Over 2.5`.
+- Fields confirmed for mobile/runtime: the current gates still report `cachedTradingReady=true`, `liveOddsReady=false`, `providerSnapshotFresh=false`, `quotaSpendingLoopRunning=false`, `recommendedFirstAction=cached_internal_testing`, and selected Argentina vs. England market/outcome identity for `Over 2.5`.
 - Closed or narrowed: current runtime readiness was rechecked without spending provider quota or committing timestamp-only summary churn. Cached local trading remains a valid internal tester mode, while fresh mobile-visible odds remain an explicit provider-refresh action.
 - Route mismatch: none. `/api/internal/live-runtime/status`, quote, and health routes supplied the current proof inputs.
 - Schema mismatch: none. No Prisma schema or migration change.
@@ -11046,7 +11046,7 @@ Future migration concern:
 
 ## Cycle ZCC - Cashout Max Runtime Alignment
 
-- Fields confirmed for mobile/runtime: mobile-facing event payloads and market catalog refreshes must not expose closed/resolved/suspended markets for default Event Detail trading. The proof selected live contract fixture market `cc4f4d02-4acc-48a8-aaa5-437652454c3c` for `Over 2.5`, while the closed duplicate provider market `78ea76f1-fc8f-419b-ac21-2554d79093f6` stayed out of the tap path.
+- Fields confirmed for mobile/runtime: mobile-facing event payloads and market catalog refreshes must not expose closed/resolved/suspended markets for default Event Detail trading. The current proof selects the live quote-visible `Over 2.5` outcome `f57b22fb-7dc8-412c-95b9-9ebf79639f03`, while stale/closed duplicate provider rows stay out of the tap path.
 - Closed or narrowed: Portfolio cashout `availableShares` is now bounded by visible owned position shares even when the cashout estimate route returns a larger or stale quantity. S23 proof observed `43.1` shares and no wallet-sized Max value.
 - Route mismatch: legacy event routes, mobile live-detail, and event market catalog now agree on excluding non-tradable closed market rows from the mobile default trading surface.
 - Schema mismatch: none. Raw provider/closed rows may remain in storage for audit/debug; mobile display filters them by contract.
@@ -11056,7 +11056,7 @@ Future migration concern:
 ## Cycle ZCD - Fresh One-Event Live Runtime Proof
 
 - Fields confirmed for mobile/runtime: the current runtime summaries now agree on `eventSlug=odds-api-single-soccer-test`, event `Argentina vs. England`, provider source `sportsbook-odds`, selected market `Argentina vs. England: Total Goals 2.5`, outcome `Over 2.5`, and local maker bid/ask evidence for the same market/outcome.
-- Closed or narrowed: stale Spain vs. France selected-market evidence no longer outranks fresher matching quote proof in `/api/internal/live-runtime/status` and the operator checklist. The provider-refresh wrapper now honors an explicit `-ForceProviderRefresh` after checking that no quota-spending loop is running.
+- Closed or narrowed: stale one-event selected-market evidence no longer outranks fresher matching quote proof in `/api/internal/live-runtime/status` and the operator checklist. The provider-refresh wrapper now honors an explicit `-ForceProviderRefresh` after checking that no quota-spending loop is running.
 - Route mismatch: no route contract mismatch found after refresh. `/api/internal/live-runtime/status`, live-detail, quote, order, portfolio, and history proof all point at the same fresh event/market identity.
 - Schema mismatch: none. The fix uses existing event, market, outcome, provider snapshot, maker quote, order, and portfolio tables.
 - Temporary mock/static data: none added. The proof used a real Odds API response for one upcoming event plus local fake-token trading state.

@@ -759,4 +759,34 @@ describe("The Odds API single-event temporary provider", () => {
       expect(doc).not.toContain("cycle-ZAN-spain-france-cashout-proof");
     }
   });
+
+  it("keeps current backend dependency and data-contract sections aligned with readiness identity", () => {
+    const readinessSummary = JSON.parse(
+      readFileSync("docs/mobile/harness/odds-api-live-runtime/internal-tester-readiness-gate-summary.redacted.json", "utf8"),
+    ) as {
+      testerReady?: {
+        event?: { title?: string };
+        selectedMarket?: { title?: string; outcomeId?: string };
+      };
+    };
+    const activeEventTitle = readinessSummary.testerReady?.event?.title;
+    const activeOutcomeId = readinessSummary.testerReady?.selectedMarket?.outcomeId;
+    const routeMap = readFileSync("docs/mobile/MOBILE_BACKEND_ROUTE_DEPENDENCY_MAP.md", "utf8");
+    const dataGaps = readFileSync("docs/mobile/MOBILE_DATA_CONTRACT_GAPS.md", "utf8");
+    const routeTail = routeMap.slice(routeMap.indexOf("## Cycle ZX - Current Runtime Operator Handoff"));
+    const dataTail = dataGaps.slice(dataGaps.indexOf("## Cycle ZBA - No-Quota Live Runtime Readiness Refresh"));
+
+    expect(activeEventTitle).toBeTruthy();
+    expect(activeOutcomeId).toBeTruthy();
+    expect(routeTail).toContain(`Selected ${activeEventTitle} event/market/outcome identity`);
+    expect(routeTail).toContain(`quote-visible \`outcomeId=${activeOutcomeId}\``);
+    expect(dataTail).toContain(`selected ${activeEventTitle} market/outcome identity`);
+    expect(dataTail).toContain(`outcome \`${activeOutcomeId}\``);
+    for (const section of [routeTail, dataTail]) {
+      expect(section).not.toContain("Selected Spain vs. France");
+      expect(section).not.toContain("selected Spain vs. France");
+      expect(section).not.toContain("8578db7a-e01c-442b-8480-95d36a6a946e");
+      expect(section).not.toContain("78ea76f1-fc8f-419b-ac21-2554d79093f6");
+    }
+  });
 });
