@@ -11060,6 +11060,15 @@ Future migration concern:
 - Route mismatch: no route contract mismatch found after refresh. `/api/internal/live-runtime/status`, live-detail, quote, order, portfolio, and history proof all point at the same fresh event/market identity.
 - Schema mismatch: none. The fix uses existing event, market, outcome, provider snapshot, maker quote, order, and portfolio tables.
 - Temporary mock/static data: none added. The proof used a real Odds API response for one upcoming event plus local fake-token trading state.
+
+## Cycle ZCF - Runtime Capability Matrix
+
+- Fields confirmed for mobile/runtime: `runtimeMode`, `spendsProviderQuota`, `quotaProtection`, `startCommand`, `proofCommand`, `stopCommand`, `evidenceFiles`, and `currentLimitation` are now recorded in `runtime-capability-matrix.redacted.json`.
+- Closed or narrowed: continuous-vs-one-shot runtime truth no longer depends only on prose. The report confirms supervisor/result-poller loops are continuous while local commands run, while maker/lifecycle commands are one-shot unless supervised.
+- Route mismatch: none. This is local proof metadata only and does not change mobile/backend API contracts.
+- Schema mismatch: none. No database model or migration change.
+- Temporary mock/static data: none. The report reads package/source files and does not call The Odds API.
+- Future migration concern: installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1 and should not be treated as complete just because local continuous commands exist.
 - Remaining gaps: no P0 for the backend/route readiness gate. Fresh S23 UI proof for Argentina vs. England remains to be run before claiming a fresh-device visual pass. Installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1; multi-event polling/dashboard remains P2.
 
 ## Cycle ZCD-S23-LIVE - Fresh Event S23 Trading Proof

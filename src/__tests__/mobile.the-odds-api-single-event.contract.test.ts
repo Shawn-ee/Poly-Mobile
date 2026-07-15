@@ -29,6 +29,7 @@ describe("The Odds API single-event temporary provider", () => {
   const completionAuditScript = () => readFileSync("scripts/report_holiwyn_live_runtime_completion_audit.ts", "utf8");
   const auditGateScript = () => readFileSync("scripts/run_holiwyn_live_runtime_audit_gate.ts", "utf8");
   const testerReadinessGateScript = () => readFileSync("scripts/run_holiwyn_internal_tester_readiness_gate.ts", "utf8");
+  const runtimeCapabilityMatrixScript = () => readFileSync("scripts/report_holiwyn_runtime_capability_matrix.ts", "utf8");
   const liveOddsRefreshPreflightScript = () =>
     readFileSync("scripts/report_holiwyn_live_odds_refresh_preflight.ts", "utf8");
   const liveRuntimeStatusService = () => readFileSync("src/server/services/liveRuntimeStatus.ts", "utf8");
@@ -101,6 +102,7 @@ describe("The Odds API single-event temporary provider", () => {
     expect(pkg).toContain("mobile:one-event-onboarding:cached-runtime");
     expect(pkg).toContain("mobile:one-event-onboarding:cached-runtime-clean-expo");
     expect(pkg).toContain("mobile:one-event-onboarding:live-provider-runtime");
+    expect(pkg).toContain("mobile:runtime-capability-matrix");
     expect(pkg).toContain("-AllowDisconnectedS23 -StartRuntimeLoops -ReplaceExternalExpo -StopRuntimeLoopsAfterProof");
     expect(pkg).toContain("-AllowDisconnectedS23 -StartRuntimeLoops -StopRuntimeLoopsAfterProof");
     expect(pkg).toContain("-RunProviderRefresh -StartRuntimeLoops -StopRuntimeLoopsAfterProof");
@@ -280,6 +282,21 @@ describe("The Odds API single-event temporary provider", () => {
     expect(source).toContain("does not call providers");
     expect(source).not.toContain("process.env.THE_ODDS_API_KEY");
     expect(source).not.toContain("THE_ODDS_API_KEY=");
+  });
+
+  it("exposes a quota-free runtime capability matrix for continuous versus one-shot truth", () => {
+    const source = runtimeCapabilityMatrixScript();
+    expect(source).toContain("providerQuotaUsedByThisReport: false");
+    expect(source).toContain("one-event-live-supervisor");
+    expect(source).toContain("one-event-result-poller");
+    expect(source).toContain("one-event-maker-seed");
+    expect(source).toContain("one-event-onboarding-live-provider");
+    expect(source).toContain("continuous-while-command-runs");
+    expect(source).toContain("operator-triggered");
+    expect(source).toContain("installed unattended provider polling service");
+    expect(source).toContain("MaxProviderProofRuns");
+    expect(source).not.toContain("apiKey: \"");
+    expect(source).not.toContain("ba20086f23a2d86706468d2c75172b8e");
   });
 
   it("keeps cached internal tester readiness separate from live odds freshness", () => {

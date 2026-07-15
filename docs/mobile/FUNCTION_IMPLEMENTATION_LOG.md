@@ -16865,3 +16865,17 @@ Known limitations:
   - `npm --prefix mobile run typecheck`
 - Result: no unresolved P0 gaps. Cached internal testing remains ready for Argentina vs. England; live mobile odds freshness remains an explicit provider-secret action.
 - Known limitations: no new S23 proof was run in this doc/guard cycle. Installed unattended provider/maker/lifecycle service ownership and production official-result auto-settlement remain P1; multi-event provider polling/dashboard remains P2.
+
+## Cycle ZCF - Runtime Capability Matrix
+
+- Feature/runtime worked on: machine-readable Backend Live Runtime Survey capability truth for one-event provider refresh, maker, result-poller, lifecycle, and onboarding surfaces.
+- Frontend components touched: none.
+- Backend/routes touched: no HTTP route, Prisma schema, mobile UI, provider fetch, order, portfolio, or settlement logic changed.
+- Important functions/services touched: added `scripts/report_holiwyn_runtime_capability_matrix.ts` and `mobile:runtime-capability-matrix`; extended `src/__tests__/mobile.the-odds-api-single-event.contract.test.ts` to guard the new report surface.
+- User/runtime interactions supported: operators can now run a quota-free command that states which runtime capabilities are one-shot, continuous while a local command runs, operator-triggered, or still missing installed-service ownership.
+- State transitions: none. The report reads package scripts and source files, then writes a redacted summary only.
+- API/data dependencies: no API dependency. The generated artifact is `docs/mobile/harness/odds-api-live-runtime/runtime-capability-matrix.redacted.json`.
+- Proof:
+  - `npm run mobile:runtime-capability-matrix`
+- Result: capability matrix passed with cached onboarding ready, live-provider onboarding operator-triggered, supervisor/result-poller continuous while their commands run, maker/lifecycle one-shot by default, and installed unattended service ownership still P1.
+- Known limitations: no S23 proof was required because this cycle changes runtime documentation/proof infrastructure only. It does not install a production daemon or spend Odds API quota.

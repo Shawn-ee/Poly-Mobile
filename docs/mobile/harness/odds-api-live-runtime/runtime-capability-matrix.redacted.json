@@ -1,0 +1,126 @@
+{
+  "generatedAt": "2026-07-15T06:30:40.157Z",
+  "scope": "holiwyn-runtime-capability-matrix",
+  "pass": true,
+  "providerQuotaUsedByThisReport": false,
+  "missingScripts": [],
+  "sourceChecks": {
+    "supervisorSupportsContinuous": true,
+    "supervisorCapsProviderProof": true,
+    "supervisorWritesHeartbeat": true,
+    "resultPollerSupportsContinuous": true,
+    "onboardingStartsRuntimeLoops": true,
+    "onboardingStopsRuntimeLoops": true,
+    "providerSecretWrapperUsesLocalSecret": true,
+    "noHardcodedProviderKey": true
+  },
+  "capabilityCounts": {
+    "total": 6,
+    "ready": 5,
+    "operatorTriggered": 1,
+    "missing": 0,
+    "continuousWhileCommandRuns": 2,
+    "installedServiceMissing": 4
+  },
+  "capabilities": [
+    {
+      "id": "one-event-onboarding-cached",
+      "area": "one-command local onboarding",
+      "status": "ready",
+      "runtimeMode": "one-shot",
+      "spendsProviderQuota": false,
+      "quotaProtection": "Uses cached/replay provider evidence and starts/stops runtime loops for proof.",
+      "startCommand": "npm run mobile:one-event-onboarding:cached-runtime",
+      "proofCommand": "npm run mobile:internal-tester-readiness-gate",
+      "stopCommand": null,
+      "evidenceFiles": [
+        "scripts/onboard_holiwyn_one_event_live_runtime.ps1",
+        "docs/mobile/harness/odds-api-live-runtime/one-event-onboarding-summary.redacted.json"
+      ],
+      "currentLimitation": "Does not prove fresh provider odds unless the live-provider variant is used."
+    },
+    {
+      "id": "one-event-onboarding-live-provider",
+      "area": "one-command live provider onboarding",
+      "status": "operator-triggered",
+      "runtimeMode": "one-shot",
+      "spendsProviderQuota": true,
+      "quotaProtection": "Requires THE_ODDS_API_KEY from environment or ignored local secret file; uses quota caps and one-event scope.",
+      "startCommand": "npm run mobile:one-event-onboarding:live-provider-runtime",
+      "proofCommand": "npm run mobile:live-odds-refresh-preflight",
+      "stopCommand": null,
+      "evidenceFiles": [
+        "scripts/onboard_holiwyn_one_event_live_runtime.ps1",
+        "scripts/run_holiwyn_one_event_live_runtime_with_secret.ps1"
+      ],
+      "currentLimitation": "Operator-triggered only; not an installed unattended provider polling service."
+    },
+    {
+      "id": "one-event-live-supervisor",
+      "area": "market maker and runtime supervisor",
+      "status": "ready",
+      "runtimeMode": "continuous-while-command-runs",
+      "spendsProviderQuota": false,
+      "quotaProtection": "Cached mode spends no provider quota. Provider proof is opt-in and capped by MaxProviderProofRuns.",
+      "startCommand": "npm run mobile:one-event-live-supervisor",
+      "proofCommand": "npm run mobile:one-event-live-supervisor:continuous-proof",
+      "stopCommand": "npm run mobile:one-event-live-supervisor:stop",
+      "evidenceFiles": [
+        "scripts/run_holiwyn_one_event_live_supervisor.ps1",
+        "scripts/manage_holiwyn_one_event_live_supervisor.ps1",
+        "src/server/services/runtimeServiceHeartbeat.ts",
+        "src/server/services/runtimeServiceRun.ts"
+      ],
+      "currentLimitation": "Continuous only while the local command/process is running; installed OS service remains missing."
+    },
+    {
+      "id": "one-event-result-poller",
+      "area": "result ingestion and settlement poller",
+      "status": "ready",
+      "runtimeMode": "continuous-while-command-runs",
+      "spendsProviderQuota": false,
+      "quotaProtection": "Replay/local result mode is quota-free; live result ingestion is opt-in and capped.",
+      "startCommand": "npm run mobile:one-event-result-poller",
+      "proofCommand": "npm run mobile:one-event-result-poller:continuous-proof",
+      "stopCommand": "npm run mobile:one-event-result-poller:stop",
+      "evidenceFiles": [
+        "scripts/run_holiwyn_one_event_result_poller.ps1",
+        "scripts/manage_holiwyn_one_event_result_poller.ps1"
+      ],
+      "currentLimitation": "Production official-result auto-settlement is not fully owned as an installed service."
+    },
+    {
+      "id": "one-event-maker-seed",
+      "area": "fake-token market maker liquidity",
+      "status": "ready",
+      "runtimeMode": "one-shot",
+      "spendsProviderQuota": false,
+      "quotaProtection": "Uses stored provider reference snapshots; does not call The Odds API.",
+      "startCommand": "npm run mobile:one-event-live-maker-seed",
+      "proofCommand": "npm run mobile:provider-maker-handoff",
+      "stopCommand": null,
+      "evidenceFiles": [
+        "scripts/seed_odds_api_live_shifted_maker.ts",
+        "scripts/report_holiwyn_provider_maker_handoff.ts"
+      ],
+      "currentLimitation": "Standalone command is one-shot; repeated reseeding requires the supervisor loop."
+    },
+    {
+      "id": "one-event-lifecycle",
+      "area": "event lifecycle open/suspend/close/settlement",
+      "status": "ready",
+      "runtimeMode": "one-shot",
+      "spendsProviderQuota": false,
+      "quotaProtection": "Lifecycle scheduler does not call the odds provider.",
+      "startCommand": "npm run mobile:one-event-lifecycle-scheduler-run",
+      "proofCommand": "npm run mobile:one-event-lifecycle-matrix",
+      "stopCommand": null,
+      "evidenceFiles": [
+        "scripts/run_odds_api_one_event_lifecycle_scheduler.ts",
+        "scripts/report_odds_api_one_event_lifecycle_matrix.ts"
+      ],
+      "currentLimitation": "Scheduler can be repeated by the supervisor, but installed unattended ownership remains P1."
+    }
+  ],
+  "conclusion": "Local runtime has quota-free cached onboarding, operator-triggered live-provider onboarding, continuous-while-command-runs supervisor/result-poller loops, one-shot maker/lifecycle commands, and no installed unattended service ownership yet."
+}

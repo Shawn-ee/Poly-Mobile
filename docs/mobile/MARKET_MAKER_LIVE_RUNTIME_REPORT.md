@@ -4,6 +4,16 @@
 
 The Local MVP has deterministic one-shot maker liquidity. A true production daemon is not yet established inside this repo.
 
+## Cycle ZCF - Machine-Readable Runtime Capability
+
+`npm run mobile:runtime-capability-matrix` confirms the current maker split:
+
+- `npm run mobile:one-event-live-maker-seed` is one-shot fake-token liquidity seeding from stored provider snapshots.
+- `npm run mobile:one-event-live-supervisor` can keep reseeding while the supervisor process runs.
+- Cached supervisor mode does not spend provider quota.
+- Provider proof inside the supervisor is opt-in and capped by `MaxProviderProofRuns`.
+- The remaining gap is not maker logic itself; it is installed unattended service ownership.
+
 ## Existing Modes
 
 | Mode | Status | Notes |

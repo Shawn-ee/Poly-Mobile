@@ -17,6 +17,7 @@
 
 | Need to prove | Command | Provider quota | Active event mutation |
 | --- | --- | --- | --- |
+| Runtime capability truth | `npm run mobile:runtime-capability-matrix` | No | No |
 | Current lifecycle matrix | `npm run mobile:one-event-lifecycle-matrix` | No | No |
 | Canonical result ingestion evidence | `npm run mobile:one-event-result-ingestion-audit-event-proof` | No | No settlement execution |
 | Canonical settlement preflight evidence | `npm run mobile:one-event-settlement-audit-event-proof` | No | No settlement execution |

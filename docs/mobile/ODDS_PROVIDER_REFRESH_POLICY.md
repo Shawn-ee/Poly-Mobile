@@ -9,6 +9,7 @@ Temporary Local MVP provider: The Odds API. This policy is for fake-token local 
 - Refresh exactly one event unless the owner explicitly approves a broader scan.
 - Prefer replay fixtures for ordinary readiness checks.
 - Use live Odds API calls only for a live-runtime proof or a manually approved refresh.
+- `npm run mobile:runtime-capability-matrix` is quota-free and records whether each runtime surface is one-shot, continuous while a local command runs, operator-triggered, or still missing installed-service ownership.
 - `npm run mobile:one-event-live-runtime` is a cached runtime check and does not spend provider quota.
 - `npm run mobile:one-event-live-runtime -- -SeedMaker` seeds local fake-token maker liquidity from stored provider snapshots and does not spend provider quota.
 - `npm run mobile:one-event-onboarding` is the default one-command local onboarding path. It uses quota-free replay only when the replay fixture is not older than the current live-runtime target; otherwise it skips replay, restores the latest cached live-runtime event from `one-event-live-runtime-summary.redacted.json`, runs readiness/runtime/settlement checks, and does not spend provider quota.

@@ -6,6 +6,20 @@ Generated for the Backend Live Runtime Survey + One Event Live Pipeline goal.
 
 The current Local MVP is backend-owned and fake-token only. It has proven one sportsbook event with Odds API replay data, route visibility, order placement, Portfolio, cashout/sell, and History. That proof is not the same as a continuous live provider/runtime.
 
+## Cycle ZCF - Runtime Capability Matrix
+
+`npm run mobile:runtime-capability-matrix` now writes `docs/mobile/harness/odds-api-live-runtime/runtime-capability-matrix.redacted.json` without calling any provider.
+
+Current machine-readable truth:
+
+- Cached one-event onboarding is ready and quota-free.
+- Live-provider onboarding is operator-triggered, one-event scoped, and quota-capped.
+- The live supervisor can run continuously while its local process is running.
+- The result poller can run continuously while its local process is running.
+- Maker liquidity seeding is one-shot by itself, and becomes repeated only through the supervisor loop.
+- Lifecycle scheduling is one-shot by itself, and becomes repeated only through the supervisor loop.
+- Installed unattended service ownership is still missing and remains P1.
+
 ## Existing Pieces
 
 | Area | Existing implementation | Current runtime status |
