@@ -5606,3 +5606,11 @@ Notes:
 | Mobile/internal feature | API endpoint used | Method | Auth requirement | Request body | Response fields consumed by mobile/tooling | Database tables/models implied | Mock fallback behavior | Missing backend support |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Live-runtime completion audit runtime-launch gate | None. Local command `mobile:live-runtime-completion-audit` reads local proof artifacts. | Local read-only command | None; no provider key and no mobile auth | Optional summary path only | `checks.runtimeCapabilityMatrixKnown`, `completionRequirements.runtimeLaunch.pass`, runtime capability matrix evidence path, P0/P1/P2 gaps | None | None | Production service ownership and production official-result automation remain P1 |
+# Cycle ZCK - Provider Catalog Identity (2026-07-17)
+
+| Mobile/runtime feature | Backend function or route | Contract | Persistence | Current limitation |
+| --- | --- | --- | --- | --- |
+| Provider event catalog import | `seedOddsApiCatalogEvent`; `seed_the_odds_api_single_event.ts --catalogIdentity` | Identity is `providerSource + sportKey + externalEventId`; reruns reuse the same provider event and fail closed on a conflicting slug. | `Event.source`, `Event.externalEventId`, `Event.slug`, `Event.metadata`; existing `Market` and `Outcome` provider identities remain unchanged. | Live refresh/maker/lifecycle commands still default to the legacy one-event slug until an allowlist cycle updates them. |
+| Home event discovery | `GET /api/events?includeMobileMarkets=1&mobileMvpMatches=1&sportKey=soccer` | Catalog events remain ordinary backend events; mobile consumes backend IDs/slugs and never provider secrets. | `Event`, listed `Market`, active `Outcome`, reference quote snapshots. | Only one current event is proven in the active database. |
+
+Catalog import does not add a new public API route and does not call the provider in replay mode. The current single-event aliases remain compatible while catalog identity rolls out.

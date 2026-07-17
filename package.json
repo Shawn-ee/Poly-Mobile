@@ -122,6 +122,8 @@
     "mobile:provider-line-breadth-scan": "tsx scripts/prove_mobile_provider_line_breadth_scan.ts --summaryPath=docs/mobile/harness/cycle-current-mobile-provider-line-breadth-scan.json",
     "mobile:the-odds-api-single-event": "tsx scripts/seed_the_odds_api_single_event.ts",
     "mobile:the-odds-api-single-event:replay": "tsx scripts/seed_the_odds_api_single_event.ts --fromRedactedOdds=docs/mobile/harness/the-odds-api-single-event/event-odds.redacted.json",
+    "mobile:the-odds-api-catalog-event": "tsx scripts/seed_the_odds_api_single_event.ts --catalogIdentity",
+    "mobile:the-odds-api-catalog-event:replay": "tsx scripts/seed_the_odds_api_single_event.ts --catalogIdentity --allowHistoricalCatalog --fromRedactedOdds=docs/mobile/harness/the-odds-api-single-event/event-odds.redacted.json",
     "mobile:the-odds-api-single-event-flow": "tsx scripts/prove_mobile_the_odds_api_single_event_flow.ts",
     "mobile:odds-api-internal-env-proof": "tsx scripts/prove_mobile_odds_api_internal_environment.ts",
     "mobile:odds-api-live-runtime-proof": "tsx scripts/prove_odds_api_one_event_live_runtime.ts",

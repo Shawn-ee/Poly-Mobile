@@ -2,6 +2,8 @@ import { readFileSync } from "node:fs";
 import {
   availableMarketKeysFromResponse,
   normalizeOddsApiEvent,
+  oddsApiCatalogEventLifecycle,
+  oddsApiCatalogEventSlug,
   quotaCost,
   sanitizeOddsApiPath,
   expandLineMarketsByPoint,
@@ -60,6 +62,64 @@ describe("The Odds API single-event temporary provider", () => {
   it("redacts apiKey from recorded request paths", () => {
     const url = new URL("https://api.the-odds-api.com/v4/sports/soccer_epl/events?id=1&apiKey=secret");
     expect(sanitizeOddsApiPath(url)).toBe("/v4/sports/soccer_epl/events?id=1");
+  });
+
+  it("uses provider-stable identities for catalog imports without team-name coupling", () => {
+    const original = {
+      id: "provider-event-123",
+      sport_key: "soccer_fifa_world_cup",
+    };
+    const renamedTeams = {
+      ...original,
+      home_team: "Updated Home Team",
+      away_team: "Updated Away Team",
+    };
+    const otherEvent = {
+      ...original,
+      id: "provider-event-456",
+    };
+
+    expect(oddsApiCatalogEventSlug(original)).toBe(oddsApiCatalogEventSlug(renamedTeams));
+    expect(oddsApiCatalogEventSlug(original)).not.toBe(oddsApiCatalogEventSlug(otherEvent));
+    expect(oddsApiCatalogEventSlug(original)).toMatch(/^odds-api-event-[a-f0-9]{20}$/);
+  });
+
+  it("archives historical catalog replay without exposing stale trading", () => {
+    const now = new Date("2026-07-17T12:00:00Z");
+    const historical = oddsApiCatalogEventLifecycle({ commence_time: "2026-07-12T01:00:00Z" }, now);
+    const upcoming = oddsApiCatalogEventLifecycle({ commence_time: "2026-07-17T22:30:00Z" }, now);
+
+    expect(historical).toEqual({
+      historical: true,
+      eventStatus: "closed",
+      liveStatus: null,
+      marketStatus: "CLOSED",
+      isListed: false,
+      acceptingOrders: false,
+    });
+    expect(upcoming).toEqual({
+      historical: false,
+      eventStatus: "active",
+      liveStatus: "LIVE",
+      marketStatus: "LIVE",
+      isListed: true,
+      acceptingOrders: true,
+    });
+  });
+
+  it("exposes a catalog import path that reuses provider identity and rejects slug collisions", () => {
+    const pkg = packageJson();
+    const source = service();
+    const importer = script();
+
+    expect(pkg).toContain("mobile:the-odds-api-catalog-event");
+    expect(pkg).toContain("mobile:the-odds-api-catalog-event:replay");
+    expect(importer).toContain("catalogIdentity");
+    expect(importer).toContain("seedOddsApiCatalogEvent");
+    expect(source).toContain("preserveProviderEventIdentity");
+    expect(source).toContain("source: PROVIDER_SOURCE");
+    expect(source).toContain("externalEventId: params.oddsEvent.id");
+    expect(source).toContain("Provider event slug collision");
   });
 
   it("seeds S23 route counterparty liquidity against active tradable outcomes only", () => {
