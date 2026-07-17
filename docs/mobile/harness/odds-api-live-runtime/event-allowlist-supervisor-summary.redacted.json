@@ -1,0 +1,89 @@
+{
+    "generatedAt":  "2026-07-17T10:02:03.2648051Z",
+    "scope":  "holiwyn-event-allowlist-supervisor",
+    "pass":  true,
+    "startedAt":  "2026-07-17T10:01:45.7221278Z",
+    "completedAt":  "2026-07-17T10:02:03.2658054Z",
+    "policy":  {
+                   "mode":  "bounded-sequential-local",
+                   "fakeTokenOnly":  true,
+                   "providerRefreshEnabled":  false,
+                   "providerQuotaUsed":  false,
+                   "maxEvents":  3,
+                   "maxIterationsPerEvent":  1,
+                   "eventEvidenceIsolated":  true,
+                   "archivedEventsSkipped":  true,
+                   "leavesExpoRunning":  false,
+                   "leavesChildSupervisorsRunning":  false
+               },
+    "allowlist":  {
+                      "summaryPath":  "docs/mobile/harness/the-odds-api-event-catalog/runtime-allowlist-summary.redacted.json",
+                      "providerEventCount":  3,
+                      "selectedRuntimeOwnerCount":  1,
+                      "archivedEventCount":  2
+                  },
+    "runs":  [
+                 {
+                     "eventSlug":  "odds-api-single-soccer-test",
+                     "title":  "Chapecoense vs. Bahia",
+                     "pass":  true,
+                     "executed":  true,
+                     "exitCode":  0,
+                     "startedAt":  "2026-07-17T10:01:45.7301328Z",
+                     "completedAt":  "2026-07-17T10:02:03.2102687Z",
+                     "proofPath":  "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
+                     "artifactDir":  ".runtime/holiwyn-event-allowlist-supervisor/odds-api-single-soccer-test",
+                     "childSummaryPath":  ".runtime/holiwyn-event-allowlist-supervisor/odds-api-single-soccer-test/one-event-live-supervisor-summary.redacted.json",
+                     "child":  {
+                                   "selectedEventSlug":  "odds-api-single-soccer-test",
+                                   "completedIterations":  1,
+                                   "makerSeeded":  true,
+                                   "lifecycleSchedulerEnabled":  true,
+                                   "providerProofRunsCompleted":  0,
+                                   "providerQuotaUsed":  false,
+                                   "gaps":  {
+                                                "p0":  [
+
+                                                       ],
+                                                "p1":  [
+                                                           "supervisor is a local command, not an installed unattended service",
+                                                           "provider-shaped replay ingestion and quota-capped live result ingestion are available in the local supervisor, but installed unattended official-result polling and unconfirmed execution are not complete"
+                                                       ],
+                                                "p2":  [
+                                                           "multi-event provider polling and inventory-aware multi-market quoting remain future work"
+                                                       ]
+                                            }
+                               }
+                 }
+             ],
+    "skipped":  [
+                    {
+                        "eventSlug":  "odds-api-event-80f5351f8fe881cc6e09",
+                        "title":  "Switzerland vs. Argentina",
+                        "archived":  true,
+                        "allowlisted":  false,
+                        "runtimeEligible":  false,
+                        "reason":  "archived_catalog_record"
+                    },
+                    {
+                        "eventSlug":  "odds-api-event-ce6034d6b0da4ae5fe13",
+                        "title":  "Spain vs. France",
+                        "archived":  true,
+                        "allowlisted":  false,
+                        "runtimeEligible":  false,
+                        "reason":  "archived_catalog_record"
+                    }
+                ],
+    "gaps":  {
+                 "p0":  [
+
+                        ],
+                 "p1":  [
+                            "The bounded supervisor is sequential and foreground-only; installed unattended ownership remains incomplete.",
+                            "Concurrent multi-event workers need event-scoped durable heartbeat/service names before they are safe."
+                        ],
+                 "p2":  [
+                            "A future operator UI may display and control the allowlist supervisor."
+                        ]
+             }
+}

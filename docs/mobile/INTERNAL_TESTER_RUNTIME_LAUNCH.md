@@ -1,6 +1,6 @@
 # Holiwyn Internal Tester Runtime Launch
 
-Last verified: 2026-07-17, Cycle ZCL event runtime allowlist
+Last verified: 2026-07-17, Cycle ZCN bounded event runtime allowlist
 
 ## Verdict
 
@@ -31,7 +31,13 @@ Verify provider-event ownership without spending quota:
 npm run mobile:event-runtime-allowlist
 ```
 
-The current report allowlists only `odds-api-single-soccer-test`. Archived catalog events have no worker commands and cannot be certified by the active event's cached proof.
+Run all currently allowlisted owners once, sequentially and without provider quota:
+
+```text
+npm run mobile:event-allowlist-supervisor:proof
+```
+
+The current report allowlists only `odds-api-single-soccer-test`. The bounded command runs that owner and reports both archived catalog events as skipped. Archived events have no worker commands and cannot be certified by the active event's cached proof.
 
 Full local runtime manager path:
 
@@ -85,5 +91,5 @@ The live odds command reads the key from the process environment or ignored `.ru
 - P0: none for cached local internal testing.
 - P1: installed unattended provider/maker/lifecycle service ownership.
 - P1: production official-result auto-settlement. Active-event execution remains guarded by `CLOSED` market status and exact confirmation.
-- P1: multi-event runtime fan-out. Provider-stable catalog identity and an explicit no-quota allowlist exist, while each supervisor process still owns one selected event.
+- P1: installed/concurrent multi-event runtime ownership. Bounded sequential fan-out exists, but only one current event is available and the command is foreground-only.
 - P2: production operator dashboard.
