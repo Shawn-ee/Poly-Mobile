@@ -1,0 +1,110 @@
+{
+  "generatedAt": "2026-07-17T09:40:55.583Z",
+  "scope": "holiwyn-event-runtime-allowlist",
+  "pass": true,
+  "policy": {
+    "providerSource": "the-odds-api",
+    "fakeTokenOnly": true,
+    "providerApiCalls": 0,
+    "providerQuotaUsed": false,
+    "explicitWorkerEventSelection": true,
+    "archivedCatalogEventsOwnNoRuntimeWorkers": true,
+    "liveProviderRefreshRemainsOperatorTriggered": true
+  },
+  "counts": {
+    "providerEvents": 2,
+    "runtimeEligibleEvents": 1,
+    "allowlistedRuntimeOwners": 1,
+    "archivedEvents": 1
+  },
+  "requestedSlugs": [
+    "odds-api-single-soccer-test"
+  ],
+  "entries": [
+    {
+      "id": "b1c11d40-08df-4359-a603-481980a59440",
+      "slug": "odds-api-event-80f5351f8fe881cc6e09",
+      "title": "Switzerland vs. Argentina",
+      "source": "the-odds-api",
+      "externalEventId": "200d9cd5eda092c7eb778cc104cd2fd2",
+      "status": "closed",
+      "liveStatus": null,
+      "startTime": "2026-07-12T01:00:00.000Z",
+      "identityComplete": true,
+      "archived": true,
+      "archiveFailsClosed": true,
+      "allowlisted": false,
+      "runtimeEligible": false,
+      "readiness": {
+        "providerMarketCount": 26,
+        "listedMarketCount": 0,
+        "acceptingSnapshotCount": 0,
+        "openOrderCount": 0,
+        "latestSnapshotAt": "2026-07-17T09:22:03.889Z"
+      },
+      "ownership": {
+        "providerRefresh": "disabled",
+        "marketMaker": "disabled",
+        "staleGuard": "disabled",
+        "lifecycleScheduler": "disabled",
+        "resultPoller": "disabled"
+      },
+      "commands": null
+    },
+    {
+      "id": "bdd748d4-8784-459d-a612-a54903892c89",
+      "slug": "odds-api-single-soccer-test",
+      "title": "Chapecoense vs. Bahia",
+      "source": "the-odds-api",
+      "externalEventId": "e64cfcc03ee00f71d21b9c99e9c37d2d",
+      "status": "active",
+      "liveStatus": "LIVE",
+      "startTime": "2026-07-17T22:30:00.000Z",
+      "identityComplete": true,
+      "archived": false,
+      "archiveFailsClosed": true,
+      "allowlisted": true,
+      "runtimeEligible": true,
+      "readiness": {
+        "providerMarketCount": 26,
+        "listedMarketCount": 20,
+        "acceptingSnapshotCount": 72,
+        "openOrderCount": 4,
+        "latestSnapshotAt": "2026-07-17T07:32:28.295Z"
+      },
+      "ownership": {
+        "providerRefresh": "operator-triggered",
+        "marketMaker": "supervisor-loop",
+        "staleGuard": "supervisor-loop",
+        "lifecycleScheduler": "supervisor-loop",
+        "resultPoller": "supervisor-loop"
+      },
+      "commands": {
+        "cachedRuntimeCheck": "npm run mobile:one-event-live-runtime -- -EventSlug odds-api-single-soccer-test",
+        "makerSeed": "npm run mobile:one-event-live-maker-seed -- --eventSlug=odds-api-single-soccer-test",
+        "supervisor": "npm run mobile:one-event-live-supervisor -- -EventSlug odds-api-single-soccer-test -RuntimeArtifactDir docs/mobile/harness/odds-api-live-runtime/events/odds-api-single-soccer-test",
+        "staleGuard": "npm run mobile:one-event-stale-guard-run -- --eventSlug=odds-api-single-soccer-test --dryRun",
+        "lifecycle": "npm run mobile:one-event-lifecycle-scheduler-run -- --eventSlug=odds-api-single-soccer-test --dryRun"
+      }
+    }
+  ],
+  "checks": {
+    "providerCatalogHasMultipleEvents": true,
+    "providerIdentitiesComplete": true,
+    "providerSlugsUnique": true,
+    "providerIdentitiesUnique": true,
+    "requestedSlugsExist": true,
+    "allowlistHasRuntimeOwner": true,
+    "allAllowlistedEventsRuntimeEligible": true,
+    "archivedEventsFailClosed": true
+  },
+  "gaps": {
+    "p0": [],
+    "p1": [
+      "RC1 still needs at least three provider-shaped event records."
+    ],
+    "p2": [
+      "A future operator UI may edit the runtime allowlist; the current contract is CLI/report based."
+    ]
+  }
+}

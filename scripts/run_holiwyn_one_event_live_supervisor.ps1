@@ -1,5 +1,6 @@
 param(
   [int]$BackendPort = 3002,
+  [string]$EventSlug = "odds-api-single-soccer-test",
   [string]$SummaryPath = "docs\mobile\harness\odds-api-live-runtime\one-event-live-supervisor-summary.redacted.json",
   [string]$HeartbeatPath = "docs\mobile\harness\odds-api-live-runtime\one-event-live-supervisor-heartbeat.redacted.json",
   [int]$MaxIterations = 2,
@@ -32,6 +33,10 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+
+if ([string]::IsNullOrWhiteSpace($EventSlug)) {
+  throw "EventSlug is required."
+}
 
 if ($Continuous -and $MaxIterations -gt 0) {
   throw "Use either -Continuous or -MaxIterations, not both. Pass -MaxIterations 0 with -Continuous for an open-ended local loop."
@@ -131,6 +136,7 @@ function Write-Heartbeat {
       continuous = [bool]$Continuous
       maxIterations = $MaxIterations
       intervalSeconds = $IntervalSeconds
+      eventSlug = $EventSlug
       runProviderProof = [bool]$RunProviderProof
       providerProofRunsCompleted = $providerProofRunCount
       providerProofEveryIterations = if ($RunProviderProof) { $ProviderProofEveryIterations } else { 0 }
@@ -370,7 +376,7 @@ try {
     $dataHygieneSummary = $null
     if (-not $SkipDataHygiene) {
       $dataHygieneSummaryPathRaw = Join-ArtifactPath "one-event-data-hygiene-summary.redacted.json"
-      $dataHygieneResult = Invoke-CheckedCommand -Label "cycle-$iteration-data-hygiene" -Command "npm run mobile:one-event-data-hygiene-proof -- --summaryPath=$dataHygieneSummaryPathRaw"
+      $dataHygieneResult = Invoke-CheckedCommand -Label "cycle-$iteration-data-hygiene" -Command "npm run mobile:one-event-data-hygiene-proof -- --eventSlug=$EventSlug --summaryPath=$dataHygieneSummaryPathRaw"
       $dataHygieneSummaryPath = Resolve-RepoPath $dataHygieneSummaryPathRaw
       $dataHygieneSummary = Read-JsonFile $dataHygieneSummaryPath
       if (-not $dataHygieneResult.pass -or -not ($dataHygieneSummary -and $dataHygieneSummary.pass -eq $true)) {
@@ -390,7 +396,7 @@ try {
 
     $runtimeSummaryPathRaw = Join-ArtifactPath "one-event-runtime-launch-summary.redacted.json"
     $makerSeedSummaryPathRaw = Join-ArtifactPath "shifted-maker-seed-summary.redacted.json"
-    $command = "npm run mobile:one-event-live-runtime -- -BackendPort $BackendPort -SummaryPath $runtimeSummaryPathRaw -MakerSeedSummaryPath $makerSeedSummaryPathRaw"
+    $command = "npm run mobile:one-event-live-runtime -- -BackendPort $BackendPort -EventSlug $EventSlug -SummaryPath $runtimeSummaryPathRaw -MakerSeedSummaryPath $makerSeedSummaryPathRaw"
     if ($RestartBackend -and $iteration -eq 1) {
       $command += " -RestartBackend"
     }
@@ -420,7 +426,7 @@ try {
     $staleGuardSummary = $null
     if ($RunStaleGuard) {
       $staleGuardSummaryPathRaw = Join-ArtifactPath "one-event-stale-guard-run-summary.redacted.json"
-      $staleGuardCommand = "npm run mobile:one-event-stale-guard-run -- --summaryPath=$staleGuardSummaryPathRaw"
+      $staleGuardCommand = "npm run mobile:one-event-stale-guard-run -- --eventSlug=$EventSlug --summaryPath=$staleGuardSummaryPathRaw"
       if (-not $EnforceStaleGuard) {
         $staleGuardCommand += " --dryRun"
       }
@@ -438,7 +444,7 @@ try {
         ($liveResultIngestionRunCount -lt $MaxLiveResultIngestionRuns)
       )
       $resultIngestionSummaryPathRaw = Join-ArtifactPath "one-event-result-ingestion-summary.redacted.json"
-      $resultIngestionCommand = "npm run mobile:one-event-result-ingest -- --summaryPath=$resultIngestionSummaryPathRaw"
+      $resultIngestionCommand = "npm run mobile:one-event-result-ingest -- --eventSlug=$EventSlug --summaryPath=$resultIngestionSummaryPathRaw"
       if ($runLiveResultThisCycle) {
         $resultIngestionCommand += " -- --live --maxCredits=$MaxCreditsPerResultIngestion --minRemaining=$MinRemaining"
         $liveResultIngestionRunCount += 1
@@ -454,6 +460,7 @@ try {
       $resultSettlementInnerSummaryPathRaw = Join-ArtifactPath "one-event-result-settlement-summary.redacted.json"
       $resultSettlementCommand = "npm run mobile:one-event-result-settlement-run"
       $resultSettlementArgs = New-Object System.Collections.Generic.List[string]
+      $resultSettlementArgs.Add("--eventSlug=$EventSlug") | Out-Null
       $resultSettlementArgs.Add("--summaryPath=$resultSettlementSummaryPathRaw") | Out-Null
       $resultSettlementArgs.Add("--settlementOutput=$resultSettlementInnerSummaryPathRaw") | Out-Null
       if ($RunResultIngestion -or $RunApprovedResultSettlement) {
@@ -475,7 +482,7 @@ try {
     $schedulerSummary = $null
     if (-not $SkipLifecycleScheduler) {
       $schedulerSummaryPathRaw = Join-ArtifactPath "one-event-lifecycle-scheduler-run-summary.redacted.json"
-      $schedulerResult = Invoke-CheckedCommand -Label "cycle-$iteration-lifecycle-scheduler" -Command "npm run mobile:one-event-lifecycle-scheduler-run -- --summaryPath=$schedulerSummaryPathRaw"
+      $schedulerResult = Invoke-CheckedCommand -Label "cycle-$iteration-lifecycle-scheduler" -Command "npm run mobile:one-event-lifecycle-scheduler-run -- --eventSlug=$EventSlug --summaryPath=$schedulerSummaryPathRaw"
       $schedulerSummaryPath = Resolve-RepoPath $schedulerSummaryPathRaw
       $schedulerSummary = Read-JsonFile $schedulerSummaryPath
     }
@@ -571,6 +578,7 @@ $summary = [ordered]@{
     continuous = [bool]$Continuous
     maxIterations = $MaxIterations
     completedIterations = $cycles.Count
+    eventSlug = $EventSlug
     intervalSeconds = $IntervalSeconds
     runProviderProof = [bool]$RunProviderProof
     providerProofRunsCompleted = $providerProofRunCount

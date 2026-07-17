@@ -1,6 +1,7 @@
 param(
   [int]$BackendPort = 3002,
   [string]$BackendBaseUrl = "",
+  [string]$EventSlug = "odds-api-single-soccer-test",
   [string]$SummaryPath = "docs\mobile\harness\odds-api-live-runtime\one-event-runtime-launch-summary.redacted.json",
   [string]$LiveProofSummaryPath = "docs\mobile\harness\odds-api-live-runtime\one-event-live-runtime-summary.redacted.json",
   [string]$MakerSeedSummaryPath = "docs\mobile\harness\odds-api-live-runtime\shifted-maker-seed-summary.redacted.json",
@@ -17,6 +18,10 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+
+if ([string]::IsNullOrWhiteSpace($EventSlug)) {
+  throw "EventSlug is required."
+}
 
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $ResolvedBackendBaseUrl = if ($BackendBaseUrl.Trim()) {
@@ -172,7 +177,8 @@ function Get-S23Status {
 function Get-ProofFreshness {
   param(
     [string]$Path,
-    [int]$MaxAgeHours
+    [int]$MaxAgeHours,
+    [string]$ExpectedEventSlug
   )
   $json = Read-JsonFile $Path
   if (-not $json) {
@@ -197,15 +203,20 @@ function Get-ProofFreshness {
       $fresh = $false
     }
   }
+  $proofEventSlug = [string]$json.event.localSlug
+  $eventMatchesSelected = [bool]($proofEventSlug -and $proofEventSlug -eq $ExpectedEventSlug)
   return [ordered]@{
     present = $true
-    pass = [bool]($json.pass -eq $true -or $json.result -eq "pass")
+    pass = [bool](($json.pass -eq $true -or $json.result -eq "pass") -and $eventMatchesSelected)
     fresh = $fresh
     reason = if ($fresh) { "fresh" } else { "stale_or_unparseable" }
     generatedAt = $generatedAt
     ageHours = $ageHours
     maxAgeHours = $MaxAgeHours
     summaryPath = ConvertTo-RepoPath $Path
+    expectedEventSlug = $ExpectedEventSlug
+    proofEventSlug = $proofEventSlug
+    eventMatchesSelected = $eventMatchesSelected
     event = $json.event
     selectedMarket = $json.selectedMarket
     marketMaker = $json.marketMaker
@@ -280,11 +291,11 @@ if (-not $RunProviderProof -and -not (Test-Path -LiteralPath $resolvedLiveProofS
     $resolvedLiveProofSummaryPath = $canonicalLiveProofSummaryPath
   }
 }
-$liveProof = Get-ProofFreshness -Path $resolvedLiveProofSummaryPath -MaxAgeHours $MaxProofAgeHours
+$liveProof = Get-ProofFreshness -Path $resolvedLiveProofSummaryPath -MaxAgeHours $MaxProofAgeHours -ExpectedEventSlug $EventSlug
 $makerSeed = $null
 if ($SeedMaker) {
   $makerSeedPath = $MakerSeedSummaryPath
-  cmd /c npm run mobile:one-event-live-maker-seed -- "--summaryPath=$makerSeedPath" | Out-Null
+  cmd /c npm run mobile:one-event-live-maker-seed -- "--eventSlug=$EventSlug" "--summaryPath=$makerSeedPath" | Out-Null
   if ($LASTEXITCODE -ne 0) {
     throw "Local shifted maker seeding failed."
   }
@@ -297,6 +308,7 @@ $listeners = @(Get-PortListeners @(3002, 8081, 8289))
 $summary = [ordered]@{
   generatedAt = (Get-Date).ToUniversalTime().ToString("o")
   scope = "holiwyn-one-event-live-runtime-launch"
+  selectedEventSlug = $EventSlug
   pass = [bool]($backendHealthAfter.ok -and $docker.ok -and $liveProof.present -and $liveProof.pass)
   backend = [ordered]@{
     baseUrl = $ResolvedBackendBaseUrl
@@ -354,8 +366,8 @@ $summary = [ordered]@{
   }
   listeners = $listeners
   commands = [ordered]@{
-    cachedCheck = "npm run mobile:one-event-live-runtime"
-    cachedCheckWithMaker = "npm run mobile:one-event-live-runtime -- -SeedMaker"
+    cachedCheck = "npm run mobile:one-event-live-runtime -- -EventSlug $EventSlug"
+    cachedCheckWithMaker = "npm run mobile:one-event-live-runtime -- -EventSlug $EventSlug -SeedMaker"
     liveProviderProof = "set THE_ODDS_API_KEY in the local process, then npm run mobile:one-event-live-runtime:provider"
     s23VisibleProof = "npm run mobile:the-odds-api-s23-visible-flow -- -SkipReplaySeed"
   }

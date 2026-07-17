@@ -16956,3 +16956,14 @@ Known limitations:
 - Proof isolation: catalog replay writes `docs/mobile/harness/the-odds-api-event-catalog/catalog-event-summary.redacted.json` and does not replace canonical active-event readiness artifacts.
 - Tests: root TypeScript and 45 focused provider contract tests pass without provider quota. No-quota catalog replay passes and the mobile event route still exposes only Chapecoense vs. Bahia.
 - Known limitation: the broader runtime still selects one legacy slug by default; multi-event allowlist execution is the next structural cycle.
+
+# Cycle ZCL - Multi-Event Runtime Allowlist (2026-07-17)
+
+- Feature/runtime worked on: explicit provider-event runtime ownership and per-event readiness reporting.
+- Frontend components touched: none. No mobile-visible UI or Android bundle changed.
+- Backend functions touched: added `buildHoliwynEventRuntimeAllowlist` in `src/server/services/holiwynEventRuntimeAllowlist.ts`.
+- Runtime functions touched: added `scripts/report_holiwyn_event_runtime_allowlist.ts`; added explicit `EventSlug` selection to the cached runtime launcher and supervisor; threaded the selection through hygiene, maker, stale guard, result ingestion, guarded settlement, and lifecycle scheduler children.
+- User/runtime behavior: operators can distinguish active runtime-owned events from archived catalog-only events. Cached proof for one event can no longer pass using a proof artifact for a different event.
+- State transitions: none in the allowlist report or cached launcher proof. The report reads `Event`, `Market`, `ReferenceQuoteSnapshot`, and open `Order` state. It made zero provider calls and placed no orders.
+- Proof: two provider events coexist. `Chapecoense vs. Bahia` is the only allowlisted runtime owner; archived `Switzerland vs. Argentina` has no listed markets, accepting snapshots, open orders, or worker ownership. The explicitly selected cached launcher passed for `odds-api-single-soccer-test`.
+- Known limitations: the allowlist is a CLI/report contract, not a durable database model or operator UI. RC1 still needs a third provider-shaped event and one command that supervises multiple active allowlisted events independently.
