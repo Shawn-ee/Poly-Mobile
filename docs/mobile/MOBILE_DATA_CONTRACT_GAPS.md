@@ -11173,3 +11173,20 @@ Future migration concern:
 - P0 for Internal Alpha RC1: current/upcoming Home and Event Detail breadth still lacks physical Android proof.
 - P1: the historical fixture preserves only the selected Total Goals 2.5 provider market because the old summary did not retain complete normalized odds for every market. This limitation is explicit and fail closed.
 - P1: bounded multi-event supervisor fan-out remains the next structural runtime step.
+
+# Cycle ZCN - Bounded Allowlist Supervisor Contract (2026-07-17)
+
+## Closed
+
+- One command now reads the provider-event allowlist and runs every selected runtime-eligible owner sequentially within explicit event and iteration caps.
+- Each event receives isolated summary/heartbeat paths and must provide cached provider proof matching its own event slug.
+- Archived events are reported and skipped; they cannot inherit a live worker, maker run, lifecycle run, or another event's proof.
+- The bounded proof executes no provider refresh and records `providerQuotaUsed=false`.
+
+## Open
+
+- P0 for Internal Alpha RC1: only one current/upcoming event exists, so the command has not yet proven two or three active event children or physical Home/Event Detail breadth.
+- P1: the supervisor is foreground and sequential. Installed unattended ownership remains incomplete.
+- P1: safe concurrent workers require event-scoped durable service/heartbeat names and collision-free manager state.
+- P1: the allowlist is derived from readiness plus CLI selection rather than a durable audited enable/disable record.
+- P2: a future operator UI may display or manage allowlist ownership after the runtime contract stabilizes.

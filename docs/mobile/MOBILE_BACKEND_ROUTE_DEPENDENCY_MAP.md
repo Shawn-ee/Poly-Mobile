@@ -5626,3 +5626,11 @@ Notes:
 | Home event discovery | `GET /api/events?includeMobileMarkets=1&mobileMvpMatches=1&sportKey=soccer` | Catalog events remain ordinary backend events; mobile consumes backend IDs/slugs and never provider secrets. | `Event`, listed `Market`, active `Outcome`, reference quote snapshots. | Only one current event is proven in the active database. |
 
 Catalog import does not add a new public API route and does not call the provider in replay mode. The current single-event aliases remain compatible while catalog identity rolls out.
+
+## Cycle ZCN - Bounded Allowlist Supervisor
+
+| Mobile/runtime feature | Backend function or route | Contract | Persistence | Current limitation |
+| --- | --- | --- | --- | --- |
+| Bounded provider-event runtime supervision | Local command `mobile:event-allowlist-supervisor`; child `mobile:one-event-live-supervisor`; event inventory from `mobile:event-runtime-allowlist` | Selects only entries with `allowlisted=true` and `runtimeEligible=true`; caps selection and iterations at three; requires an event-matching cached provider proof; never enables provider refresh | Reads existing `Event`, `Market`, `ReferenceQuoteSnapshot`, and `Order` state through the allowlist report. Runtime child evidence is isolated under `.runtime/holiwyn-event-allowlist-supervisor/<eventSlug>`; one concise parent summary is committed. No schema or HTTP route change. | Only one current/upcoming allowlisted event exists. The supervisor is sequential and foreground-only; installed or concurrent worker ownership remains P1. |
+
+The bounded proof runs the active event's maker and lifecycle checks, spends zero provider quota, and explicitly reports archived catalog records without assigning them workers.

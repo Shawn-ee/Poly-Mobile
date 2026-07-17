@@ -16978,3 +16978,13 @@ Known limitations:
 - State transitions: historical provider evidence -> stable catalog Event -> one provider-derived Total Goals 2.5 market plus closed normalization fixtures -> all markets closed/unlisted -> no open orders or accepting snapshots.
 - Data truth: the provider market midpoint is exactly derived from committed bid `0.4735` and ask `0.5135`; no additional sportsbook market is invented. Supplemental Holiwyn contracts are counted separately.
 - Known limitations: only one of the three provider events is current/upcoming. RC1 still requires three current/upcoming events, bounded provider quota, and physical Home/Event Detail proof for that breadth.
+
+# Cycle ZCN - Bounded Allowlist Supervisor (2026-07-17)
+
+- Feature/runtime worked on: one-command, no-quota supervision of the current provider-event allowlist.
+- Frontend components touched: none. No mobile UI, Expo bundle, order book, chat, or live-stat surface changed.
+- Runtime functions touched: added `scripts/run_holiwyn_event_allowlist_supervisor.ps1`; added event-specific cached proof selection to `scripts/run_holiwyn_one_event_live_supervisor.ps1`; added package commands for normal and bounded proof runs.
+- User/runtime behavior: an operator can run every allowlisted, runtime-eligible event sequentially with isolated summaries and heartbeats. Archived events are reported as skipped and cannot inherit the active event's provider proof.
+- State transitions: the selected active event completed one maker-seed and lifecycle iteration. No provider refresh ran, no provider quota was used, and archived events remained closed and workerless.
+- Proof: `Chapecoense vs. Bahia` passed one bounded child run; archived `Switzerland vs. Argentina` and `Spain vs. France` were skipped with `archived_catalog_record`. Child artifacts remain under `.runtime`; the concise parent summary is committed.
+- Known limitations: only one current/upcoming event exists, so multiple active child runs are not yet demonstrable. The command is foreground and sequential; installed unattended ownership and safe concurrent workers remain P1.

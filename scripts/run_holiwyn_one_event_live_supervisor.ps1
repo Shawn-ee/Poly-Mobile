@@ -1,6 +1,7 @@
 param(
   [int]$BackendPort = 3002,
   [string]$EventSlug = "odds-api-single-soccer-test",
+  [string]$LiveProofSummaryPath = "",
   [string]$SummaryPath = "docs\mobile\harness\odds-api-live-runtime\one-event-live-supervisor-summary.redacted.json",
   [string]$HeartbeatPath = "docs\mobile\harness\odds-api-live-runtime\one-event-live-supervisor-heartbeat.redacted.json",
   [int]$MaxIterations = 2,
@@ -137,6 +138,7 @@ function Write-Heartbeat {
       maxIterations = $MaxIterations
       intervalSeconds = $IntervalSeconds
       eventSlug = $EventSlug
+      liveProofSummaryPath = if ($LiveProofSummaryPath) { ConvertTo-RepoPath $LiveProofSummaryPath } else { $null }
       runProviderProof = [bool]$RunProviderProof
       providerProofRunsCompleted = $providerProofRunCount
       providerProofEveryIterations = if ($RunProviderProof) { $ProviderProofEveryIterations } else { 0 }
@@ -409,6 +411,8 @@ try {
       $liveProofSummaryPathRaw = Join-ArtifactPath "one-event-live-runtime-summary.redacted.json"
       $command += " -RunProviderProof -LiveProofSummaryPath $liveProofSummaryPathRaw -RefreshIterations $RefreshIterations -MaxCredits $MaxCreditsPerProviderProof -MinRemaining $MinRemaining"
       $providerProofRunCount += 1
+    } elseif (-not [string]::IsNullOrWhiteSpace($LiveProofSummaryPath)) {
+      $command += " -LiveProofSummaryPath $LiveProofSummaryPath"
     }
     if (-not $SkipMakerSeed) {
       $command += " -SeedMaker"
@@ -579,6 +583,7 @@ $summary = [ordered]@{
     maxIterations = $MaxIterations
     completedIterations = $cycles.Count
     eventSlug = $EventSlug
+    liveProofSummaryPath = if ($LiveProofSummaryPath) { ConvertTo-RepoPath $LiveProofSummaryPath } else { $null }
     intervalSeconds = $IntervalSeconds
     runProviderProof = [bool]$RunProviderProof
     providerProofRunsCompleted = $providerProofRunCount

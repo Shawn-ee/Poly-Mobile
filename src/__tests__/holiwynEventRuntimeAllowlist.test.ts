@@ -127,4 +127,23 @@ describe("Holiwyn event runtime allowlist", () => {
       ),
     ).toBeCloseTo(1, 8);
   });
+
+  it("bounds allowlist fan-out, isolates evidence, and never enables provider refresh", () => {
+    const packageJson = readFileSync("package.json", "utf8");
+    const fanout = readFileSync("scripts/run_holiwyn_event_allowlist_supervisor.ps1", "utf8");
+    const child = readFileSync("scripts/run_holiwyn_one_event_live_supervisor.ps1", "utf8");
+
+    expect(packageJson).toContain("mobile:event-allowlist-supervisor:proof");
+    expect(fanout).toContain("MaxEvents must be between 1 and 3");
+    expect(fanout).toContain("$_.allowlisted -eq $true -and $_.runtimeEligible -eq $true");
+    expect(fanout).toContain("archived_catalog_record");
+    expect(fanout).toContain("matching_cached_provider_proof_missing");
+    expect(fanout).toContain('mode = "bounded-sequential-local"');
+    expect(fanout).toContain("providerRefreshEnabled = $false");
+    expect(fanout).toContain("providerQuotaUsed = $false");
+    expect(fanout).toContain("leavesChildSupervisorsRunning = $false");
+    expect(fanout).not.toContain("RunProviderProof");
+    expect(child).toContain('[string]$LiveProofSummaryPath = ""');
+    expect(child).toContain('elseif (-not [string]::IsNullOrWhiteSpace($LiveProofSummaryPath))');
+  });
 });
