@@ -16967,3 +16967,14 @@ Known limitations:
 - State transitions: none in the allowlist report or cached launcher proof. The report reads `Event`, `Market`, `ReferenceQuoteSnapshot`, and open `Order` state. It made zero provider calls and placed no orders.
 - Proof: two provider events coexist. `Chapecoense vs. Bahia` is the only allowlisted runtime owner; archived `Switzerland vs. Argentina` has no listed markets, accepting snapshots, open orders, or worker ownership. The explicitly selected cached launcher passed for `odds-api-single-soccer-test`.
 - Known limitations: the allowlist is a CLI/report contract, not a durable database model or operator UI. RC1 still needs a third provider-shaped event and one command that supervises multiple active allowlisted events independently.
+
+# Cycle ZCM - Third Provider Catalog Event (2026-07-17)
+
+- Feature/runtime worked on: no-quota three-event provider catalog storage using committed historical provider evidence.
+- Frontend components touched: none. No Home/Event Detail rendering code changed.
+- Backend functions touched: existing `seedOddsApiCatalogEvent` historical replay path; allowlist reporting now separates sportsbook markets from Holiwyn contract fixtures.
+- Runtime/import functions touched: added `mobile:the-odds-api-catalog-event:spain-france-replay` and a redacted Spain vs. France selected-market fixture derived from immutable commit `887383f0`.
+- User/runtime behavior: the backend can retain three real provider identities without replacing the current event. Historical Spain vs. France remains closed, unlisted, non-accepting, absent from Home, and owns no runtime worker.
+- State transitions: historical provider evidence -> stable catalog Event -> one provider-derived Total Goals 2.5 market plus closed normalization fixtures -> all markets closed/unlisted -> no open orders or accepting snapshots.
+- Data truth: the provider market midpoint is exactly derived from committed bid `0.4735` and ask `0.5135`; no additional sportsbook market is invented. Supplemental Holiwyn contracts are counted separately.
+- Known limitations: only one of the three provider events is current/upcoming. RC1 still requires three current/upcoming events, bounded provider quota, and physical Home/Event Detail proof for that breadth.

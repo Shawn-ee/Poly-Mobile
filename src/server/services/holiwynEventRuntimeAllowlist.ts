@@ -10,6 +10,7 @@ export type RuntimeAllowlistEventInput = {
   liveStatus: string | null;
   startTime: Date | string | null;
   providerMarketCount: number;
+  contractFixtureMarketCount: number;
   listedMarketCount: number;
   acceptingSnapshotCount: number;
   openOrderCount: number;
@@ -32,6 +33,7 @@ export type RuntimeAllowlistEntry = {
   runtimeEligible: boolean;
   readiness: {
     providerMarketCount: number;
+    contractFixtureMarketCount: number;
     listedMarketCount: number;
     acceptingSnapshotCount: number;
     openOrderCount: number;
@@ -114,6 +116,7 @@ export function buildHoliwynEventRuntimeAllowlist(params: {
       runtimeEligible,
       readiness: {
         providerMarketCount: event.providerMarketCount,
+        contractFixtureMarketCount: event.contractFixtureMarketCount,
         listedMarketCount: event.listedMarketCount,
         acceptingSnapshotCount: event.acceptingSnapshotCount,
         openOrderCount: event.openOrderCount,

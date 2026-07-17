@@ -1,0 +1,229 @@
+{
+  "pass": true,
+  "generatedAt": "2026-07-17T09:49:54.352Z",
+  "dryRun": false,
+  "replayedFromRedactedOdds": true,
+  "scope": "the-odds-api-single-event-temporary-provider-replay",
+  "policy": {
+    "providerSource": "the-odds-api",
+    "referenceSource": "sportsbook-odds",
+    "doesNotClaimPolymarketBacked": true,
+    "noProviderApiCalls": true,
+    "eventIdentityMode": "provider-catalog",
+    "providerStableIdentity": true,
+    "historicalReplayArchived": true
+  },
+  "event": {
+    "id": "f9aa13a662d1658e5a02cfc06d6a2d73",
+    "title": "Spain vs. France",
+    "homeTeam": "France",
+    "awayTeam": "Spain",
+    "startTime": "2026-07-14T19:00:00Z",
+    "sportKey": "soccer_fifa_world_cup",
+    "sportTitle": "FIFA World Cup"
+  },
+  "apiCalls": [],
+  "normalized": {
+    "marketCount": 1,
+    "outcomeCount": 2,
+    "marketTypes": [
+      "total_goals"
+    ],
+    "lineValues": [
+      2.5
+    ]
+  },
+  "availableMarketKeys": [],
+  "selectedMarketKeys": [],
+  "importedMarketKeys": [
+    "totals"
+  ],
+  "seed": {
+    "event": {
+      "id": "cebcf95b-85fb-4196-8ab1-c839de88ce24",
+      "slug": "odds-api-event-ce6034d6b0da4ae5fe13",
+      "title": "Spain vs. France"
+    },
+    "marketCount": 17,
+    "outcomeCount": 34,
+    "markets": [
+      {
+        "id": "487d4dbc-f308-4f38-a200-1cb7aabfac46",
+        "slug": "odds-api-event-ce6034d6b0da4ae5fe13-totals-00f498c89f",
+        "title": "Spain vs. France: Total Goals 2.5",
+        "marketType": "total_goals",
+        "marketGroupTitle": "Total Goals",
+        "line": "2.5",
+        "outcomeCount": 2
+      },
+      {
+        "id": "5578f775-2824-45c0-9698-b8cad726b993",
+        "slug": "odds-api-event-ce6034d6b0da4ae5fe13-holiwyn-advance",
+        "title": "Spain vs. France: Team to advance",
+        "marketType": "to_advance",
+        "marketGroupTitle": "Team To Advance",
+        "line": null,
+        "outcomeCount": 2
+      },
+      {
+        "id": "264f484d-21a7-4de2-bd9b-97bba2a39560",
+        "slug": "odds-api-event-ce6034d6b0da4ae5fe13-holiwyn-regulation-home",
+        "title": "Spain vs. France: France in regulation",
+        "marketType": "match_winner_1x2",
+        "marketGroupTitle": "Regulation Time Winner",
+        "line": null,
+        "outcomeCount": 2
+      },
+      {
+        "id": "8ce5caf0-facf-4b96-b432-39231e128e3a",
+        "slug": "odds-api-event-ce6034d6b0da4ae5fe13-holiwyn-regulation-away",
+        "title": "Spain vs. France: Spain in regulation",
+        "marketType": "match_winner_1x2",
+        "marketGroupTitle": "Regulation Time Winner",
+        "line": null,
+        "outcomeCount": 2
+      },
+      {
+        "id": "7af2998c-77a3-44f9-807e-b3a9e722b4fc",
+        "slug": "odds-api-event-ce6034d6b0da4ae5fe13-holiwyn-regulation-draw",
+        "title": "Spain vs. France: Draw in regulation",
+        "marketType": "match_winner_1x2",
+        "marketGroupTitle": "Regulation Time Winner",
+        "line": null,
+        "outcomeCount": 2
+      },
+      {
+        "id": "dbf90a88-afae-4524-a9e1-7f028fe24a04",
+        "slug": "odds-api-event-ce6034d6b0da4ae5fe13-holiwyn-spread-home-neg-3-5",
+        "title": "Spain vs. France: France -3.5",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "-3.5",
+        "outcomeCount": 2
+      },
+      {
+        "id": "4907681e-bd97-482b-b1c5-c3ef63233927",
+        "slug": "odds-api-event-ce6034d6b0da4ae5fe13-holiwyn-spread-home-neg-2-5",
+        "title": "Spain vs. France: France -2.5",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "-2.5",
+        "outcomeCount": 2
+      },
+      {
+        "id": "cfb33ef8-f9e3-4746-8ccb-4148019ffcfc",
+        "slug": "odds-api-event-ce6034d6b0da4ae5fe13-holiwyn-spread-home-neg-1-5",
+        "title": "Spain vs. France: France -1.5",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "-1.5",
+        "outcomeCount": 2
+      },
+      {
+        "id": "e024fec2-963f-4417-b262-642c6e4c3c61",
+        "slug": "odds-api-event-ce6034d6b0da4ae5fe13-holiwyn-spread-home-1-5",
+        "title": "Spain vs. France: France +1.5",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "1.5",
+        "outcomeCount": 2
+      },
+      {
+        "id": "360767c5-7f09-48be-96c6-9a6412458a22",
+        "slug": "odds-api-event-ce6034d6b0da4ae5fe13-holiwyn-spread-home-2-5",
+        "title": "Spain vs. France: France +2.5",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "2.5",
+        "outcomeCount": 2
+      },
+      {
+        "id": "f9e4b367-6a66-4e0a-9fdb-6ab272711381",
+        "slug": "odds-api-event-ce6034d6b0da4ae5fe13-holiwyn-spread-home-3-5",
+        "title": "Spain vs. France: France +3.5",
+        "marketType": "spread",
+        "marketGroupTitle": "Spread",
+        "line": "3.5",
+        "outcomeCount": 2
+      },
+      {
+        "id": "4552c7fe-4acf-4d85-bf44-030889fa2426",
+        "slug": "odds-api-event-ce6034d6b0da4ae5fe13-holiwyn-total-goals-0-5",
+        "title": "Spain vs. France: Total goals 0.5",
+        "marketType": "total_goals",
+        "marketGroupTitle": "Total Goals",
+        "line": "0.5",
+        "outcomeCount": 2
+      },
+      {
+        "id": "9fe0157d-830f-4688-ace0-37420876908a",
+        "slug": "odds-api-event-ce6034d6b0da4ae5fe13-holiwyn-total-goals-1-5",
+        "title": "Spain vs. France: Total goals 1.5",
+        "marketType": "total_goals",
+        "marketGroupTitle": "Total Goals",
+        "line": "1.5",
+        "outcomeCount": 2
+      },
+      {
+        "id": "8f541262-fe4e-4317-a9c1-58ce599baac8",
+        "slug": "odds-api-event-ce6034d6b0da4ae5fe13-holiwyn-total-goals-2-5",
+        "title": "Spain vs. France: Total goals 2.5",
+        "marketType": "total_goals",
+        "marketGroupTitle": "Total Goals",
+        "line": "2.5",
+        "outcomeCount": 2
+      },
+      {
+        "id": "da2f4834-bcaa-4034-8e55-a5e24c8dada1",
+        "slug": "odds-api-event-ce6034d6b0da4ae5fe13-holiwyn-total-goals-3-5",
+        "title": "Spain vs. France: Total goals 3.5",
+        "marketType": "total_goals",
+        "marketGroupTitle": "Total Goals",
+        "line": "3.5",
+        "outcomeCount": 2
+      },
+      {
+        "id": "c96cd721-1da7-438f-9030-3b2db76144d8",
+        "slug": "odds-api-event-ce6034d6b0da4ae5fe13-holiwyn-total-goals-4-5",
+        "title": "Spain vs. France: Total goals 4.5",
+        "marketType": "total_goals",
+        "marketGroupTitle": "Total Goals",
+        "line": "4.5",
+        "outcomeCount": 2
+      },
+      {
+        "id": "70ab0caa-c87d-43e4-901e-01c63c6d670b",
+        "slug": "odds-api-event-ce6034d6b0da4ae5fe13-holiwyn-total-goals-5-5",
+        "title": "Spain vs. France: Total goals 5.5",
+        "marketType": "total_goals",
+        "marketGroupTitle": "Total Goals",
+        "line": "5.5",
+        "outcomeCount": 2
+      }
+    ]
+  },
+  "mobile": {
+    "homeVisible": false,
+    "detailVisible": false,
+    "sportsbookMarketCount": 0,
+    "tradableOutcomeCount": 0,
+    "routeMode": "database-proof",
+    "eventSlug": "odds-api-event-ce6034d6b0da4ae5fe13",
+    "title": "Spain vs. France",
+    "marketTypes": [],
+    "archivedSafely": true,
+    "catalogStored": true
+  },
+  "s23Proof": {
+    "pass": false,
+    "path": "not-required-for-archived-catalog-identity-proof",
+    "notRequired": true
+  },
+  "resultNotes": [
+    "No-quota replay: pass. The run used the redacted odds fixture and made no provider API calls.",
+    "Live-key refresh evidence remains captured in the redacted API call headers from the original single-event fetch.",
+    "Provider catalog identity: pass. The provider event is stored independently from the active legacy event slot.",
+    "Historical catalog safety: pass. The replay event is closed, unlisted, non-tradable, and excluded from the Home feed.",
+    "S23 proof is not required for an archived backend identity-only catalog record."
+  ]
+}

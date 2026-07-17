@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-17T09:40:55.583Z",
+  "generatedAt": "2026-07-17T09:50:18.078Z",
   "scope": "holiwyn-event-runtime-allowlist",
   "pass": true,
   "policy": {
@@ -12,10 +12,11 @@
     "liveProviderRefreshRemainsOperatorTriggered": true
   },
   "counts": {
-    "providerEvents": 2,
+    "providerEvents": 3,
+    "currentOrUpcomingProviderEvents": 1,
     "runtimeEligibleEvents": 1,
     "allowlistedRuntimeOwners": 1,
-    "archivedEvents": 1
+    "archivedEvents": 2
   },
   "requestedSlugs": [
     "odds-api-single-soccer-test"
@@ -36,11 +37,43 @@
       "allowlisted": false,
       "runtimeEligible": false,
       "readiness": {
-        "providerMarketCount": 26,
+        "providerMarketCount": 10,
+        "contractFixtureMarketCount": 16,
         "listedMarketCount": 0,
         "acceptingSnapshotCount": 0,
         "openOrderCount": 0,
         "latestSnapshotAt": "2026-07-17T09:22:03.889Z"
+      },
+      "ownership": {
+        "providerRefresh": "disabled",
+        "marketMaker": "disabled",
+        "staleGuard": "disabled",
+        "lifecycleScheduler": "disabled",
+        "resultPoller": "disabled"
+      },
+      "commands": null
+    },
+    {
+      "id": "cebcf95b-85fb-4196-8ab1-c839de88ce24",
+      "slug": "odds-api-event-ce6034d6b0da4ae5fe13",
+      "title": "Spain vs. France",
+      "source": "the-odds-api",
+      "externalEventId": "f9aa13a662d1658e5a02cfc06d6a2d73",
+      "status": "closed",
+      "liveStatus": null,
+      "startTime": "2026-07-14T19:00:00.000Z",
+      "identityComplete": true,
+      "archived": true,
+      "archiveFailsClosed": true,
+      "allowlisted": false,
+      "runtimeEligible": false,
+      "readiness": {
+        "providerMarketCount": 1,
+        "contractFixtureMarketCount": 16,
+        "listedMarketCount": 0,
+        "acceptingSnapshotCount": 0,
+        "openOrderCount": 0,
+        "latestSnapshotAt": "2026-07-17T09:49:53.938Z"
       },
       "ownership": {
         "providerRefresh": "disabled",
@@ -66,7 +99,8 @@
       "allowlisted": true,
       "runtimeEligible": true,
       "readiness": {
-        "providerMarketCount": 26,
+        "providerMarketCount": 10,
+        "contractFixtureMarketCount": 16,
         "listedMarketCount": 20,
         "acceptingSnapshotCount": 72,
         "openOrderCount": 4,
@@ -98,13 +132,23 @@
     "allAllowlistedEventsRuntimeEligible": true,
     "archivedEventsFailClosed": true
   },
+  "rc1Catalog": {
+    "targetProviderEventCount": 3,
+    "targetCurrentOrUpcomingEventCount": 3,
+    "providerEventCountReady": true,
+    "currentOrUpcomingBreadthReady": false,
+    "ready": false
+  },
   "gaps": {
     "p0": [],
-    "p1": [
-      "RC1 still needs at least three provider-shaped event records."
-    ],
+    "p1": [],
     "p2": [
       "A future operator UI may edit the runtime allowlist; the current contract is CLI/report based."
+    ]
+  },
+  "rc1Gaps": {
+    "p0": [
+      "RC1 still needs at least three current/upcoming provider-shaped events."
     ]
   }
 }

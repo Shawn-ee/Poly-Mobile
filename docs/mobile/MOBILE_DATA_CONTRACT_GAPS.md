@@ -11156,3 +11156,20 @@ Future migration concern:
 - P1: the allowlist is derived from database readiness plus optional CLI selection; there is no durable enabled/disabled ownership model or audited operator edit route.
 - P1: live provider discovery still selects one event during the bounded quota-spending proof. Non-default live refresh must be event-targetable before it is advertised as multi-event refresh.
 - P2: a small operator UI could manage the allowlist after the CLI/runtime contract is stable.
+
+# Cycle ZCM - Three-Event Catalog Contract (2026-07-17)
+
+## Closed
+
+- Three distinct The Odds API identities now coexist: Switzerland vs. Argentina, Spain vs. France, and Chapecoense vs. Bahia.
+- The Spain vs. France replay is bound to immutable provider event ID `f9aa13a662d1658e5a02cfc06d6a2d73` and stable slug `odds-api-event-ce6034d6b0da4ae5fe13`.
+- The historical fixture contains exactly one provider-derived market. Its probability is the midpoint of committed provider bid/ask evidence; no unobserved sportsbook markets are created.
+- Runtime readiness now reports `providerMarketCount` separately from `contractFixtureMarketCount`, preventing Holiwyn fixtures from inflating provider breadth.
+- Both archived events have zero listed markets, zero accepting snapshots, zero open orders, and no worker ownership.
+
+## Open
+
+- P0 for Internal Alpha RC1: provider catalog count is three, but current/upcoming provider event count is one. A bounded fresh-provider import must add two current/upcoming events before the Home breadth gate can pass.
+- P0 for Internal Alpha RC1: current/upcoming Home and Event Detail breadth still lacks physical Android proof.
+- P1: the historical fixture preserves only the selected Total Goals 2.5 provider market because the old summary did not retain complete normalized odds for every market. This limitation is explicit and fail closed.
+- P1: bounded multi-event supervisor fan-out remains the next structural runtime step.

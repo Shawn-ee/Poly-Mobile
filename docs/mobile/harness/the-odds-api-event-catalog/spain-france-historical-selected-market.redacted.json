@@ -1,0 +1,77 @@
+{
+  "generatedAt": "2026-07-14T13:13:02.490Z",
+  "source": "the-odds-api",
+  "redacted": true,
+  "derivation": {
+    "sourceCommit": "887383f01fe70d2a5a674442de54cca4afbd1172",
+    "sourcePath": "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json",
+    "scope": "historical-selected-market-only",
+    "referenceBid": 0.4735,
+    "referenceAsk": 0.5135,
+    "midpoint": 0.4935,
+    "underComplement": 0.5065,
+    "doesNotInventAdditionalProviderMarkets": true,
+    "providerApiCalls": 0
+  },
+  "event": {
+    "id": "f9aa13a662d1658e5a02cfc06d6a2d73",
+    "title": "Spain vs. France",
+    "homeTeam": "France",
+    "awayTeam": "Spain",
+    "startTime": "2026-07-14T19:00:00Z",
+    "sportKey": "soccer_fifa_world_cup",
+    "sportTitle": "FIFA World Cup"
+  },
+  "region": "us",
+  "oddsFormat": "decimal",
+  "selectedBookmaker": {
+    "key": "redacted-historical-summary",
+    "title": "Historical redacted provider summary"
+  },
+  "normalizedMarkets": [
+    {
+      "marketKey": "totals",
+      "bookmakerKey": "redacted-historical-summary",
+      "bookmakerTitle": "Historical redacted provider summary",
+      "lastUpdate": "2026-07-14T13:13:02.490Z",
+      "displayOrder": 30,
+      "marketType": "total_goals",
+      "marketGroupKey": "totals",
+      "marketGroupTitle": "Total Goals",
+      "title": "Total Goals 2.5",
+      "period": "regulation",
+      "line": 2.5,
+      "unit": "goals",
+      "participantName": null,
+      "mobileDisplayPolicy": {
+        "visible": true,
+        "reason": "clean_half_goal_line",
+        "normalizedLine": 2.5,
+        "providerMarketType": "totals"
+      },
+      "outcomes": [
+        {
+          "code": "over-2-5",
+          "name": "Over +2.5",
+          "side": "over",
+          "decimalOdds": 2.0263,
+          "impliedProbability": 0.4935,
+          "normalizedProbability": 0.4935,
+          "point": 2.5,
+          "description": "Midpoint reconstructed from committed provider bid/ask evidence."
+        },
+        {
+          "code": "under-2-5",
+          "name": "Under +2.5",
+          "side": "under",
+          "decimalOdds": 1.9743,
+          "impliedProbability": 0.5065,
+          "normalizedProbability": 0.5065,
+          "point": 2.5,
+          "description": "Complement of committed provider midpoint evidence."
+        }
+      ]
+    }
+  ],
+  "apiCalls": []
+}
