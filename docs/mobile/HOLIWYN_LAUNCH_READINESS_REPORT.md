@@ -1,6 +1,6 @@
 # Holiwyn Launch Readiness Report
 
-Last audited: 2026-07-17, Cycle ZCK
+Last audited: 2026-07-17, Cycle ZCL
 
 ## Executive Verdict
 
@@ -65,7 +65,7 @@ P0 here means required for the proposed Internal Android Alpha release candidate
 | Gap | Current state | Required pass condition |
 | --- | --- | --- |
 | Stable multi-event catalog | ZCK proves one active legacy event plus one independently stored, safely archived provider event. Current/upcoming breadth is still one. | Importing event B must not replace event A; rerunning event A must update the same event and preserve market/outcome identity. Three current/upcoming events must coexist for RC1. |
-| Multi-event runtime ownership | Refresh, maker, stale guard, and lifecycle tools are primarily one-event oriented. | One command manages a small allowlist of current events, reports each event independently, and remains quota capped. |
+| Multi-event runtime ownership | ZCL adds a no-quota allowlist/readiness contract and explicit event selection through the cached launcher and supervisor. One active owner and one fail-closed archive are proven; orchestration is still one event per process. | One command manages a small allowlist of current events, isolates each event's evidence, reports each event independently, and remains quota capped. |
 | Restartable tester environment | The local environment is proven, but still assembled from developer-oriented processes. | A clean machine restart can start DB, backend, mobile runtime, and no-quota workers with one documented command and a green readiness result. |
 | Installable Android release | Expo development proof is strong; EAS APK profiles exist. | A signed internal APK/dev build installs cleanly, points at the intended backend, and passes the S23 journey without Expo Go. |
 | Physical account flow | Backend-owned Google OAuth exists, but physical callback readiness has not been made a final release gate. | Sign in, relaunch persistence, logout, and failure recovery pass on the installed S23 build without exposing credentials. |
@@ -114,8 +114,8 @@ This goal is narrow enough to finish, but broad enough to remove the main archit
 ## Ordered Work Plan
 
 1. ZCK complete: provider-stable event identity, collision guard, isolated catalog evidence, and historical replay safety.
-2. Add current/upcoming no-quota multi-event replay/catalog proof and remove fixed-slug assumptions from the event allowlist path.
-3. Extend refresh, maker, stale guard, and runtime status to the allowlist.
+2. ZCL partial: no-quota catalog/allowlist proof exists and cached worker selection is explicit; add a third current/upcoming provider-shaped event.
+3. Extend the supervisor from one explicitly selected event per process to bounded allowlist fan-out with isolated evidence and quota policy.
 4. Prove three-event Home/Event Detail behavior and one full S23 trade journey after a clean restart.
 5. Build and install the internal Android APK/dev client; prove account and backend connectivity.
 6. Prove current-event lifecycle closure and reviewed settlement.

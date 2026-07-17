@@ -1,6 +1,6 @@
 # Holiwyn Internal Tester Runtime Launch
 
-Last verified: 2026-07-17, Cycle ZCJ operator/runtime gate
+Last verified: 2026-07-17, Cycle ZCL event runtime allowlist
 
 ## Verdict
 
@@ -24,6 +24,14 @@ Preferred no-quota cached tester path:
 ```text
 npm run mobile:one-event-onboarding
 ```
+
+Verify provider-event ownership without spending quota:
+
+```text
+npm run mobile:event-runtime-allowlist
+```
+
+The current report allowlists only `odds-api-single-soccer-test`. Archived catalog events have no worker commands and cannot be certified by the active event's cached proof.
 
 Full local runtime manager path:
 
@@ -77,5 +85,5 @@ The live odds command reads the key from the process environment or ignored `.ru
 - P0: none for cached local internal testing.
 - P1: installed unattended provider/maker/lifecycle service ownership.
 - P1: production official-result auto-settlement. Active-event execution remains guarded by `CLOSED` market status and exact confirmation.
-- P1: multi-event provider catalog and allowlist runtime. Provider-stable identity begins in Cycle ZCK, while the proven runtime still defaults to one legacy slug.
+- P1: multi-event runtime fan-out. Provider-stable catalog identity and an explicit no-quota allowlist exist, while each supervisor process still owns one selected event.
 - P2: production operator dashboard.

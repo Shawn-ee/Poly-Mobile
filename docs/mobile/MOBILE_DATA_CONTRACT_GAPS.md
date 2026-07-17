@@ -11139,3 +11139,20 @@ Future migration concern:
 - P1: `Event.source + Event.externalEventId` has an index but not a database unique constraint. The importer guards collisions in application logic; a schema migration should be considered after legacy duplicate data is audited.
 - P1: the legacy `odds-api-single-soccer-test` slug remains the default for existing runtime scripts. It must not be removed until all callers take explicit event identity.
 - P1: catalog events still inherit the current internal knockout metadata default. Competition/round-derived `resultMode` needs provider-owned classification before broad imports.
+
+# Cycle ZCL - Runtime Allowlist Contract Gaps (2026-07-17)
+
+## Closed
+
+- Runtime tools no longer need to silently assume the legacy slug: the cached launcher and supervisor accept `EventSlug` and pass it to their event-owned child commands.
+- Cached provider proof now records and validates `expectedEventSlug`, `proofEventSlug`, and `eventMatchesSelected`; evidence for event A cannot certify event B.
+- The no-quota report proves provider identity uniqueness, runtime eligibility, archive fail-closed behavior, and worker ownership across the current provider catalog.
+- Archived events expose no runnable command bundle and own no refresh, maker, stale-guard, lifecycle, or result-poller worker.
+
+## Open
+
+- P0 for Internal Alpha RC1: the current database has two provider events, but RC1 requires at least three provider-shaped events and visible Home/Event Detail proof for current/upcoming breadth.
+- P0 for Internal Alpha RC1: the supervisor owns one explicitly selected event per process. A bounded fan-out command must start/report each allowlisted active event independently without sharing evidence paths.
+- P1: the allowlist is derived from database readiness plus optional CLI selection; there is no durable enabled/disabled ownership model or audited operator edit route.
+- P1: live provider discovery still selects one event during the bounded quota-spending proof. Non-default live refresh must be event-targetable before it is advertised as multi-event refresh.
+- P2: a small operator UI could manage the allowlist after the CLI/runtime contract is stable.
