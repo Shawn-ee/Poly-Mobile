@@ -124,6 +124,7 @@
     "mobile:the-odds-api-single-event:replay": "tsx scripts/seed_the_odds_api_single_event.ts --fromRedactedOdds=docs/mobile/harness/the-odds-api-single-event/event-odds.redacted.json",
     "mobile:the-odds-api-catalog-event": "tsx scripts/seed_the_odds_api_single_event.ts --catalogIdentity",
     "mobile:the-odds-api-catalog-event:replay": "tsx scripts/seed_the_odds_api_single_event.ts --catalogIdentity --allowHistoricalCatalog --fromRedactedOdds=docs/mobile/harness/the-odds-api-single-event/event-odds.redacted.json",
+    "mobile:the-odds-api-catalog-event:spain-france-replay": "tsx scripts/seed_the_odds_api_single_event.ts --catalogIdentity --allowHistoricalCatalog --fromRedactedOdds=docs/mobile/harness/the-odds-api-event-catalog/spain-france-historical-selected-market.redacted.json --outputDir=docs/mobile/harness/the-odds-api-event-catalog/spain-france --auditPath=docs/mobile/audits/BATCH_THE_ODDS_API_SPAIN_FRANCE_HISTORICAL_CATALOG.md",
     "mobile:event-runtime-allowlist": "tsx scripts/report_holiwyn_event_runtime_allowlist.ts",
     "mobile:the-odds-api-single-event-flow": "tsx scripts/prove_mobile_the_odds_api_single_event_flow.ts",
     "mobile:odds-api-internal-env-proof": "tsx scripts/prove_mobile_odds_api_internal_environment.ts",

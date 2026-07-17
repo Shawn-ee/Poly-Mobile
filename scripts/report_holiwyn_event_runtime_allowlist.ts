@@ -62,6 +62,8 @@ async function main() {
     requestedSlugs,
     events: providerEvents.map((event) => {
       const snapshots = event.markets.flatMap((market) => market.referenceQuoteSnapshots);
+      const sportsbookMarkets = event.markets.filter((market) => market.referenceSource === "sportsbook-odds");
+      const contractFixtureMarkets = event.markets.filter((market) => market.referenceSource === "contract-fixture");
       const latestSnapshotAt = snapshots.reduce<Date | null>(
         (latest, snapshot) => (!latest || snapshot.fetchedAt > latest ? snapshot.fetchedAt : latest),
         null,
@@ -75,7 +77,8 @@ async function main() {
         status: event.status,
         liveStatus: event.liveStatus,
         startTime: event.startTime,
-        providerMarketCount: event.markets.length,
+        providerMarketCount: sportsbookMarkets.length,
+        contractFixtureMarketCount: contractFixtureMarkets.length,
         listedMarketCount: event.markets.filter(
           (market) => market.isListed && ["LIVE", "UPCOMING", "PAUSED"].includes(market.status),
         ).length,
@@ -115,6 +118,7 @@ async function main() {
     },
     counts: {
       providerEvents: entries.length,
+      currentOrUpcomingProviderEvents: entries.filter((entry) => !entry.archived).length,
       runtimeEligibleEvents: entries.filter((entry) => entry.runtimeEligible).length,
       allowlistedRuntimeOwners: entries.filter((entry) => entry.allowlisted && entry.runtimeEligible).length,
       archivedEvents: entries.filter((entry) => entry.archived).length,
@@ -122,12 +126,27 @@ async function main() {
     requestedSlugs: assessment.requestedSlugs,
     entries,
     checks: assessment.checks,
+    rc1Catalog: {
+      targetProviderEventCount: 3,
+      targetCurrentOrUpcomingEventCount: 3,
+      providerEventCountReady: entries.length >= 3,
+      currentOrUpcomingBreadthReady: entries.filter((entry) => !entry.archived).length >= 3,
+      ready:
+        entries.length >= 3 &&
+        entries.filter((entry) => !entry.archived).length >= 3,
+    },
     gaps: {
       p0: Object.entries(assessment.checks)
         .filter(([, passed]) => !passed)
         .map(([check]) => check),
-      p1: entries.length < 3 ? ["RC1 still needs at least three provider-shaped event records."] : [],
+      p1: entries.length < 3 ? ["The provider catalog still needs at least three provider-shaped event records."] : [],
       p2: ["A future operator UI may edit the runtime allowlist; the current contract is CLI/report based."],
+    },
+    rc1Gaps: {
+      p0:
+        entries.filter((entry) => !entry.archived).length < 3
+          ? ["RC1 still needs at least three current/upcoming provider-shaped events."]
+          : [],
     },
   };
 

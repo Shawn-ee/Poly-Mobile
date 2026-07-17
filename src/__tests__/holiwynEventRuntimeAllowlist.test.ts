@@ -11,6 +11,7 @@ const activeEvent = {
   liveStatus: "LIVE",
   startTime: "2026-07-18T18:00:00Z",
   providerMarketCount: 12,
+  contractFixtureMarketCount: 8,
   listedMarketCount: 8,
   acceptingSnapshotCount: 16,
   openOrderCount: 2,
@@ -27,6 +28,7 @@ const archivedEvent = {
   liveStatus: null,
   startTime: "2026-07-10T18:00:00Z",
   providerMarketCount: 10,
+  contractFixtureMarketCount: 7,
   listedMarketCount: 0,
   acceptingSnapshotCount: 0,
   openOrderCount: 0,
@@ -100,5 +102,29 @@ describe("Holiwyn event runtime allowlist", () => {
     expect(supervisor).toContain('$resultSettlementArgs.Add("--eventSlug=$EventSlug")');
     expect(reporter).toContain("providerApiCalls: 0");
     expect(reporter).toContain("entry.slug && entry.allowlisted && entry.runtimeEligible");
+  });
+
+  it("keeps the historical third-event fixture provider-derived and quota-free", () => {
+    const fixture = JSON.parse(
+      readFileSync(
+        "docs/mobile/harness/the-odds-api-event-catalog/spain-france-historical-selected-market.redacted.json",
+        "utf8",
+      ),
+    );
+    const providerMidpoint = (fixture.derivation.referenceBid + fixture.derivation.referenceAsk) / 2;
+
+    expect(fixture.event.id).toBe("f9aa13a662d1658e5a02cfc06d6a2d73");
+    expect(fixture.derivation.sourceCommit).toBe("887383f01fe70d2a5a674442de54cca4afbd1172");
+    expect(fixture.derivation.providerApiCalls).toBe(0);
+    expect(fixture.derivation.doesNotInventAdditionalProviderMarkets).toBe(true);
+    expect(fixture.normalizedMarkets).toHaveLength(1);
+    expect(fixture.normalizedMarkets[0].marketKey).toBe("totals");
+    expect(fixture.normalizedMarkets[0].outcomes[0].normalizedProbability).toBeCloseTo(providerMidpoint, 8);
+    expect(
+      fixture.normalizedMarkets[0].outcomes.reduce(
+        (total: number, outcome: { normalizedProbability: number }) => total + outcome.normalizedProbability,
+        0,
+      ),
+    ).toBeCloseTo(1, 8);
   });
 });
