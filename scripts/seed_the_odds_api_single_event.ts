@@ -7,9 +7,11 @@ import {
   availableMarketKeysFromResponse,
   expandLineMarketsByPoint,
   normalizeOddsApiEvent,
+  oddsApiCatalogEventSlug,
   oddsApiGetJson,
   oddsApiSingleEventSlug,
   quotaCost,
+  seedOddsApiCatalogEvent,
   seedOddsApiSingleEvent,
   selectCandidateSoccerSports,
   selectOddsMarkets,
@@ -23,7 +25,9 @@ import {
 } from "@/server/services/theOddsApiSingleEventProvider";
 
 const OUTPUT_DIR = "docs/mobile/harness/the-odds-api-single-event";
+const CATALOG_OUTPUT_DIR = "docs/mobile/harness/the-odds-api-event-catalog";
 const AUDIT_PATH = "docs/mobile/audits/BATCH_THE_ODDS_API_SINGLE_EVENT.md";
+const CATALOG_AUDIT_PATH = "docs/mobile/audits/BATCH_THE_ODDS_API_EVENT_CATALOG.md";
 const REGION = "us";
 const ODDS_FORMAT = "decimal";
 const MAX_CREDITS = 8;
@@ -44,16 +48,19 @@ async function main() {
   if (process.env.NODE_ENV === "production") {
     throw new Error("Refusing to seed The Odds API single-event provider in production.");
   }
-  const outputDir = argValue("outputDir") ?? OUTPUT_DIR;
+  const catalogIdentity = hasFlag("catalogIdentity");
+  const outputDir = argValue("outputDir") ?? (catalogIdentity ? CATALOG_OUTPUT_DIR : OUTPUT_DIR);
+  const auditPath = argValue("auditPath") ?? (catalogIdentity ? CATALOG_AUDIT_PATH : AUDIT_PATH);
   const replayPath = argValue("fromRedactedOdds");
   const selectedEventId = argValue("eventId");
   const selectedSportKey = argValue("sportKey");
   const dryRun = hasFlag("dryRun");
+  const allowHistoricalCatalog = hasFlag("allowHistoricalCatalog");
   const calls: OddsApiCallRecord[] = [];
   await fs.mkdir(outputDir, { recursive: true });
 
   if (replayPath) {
-    await replayRedactedOdds({ replayPath, outputDir, dryRun });
+    await replayRedactedOdds({ replayPath, outputDir, auditPath, dryRun, catalogIdentity, allowHistoricalCatalog });
     return;
   }
 
@@ -141,19 +148,30 @@ async function main() {
     apiCalls: calls,
   });
 
+  const requestedSlug = catalogIdentity ? oddsApiCatalogEventSlug(oddsResponse) : oddsApiSingleEventSlug();
   const seed = dryRun
     ? null
-    : await seedOddsApiSingleEvent({
-        oddsEvent: oddsResponse,
-        markets: normalizedMarkets,
-        region: REGION,
-        oddsFormat: ODDS_FORMAT,
-      });
+    : catalogIdentity
+      ? await seedOddsApiCatalogEvent({
+          oddsEvent: oddsResponse,
+          markets: normalizedMarkets,
+          region: REGION,
+          oddsFormat: ODDS_FORMAT,
+          allowHistoricalReplay: allowHistoricalCatalog,
+        })
+      : await seedOddsApiSingleEvent({
+          oddsEvent: oddsResponse,
+          markets: normalizedMarkets,
+          region: REGION,
+          oddsFormat: ODDS_FORMAT,
+        });
 
-  const proof = await buildRouteProof({ seedSlug: oddsApiSingleEventSlug() });
+  const proof = await buildRouteProof({ seedSlug: seed?.event.slug ?? requestedSlug });
+  const routeReady = proof.homeVisible && proof.detailVisible && proof.sportsbookMarketCount > 0;
+  const catalogReady = catalogIdentity && proof.archivedSafely;
   const s23Proof = await readS23ProofSummary();
   const summary = {
-    pass: Boolean(seed) && proof.homeVisible && proof.detailVisible && proof.sportsbookMarketCount > 0,
+    pass: Boolean(seed) && (routeReady || catalogReady),
     generatedAt: new Date().toISOString(),
     dryRun,
     scope: "the-odds-api-single-event-temporary-provider",
@@ -162,6 +180,8 @@ async function main() {
       referenceSource: "sportsbook-odds",
       doesNotClaimPolymarketBacked: true,
       oneEventOnly: true,
+      eventIdentityMode: catalogIdentity ? "provider-catalog" : "legacy-single-slot",
+      providerStableIdentity: catalogIdentity,
       maxCredits: MAX_CREDITS,
       region: REGION,
     },
@@ -189,11 +209,20 @@ async function main() {
     seed,
     mobile: proof,
     s23Proof,
-    resultNotes: resultNotes({ liveKeyRefresh: true, fakeTokenFlow: proof.homeVisible && proof.detailVisible, s23Proof }),
+    resultNotes: resultNotes({
+      liveKeyRefresh: true,
+      fakeTokenFlow: proof.homeVisible && proof.detailVisible,
+      s23Proof,
+      catalogIdentity,
+      catalogArchived: proof.archivedSafely,
+    }),
   };
 
-  await writeJson(path.join(outputDir, "single-event-summary.redacted.json"), summary);
-  await writeAudit(summary);
+  await writeJson(
+    path.join(outputDir, catalogIdentity ? "catalog-event-summary.redacted.json" : "single-event-summary.redacted.json"),
+    summary,
+  );
+  await writeAudit(summary, auditPath);
   process.stdout.write(`${JSON.stringify(summary, null, 2)}\n`);
   if (!summary.pass && !dryRun) process.exitCode = 1;
 }
@@ -231,9 +260,16 @@ async function selectOneEvent(params: {
   return null;
 }
 
-async function replayRedactedOdds(params: { replayPath: string; outputDir: string; dryRun: boolean }) {
+async function replayRedactedOdds(params: {
+  replayPath: string;
+  outputDir: string;
+  auditPath: string;
+  dryRun: boolean;
+  catalogIdentity: boolean;
+  allowHistoricalCatalog: boolean;
+}) {
   const raw = JSON.parse(await fs.readFile(params.replayPath, "utf8"));
-  const availableMarkets = await readJsonIfExists(path.join(params.outputDir, "available-markets.redacted.json"));
+  const availableMarkets = await readJsonIfExists(path.join(path.dirname(params.replayPath), "available-markets.redacted.json"));
   const event = raw.event;
   assert(event && typeof event === "object", "Redacted odds fixture is missing event metadata.");
   const normalizedMarkets = Array.isArray(raw.normalizedMarkets)
@@ -249,16 +285,33 @@ async function replayRedactedOdds(params: { replayPath: string; outputDir: strin
     away_team: String(event.awayTeam),
     bookmakers: [],
   };
+  const requestedSlug = params.catalogIdentity ? oddsApiCatalogEventSlug(oddsEvent) : oddsApiSingleEventSlug();
   const seed = params.dryRun
     ? null
-    : await seedOddsApiSingleEvent({
-        oddsEvent,
-        markets: normalizedMarkets,
-        region: String(raw.region ?? REGION),
-        oddsFormat: String(raw.oddsFormat ?? ODDS_FORMAT),
-      });
-  const proof = await buildRouteProof({ seedSlug: oddsApiSingleEventSlug() });
-  const s23Proof = await readS23ProofSummary();
+    : params.catalogIdentity
+      ? await seedOddsApiCatalogEvent({
+          oddsEvent,
+          markets: normalizedMarkets,
+          region: String(raw.region ?? REGION),
+          oddsFormat: String(raw.oddsFormat ?? ODDS_FORMAT),
+          allowHistoricalReplay: params.allowHistoricalCatalog,
+        })
+      : await seedOddsApiSingleEvent({
+          oddsEvent,
+          markets: normalizedMarkets,
+          region: String(raw.region ?? REGION),
+          oddsFormat: String(raw.oddsFormat ?? ODDS_FORMAT),
+        });
+  const proof = await buildRouteProof({ seedSlug: seed?.event.slug ?? requestedSlug });
+  const routeReady = proof.homeVisible && proof.detailVisible && proof.sportsbookMarketCount > 0;
+  const catalogReady = params.catalogIdentity && proof.archivedSafely;
+  const s23Proof = params.catalogIdentity
+    ? {
+        pass: false,
+        path: "not-required-for-archived-catalog-identity-proof",
+        notRequired: true,
+      }
+    : await readS23ProofSummary();
   const availableMarketKeys = Array.isArray(availableMarkets?.availableMarketKeys)
     ? availableMarkets.availableMarketKeys
     : [];
@@ -267,7 +320,7 @@ async function replayRedactedOdds(params: { replayPath: string; outputDir: strin
     : [];
   const importedMarketKeys = Array.from(new Set(normalizedMarkets.map((market: any) => market.marketKey)));
   const summary = {
-    pass: Boolean(seed) && proof.homeVisible && proof.detailVisible && proof.sportsbookMarketCount > 0,
+    pass: Boolean(seed) && (routeReady || catalogReady),
     generatedAt: new Date().toISOString(),
     dryRun: params.dryRun,
     replayedFromRedactedOdds: true,
@@ -277,6 +330,9 @@ async function replayRedactedOdds(params: { replayPath: string; outputDir: strin
       referenceSource: "sportsbook-odds",
       doesNotClaimPolymarketBacked: true,
       noProviderApiCalls: true,
+      eventIdentityMode: params.catalogIdentity ? "provider-catalog" : "legacy-single-slot",
+      providerStableIdentity: params.catalogIdentity,
+      historicalReplayArchived: Boolean(proof.archivedSafely),
     },
     event,
     apiCalls: raw.apiCalls ?? [],
@@ -292,14 +348,24 @@ async function replayRedactedOdds(params: { replayPath: string; outputDir: strin
     seed,
     mobile: proof,
     s23Proof,
-    resultNotes: resultNotes({ replay: true, fakeTokenFlow: proof.homeVisible && proof.detailVisible, s23Proof }),
+    resultNotes: resultNotes({
+      replay: true,
+      fakeTokenFlow: proof.homeVisible && proof.detailVisible,
+      s23Proof,
+      catalogIdentity: params.catalogIdentity,
+      catalogArchived: proof.archivedSafely,
+    }),
   };
-  await writeJson(path.join(params.outputDir, "single-event-replay-summary.redacted.json"), summary);
-  await writeJson(path.join(params.outputDir, "single-event-summary.redacted.json"), summary);
+  if (params.catalogIdentity) {
+    await writeJson(path.join(params.outputDir, "catalog-event-summary.redacted.json"), summary);
+  } else {
+    await writeJson(path.join(params.outputDir, "single-event-replay-summary.redacted.json"), summary);
+    await writeJson(path.join(params.outputDir, "single-event-summary.redacted.json"), summary);
+  }
   await writeAudit({
     ...summary,
     sport: { key: oddsEvent.sport_key },
-  });
+  }, params.auditPath);
   process.stdout.write(`${JSON.stringify(summary, null, 2)}\n`);
   if (!summary.pass && !params.dryRun) process.exitCode = 1;
 }
@@ -309,7 +375,6 @@ async function buildRouteProof(params: { seedSlug: string }) {
     where: { slug: params.seedSlug },
     include: {
       markets: {
-        where: { isListed: true, visibility: "PUBLIC" },
         include: { outcomes: { where: { isActive: true } } },
         orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }],
       },
@@ -325,9 +390,18 @@ async function buildRouteProof(params: { seedSlug: string }) {
       eventSlug: params.seedSlug,
     };
   }
-  const sportsbookMarkets = event.markets.filter((market) => market.referenceSource === "sportsbook-odds");
+  const listedMarkets = event.markets.filter(
+    (market) => market.isListed && market.visibility === "PUBLIC" && market.status === "LIVE",
+  );
+  const sportsbookMarkets = listedMarkets.filter((market) => market.referenceSource === "sportsbook-odds");
+  const archivedSafely =
+    event.status === "closed" &&
+    event.liveStatus == null &&
+    listedMarkets.length === 0 &&
+    event.markets.length > 0 &&
+    event.markets.every((market) => market.status === "CLOSED" && !market.isListed);
   return {
-    homeVisible: true,
+    homeVisible: listedMarkets.length > 0,
     detailVisible: sportsbookMarkets.length > 0,
     sportsbookMarketCount: sportsbookMarkets.length,
     tradableOutcomeCount: sportsbookMarkets.reduce(
@@ -338,6 +412,8 @@ async function buildRouteProof(params: { seedSlug: string }) {
     eventSlug: event.slug,
     title: event.title,
     marketTypes: Array.from(new Set(sportsbookMarkets.map((market) => market.marketType))),
+    archivedSafely,
+    catalogStored: true,
   };
 }
 
@@ -386,7 +462,14 @@ async function readS23ProofSummary() {
   };
 }
 
-function resultNotes(params: { liveKeyRefresh?: boolean; replay?: boolean; fakeTokenFlow: boolean; s23Proof: { pass: boolean; path: string; screenshotsPath?: string } }) {
+function resultNotes(params: {
+  liveKeyRefresh?: boolean;
+  replay?: boolean;
+  fakeTokenFlow: boolean;
+  s23Proof: { pass: boolean; path: string; screenshotsPath?: string; notRequired?: boolean };
+  catalogIdentity?: boolean;
+  catalogArchived?: boolean;
+}) {
   const notes = [];
   if (params.liveKeyRefresh) {
     notes.push("Live-key refresh: pass. The key was supplied through the process environment only and was not written to repo files.");
@@ -397,6 +480,14 @@ function resultNotes(params: { liveKeyRefresh?: boolean; replay?: boolean; fakeT
   }
   if (params.fakeTokenFlow) {
     notes.push("Backend fake-token flow: pass. Home, Event Detail, quote, order, Portfolio, and History preserve `sportsbook-odds` line identity.");
+  }
+  if (params.catalogIdentity) {
+    notes.push("Provider catalog identity: pass. The provider event is stored independently from the active legacy event slot.");
+    if (params.catalogArchived) {
+      notes.push("Historical catalog safety: pass. The replay event is closed, unlisted, non-tradable, and excluded from the Home feed.");
+    }
+    notes.push("S23 proof is not required for an archived backend identity-only catalog record.");
+    return notes;
   }
   if (params.s23Proof.pass) {
     notes.push(`S23 visible proof: pass.`);
@@ -411,13 +502,18 @@ function resultNotes(params: { liveKeyRefresh?: boolean; replay?: boolean; fakeT
   return notes;
 }
 
-async function writeAudit(summary: any) {
+async function writeAudit(summary: any, auditPath: string) {
+  const catalogIdentity = summary.policy?.eventIdentityMode === "provider-catalog";
   const lines = [
-    "# Batch The Odds API Single Event",
+    catalogIdentity ? "# Batch The Odds API Event Catalog" : "# Batch The Odds API Single Event",
     "",
     "## Scope",
-    "- Temporary sportsbook odds provider for one soccer event only.",
-    "- Uses `THE_ODDS_API_KEY` from the local environment only.",
+    catalogIdentity
+      ? "- Provider-stable event identity and historical replay safety for the backend soccer catalog."
+      : "- Temporary sportsbook odds provider for one soccer event only.",
+    summary.replayedFromRedactedOdds
+      ? "- Replays redacted provider evidence without making provider requests or spending quota."
+      : "- Uses `THE_ODDS_API_KEY` from the local environment only.",
     "- Does not claim Polymarket-backed parity.",
     "- Does not enable real-money behavior.",
     "",
@@ -452,8 +548,8 @@ async function writeAudit(summary: any) {
       : ["- Remaining blocker: S23 UI order/portfolio proof still needs to run against the seeded event after local services are up."]),
     "",
   ];
-  await fs.mkdir(path.dirname(AUDIT_PATH), { recursive: true });
-  await fs.writeFile(AUDIT_PATH, `${lines.join("\n")}\n`, "utf8");
+  await fs.mkdir(path.dirname(auditPath), { recursive: true });
+  await fs.writeFile(auditPath, `${lines.join("\n")}\n`, "utf8");
 }
 
 main()

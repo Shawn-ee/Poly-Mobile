@@ -11123,3 +11123,19 @@ Future migration concern:
 - Schema mismatch: none. No Prisma model or migration changed.
 - Temporary mock/static data: none. The audit reads committed/local redacted proof artifacts and spends no provider quota.
 - Remaining gaps: production service ownership and production official-result auto-settlement remain P1.
+# Cycle ZCK - Launch/Catalog Contract Gaps (2026-07-17)
+
+## Closed
+
+- Future provider event imports no longer need a shared display-name-derived or fixed event identity. Catalog identity is stable across team-name corrections and is collision guarded.
+- A catalog rerun can reuse the existing legacy event by matching `Event.source + Event.externalEventId`, avoiding a duplicate current event during migration.
+- Historical replay evidence is persisted with `Event.status=closed`, no live status, closed/unlisted markets, and non-accepting reference quotes; it cannot appear as a tradable Home event.
+- Catalog proof summaries are isolated from the canonical active one-event readiness summaries.
+
+## Open
+
+- P0 for Internal Alpha RC1: there is no durable allowlist model/config that declares which provider events the refresh, maker, stale guard, and lifecycle workers own.
+- P0 for Internal Alpha RC1: no current proof shows three distinct provider-shaped events coexisting through Home, Event Detail, quote, and lifecycle status.
+- P1: `Event.source + Event.externalEventId` has an index but not a database unique constraint. The importer guards collisions in application logic; a schema migration should be considered after legacy duplicate data is audited.
+- P1: the legacy `odds-api-single-soccer-test` slug remains the default for existing runtime scripts. It must not be removed until all callers take explicit event identity.
+- P1: catalog events still inherit the current internal knockout metadata default. Competition/round-derived `resultMode` needs provider-owned classification before broad imports.

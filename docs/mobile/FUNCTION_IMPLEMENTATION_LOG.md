@@ -16944,3 +16944,15 @@ Known limitations:
 - Process safety: supervisor/poller managers validate PID start time plus command line, clear stale state after stop, and make repeated stop calls idempotent. The watchdog now fails if managed-loop cleanup fails.
 - Mobile harness: the S23 runner dismisses the Expo developer sheet without navigating to the launcher, prefers the current live-runtime event over stale readiness titles, waits for Portfolio state after submission, and preserves canonical after-submit XML.
 - Device result: S23 completed buy and close-position cashout on `Chapecoense vs. Bahia: Total Goals 2.5`; Max used 43.1 owned shares, not wallet cash.
+# Cycle ZCK - Launch Readiness And Provider Catalog Identity (2026-07-17)
+
+- Feature/page: backend provider event identity supporting future multi-event Home/Event Detail catalogs.
+- Frontend components touched: none.
+- Backend functions touched: `oddsApiCatalogEventSlug`, `seedOddsApiSingleEvent`, new `seedOddsApiCatalogEvent` wrapper.
+- Runtime/import functions touched: `seed_the_odds_api_single_event.ts` catalog mode plus package aliases for live and replay import.
+- User-visible behavior: none in this scoped cycle; it prevents a future event import from replacing an already imported event.
+- State transition: new provider event -> stable catalog slug -> backend Event/Market/Outcome rows; repeated same provider event -> update existing rows; conflicting slug owner -> reject import.
+- Historical replay state: provider evidence older than the six-hour match window -> closed event -> closed/unlisted markets -> non-accepting quotes -> excluded from Home.
+- Proof isolation: catalog replay writes `docs/mobile/harness/the-odds-api-event-catalog/catalog-event-summary.redacted.json` and does not replace canonical active-event readiness artifacts.
+- Tests: root TypeScript and 45 focused provider contract tests pass without provider quota. No-quota catalog replay passes and the mobile event route still exposes only Chapecoense vs. Bahia.
+- Known limitation: the broader runtime still selects one legacy slug by default; multi-event allowlist execution is the next structural cycle.

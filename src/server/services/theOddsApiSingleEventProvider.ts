@@ -172,6 +172,27 @@ export function oddsApiSingleEventSlug() {
   return SINGLE_EVENT_SLUG;
 }
 
+export function oddsApiCatalogEventSlug(event: Pick<OddsApiEvent, "id" | "sport_key">) {
+  const identity = `${PROVIDER_SOURCE}:${event.sport_key}:${event.id}`;
+  return `odds-api-event-${shortHash(identity, 20)}`;
+}
+
+export function oddsApiCatalogEventLifecycle(
+  event: Pick<OddsApiEvent, "commence_time">,
+  now = new Date(),
+) {
+  const commenceTime = Date.parse(event.commence_time);
+  const historical = Number.isFinite(commenceTime) && commenceTime + 6 * 60 * 60 * 1000 < now.getTime();
+  return {
+    historical,
+    eventStatus: historical ? "closed" : "active",
+    liveStatus: historical ? null : "LIVE",
+    marketStatus: historical ? "CLOSED" as const : "LIVE" as const,
+    isListed: !historical,
+    acceptingOrders: !historical,
+  };
+}
+
 export function sanitizeOddsApiPath(url: URL) {
   const copy = new URL(url.toString());
   copy.searchParams.delete("apiKey");
@@ -436,14 +457,19 @@ export async function seedOddsApiSingleEvent(params: {
   region: string;
   oddsFormat: string;
   seededAt?: Date;
+  eventSlug?: string;
+  preserveProviderEventIdentity?: boolean;
+  eventStatus?: string;
+  liveStatus?: string | null;
+  marketStatus?: "LIVE" | "CLOSED";
+  isListed?: boolean;
+  acceptingOrders?: boolean;
 }): Promise<OddsApiSeedSummary> {
   const now = params.seededAt ?? new Date();
   const title = `${params.oddsEvent.away_team} vs. ${params.oddsEvent.home_team}`;
   const startTime = new Date(params.oddsEvent.commence_time);
-  const event = await prisma.event.upsert({
-    where: { slug: SINGLE_EVENT_SLUG },
-    create: {
-      slug: SINGLE_EVENT_SLUG,
+  const requestedSlug = params.eventSlug ?? SINGLE_EVENT_SLUG;
+  const eventData = {
       title,
       description: "Temporary sportsbook-derived soccer event for Holiwyn internal MVP testing.",
       category: "Sports / Soccer",
@@ -453,34 +479,53 @@ export async function seedOddsApiSingleEvent(params: {
       homeTeamName: params.oddsEvent.home_team,
       awayTeamName: params.oddsEvent.away_team,
       startTime,
-      status: "active",
-      liveStatus: "LIVE",
+      status: params.eventStatus ?? "active",
+      liveStatus: params.liveStatus === undefined ? "LIVE" : params.liveStatus,
       source: PROVIDER_SOURCE,
       externalEventId: params.oddsEvent.id,
       externalSlug: `${params.oddsEvent.sport_key}-${params.oddsEvent.id}`,
       sourceUpdatedAt: now,
       metadata: eventMetadata(params),
-    },
-    update: {
-      title,
-      description: "Temporary sportsbook-derived soccer event for Holiwyn internal MVP testing.",
-      category: "Sports / Soccer",
-      sportKey: "soccer",
-      leagueKey: "world_cup",
-      eventType: "match",
-      homeTeamName: params.oddsEvent.home_team,
-      awayTeamName: params.oddsEvent.away_team,
-      startTime,
-      status: "active",
-      liveStatus: "LIVE",
-      source: PROVIDER_SOURCE,
-      externalEventId: params.oddsEvent.id,
-      externalSlug: `${params.oddsEvent.sport_key}-${params.oddsEvent.id}`,
-      sourceUpdatedAt: now,
-      metadata: eventMetadata(params),
-    },
-    select: { id: true, slug: true, title: true },
-  });
+  } as const;
+  const existingProviderEvent = params.preserveProviderEventIdentity
+    ? await prisma.event.findFirst({
+        where: {
+          source: PROVIDER_SOURCE,
+          externalEventId: params.oddsEvent.id,
+        },
+        orderBy: [{ updatedAt: "desc" }, { createdAt: "desc" }],
+        select: { id: true, slug: true },
+      })
+    : null;
+
+  if (params.preserveProviderEventIdentity && !existingProviderEvent) {
+    const slugOwner = await prisma.event.findUnique({
+      where: { slug: requestedSlug },
+      select: { source: true, externalEventId: true },
+    });
+    if (
+      slugOwner &&
+      (slugOwner.source !== PROVIDER_SOURCE || slugOwner.externalEventId !== params.oddsEvent.id)
+    ) {
+      throw new Error(`Provider event slug collision for ${requestedSlug}.`);
+    }
+  }
+
+  const event = existingProviderEvent
+    ? await prisma.event.update({
+        where: { id: existingProviderEvent.id },
+        data: eventData,
+        select: { id: true, slug: true, title: true },
+      })
+    : await prisma.event.upsert({
+        where: { slug: requestedSlug },
+        create: {
+          slug: requestedSlug,
+          ...eventData,
+        },
+        update: eventData,
+        select: { id: true, slug: true, title: true },
+      });
 
   const seededMarkets = [];
   for (const marketSpec of params.markets) {
@@ -491,6 +536,9 @@ export async function seedOddsApiSingleEvent(params: {
       region: params.region,
       oddsFormat: params.oddsFormat,
       now,
+      marketStatus: params.marketStatus ?? "LIVE",
+      isListed: params.isListed ?? true,
+      acceptingOrders: params.acceptingOrders ?? true,
     }));
   }
   for (const marketSpec of supplementalKnockoutMarketSpecs({ oddsEvent: params.oddsEvent, markets: params.markets })) {
@@ -499,6 +547,9 @@ export async function seedOddsApiSingleEvent(params: {
       oddsEvent: params.oddsEvent,
       spec: marketSpec,
       now,
+      marketStatus: params.marketStatus ?? "LIVE",
+      isListed: params.isListed ?? true,
+      acceptingOrders: params.acceptingOrders ?? true,
     }));
   }
 
@@ -528,11 +579,43 @@ export async function seedOddsApiSingleEvent(params: {
   };
 }
 
+export function seedOddsApiCatalogEvent(params: {
+  oddsEvent: OddsApiEventOddsResponse;
+  markets: NormalizedOddsApiMarket[];
+  region: string;
+  oddsFormat: string;
+  seededAt?: Date;
+  allowHistoricalReplay?: boolean;
+}) {
+  const now = params.seededAt ?? new Date();
+  const lifecycle = oddsApiCatalogEventLifecycle(params.oddsEvent, now);
+  if (lifecycle.historical && !params.allowHistoricalReplay) {
+    throw new Error("Refusing to activate a historical provider event in catalog mode.");
+  }
+  return seedOddsApiSingleEvent({
+    ...params,
+    seededAt: now,
+    eventSlug: oddsApiCatalogEventSlug(params.oddsEvent),
+    preserveProviderEventIdentity: true,
+    eventStatus: lifecycle.eventStatus,
+    liveStatus: lifecycle.liveStatus,
+    marketStatus: lifecycle.marketStatus,
+    isListed: lifecycle.isListed,
+    acceptingOrders: lifecycle.acceptingOrders,
+  });
+}
+
 function eventMetadata(params: {
   oddsEvent: OddsApiEventOddsResponse;
   region: string;
   oddsFormat: string;
   markets: NormalizedOddsApiMarket[];
+  preserveProviderEventIdentity?: boolean;
+  eventStatus?: string;
+  liveStatus?: string | null;
+  marketStatus?: "LIVE" | "CLOSED";
+  isListed?: boolean;
+  acceptingOrders?: boolean;
 }) {
   return {
     providerSource: PROVIDER_SOURCE,
@@ -569,6 +652,14 @@ function eventMetadata(params: {
     },
     sportsbookDerived: true,
     temporarySingleEventProvider: true,
+    providerCatalogIdentity: params.preserveProviderEventIdentity === true,
+    catalogLifecycle: {
+      eventStatus: params.eventStatus ?? "active",
+      liveStatus: params.liveStatus === undefined ? "LIVE" : params.liveStatus,
+      marketStatus: params.marketStatus ?? "LIVE",
+      isListed: params.isListed ?? true,
+      acceptingOrders: params.acceptingOrders ?? true,
+    },
     externalEventId: params.oddsEvent.id,
     sportKey: params.oddsEvent.sport_key,
     sportTitle: params.oddsEvent.sport_title ?? null,
@@ -710,6 +801,9 @@ async function seedOddsMarket(params: {
   region: string;
   oddsFormat: string;
   now: Date;
+  marketStatus: "LIVE" | "CLOSED";
+  isListed: boolean;
+  acceptingOrders: boolean;
 }) {
   const marketIdentity = `${params.oddsEvent.id}:${params.spec.bookmakerKey}:${params.spec.marketKey}:${params.spec.line ?? "main"}:${params.spec.participantName ?? "all"}`;
   const marketSlug = `${params.event.slug}-${slugify(params.spec.marketKey)}-${shortHash(marketIdentity)}`;
@@ -733,12 +827,12 @@ async function seedOddsMarket(params: {
       participantName: params.spec.participantName ?? undefined,
       participantType: params.spec.participantName ? "team" : undefined,
       propCategory: propCategoryForMarketType(params.spec.marketType),
-      status: "LIVE",
+      status: params.marketStatus,
       eventId: params.event.id,
       visibility: "PUBLIC",
       mechanism: "ORDERBOOK",
       kind: "ORDERBOOK",
-      isListed: true,
+      isListed: params.isListed,
       referenceSource: REFERENCE_SOURCE,
       externalSlug: `${params.oddsEvent.sport_key}-${params.oddsEvent.id}`,
       externalMarketId,
@@ -769,11 +863,11 @@ async function seedOddsMarket(params: {
       participantName: params.spec.participantName,
       participantType: params.spec.participantName ? "team" : null,
       propCategory: propCategoryForMarketType(params.spec.marketType),
-      status: "LIVE",
+      status: params.marketStatus,
       visibility: "PUBLIC",
       mechanism: "ORDERBOOK",
       kind: "ORDERBOOK",
-      isListed: true,
+      isListed: params.isListed,
       referenceSource: REFERENCE_SOURCE,
       externalSlug: `${params.oddsEvent.sport_key}-${params.oddsEvent.id}`,
       externalMarketId,
@@ -839,7 +933,7 @@ async function seedOddsMarket(params: {
       volume24hr: 0,
       liquidity: 1000,
       liquidityClob: 0,
-      acceptingOrders: true,
+      acceptingOrders: params.acceptingOrders,
       qualityStatus: "approved",
       mmEligible: false,
       reason: "temporary_sportsbook_odds_single_event_provider",
@@ -855,6 +949,9 @@ async function seedSupplementalMarket(params: {
   oddsEvent: OddsApiEventOddsResponse;
   spec: SupplementalMarketSpec;
   now: Date;
+  marketStatus: "LIVE" | "CLOSED";
+  isListed: boolean;
+  acceptingOrders: boolean;
 }) {
   const marketSlug = `${params.event.slug}-${params.spec.key}`;
   const externalMarketId = `holiwyn-contract-${marketSlug}`;
@@ -877,12 +974,12 @@ async function seedSupplementalMarket(params: {
       participantName: params.spec.participantName ?? undefined,
       participantType: params.spec.participantName ? "team" : undefined,
       propCategory: propCategoryForMarketType(params.spec.marketType),
-      status: "LIVE",
+      status: params.marketStatus,
       eventId: params.event.id,
       visibility: "PUBLIC",
       mechanism: "ORDERBOOK",
       kind: "ORDERBOOK",
-      isListed: true,
+      isListed: params.isListed,
       referenceSource: "contract-fixture",
       externalSlug: marketSlug,
       externalMarketId,
@@ -904,7 +1001,7 @@ async function seedSupplementalMarket(params: {
         providerBacked: false,
         importStatus: "approved",
         referenceOnly: false,
-        tradable: true,
+        tradable: params.isListed,
         reason: params.spec.marketType === "to_advance"
           ? "Knockout top buttons need team-to-advance semantics; provider h2h is regulation-only."
           : "Clean signed half-goal prediction-market spread ladder for mobile internal testing.",
@@ -923,11 +1020,11 @@ async function seedSupplementalMarket(params: {
       participantName: params.spec.participantName,
       participantType: params.spec.participantName ? "team" : null,
       propCategory: propCategoryForMarketType(params.spec.marketType),
-      status: "LIVE",
+      status: params.marketStatus,
       visibility: "PUBLIC",
       mechanism: "ORDERBOOK",
       kind: "ORDERBOOK",
-      isListed: true,
+      isListed: params.isListed,
       referenceSource: "contract-fixture",
       externalSlug: marketSlug,
       externalMarketId,
@@ -942,6 +1039,18 @@ async function seedSupplementalMarket(params: {
         period: params.spec.period,
       },
       rulesText: "Internal fake-token market. Provider h2h remains regulation-only; this contract supplies the prediction-market UX layer.",
+      referenceMetadata: {
+        providerSource: PROVIDER_SOURCE,
+        referenceSource: "contract-fixture",
+        sportsbookDerived: false,
+        providerBacked: false,
+        importStatus: "approved",
+        referenceOnly: false,
+        tradable: params.isListed,
+        reason: params.spec.marketType === "to_advance"
+          ? "Knockout top buttons need team-to-advance semantics; provider h2h is regulation-only."
+          : "Clean signed half-goal prediction-market spread ladder for mobile internal testing.",
+      },
     },
     select: {
       id: true,
@@ -985,7 +1094,7 @@ async function seedSupplementalMarket(params: {
       volume24hr: 0,
       liquidity: 1000,
       liquidityClob: 0,
-      acceptingOrders: true,
+      acceptingOrders: params.acceptingOrders,
       qualityStatus: "approved",
       mmEligible: false,
       reason: "holiwyn_supplemental_prediction_contract",
@@ -1111,6 +1220,7 @@ function marketReferenceMetadata(params: {
   region: string;
   oddsFormat: string;
   now: Date;
+  isListed: boolean;
 }) {
   return {
     providerSource: PROVIDER_SOURCE,
@@ -1118,7 +1228,7 @@ function marketReferenceMetadata(params: {
     sportsbookDerived: true,
     importStatus: "approved",
     referenceOnly: false,
-    tradable: true,
+    tradable: params.isListed,
     providerBacked: true,
     externalEventId: params.oddsEvent.id,
     bookmaker: {
