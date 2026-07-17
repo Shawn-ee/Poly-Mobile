@@ -1,0 +1,73 @@
+{
+  "pass": true,
+  "liquidityPurpose": "buy-fill",
+  "routeContract": {
+    "mobileFlow": "Event Detail line market -> generic Buy ticket -> /api/orders BUY -> Portfolio History",
+    "expectedRestingSide": "SELL",
+    "source": "local-mvp-internal-liquidity"
+  },
+  "eventSlug": "odds-api-single-soccer-test",
+  "market": {
+    "id": "3a617175-3792-437f-9f6a-b21a22860699",
+    "title": "Chapecoense vs. Bahia: Total Goals 2.5",
+    "marketType": "total_goals",
+    "marketGroupKey": "totals",
+    "period": "regulation",
+    "line": "2.5",
+    "referenceSource": "sportsbook-odds",
+    "externalMarketId": "e64cfcc03ee00f71d21b9c99e9c37d2d:betmgm:totals:2.5",
+    "conditionId": "odds-api-5c4eb598c1d6a8fc07b3e4a9"
+  },
+  "outcome": {
+    "id": "dbe95da1-41b1-46be-9e78-e45a5b6408bc",
+    "name": "Over +2.5",
+    "side": "over",
+    "referenceTokenId": "odds-api-760d63e916546c48a66dafaa",
+    "referenceOutcomeLabel": "Over +2.5"
+  },
+  "cleanupOnly": false,
+  "maker": {
+    "id": "3a1b9f20-5e9f-4d3a-9052-3a63b0184c70",
+    "username": "mobile_route_fill_maker_61195974"
+  },
+  "cleanup": {
+    "resetSelectedMarketState": {
+      "requested": true,
+      "canonicalEventsPreserved": true,
+      "deletedFills": 1,
+      "deletedTrades": 2,
+      "deletedOrders": 2,
+      "deletedPositions": 3,
+      "collateralReset": true
+    },
+    "enabled": true,
+    "proofUserPrefix": "holiwyn-mobile-",
+    "canceledProofBids": [],
+    "cleanupBlockingBids": true,
+    "canceledBlockingBids": [],
+    "cleanupBlockingMarketBids": true,
+    "cleanupBlockingMarketBidsForcedByPurpose": false,
+    "canceledBlockingMarketBids": [],
+    "cleanupProofAsks": false,
+    "canceledProofAsks": [],
+    "cleanupBlockingAsks": false,
+    "canceledBlockingAsks": []
+  },
+  "makerOrder": {
+    "id": "f6dde1c0-46f4-46d8-8cf3-3f7b8f898583",
+    "marketId": "3a617175-3792-437f-9f6a-b21a22860699",
+    "outcomeId": "dbe95da1-41b1-46be-9e78-e45a5b6408bc",
+    "side": "SELL",
+    "price": "0.58",
+    "size": "100",
+    "remaining": "100",
+    "reservedNotional": "0",
+    "status": "OPEN"
+  },
+  "seededAsk": {
+    "side": "SELL",
+    "price": "0.58",
+    "size": "100",
+    "intendedMobileTaker": "BUY $25 route-backed totals ticket"
+  }
+}

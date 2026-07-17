@@ -1,9 +1,9 @@
 {
-    "generatedAt":  "2026-07-14T14:30:37.9642002Z",
+    "generatedAt":  "2026-07-17T08:49:57.8451660Z",
     "scope":  "holiwyn-one-event-continuous-supervisor-proof",
     "pass":  true,
-    "startedAt":  "2026-07-14T14:29:11.9118478Z",
-    "completedAt":  "2026-07-14T14:30:37.9642002Z",
+    "startedAt":  "2026-07-17T08:49:20.4221105Z",
+    "completedAt":  "2026-07-17T08:49:57.8451660Z",
     "settings":  {
                      "backendPort":  3002,
                      "intervalSeconds":  1,
@@ -22,14 +22,14 @@
                   "backendStartSummaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\continuous-supervisor-backend-start-summary.redacted.json",
                   "backendStartedProcessStopped":  null,
                   "nodeProcessCountBefore":  24,
-                  "nodeProcessCountAfter":  23
+                  "nodeProcessCountAfter":  24
               },
     "runtimeTruth":  {
                          "repeatedLocalSupervisorCyclesProven":  true,
                          "marketMakerReseedWhileRunning":  true,
                          "lifecycleSchedulerWhileRunning":  true,
-                         "resultIngestionWhileRunning":  true,
-                         "resultSettlementSchedulerWhileRunning":  true,
+                         "resultIngestionWhileRunning":  false,
+                         "resultSettlementSchedulerWhileRunning":  false,
                          "providerRefreshMode":  "cached provider proof verification; no provider quota spent",
                          "quotaProtected":  true,
                          "installedOsService":  false,
@@ -42,8 +42,8 @@
                          "exitCode":  0,
                          "pass":  true,
                          "timedOut":  false,
-                         "startedAt":  "2026-07-14T14:29:11.9289773Z",
-                         "finishedAt":  "2026-07-14T14:30:15.5645379Z",
+                         "startedAt":  "2026-07-17T08:49:20.4852096Z",
+                         "finishedAt":  "2026-07-17T08:49:22.8384535Z",
                          "outputTail":  [
                                             "                         \"installedOsService\":  false,",
                                             "                         \"providerRefreshMode\":  \"cached provider proof verification; no provider quota spent\",",
@@ -73,20 +73,20 @@
                          "exitCode":  0,
                          "pass":  true,
                          "timedOut":  false,
-                         "startedAt":  "2026-07-14T14:29:11.9118478Z",
-                         "finishedAt":  "2026-07-14T14:30:15.6624543Z",
+                         "startedAt":  "2026-07-17T08:49:20.4221105Z",
+                         "finishedAt":  "2026-07-17T08:49:23.0550480Z",
                          "outputTail":  [
                                             "backend status: already_healthy"
                                         ]
                      },
                      {
                          "label":  "foreground-repeated-supervisor",
-                         "command":  "powershell -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_live_supervisor.ps1 -BackendPort 3002 -MaxIterations 2 -IntervalSeconds 1 -RunResultIngestion -RunResultSettlement -SkipSleep",
+                         "command":  "powershell -ExecutionPolicy Bypass -File scripts/run_holiwyn_one_event_live_supervisor.ps1 -BackendPort 3002 -MaxIterations 2 -IntervalSeconds 1 -SkipSleep",
                          "exitCode":  0,
                          "pass":  true,
                          "timedOut":  false,
-                         "startedAt":  "2026-07-14T14:30:15.6644542Z",
-                         "finishedAt":  "2026-07-14T14:30:35.0163858Z",
+                         "startedAt":  "2026-07-17T08:49:23.0600485Z",
+                         "finishedAt":  "2026-07-17T08:49:54.1214216Z",
                          "outputTail":  [
                                             "                                                  \"p2\":  [",
                                             "                                                             \"multi-market inventory-aware quoting remains future work\"",
@@ -116,8 +116,8 @@
                          "exitCode":  0,
                          "pass":  true,
                          "timedOut":  false,
-                         "startedAt":  "2026-07-14T14:30:35.0258972Z",
-                         "finishedAt":  "2026-07-14T14:30:37.1995276Z",
+                         "startedAt":  "2026-07-17T08:49:54.1405345Z",
+                         "finishedAt":  "2026-07-17T08:49:55.6250000Z",
                          "outputTail":  [
                                             "    \"continuousSupervisorProofPassed\": true,",
                                             "    \"repeatedSupervisorCapabilitiesKnown\": true,",
@@ -147,8 +147,8 @@
                          "exitCode":  0,
                          "pass":  true,
                          "timedOut":  false,
-                         "startedAt":  "2026-07-14T14:30:37.2005303Z",
-                         "finishedAt":  "2026-07-14T14:30:37.9404904Z",
+                         "startedAt":  "2026-07-17T08:49:55.6280005Z",
+                         "finishedAt":  "2026-07-17T08:49:57.8020365Z",
                          "outputTail":  [
                                             "                         \"installedOsService\":  false,",
                                             "                         \"providerRefreshMode\":  \"cached provider proof verification; no provider quota spent\",",
@@ -180,7 +180,7 @@
                  "p1":  [
                             "This proves repeated local supervisor cycles, not an installed OS service.",
                             "Background start/status/stop is available through the process manager and now stops process trees, but always-on service installation remains future work.",
-                            "Provider-shaped replay result ingestion is proven, and opt-in quota-capped live result ingestion is available through the supervisor; installed unattended live result polling and settlement execution remain future work."
+                            "Result polling is delegated to the dedicated lifecycle-aware result poller; the supervisor continuity proof covers provider cache checks, maker reseeding, and event lifecycle without forcing a stale result fixture."
                         ],
                  "p2":  [
                             "Multi-event process supervision remains future work."

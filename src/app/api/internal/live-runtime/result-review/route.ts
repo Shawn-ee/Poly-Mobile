@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
   });
 
   return NextResponse.json(status, {
-    status: status.status === "ready" ? 200 : 503,
+    status: status.status === "needs_attention" ? 503 : 200,
     headers: {
       "Cache-Control": "no-store",
     },

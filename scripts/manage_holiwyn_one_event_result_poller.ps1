@@ -152,18 +152,35 @@ function Get-State {
   }
   $process = Get-Process -Id ([int]$state.pid) -ErrorAction SilentlyContinue
   $processStartTime = $null
+  $processCommandLine = $null
+  $identityMatches = $false
   if ($process) {
     try {
       $processStartTime = $process.StartTime.ToUniversalTime().ToString("o")
     } catch {
       $processStartTime = $null
     }
+    try {
+      $processCommandLine = (Get-CimInstance Win32_Process -Filter "ProcessId = $($process.Id)" -ErrorAction Stop).CommandLine
+    } catch {
+      $processCommandLine = $null
+    }
+    $stateStartedAt = $null
+    if ($state.startedAt) {
+      try { $stateStartedAt = [DateTimeOffset]::Parse("$($state.startedAt)").UtcDateTime } catch { $stateStartedAt = $null }
+    }
+    $actualStartedAt = $null
+    try { $actualStartedAt = $process.StartTime.ToUniversalTime() } catch { $actualStartedAt = $null }
+    $startTimeMatches = [bool]($stateStartedAt -and $actualStartedAt -and [Math]::Abs(($actualStartedAt - $stateStartedAt).TotalSeconds) -le 5)
+    $commandMatches = [bool]($processCommandLine -and $processCommandLine.Contains("run_holiwyn_one_event_result_poller.ps1"))
+    $identityMatches = [bool]($startTimeMatches -and $commandMatches)
   }
   return [ordered]@{
     known = $true
     pid = [int]$state.pid
-    running = [bool]$process
-    process = if ($process) {
+    running = [bool]($process -and $identityMatches)
+    stalePidReused = [bool]($process -and -not $identityMatches)
+    process = if ($process -and $identityMatches) {
       [ordered]@{
         id = $process.Id
         processName = $process.ProcessName
@@ -320,6 +337,8 @@ if ($Action -eq "start") {
   } else {
     $operation.result = "not_running"
   }
+  Remove-Item -LiteralPath $StatePath -Force -ErrorAction SilentlyContinue
+  Remove-Item -LiteralPath $StopRequestPath -Force -ErrorAction SilentlyContinue
 } else {
   $operation.result = if ($stateBefore.running) { "running" } else { "not_running" }
 }

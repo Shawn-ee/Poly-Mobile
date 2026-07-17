@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/db";
 
 type JsonObject = Record<string, unknown>;
+const DEFAULT_EVENT_SLUG = "odds-api-single-soccer-test";
 
 const stringValue = (value: unknown) => (typeof value === "string" && value.length > 0 ? value : null);
 
@@ -163,7 +164,29 @@ const operatorExecutionPlanFor = (params: {
 };
 
 export async function getLocalLiveRuntimeSettlementQueue() {
+  const currentEvent = await prisma.event.findUnique({
+    where: { slug: DEFAULT_EVENT_SLUG },
+    select: {
+      id: true,
+      slug: true,
+      title: true,
+      status: true,
+      liveStatus: true,
+      startTime: true,
+      externalEventId: true,
+      markets: {
+        where: { isListed: true, visibility: "PUBLIC" },
+        select: { id: true, status: true, resolvedOutcomeId: true },
+      },
+    },
+  });
   const reviews = await prisma.officialResultReview.findMany({
+    where: currentEvent
+      ? {
+          eventId: currentEvent.id,
+          ...(currentEvent.externalEventId ? { providerEventId: currentEvent.externalEventId } : {}),
+        }
+      : { eventId: "__missing_current_event__" },
     orderBy: { updatedAt: "desc" },
     take: 20,
   });
@@ -193,7 +216,18 @@ export async function getLocalLiveRuntimeSettlementQueue() {
     : [];
   const marketById = new Map(markets.map((market) => [market.id, market]));
 
-  const items = reviews.map((review) => {
+  const scopedReviews = reviews.filter((review) => {
+    if (!review.marketId) return review.eventId === currentEvent?.id;
+    const market = marketById.get(review.marketId);
+    return (
+      market != null &&
+      market.event?.id === currentEvent?.id &&
+      typeof currentEvent?.title === "string" &&
+      market.title.startsWith(`${currentEvent.title}:`)
+    );
+  });
+
+  const items = scopedReviews.map((review) => {
     const market = review.marketId ? marketById.get(review.marketId) ?? null : null;
     const alreadyExecuted = review.settlementExecutedCanonicalId != null;
     const nextSafeAction = decisionFor({
@@ -294,8 +328,18 @@ export async function getLocalLiveRuntimeSettlementQueue() {
     };
   });
 
+  const awaitingFinalResult =
+    currentEvent != null &&
+    items.length === 0 &&
+    currentEvent.markets.some(
+      (market) => ["LIVE", "PAUSED"].includes(market.status) && market.resolvedOutcomeId == null,
+    );
+  const settlementEvidenceRequired = !awaitingFinalResult;
   const checks = {
+    currentEventFound: currentEvent != null,
+    currentEventIdentityBound: items.every((item) => item.providerEventId === currentEvent?.externalEventId),
     durableReviewRowsFound: items.length > 0,
+    awaitingFinalResult,
     marketRowsFoundForReviews: items.every((item) => item.market != null || item.marketId == null),
     exactConfirmationNotStored: items.every((item) => item.exactConfirmationStored === false),
     providerQuotaNotUsed: items.every((item) => item.providerQuotaUsed === false),
@@ -308,15 +352,39 @@ export async function getLocalLiveRuntimeSettlementQueue() {
       .filter((item) => item.nextSafeAction === "already_executed" || item.hasExecutionAudit)
       .every((item) => item.executionEvidence.canonicalExecutionEventAvailable === true),
   };
-  const p0 = Object.entries(checks)
+  const requiredChecks = {
+    currentEventFound: checks.currentEventFound,
+    currentEventIdentityBound: checks.currentEventIdentityBound,
+    reviewStateKnown: checks.durableReviewRowsFound || checks.awaitingFinalResult,
+    marketRowsFoundForReviews: checks.marketRowsFoundForReviews,
+    exactConfirmationNotStored: checks.exactConfirmationNotStored,
+    providerQuotaNotUsed: checks.providerQuotaNotUsed,
+    activeMarketExecutionNotAttempted: checks.activeMarketExecutionNotAttempted,
+    approvalStateKnown: checks.awaitingFinalResult || checks.approvedOrExecutedReviewAvailable,
+    canonicalApprovalEvidenceForApprovedReviews: checks.canonicalApprovalEvidenceForApprovedReviews,
+    canonicalExecutionEvidenceForExecutedReviews: checks.canonicalExecutionEvidenceForExecutedReviews,
+  };
+  const p0 = Object.entries(requiredChecks)
     .filter(([, value]) => value !== true)
     .map(([key]) => key);
+  const status = p0.length > 0 ? "needs_attention" : awaitingFinalResult ? "awaiting_result" : "ready";
 
   return {
     generatedAt: new Date().toISOString(),
     scope: "holiwyn-local-live-runtime-settlement-queue",
-    status: p0.length === 0 ? "ready" : "needs_attention",
+    status,
     providerQuotaUsed: false,
+    currentEvent: currentEvent
+      ? {
+          id: currentEvent.id,
+          slug: currentEvent.slug,
+          title: currentEvent.title,
+          status: currentEvent.status,
+          liveStatus: currentEvent.liveStatus,
+          startTime: currentEvent.startTime?.toISOString() ?? null,
+          externalEventId: currentEvent.externalEventId,
+        }
+      : null,
     queue: {
       itemCount: items.length,
       pendingCount: items.filter((item) => !item.hasExecutionAudit).length,
@@ -333,6 +401,9 @@ export async function getLocalLiveRuntimeSettlementQueue() {
       exactConfirmationStringsExposed: false,
       exactConfirmationStored: items.some((item) => item.exactConfirmationStored),
       activeMarketExecutionAttempted: items.some((item) => item.activeMarketExecutionAttempted),
+      settlementEvidenceRequired,
+      awaitingFinalResult,
+      excludedHistoricalReviewCount: reviews.length - scopedReviews.length,
       usesDurableOfficialResultReviewRows: true,
       operatorQueueAvailable: p0.length === 0,
       redactedOperatorExecutionPlanAvailable: items.every(
@@ -358,7 +429,9 @@ export async function getLocalLiveRuntimeSettlementQueue() {
       p0,
       p1: [
         "This local settlement queue is read-only and proof-backed; installed official-result polling remains future work.",
-        "Execution still requires an authenticated operator path before production use.",
+        awaitingFinalResult
+          ? "The current active event has no matching final result, so the correctly scoped settlement queue is empty."
+          : "Execution still requires an authenticated operator path before production use.",
       ],
       p2: ["Operator UI and multi-event dashboard remain future work."],
     },

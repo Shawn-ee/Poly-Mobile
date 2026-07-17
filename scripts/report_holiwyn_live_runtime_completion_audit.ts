@@ -166,6 +166,78 @@ async function main() {
   const internalTesterRuntimeScript = await fs.readFile("scripts/manage_holiwyn_internal_tester_runtime.ps1", "utf8");
   const phaseAuditP0Complete =
     pass(entries.phaseAudit) && getPath(entries.phaseAudit, ["conclusion", "p0Complete"]) === true;
+  const phaseResultReview = getPath(entries.phaseAudit, ["localResultReview", "body"]);
+  const phaseResultReviewP0 = getPath(phaseResultReview, ["gaps", "p0"]);
+  const phaseResultReviewCommonSafe =
+    getPath(entries.phaseAudit, ["localResultReview", "ok"]) === true &&
+    getPath(phaseResultReview, ["providerQuotaUsed"]) === false &&
+    getPath(phaseResultReview, ["runtimeTruth", "readOnlyRoute"]) === true &&
+    getPath(phaseResultReview, ["runtimeTruth", "devOnlyRoute"]) === true &&
+    getPath(phaseResultReview, ["runtimeTruth", "activeTesterSettlementExecutionAttempted"]) === false &&
+    getPath(phaseResultReview, ["executionDecision", "exactConfirmationRedacted"]) === true &&
+    getPath(phaseResultReview, ["executionDecision", "activeMarketExecutionAttemptedByThisRoute"]) === false &&
+    Array.isArray(phaseResultReviewP0) &&
+    phaseResultReviewP0.length === 0;
+  const phaseResultReviewAwaiting =
+    phaseResultReviewCommonSafe &&
+    getPath(phaseResultReview, ["status"]) === "awaiting_result" &&
+    getPath(phaseResultReview, ["runtimeTruth", "settlementEvidenceRequired"]) === false &&
+    getPath(phaseResultReview, ["runtimeTruth", "awaitingFinalResult"]) === true &&
+    getPath(phaseResultReview, ["executionDecision", "operatorDecision"]) === "awaiting_final_result" &&
+    getPath(phaseResultReview, ["executionDecision", "exactConfirmationRequiredKnown"]) === false;
+  const phaseResultReviewEvidenceReady =
+    phaseResultReviewCommonSafe &&
+    getPath(phaseResultReview, ["status"]) === "ready" &&
+    getPath(phaseResultReview, ["runtimeTruth", "settlementEvidenceRequired"]) !== false &&
+    getPath(phaseResultReview, ["runtimeTruth", "awaitingFinalResult"]) !== true &&
+    getPath(phaseResultReview, ["runtimeTruth", "canonicalProviderResultAuditAvailable"]) === true &&
+    getPath(phaseResultReview, ["runtimeTruth", "canonicalSettlementPreflightAuditAvailable"]) === true &&
+    getPath(phaseResultReview, ["runtimeTruth", "canonicalSettlementApprovalAuditAvailable"]) === true &&
+    getPath(phaseResultReview, ["runtimeTruth", "durableOfficialResultReviewRecordAvailable"]) === true &&
+    getPath(phaseResultReview, ["officialResultReview", "exactConfirmationStored"]) === false &&
+    getPath(phaseResultReview, ["officialResultReview", "providerQuotaUsed"]) === false &&
+    getPath(phaseResultReview, ["officialResultReview", "activeMarketExecutionAttempted"]) === false &&
+    getPath(phaseResultReview, ["executionDecision", "exactConfirmationRequiredKnown"]) === true;
+  const phaseResultReviewKnown = phaseResultReviewAwaiting || phaseResultReviewEvidenceReady;
+  const phaseSettlementQueue = getPath(entries.phaseAudit, ["localSettlementQueue", "body"]);
+  const phaseSettlementQueueP0 = getPath(phaseSettlementQueue, ["gaps", "p0"]);
+  const phaseSettlementQueueCommonSafe =
+    getPath(entries.phaseAudit, ["localSettlementQueue", "ok"]) === true &&
+    getPath(phaseSettlementQueue, ["providerQuotaUsed"]) === false &&
+    getPath(phaseSettlementQueue, ["runtimeTruth", "readOnlyRoute"]) === true &&
+    getPath(phaseSettlementQueue, ["runtimeTruth", "devOnlyRoute"]) === true &&
+    getPath(phaseSettlementQueue, ["runtimeTruth", "usesDurableOfficialResultReviewRows"]) === true &&
+    getPath(phaseSettlementQueue, ["runtimeTruth", "operatorQueueAvailable"]) === true &&
+    getPath(phaseSettlementQueue, ["runtimeTruth", "redactedOperatorExecutionPlanAvailable"]) === true &&
+    getPath(phaseSettlementQueue, ["runtimeTruth", "structuredOperatorExecutionPlanAvailable"]) === true &&
+    getPath(phaseSettlementQueue, ["runtimeTruth", "exactConfirmationStringsExposed"]) === false &&
+    getPath(phaseSettlementQueue, ["runtimeTruth", "exactConfirmationStored"]) === false &&
+    getPath(phaseSettlementQueue, ["runtimeTruth", "activeMarketExecutionAttempted"]) === false &&
+    Array.isArray(phaseSettlementQueueP0) &&
+    phaseSettlementQueueP0.length === 0;
+  const phaseSettlementQueueAwaiting =
+    phaseSettlementQueueCommonSafe &&
+    getPath(phaseSettlementQueue, ["status"]) === "awaiting_result" &&
+    getPath(phaseSettlementQueue, ["runtimeTruth", "settlementEvidenceRequired"]) === false &&
+    getPath(phaseSettlementQueue, ["runtimeTruth", "awaitingFinalResult"]) === true &&
+    getPath(phaseSettlementQueue, ["queue", "itemCount"]) === 0;
+  const phaseSettlementQueueEvidenceReady =
+    phaseSettlementQueueCommonSafe &&
+    getPath(phaseSettlementQueue, ["status"]) === "ready" &&
+    getPath(phaseSettlementQueue, ["runtimeTruth", "settlementEvidenceRequired"]) !== false &&
+    getPath(phaseSettlementQueue, ["runtimeTruth", "awaitingFinalResult"]) !== true &&
+    getPath(phaseSettlementQueue, ["runtimeTruth", "durableApprovalEvidenceAvailable"]) === true &&
+    typeof getPath(phaseSettlementQueue, ["queue", "itemCount"]) === "number" &&
+    (getPath(phaseSettlementQueue, ["queue", "itemCount"]) as number) > 0 &&
+    typeof getPath(phaseSettlementQueue, ["queue", "items", "0", "operatorAction", "label"]) === "string" &&
+    typeof getPath(phaseSettlementQueue, ["queue", "items", "0", "operatorAction", "nextCommand"]) === "string" &&
+    getPath(phaseSettlementQueue, ["queue", "items", "0", "operatorAction", "exactConfirmationExposed"]) === false &&
+    getPath(phaseSettlementQueue, ["queue", "items", "0", "operatorExecutionPlan", "version"]) === 1 &&
+    getPath(phaseSettlementQueue, ["queue", "items", "0", "operatorExecutionPlan", "providerQuotaRequired"]) === false &&
+    getPath(phaseSettlementQueue, ["queue", "items", "0", "operatorExecutionPlan", "exactConfirmationExposed"]) === false &&
+    getPath(phaseSettlementQueue, ["queue", "items", "0", "operatorExecutionPlan", "exactConfirmationStored"]) === false &&
+    getPath(phaseSettlementQueue, ["checks", "canonicalApprovalEvidenceForApprovedReviews"]) === true;
+  const phaseSettlementQueueKnown = phaseSettlementQueueAwaiting || phaseSettlementQueueEvidenceReady;
 
   const eventTitle =
     getPath(entries.runtimeStatus, ["event", "title"]) ?? getPath(entries.liveProviderProof, ["event", "title"]);
@@ -275,57 +347,10 @@ async function main() {
       getPath(entries.activeSettlementClosedEligibility, ["runtimeTruth", "providerQuotaUsed"]) === false,
     localResultReviewApiKnown:
       phaseAuditP0Complete ||
-      pass(entries.phaseAudit) &&
-      getPath(entries.phaseAudit, ["localResultReview", "ok"]) === true &&
-      getPath(entries.phaseAudit, ["localResultReview", "body", "status"]) === "ready" &&
-      getPath(entries.phaseAudit, ["localResultReview", "body", "providerQuotaUsed"]) === false &&
-      getPath(entries.phaseAudit, ["localResultReview", "body", "runtimeTruth", "readOnlyRoute"]) === true &&
-      getPath(entries.phaseAudit, ["localResultReview", "body", "runtimeTruth", "devOnlyRoute"]) === true &&
-      getPath(entries.phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalProviderResultAuditAvailable"]) === true &&
-      getPath(entries.phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalSettlementPreflightAuditAvailable"]) === true &&
-      getPath(entries.phaseAudit, ["localResultReview", "body", "runtimeTruth", "canonicalSettlementApprovalAuditAvailable"]) === true &&
-      getPath(entries.phaseAudit, ["localResultReview", "body", "runtimeTruth", "durableOfficialResultReviewRecordAvailable"]) === true &&
-      getPath(entries.phaseAudit, ["localResultReview", "body", "officialResultReview", "exactConfirmationStored"]) === false &&
-      getPath(entries.phaseAudit, ["localResultReview", "body", "officialResultReview", "providerQuotaUsed"]) === false &&
-      getPath(entries.phaseAudit, ["localResultReview", "body", "officialResultReview", "activeMarketExecutionAttempted"]) === false &&
-      getPath(entries.phaseAudit, ["localResultReview", "body", "executionDecision", "exactConfirmationRequiredKnown"]) === true &&
-      getPath(entries.phaseAudit, ["localResultReview", "body", "executionDecision", "exactConfirmationRedacted"]) === true &&
-      getPath(entries.phaseAudit, ["localResultReview", "body", "executionDecision", "activeMarketExecutionAttemptedByThisRoute"]) === false &&
-      Array.isArray(getPath(entries.phaseAudit, ["localResultReview", "body", "gaps", "p0"])) &&
-      (getPath(entries.phaseAudit, ["localResultReview", "body", "gaps", "p0"]) as unknown[]).length === 0,
+      (pass(entries.phaseAudit) && phaseResultReviewKnown),
     localSettlementQueueApiKnown:
       phaseAuditP0Complete ||
-      pass(entries.phaseAudit) &&
-      getPath(entries.phaseAudit, ["localSettlementQueue", "ok"]) === true &&
-      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "status"]) === "ready" &&
-      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "providerQuotaUsed"]) === false &&
-      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "readOnlyRoute"]) === true &&
-      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "devOnlyRoute"]) === true &&
-      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "usesDurableOfficialResultReviewRows"]) === true &&
-      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "operatorQueueAvailable"]) === true &&
-      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "redactedOperatorExecutionPlanAvailable"]) === true &&
-      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "structuredOperatorExecutionPlanAvailable"]) === true &&
-      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "durableApprovalEvidenceAvailable"]) === true &&
-      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "exactConfirmationStringsExposed"]) === false &&
-      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "exactConfirmationStored"]) === false &&
-      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "runtimeTruth", "activeMarketExecutionAttempted"]) === false &&
-      typeof getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "itemCount"]) === "number" &&
-      (getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "itemCount"]) as number) > 0 &&
-      typeof getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "operatorAction", "label"]) === "string" &&
-      typeof getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "operatorAction", "nextCommand"]) === "string" &&
-      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "operatorAction", "exactConfirmationExposed"]) === false &&
-      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "operatorAction", "providerQuotaRequired"]) === false &&
-      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "operatorExecutionPlan", "version"]) === 1 &&
-      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "operatorExecutionPlan", "providerQuotaRequired"]) === false &&
-      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "operatorExecutionPlan", "exactConfirmationExposed"]) === false &&
-      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "operatorExecutionPlan", "exactConfirmationStored"]) === false &&
-      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "approvalEvidence", "durableReviewRowAvailable"]) === true &&
-      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "approvalEvidence", "canonicalApprovalEventAvailable"]) === true &&
-      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "approvalEvidence", "exactConfirmationStored"]) === false &&
-      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "queue", "items", "0", "approvalEvidence", "exactConfirmationRedacted"]) === true &&
-      getPath(entries.phaseAudit, ["localSettlementQueue", "body", "checks", "canonicalApprovalEvidenceForApprovedReviews"]) === true &&
-      Array.isArray(getPath(entries.phaseAudit, ["localSettlementQueue", "body", "gaps", "p0"])) &&
-      (getPath(entries.phaseAudit, ["localSettlementQueue", "body", "gaps", "p0"]) as unknown[]).length === 0,
+      (pass(entries.phaseAudit) && phaseSettlementQueueKnown),
     durableRuntimeHeartbeatsKnown:
       pass(entries.phaseAudit) &&
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "runtimeHeartbeats", "checked"]) === true &&
@@ -1022,9 +1047,10 @@ async function main() {
       pass(entries.phaseAudit) &&
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "operatorControlBoundary", "checked"]) === true &&
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "operatorControlBoundary", "mode"]) ===
-        "local_dev_read_only_operator_controls" &&
+        "local_dev_guarded_operator_controls" &&
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "operatorControlBoundary", "devOnly"]) === true &&
-      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "operatorControlBoundary", "readOnly"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "operatorControlBoundary", "statusProjectionReadOnly"]) === true &&
+      getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "operatorControlBoundary", "readOnly"]) === false &&
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "operatorControlBoundary", "noProviderQuota"]) === true &&
       getPath(entries.phaseAudit, ["localRuntimeStatus", "body", "operatorControlBoundary", "publicMobileRoute"]) ===
         false &&
@@ -1047,7 +1073,7 @@ async function main() {
         "operatorControlBoundary",
         "authenticatedControls",
         "available",
-      ]) === false &&
+      ]) === true &&
       getPath(entries.phaseAudit, [
         "localRuntimeStatus",
         "body",
@@ -1073,23 +1099,65 @@ async function main() {
         "localRuntimeStatus",
         "body",
         "operatorControlBoundary",
+        "authenticatedControls",
+        "approvalRouteAvailable",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "authenticatedControls",
+        "executionRouteAvailable",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "authenticatedControls",
+        "operatorAuditTableAvailable",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "authenticatedControls",
+        "twoPersonOrAdminPolicyAvailable",
+      ]) === true &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "authenticatedControls",
+        "dedicatedProductionRoleModelAvailable",
+      ]) === false &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
+        "authenticatedControls",
+        "productionOperatorUiAvailable",
+      ]) === false &&
+      getPath(entries.phaseAudit, [
+        "localRuntimeStatus",
+        "body",
+        "operatorControlBoundary",
         "productionAuthRequirements",
         "version",
-      ]) === 1 &&
+      ]) === 2 &&
       getPath(entries.phaseAudit, [
         "localRuntimeStatus",
         "body",
         "operatorControlBoundary",
         "productionAuthRequirements",
         "status",
-      ]) === "session_route_implemented" &&
+      ]) === "local_operator_controls_implemented_production_workflow_incomplete" &&
       getPath(entries.phaseAudit, [
         "localRuntimeStatus",
         "body",
         "operatorControlBoundary",
         "productionAuthRequirements",
         "p1Gap",
-      ]) === "authenticated_operator_controls_missing" &&
+      ]) === "production_operator_workflow_incomplete" &&
       getPath(entries.phaseAudit, [
         "localRuntimeStatus",
         "body",

@@ -1,7 +1,7 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-15T05:19:31.770Z",
-  "startedAt": "2026-07-15T05:19:28.323Z",
+  "generatedAt": "2026-07-17T07:32:30.540Z",
+  "startedAt": "2026-07-17T07:32:25.304Z",
   "scope": "odds-api-one-event-live-runtime",
   "policy": {
     "fakeTokenOnly": true,
@@ -15,10 +15,10 @@
     "quoteOffsetTicks": 2
   },
   "event": {
-    "providerEventId": "ced22494ae0bbb8cc4f7108bf6f493df",
-    "sportKey": "soccer_fifa_world_cup",
-    "title": "Argentina vs. England",
-    "commenceTime": "2026-07-15T19:00:00Z",
+    "providerEventId": "e64cfcc03ee00f71d21b9c99e9c37d2d",
+    "sportKey": "soccer_brazil_campeonato",
+    "title": "Chapecoense vs. Bahia",
+    "commenceTime": "2026-07-17T22:30:00Z",
     "localSlug": "odds-api-single-soccer-test"
   },
   "provider": {
@@ -29,62 +29,161 @@
         "path": "/v4/sports",
         "status": 200,
         "quota": {
-          "requestsUsed": "258",
-          "requestsRemaining": "242",
+          "requestsUsed": "282",
+          "requestsRemaining": "218",
           "requestsLast": "0"
         }
       },
       {
         "name": "events:soccer_fifa_world_cup",
         "method": "GET",
-        "path": "/v4/sports/soccer_fifa_world_cup/events?dateFormat=iso&commenceTimeFrom=2026-07-15T00%3A00%3A00Z&commenceTimeTo=2026-07-16T00%3A00%3A00Z",
+        "path": "/v4/sports/soccer_fifa_world_cup/events?dateFormat=iso&commenceTimeFrom=2026-07-17T00%3A00%3A00Z&commenceTimeTo=2026-07-18T00%3A00%3A00Z",
         "status": 200,
         "quota": {
-          "requestsUsed": "258",
-          "requestsRemaining": "242",
+          "requestsUsed": "282",
+          "requestsRemaining": "218",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_usa_mls",
+        "method": "GET",
+        "path": "/v4/sports/soccer_usa_mls/events?dateFormat=iso&commenceTimeFrom=2026-07-17T00%3A00%3A00Z&commenceTimeTo=2026-07-18T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "282",
+          "requestsRemaining": "218",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_england_efl_cup",
+        "method": "GET",
+        "path": "/v4/sports/soccer_england_efl_cup/events?dateFormat=iso&commenceTimeFrom=2026-07-17T00%3A00%3A00Z&commenceTimeTo=2026-07-18T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "282",
+          "requestsRemaining": "218",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_england_league1",
+        "method": "GET",
+        "path": "/v4/sports/soccer_england_league1/events?dateFormat=iso&commenceTimeFrom=2026-07-17T00%3A00%3A00Z&commenceTimeTo=2026-07-18T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "282",
+          "requestsRemaining": "218",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_england_league2",
+        "method": "GET",
+        "path": "/v4/sports/soccer_england_league2/events?dateFormat=iso&commenceTimeFrom=2026-07-17T00%3A00%3A00Z&commenceTimeTo=2026-07-18T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "282",
+          "requestsRemaining": "218",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_epl",
+        "method": "GET",
+        "path": "/v4/sports/soccer_epl/events?dateFormat=iso&commenceTimeFrom=2026-07-17T00%3A00%3A00Z&commenceTimeTo=2026-07-18T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "282",
+          "requestsRemaining": "218",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_argentina_primera_division",
+        "method": "GET",
+        "path": "/v4/sports/soccer_argentina_primera_division/events?dateFormat=iso&commenceTimeFrom=2026-07-17T00%3A00%3A00Z&commenceTimeTo=2026-07-18T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "282",
+          "requestsRemaining": "218",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_austria_bundesliga",
+        "method": "GET",
+        "path": "/v4/sports/soccer_austria_bundesliga/events?dateFormat=iso&commenceTimeFrom=2026-07-17T00%3A00%3A00Z&commenceTimeTo=2026-07-18T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "282",
+          "requestsRemaining": "218",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_belgium_first_div",
+        "method": "GET",
+        "path": "/v4/sports/soccer_belgium_first_div/events?dateFormat=iso&commenceTimeFrom=2026-07-17T00%3A00%3A00Z&commenceTimeTo=2026-07-18T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "282",
+          "requestsRemaining": "218",
+          "requestsLast": "0"
+        }
+      },
+      {
+        "name": "events:soccer_brazil_campeonato",
+        "method": "GET",
+        "path": "/v4/sports/soccer_brazil_campeonato/events?dateFormat=iso&commenceTimeFrom=2026-07-17T00%3A00%3A00Z&commenceTimeTo=2026-07-18T00%3A00%3A00Z",
+        "status": 200,
+        "quota": {
+          "requestsUsed": "282",
+          "requestsRemaining": "218",
           "requestsLast": "0"
         }
       },
       {
         "name": "event-markets",
         "method": "GET",
-        "path": "/v4/sports/soccer_fifa_world_cup/events/ced22494ae0bbb8cc4f7108bf6f493df/markets?regions=us&dateFormat=iso",
+        "path": "/v4/sports/soccer_brazil_campeonato/events/e64cfcc03ee00f71d21b9c99e9c37d2d/markets?regions=us&dateFormat=iso",
         "status": 200,
         "quota": {
-          "requestsUsed": "259",
-          "requestsRemaining": "241",
+          "requestsUsed": "283",
+          "requestsRemaining": "217",
           "requestsLast": "1"
         }
       },
       {
         "name": "event-odds",
         "method": "GET",
-        "path": "/v4/sports/soccer_fifa_world_cup/events/ced22494ae0bbb8cc4f7108bf6f493df/odds?regions=us&markets=h2h%2Cspreads%2Ctotals%2Ch2h_3_way%2Calternate_spreads%2Calternate_totals&oddsFormat=decimal&dateFormat=iso",
+        "path": "/v4/sports/soccer_brazil_campeonato/events/e64cfcc03ee00f71d21b9c99e9c37d2d/odds?regions=us&markets=h2h%2Cspreads%2Ctotals%2Ch2h_3_way%2Cbtts&oddsFormat=decimal&dateFormat=iso",
         "status": 200,
         "quota": {
-          "requestsUsed": "265",
-          "requestsRemaining": "235",
-          "requestsLast": "6"
+          "requestsUsed": "288",
+          "requestsRemaining": "212",
+          "requestsLast": "5"
         }
       },
       {
         "name": "event-odds",
         "method": "GET",
-        "path": "/v4/sports/soccer_fifa_world_cup/events/ced22494ae0bbb8cc4f7108bf6f493df/odds?regions=us&markets=h2h%2Cspreads%2Ctotals%2Ch2h_3_way%2Calternate_spreads%2Calternate_totals&oddsFormat=decimal&dateFormat=iso",
+        "path": "/v4/sports/soccer_brazil_campeonato/events/e64cfcc03ee00f71d21b9c99e9c37d2d/odds?regions=us&markets=h2h%2Cspreads%2Ctotals%2Ch2h_3_way%2Cbtts&oddsFormat=decimal&dateFormat=iso",
         "status": 200,
         "quota": {
-          "requestsUsed": "271",
-          "requestsRemaining": "229",
-          "requestsLast": "6"
+          "requestsUsed": "293",
+          "requestsRemaining": "207",
+          "requestsLast": "5"
         }
       }
     ],
     "quota": {
-      "totalLastCost": 13,
+      "totalLastCost": 11,
       "latest": {
-        "requestsUsed": "271",
-        "requestsRemaining": "229",
-        "requestsLast": "6"
+        "requestsUsed": "293",
+        "requestsRemaining": "207",
+        "requestsLast": "5"
       }
     },
     "selectedMarketKeys": [
@@ -92,46 +191,55 @@
       "spreads",
       "totals",
       "h2h_3_way",
-      "alternate_spreads",
-      "alternate_totals"
+      "btts"
     ],
     "importedMarketKeys": [
       "h2h",
-      "alternate_totals",
+      "totals",
+      "btts",
       "h2h_3_way"
     ],
-    "normalizedMarketCount": 3,
+    "normalizedMarketCount": 4,
     "seed": {
       "event": {
         "id": "bdd748d4-8784-459d-a612-a54903892c89",
         "slug": "odds-api-single-soccer-test",
-        "title": "Argentina vs. England"
+        "title": "Chapecoense vs. Bahia"
       },
-      "marketCount": 19,
-      "outcomeCount": 40,
+      "marketCount": 20,
+      "outcomeCount": 42,
       "markets": [
         {
-          "id": "b1aa1fae-39dd-48df-b9f4-cba8a51d5901",
-          "slug": "odds-api-single-soccer-test-h2h-ca4dab431e",
-          "title": "Argentina vs. England: Regulation Time Winner",
+          "id": "e5a724cf-d839-4ad5-a980-e389a6c0eab6",
+          "slug": "odds-api-single-soccer-test-h2h-30c53901b1",
+          "title": "Chapecoense vs. Bahia: Regulation Time Winner",
           "marketType": "match_winner_1x2",
           "marketGroupTitle": "Regulation Time Winner",
           "line": null,
           "outcomeCount": 3
         },
         {
-          "id": "38664599-1911-40b4-9c57-382498da8efb",
-          "slug": "odds-api-single-soccer-test-alternate-totals-f03de7d488",
-          "title": "Argentina vs. England: Total Goals 2.5",
+          "id": "3a617175-3792-437f-9f6a-b21a22860699",
+          "slug": "odds-api-single-soccer-test-totals-5c4eb598c1",
+          "title": "Chapecoense vs. Bahia: Total Goals 2.5",
           "marketType": "total_goals",
           "marketGroupTitle": "Total Goals",
           "line": "2.5",
           "outcomeCount": 2
         },
         {
-          "id": "1d81bd81-85ef-436a-949c-979d0cb2ff20",
-          "slug": "odds-api-single-soccer-test-h2h-3-way-41e7135e5f",
-          "title": "Argentina vs. England: Regulation Time Winner",
+          "id": "5ef0f0d3-7949-4002-a8eb-4bb6e2931607",
+          "slug": "odds-api-single-soccer-test-btts-0d841b1c97",
+          "title": "Chapecoense vs. Bahia: Both Teams To Score",
+          "marketType": "both_teams_to_score",
+          "marketGroupTitle": "Both Teams To Score",
+          "line": null,
+          "outcomeCount": 2
+        },
+        {
+          "id": "884b60e4-daec-49e8-9bad-4e48e52568db",
+          "slug": "odds-api-single-soccer-test-h2h-3-way-8dd3e3e627",
+          "title": "Chapecoense vs. Bahia: Regulation Time Winner",
           "marketType": "match_winner_1x2",
           "marketGroupTitle": "Regulation Time Winner",
           "line": null,
@@ -140,7 +248,7 @@
         {
           "id": "b0dc1afa-c034-47d0-9add-b15458e6f184",
           "slug": "odds-api-single-soccer-test-holiwyn-advance",
-          "title": "Argentina vs. England: Team to advance",
+          "title": "Chapecoense vs. Bahia: Team to advance",
           "marketType": "to_advance",
           "marketGroupTitle": "Team To Advance",
           "line": null,
@@ -149,7 +257,7 @@
         {
           "id": "c914da40-17fe-4928-ab46-17ef85e7b8c4",
           "slug": "odds-api-single-soccer-test-holiwyn-regulation-home",
-          "title": "Argentina vs. England: England in regulation",
+          "title": "Chapecoense vs. Bahia: Bahia in regulation",
           "marketType": "match_winner_1x2",
           "marketGroupTitle": "Regulation Time Winner",
           "line": null,
@@ -158,7 +266,7 @@
         {
           "id": "f780218c-bd1b-4902-9f5f-2ed12386dd17",
           "slug": "odds-api-single-soccer-test-holiwyn-regulation-away",
-          "title": "Argentina vs. England: Argentina in regulation",
+          "title": "Chapecoense vs. Bahia: Chapecoense in regulation",
           "marketType": "match_winner_1x2",
           "marketGroupTitle": "Regulation Time Winner",
           "line": null,
@@ -167,7 +275,7 @@
         {
           "id": "92afd515-f2b0-4c7c-b7b6-b5bca26a35d3",
           "slug": "odds-api-single-soccer-test-holiwyn-regulation-draw",
-          "title": "Argentina vs. England: Draw in regulation",
+          "title": "Chapecoense vs. Bahia: Draw in regulation",
           "marketType": "match_winner_1x2",
           "marketGroupTitle": "Regulation Time Winner",
           "line": null,
@@ -176,7 +284,7 @@
         {
           "id": "209569b6-9737-4e8c-8667-1cc49ac72c9a",
           "slug": "odds-api-single-soccer-test-holiwyn-spread-home-neg-3-5",
-          "title": "Argentina vs. England: England -3.5",
+          "title": "Chapecoense vs. Bahia: Bahia -3.5",
           "marketType": "spread",
           "marketGroupTitle": "Spread",
           "line": "-3.5",
@@ -185,7 +293,7 @@
         {
           "id": "4d03dd95-181c-4731-a61d-cec9baadb09d",
           "slug": "odds-api-single-soccer-test-holiwyn-spread-home-neg-2-5",
-          "title": "Argentina vs. England: England -2.5",
+          "title": "Chapecoense vs. Bahia: Bahia -2.5",
           "marketType": "spread",
           "marketGroupTitle": "Spread",
           "line": "-2.5",
@@ -194,7 +302,7 @@
         {
           "id": "702668f8-ad0d-43f0-93e7-f78a78b41771",
           "slug": "odds-api-single-soccer-test-holiwyn-spread-home-neg-1-5",
-          "title": "Argentina vs. England: England -1.5",
+          "title": "Chapecoense vs. Bahia: Bahia -1.5",
           "marketType": "spread",
           "marketGroupTitle": "Spread",
           "line": "-1.5",
@@ -203,7 +311,7 @@
         {
           "id": "79edc202-09df-48e7-8d0d-b8fe5c920aeb",
           "slug": "odds-api-single-soccer-test-holiwyn-spread-home-1-5",
-          "title": "Argentina vs. England: England +1.5",
+          "title": "Chapecoense vs. Bahia: Bahia +1.5",
           "marketType": "spread",
           "marketGroupTitle": "Spread",
           "line": "1.5",
@@ -212,7 +320,7 @@
         {
           "id": "bed4fbbd-0f0d-4bf4-8301-d7dfa9872633",
           "slug": "odds-api-single-soccer-test-holiwyn-spread-home-2-5",
-          "title": "Argentina vs. England: England +2.5",
+          "title": "Chapecoense vs. Bahia: Bahia +2.5",
           "marketType": "spread",
           "marketGroupTitle": "Spread",
           "line": "2.5",
@@ -221,7 +329,7 @@
         {
           "id": "19a4f839-f116-4f25-b246-b78b2d5c450c",
           "slug": "odds-api-single-soccer-test-holiwyn-spread-home-3-5",
-          "title": "Argentina vs. England: England +3.5",
+          "title": "Chapecoense vs. Bahia: Bahia +3.5",
           "marketType": "spread",
           "marketGroupTitle": "Spread",
           "line": "3.5",
@@ -230,7 +338,7 @@
         {
           "id": "6d3271fe-f343-4f31-9dc1-33243eba4385",
           "slug": "odds-api-single-soccer-test-holiwyn-total-goals-0-5",
-          "title": "Argentina vs. England: Total goals 0.5",
+          "title": "Chapecoense vs. Bahia: Total goals 0.5",
           "marketType": "total_goals",
           "marketGroupTitle": "Total Goals",
           "line": "0.5",
@@ -239,7 +347,7 @@
         {
           "id": "a98c138f-4c07-4e17-befa-32bd90d87c57",
           "slug": "odds-api-single-soccer-test-holiwyn-total-goals-1-5",
-          "title": "Argentina vs. England: Total goals 1.5",
+          "title": "Chapecoense vs. Bahia: Total goals 1.5",
           "marketType": "total_goals",
           "marketGroupTitle": "Total Goals",
           "line": "1.5",
@@ -248,7 +356,7 @@
         {
           "id": "cc4f4d02-4acc-48a8-aaa5-437652454c3c",
           "slug": "odds-api-single-soccer-test-holiwyn-total-goals-2-5",
-          "title": "Argentina vs. England: Total goals 2.5",
+          "title": "Chapecoense vs. Bahia: Total goals 2.5",
           "marketType": "total_goals",
           "marketGroupTitle": "Total Goals",
           "line": "2.5",
@@ -257,7 +365,7 @@
         {
           "id": "b1876310-e042-4f26-9ff2-0449b06fc5c2",
           "slug": "odds-api-single-soccer-test-holiwyn-total-goals-3-5",
-          "title": "Argentina vs. England: Total goals 3.5",
+          "title": "Chapecoense vs. Bahia: Total goals 3.5",
           "marketType": "total_goals",
           "marketGroupTitle": "Total Goals",
           "line": "3.5",
@@ -266,7 +374,7 @@
         {
           "id": "6bce0fd1-9603-4bf5-8a14-5e1df6a95996",
           "slug": "odds-api-single-soccer-test-holiwyn-total-goals-4-5",
-          "title": "Argentina vs. England: Total goals 4.5",
+          "title": "Chapecoense vs. Bahia: Total goals 4.5",
           "marketType": "total_goals",
           "marketGroupTitle": "Total Goals",
           "line": "4.5",
@@ -275,7 +383,7 @@
         {
           "id": "1ee4cd52-dffd-4f8e-a03a-fee55701aee7",
           "slug": "odds-api-single-soccer-test-holiwyn-total-goals-5-5",
-          "title": "Argentina vs. England: Total goals 5.5",
+          "title": "Chapecoense vs. Bahia: Total goals 5.5",
           "marketType": "total_goals",
           "marketGroupTitle": "Total Goals",
           "line": "5.5",
@@ -285,19 +393,19 @@
     }
   },
   "selectedMarket": {
-    "id": "38664599-1911-40b4-9c57-382498da8efb",
-    "slug": "odds-api-single-soccer-test-alternate-totals-f03de7d488",
-    "title": "Argentina vs. England: Total Goals 2.5",
+    "id": "3a617175-3792-437f-9f6a-b21a22860699",
+    "slug": "odds-api-single-soccer-test-totals-5c4eb598c1",
+    "title": "Chapecoense vs. Bahia: Total Goals 2.5",
     "marketType": "total_goals",
     "marketGroupKey": "totals",
     "line": "2.5",
-    "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
+    "outcomeId": "dbe95da1-41b1-46be-9e78-e45a5b6408bc",
     "outcomeName": "Over 2.5",
     "referenceOutcomeLabel": "Over +2.5",
-    "referenceTokenId": "odds-api-de78e5a62c5db9e0c43ab08f"
+    "referenceTokenId": "odds-api-760d63e916546c48a66dafaa"
   },
   "lifecycle": {
-    "forcedStaleAt": "2026-07-15T05:14:29.434Z",
+    "forcedStaleAt": "2026-07-17T07:27:26.548Z",
     "beforeRefresh": {
       "source": "mobile-live-detail-market",
       "status": "stale",
@@ -313,15 +421,15 @@
       "fallbackApplied": false,
       "fallbackReason": null,
       "reason": "Provider quote snapshot is older than 90 seconds.",
-      "nextRefreshAt": "2026-07-15T05:15:29.434Z",
-      "lastFetchedAt": "2026-07-15T05:14:29.434Z",
+      "nextRefreshAt": "2026-07-17T07:28:26.548Z",
+      "lastFetchedAt": "2026-07-17T07:27:26.548Z",
       "quote": {
         "source": "sportsbook-odds",
         "status": "stale",
         "reason": "Provider quote snapshot is older than 90 seconds.",
-        "nextRefreshAt": "2026-07-15T05:15:29.434Z",
-        "lastFetchedAt": "2026-07-15T05:14:29.434Z",
-        "stalenessSeconds": 300,
+        "nextRefreshAt": "2026-07-17T07:28:26.548Z",
+        "lastFetchedAt": "2026-07-17T07:27:26.548Z",
+        "stalenessSeconds": 301,
         "shouldRefresh": true,
         "ready": false,
         "stale": true,
@@ -376,14 +484,14 @@
       "fallbackApplied": false,
       "fallbackReason": null,
       "reason": "No provider orderbook depth snapshot is available.",
-      "nextRefreshAt": "2026-07-15T05:20:29.683Z",
-      "lastFetchedAt": "2026-07-15T05:19:29.683Z",
+      "nextRefreshAt": "2026-07-17T07:33:28.295Z",
+      "lastFetchedAt": "2026-07-17T07:32:28.295Z",
       "quote": {
         "source": "sportsbook-odds",
         "status": "ready",
         "reason": "Provider quote snapshot is fresh.",
-        "nextRefreshAt": "2026-07-15T05:20:29.683Z",
-        "lastFetchedAt": "2026-07-15T05:19:29.683Z",
+        "nextRefreshAt": "2026-07-17T07:33:28.295Z",
+        "lastFetchedAt": "2026-07-17T07:32:28.295Z",
         "stalenessSeconds": 1,
         "shouldRefresh": false,
         "ready": true,
@@ -444,27 +552,27 @@
   "marketMaker": {
     "continuous": false,
     "mode": "bounded-proof-local-shifted-maker",
-    "makerUserId": "0b1c7da4-59ba-46fc-ba73-51c7d2125f91",
-    "bidOrderId": "edbc8f28-f5fa-4e39-a4b6-5176e2cce0da",
-    "askOrderId": "4b4f4931-a2cc-46d5-938d-a99b4748cc13",
-    "referenceBid": 0.3688,
-    "referenceAsk": 0.4088,
+    "makerUserId": "84d6fbb5-9c4f-40af-ad8c-7099a98d4e1c",
+    "bidOrderId": "7b6e2b71-f1f7-4e3f-8e91-d55a75632a13",
+    "askOrderId": "474881b7-5d3a-451f-98ee-a3d4c9480f79",
+    "referenceBid": 0.569,
+    "referenceAsk": 0.609,
     "preSeedBook": {
-      "bestBid": 0.35,
-      "bestAsk": 0.43,
+      "bestBid": 0.55,
+      "bestAsk": 0.63,
       "openOrderCount": 2,
       "orders": [
         {
           "side": "BUY",
-          "price": "0.35",
+          "price": "0.55",
           "remaining": "200",
-          "username": "odds_live_runtime_shifted_maker_8072ef1f"
+          "username": "odds_live_runtime_maker_b81db317"
         },
         {
           "side": "SELL",
-          "price": "0.43",
+          "price": "0.63",
           "remaining": "200",
-          "username": "odds_live_runtime_shifted_maker_8072ef1f"
+          "username": "odds_live_runtime_maker_b81db317"
         }
       ]
     },
@@ -474,39 +582,39 @@
       "after": "200",
       "byOutcome": [
         {
-          "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
+          "outcomeId": "dbe95da1-41b1-46be-9e78-e45a5b6408bc",
           "code": "over-2-5",
           "shares": "200"
         },
         {
-          "outcomeId": "787117a3-3eb3-4f6b-8b6a-07bb9af27afc",
+          "outcomeId": "fb4dc043-e357-4f75-96ef-c4ff5aadaa89",
           "code": "under-2-5",
           "shares": "200"
         }
       ]
     },
     "adjustments": [],
-    "plannedBid": 0.35,
-    "plannedAsk": 0.43
+    "plannedBid": 0.55,
+    "plannedAsk": 0.63
   },
   "flow": {
     "buyOrder": {
-      "id": "8966a81e-3025-4dcb-8662-64539b2c3075",
-      "marketId": "38664599-1911-40b4-9c57-382498da8efb",
-      "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
+      "id": "27a7c18a-7437-4e62-bb36-ccb96461910d",
+      "marketId": "3a617175-3792-437f-9f6a-b21a22860699",
+      "outcomeId": "dbe95da1-41b1-46be-9e78-e45a5b6408bc",
       "side": "BUY",
-      "price": "0.43",
+      "price": "0.63",
       "size": "1",
       "remaining": "0",
       "reservedNotional": "0",
       "status": "FILLED",
       "type": "LIMIT",
-      "clientOrderId": "odds-live-runtime-buy-3ae68dbb-ed73-42f6-a57d-1151696d3759",
+      "clientOrderId": "odds-live-runtime-buy-973446bf-7a49-4097-b3e8-72c26abbe7ab",
       "apiKeyId": "[redacted]",
       "contractSide": "YES",
       "selection": {
-        "marketId": "38664599-1911-40b4-9c57-382498da8efb",
-        "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
+        "marketId": "3a617175-3792-437f-9f6a-b21a22860699",
+        "outcomeId": "dbe95da1-41b1-46be-9e78-e45a5b6408bc",
         "marketGroupId": "totals",
         "marketType": "totals",
         "line": "2.5",
@@ -516,33 +624,33 @@
         "contractSide": "yes",
         "referenceSource": "sportsbook-odds",
         "providerSource": "sportsbook-odds",
-        "externalSlug": "soccer_fifa_world_cup-ced22494ae0bbb8cc4f7108bf6f493df",
-        "externalMarketId": "ced22494ae0bbb8cc4f7108bf6f493df:betonlineag:alternate_totals:2.5",
-        "conditionId": "odds-api-f03de7d48812b4e2402f91d3",
+        "externalSlug": "soccer_brazil_campeonato-e64cfcc03ee00f71d21b9c99e9c37d2d",
+        "externalMarketId": "e64cfcc03ee00f71d21b9c99e9c37d2d:betmgm:totals:2.5",
+        "conditionId": "odds-api-5c4eb598c1d6a8fc07b3e4a9",
         "referenceTokenId": "[redacted]",
         "tokenId": "[redacted]",
         "referenceOutcomeLabel": "Over +2.5",
-        "limitPrice": 0.43,
+        "limitPrice": 0.63,
         "limitSide": "ask"
       }
     },
     "sellOrder": {
-      "id": "9b381ef3-3bd9-4bb0-8e7e-4325c8767e04",
-      "marketId": "38664599-1911-40b4-9c57-382498da8efb",
-      "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
+      "id": "ad232306-8c1d-4741-8e23-3052d91b37cc",
+      "marketId": "3a617175-3792-437f-9f6a-b21a22860699",
+      "outcomeId": "dbe95da1-41b1-46be-9e78-e45a5b6408bc",
       "side": "SELL",
-      "price": "0.35",
+      "price": "0.55",
       "size": "1",
       "remaining": "0",
       "reservedNotional": "0",
       "status": "FILLED",
       "type": "LIMIT",
-      "clientOrderId": "odds-live-runtime-cashout-sell-4afdd39a-47a5-4131-8eab-835742adef77",
+      "clientOrderId": "odds-live-runtime-cashout-sell-281c7ba7-21bd-4b1b-a624-9911ffe228f0",
       "apiKeyId": "[redacted]",
       "contractSide": "YES",
       "selection": {
-        "marketId": "38664599-1911-40b4-9c57-382498da8efb",
-        "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
+        "marketId": "3a617175-3792-437f-9f6a-b21a22860699",
+        "outcomeId": "dbe95da1-41b1-46be-9e78-e45a5b6408bc",
         "marketGroupId": "totals",
         "marketType": "totals",
         "line": "2.5",
@@ -552,31 +660,31 @@
         "contractSide": "yes",
         "referenceSource": "sportsbook-odds",
         "providerSource": "sportsbook-odds",
-        "externalSlug": "soccer_fifa_world_cup-ced22494ae0bbb8cc4f7108bf6f493df",
-        "externalMarketId": "ced22494ae0bbb8cc4f7108bf6f493df:betonlineag:alternate_totals:2.5",
-        "conditionId": "odds-api-f03de7d48812b4e2402f91d3",
+        "externalSlug": "soccer_brazil_campeonato-e64cfcc03ee00f71d21b9c99e9c37d2d",
+        "externalMarketId": "e64cfcc03ee00f71d21b9c99e9c37d2d:betmgm:totals:2.5",
+        "conditionId": "odds-api-5c4eb598c1d6a8fc07b3e4a9",
         "referenceTokenId": "[redacted]",
         "tokenId": "[redacted]",
         "referenceOutcomeLabel": "Over +2.5",
-        "limitPrice": 0.35,
+        "limitPrice": 0.55,
         "limitSide": "bid"
       }
     },
     "positionAfterBuy": {
       "market": {
-        "id": "38664599-1911-40b4-9c57-382498da8efb",
-        "title": "Argentina vs. England: Total Goals 2.5",
-        "eventTitle": "Argentina vs. England",
+        "id": "3a617175-3792-437f-9f6a-b21a22860699",
+        "title": "Chapecoense vs. Bahia: Total Goals 2.5",
+        "eventTitle": "Chapecoense vs. Bahia",
         "eventSlug": "odds-api-single-soccer-test",
         "status": "LIVE",
         "resolveTime": null,
-        "createdAt": "2026-07-15T05:19:28.863Z"
+        "createdAt": "2026-07-17T07:29:31.089Z"
       },
-      "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
+      "outcomeId": "dbe95da1-41b1-46be-9e78-e45a5b6408bc",
       "outcome": "Over +2.5",
       "selection": {
-        "marketId": "38664599-1911-40b4-9c57-382498da8efb",
-        "outcomeId": "8578db7a-e01c-442b-8480-95d36a6a946e",
+        "marketId": "3a617175-3792-437f-9f6a-b21a22860699",
+        "outcomeId": "dbe95da1-41b1-46be-9e78-e45a5b6408bc",
         "marketGroupId": "totals",
         "marketType": "totals",
         "line": "2.5",
@@ -586,20 +694,20 @@
         "contractSide": "yes",
         "referenceSource": "sportsbook-odds",
         "providerSource": "sportsbook-odds",
-        "externalSlug": "soccer_fifa_world_cup-ced22494ae0bbb8cc4f7108bf6f493df",
-        "externalMarketId": "ced22494ae0bbb8cc4f7108bf6f493df:betonlineag:alternate_totals:2.5",
-        "conditionId": "odds-api-f03de7d48812b4e2402f91d3",
+        "externalSlug": "soccer_brazil_campeonato-e64cfcc03ee00f71d21b9c99e9c37d2d",
+        "externalMarketId": "e64cfcc03ee00f71d21b9c99e9c37d2d:betmgm:totals:2.5",
+        "conditionId": "odds-api-5c4eb598c1d6a8fc07b3e4a9",
         "referenceTokenId": "[redacted]",
         "tokenId": "[redacted]",
         "referenceOutcomeLabel": "Over +2.5",
-        "limitPrice": 0.43,
+        "limitPrice": 0.63,
         "limitSide": "ask"
       },
       "shares": 1,
-      "avgCost": 0.43,
-      "currentPrice": 0.39,
-      "bestBid": 0.35,
-      "bestAsk": 0.43,
+      "avgCost": 0.63,
+      "currentPrice": 0.5900000000000001,
+      "bestBid": 0.55,
+      "bestAsk": 0.63,
       "bestBidSize": 400,
       "bestAskSize": 399,
       "valueTokens": "[redacted]",

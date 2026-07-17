@@ -147,6 +147,17 @@ describe("live runtime result review service", () => {
     });
     expect(JSON.stringify(result)).not.toContain("SETTLE_FROM_RESULT:");
     expect(canonicalEventFindFirst).toHaveBeenCalledTimes(5);
+    expect(canonicalEventFindFirst).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        where: expect.objectContaining({
+          payload: {
+            path: ["sourceEventId"],
+            equals: "provider-event-1",
+          },
+        }),
+      }),
+    );
     expect(officialResultReviewUpsert).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { reviewKey: "odds-api-single-soccer-test:market-1:result-digest" },
@@ -172,6 +183,33 @@ describe("live runtime result review service", () => {
         typeof value === "bigint" ? value.toString() : value,
       ),
     ).not.toContain("SETTLE_FROM_RESULT:");
+  });
+
+  test("returns awaiting_result without persisting a fake review for an unresolved market", async () => {
+    canonicalEventFindFirst.mockReset();
+    canonicalEventFindFirst.mockResolvedValue(null);
+
+    const result = await getLocalLiveRuntimeResultReview();
+
+    expect(result.status).toBe("awaiting_result");
+    expect(result.gaps.p0).toEqual([]);
+    expect(result.runtimeTruth).toMatchObject({
+      settlementEvidenceRequired: false,
+      awaitingFinalResult: true,
+      canonicalProviderResultAuditAvailable: false,
+      canonicalSettlementPreflightAuditAvailable: false,
+      canonicalSettlementApprovalAuditAvailable: false,
+      activeTesterSettlementExecutionAttempted: false,
+      providerQuotaUsed: false,
+    });
+    expect(result.executionDecision).toMatchObject({
+      executionEligibleNow: false,
+      operatorDecision: "awaiting_final_result",
+      exactConfirmationRequiredKnown: false,
+      exactConfirmationRedacted: true,
+    });
+    expect(result.officialResultReview).toBeNull();
+    expect(officialResultReviewUpsert).not.toHaveBeenCalled();
   });
 
   test("marks executed settlement reviews terminal and blocks repeat execution eligibility", async () => {

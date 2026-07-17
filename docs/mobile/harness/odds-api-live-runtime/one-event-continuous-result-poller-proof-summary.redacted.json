@@ -1,9 +1,9 @@
 {
-    "generatedAt":  "2026-07-14T14:32:03.4119623Z",
+    "generatedAt":  "2026-07-17T08:50:16.5095293Z",
     "scope":  "holiwyn-one-event-continuous-result-poller-proof",
     "pass":  true,
-    "startedAt":  "2026-07-14T14:30:38.7079976Z",
-    "completedAt":  "2026-07-14T14:32:03.4129623Z",
+    "startedAt":  "2026-07-17T08:49:58.9740807Z",
+    "completedAt":  "2026-07-17T08:50:16.5120337Z",
     "settings":  {
                      "eventSlug":  "odds-api-single-soccer-test",
                      "intervalSeconds":  1,
@@ -18,8 +18,8 @@
                   "heartbeatIterations":  2,
                   "processRunningDuringProof":  true,
                   "processStoppedAfterProof":  true,
-                  "nodeProcessCountBefore":  23,
-                  "nodeProcessCountAfter":  23
+                  "nodeProcessCountBefore":  24,
+                  "nodeProcessCountAfter":  24
               },
     "runtimeTruth":  {
                          "backgroundPollerRan":  true,
@@ -38,8 +38,8 @@
                          "exitCode":  0,
                          "pass":  true,
                          "timedOut":  false,
-                         "startedAt":  "2026-07-14T14:30:38.7245277Z",
-                         "finishedAt":  "2026-07-14T14:31:41.9572076Z",
+                         "startedAt":  "2026-07-17T08:49:59.0142878Z",
+                         "finishedAt":  "2026-07-17T08:50:01.4155130Z",
                          "outputTail":  [
                                             "                         \"localBackgroundProcessRunning\":  false,",
                                             "                         \"installedOsService\":  false,",
@@ -69,8 +69,8 @@
                          "exitCode":  0,
                          "pass":  true,
                          "timedOut":  false,
-                         "startedAt":  "2026-07-14T14:31:41.9642065Z",
-                         "finishedAt":  "2026-07-14T14:31:43.6195687Z",
+                         "startedAt":  "2026-07-17T08:50:01.4331891Z",
+                         "finishedAt":  "2026-07-17T08:50:03.9685470Z",
                          "outputTail":  [
                                             "                         \"localBackgroundProcessRunning\":  true,",
                                             "                         \"installedOsService\":  false,",
@@ -100,8 +100,8 @@
                          "exitCode":  0,
                          "pass":  true,
                          "timedOut":  false,
-                         "startedAt":  "2026-07-14T14:31:47.6749983Z",
-                         "finishedAt":  "2026-07-14T14:31:49.0039267Z",
+                         "startedAt":  "2026-07-17T08:50:06.0509313Z",
+                         "finishedAt":  "2026-07-17T08:50:08.9944944Z",
                          "outputTail":  [
                                             "                         \"localBackgroundProcessRunning\":  true,",
                                             "                         \"installedOsService\":  false,",
@@ -131,8 +131,8 @@
                          "exitCode":  0,
                          "pass":  true,
                          "timedOut":  false,
-                         "startedAt":  "2026-07-14T14:31:49.0049299Z",
-                         "finishedAt":  "2026-07-14T14:31:54.7443680Z",
+                         "startedAt":  "2026-07-17T08:50:09.0172816Z",
+                         "finishedAt":  "2026-07-17T08:50:13.0856673Z",
                          "outputTail":  [
                                             "                         \"localBackgroundProcessRunning\":  false,",
                                             "                         \"installedOsService\":  false,",
@@ -162,15 +162,15 @@
                          "exitCode":  0,
                          "pass":  true,
                          "timedOut":  false,
-                         "startedAt":  "2026-07-14T14:31:54.7453687Z",
-                         "finishedAt":  "2026-07-14T14:32:03.3940732Z",
+                         "startedAt":  "2026-07-17T08:50:13.0876658Z",
+                         "finishedAt":  "2026-07-17T08:50:16.4707581Z",
                          "outputTail":  [
-                                            "                                                                 \"currentMarketStatus\":  \"LIVE\",",
-                                            "                                                                 \"resultDigest\":  \"f3a5743c73f2\",",
-                                            "                                                                 \"actorUserId\":  \"holiwyn-local-result-settlement-operator\",",
-                                            "                                                                 \"providerStatus\":  \"trusted_external_input\"",
-                                            "                                                             }",
-                                            "                                            }",
+                                            "                                                               ]",
+                                            "                                            },",
+                                            "                       \"resultSettlementPass\":  true,",
+                                            "                       \"resultSettlementAction\":  \"awaiting_final_result\",",
+                                            "                       \"trustedResult\":  null,",
+                                            "                       \"settlementDigest\":  null",
                                             "                   }",
                                             "               ],",
                                             "    \"gaps\":  {",
@@ -189,16 +189,16 @@
                      }
                  ],
     "processSummary":  {
-                           "generatedAt":  "2026-07-14T14:31:54.6746927Z",
+                           "generatedAt":  "2026-07-17T08:50:12.9875389Z",
                            "scope":  "holiwyn-one-event-result-poller-process",
                            "pass":  true,
                            "operation":  {
                                              "action":  "stop",
-                                             "startedAt":  "2026-07-14T14:31:50.5278698Z",
+                                             "startedAt":  "2026-07-17T08:50:10.9599798Z",
                                              "force":  false,
                                              "result":  "stopped",
                                              "graceful":  true,
-                                             "pid":  16980
+                                             "pid":  47544
                                          },
                            "process":  {
                                            "statePath":  ".runtime/one-event-result-poller/result-poller-process-state.json",
@@ -206,17 +206,18 @@
                                            "stderr":  ".runtime/one-event-result-poller/result-poller.err.log",
                                            "before":  {
                                                           "known":  true,
-                                                          "pid":  16980,
+                                                          "pid":  47544,
                                                           "running":  true,
+                                                          "stalePidReused":  false,
                                                           "process":  {
-                                                                          "id":  16980,
+                                                                          "id":  47544,
                                                                           "processName":  "powershell",
-                                                                          "startTime":  "2026-07-14T14:31:43.4971691Z",
+                                                                          "startTime":  "2026-07-17T08:50:03.5042198Z",
                                                                           "hasExited":  false
                                                                       },
                                                           "state":  {
-                                                                        "pid":  16980,
-                                                                        "startedAt":  "2026-07-14T14:31:43.5064920Z",
+                                                                        "pid":  47544,
+                                                                        "startedAt":  "2026-07-17T08:50:03.5172853Z",
                                                                         "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\scripts\\run_holiwyn_one_event_result_poller.ps1 -EventSlug odds-api-single-soccer-test -ResultPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -IntervalSeconds 1 -Continuous -MaxIterations 0 -RunResultSettlement -StopRequestPath C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\.runtime\\one-event-result-poller\\stop-request.json",
                                                                         "eventSlug":  "odds-api-single-soccer-test",
                                                                         "resultPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
@@ -235,43 +236,25 @@
                                                                     }
                                                       },
                                            "after":  {
-                                                         "known":  true,
-                                                         "pid":  16980,
+                                                         "known":  false,
+                                                         "pid":  null,
                                                          "running":  false,
                                                          "process":  null,
-                                                         "state":  {
-                                                                       "pid":  16980,
-                                                                       "startedAt":  "2026-07-14T14:31:43.5064920Z",
-                                                                       "command":  "powershell -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\scripts\\run_holiwyn_one_event_result_poller.ps1 -EventSlug odds-api-single-soccer-test -ResultPath docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json -IntervalSeconds 1 -Continuous -MaxIterations 0 -RunResultSettlement -StopRequestPath C:\\Users\\hecto\\Desktop\\projects\\PolyProj\\worktrees\\poly-mobile-main-s23-cashout\\.runtime\\one-event-result-poller\\stop-request.json",
-                                                                       "eventSlug":  "odds-api-single-soccer-test",
-                                                                       "resultPath":  "docs/mobile/harness/odds-api-live-runtime/trusted-result-provider.redacted.json",
-                                                                       "continuous":  true,
-                                                                       "maxIterations":  0,
-                                                                       "intervalSeconds":  1,
-                                                                       "runLiveResultIngestion":  false,
-                                                                       "resultIngestionEveryIterations":  0,
-                                                                       "maxLiveResultIngestionRuns":  0,
-                                                                       "maxCreditsPerResultIngestion":  0,
-                                                                       "runResultSettlement":  true,
-                                                                       "runApprovedResultSettlement":  false,
-                                                                       "resultSettlementApprovalPath":  null,
-                                                                       "stdout":  ".runtime/one-event-result-poller/result-poller.out.log",
-                                                                       "stderr":  ".runtime/one-event-result-poller/result-poller.err.log"
-                                                                   }
+                                                         "state":  null
                                                      }
                                        },
                            "poller":  {
                                           "summaryPath":  "docs\\mobile\\harness\\odds-api-live-runtime\\one-event-result-poller-summary.redacted.json",
                                           "digest":  {
-                                                         "generatedAt":  "2026-07-14T14:31:53.0195925Z",
+                                                         "generatedAt":  "2026-07-17T08:50:11.8858334Z",
                                                          "pass":  true,
-                                                         "startedAt":  "2026-07-14T14:31:43.7393880Z",
-                                                         "completedAt":  "2026-07-14T14:31:53.0195925Z",
+                                                         "startedAt":  "2026-07-17T08:50:04.3635605Z",
+                                                         "completedAt":  "2026-07-17T08:50:11.8858334Z",
                                                          "eventSlug":  "odds-api-single-soccer-test",
                                                          "settings":  {
                                                                           "continuous":  true,
                                                                           "maxIterations":  0,
-                                                                          "completedIterations":  2,
+                                                                          "completedIterations":  5,
                                                                           "intervalSeconds":  1,
                                                                           "runLiveResultIngestion":  false,
                                                                           "liveResultIngestionRunsCompleted":  0,
@@ -283,15 +266,25 @@
                                                                           "resultSettlementEnabled":  true,
                                                                           "resultSettlementApprovedMode":  false,
                                                                           "resultSettlementApprovalPath":  null,
+                                                                          "cachedResultCompatibility":  {
+                                                                                                            "checked":  true,
+                                                                                                            "compatible":  false,
+                                                                                                            "expectedProviderEventId":  "e64cfcc03ee00f71d21b9c99e9c37d2d",
+                                                                                                            "expectedEventTitle":  "Chapecoense vs. Bahia",
+                                                                                                            "resultProviderEventId":  "f9aa13a662d1658e5a02cfc06d6a2d73",
+                                                                                                            "resultEventTitle":  "Spain vs. France",
+                                                                                                            "reason":  "trusted_result_provider_event_mismatch"
+                                                                                                        },
                                                                           "defaultModeUsesQuota":  false
                                                                       },
                                                          "runtimeTruth":  {
                                                                               "resultPollingRunnerAvailable":  true,
                                                                               "resultPollingContinuousWhileRunnerRuns":  true,
-                                                                              "resultPollingMode":  "provider-shaped replay polling; no provider quota spent",
+                                                                              "resultPollingMode":  "safe idle polling while awaiting a matching final provider result; no provider quota spent",
                                                                               "liveResultIngestionQuotaCappedWhileRunning":  false,
                                                                               "settlementSchedulerContinuousWhileRunnerRuns":  true,
-                                                                              "settlementSchedulerMode":  "trusted result scheduler dry-run while poller runs",
+                                                                              "settlementSchedulerMode":  "safe idle: awaiting matching final provider result before settlement review",
+                                                                              "awaitingMatchingFinalResult":  true,
                                                                               "activeTesterSettlementExecution":  false,
                                                                               "installedOsService":  false,
                                                                               "fakeTokenOnly":  true

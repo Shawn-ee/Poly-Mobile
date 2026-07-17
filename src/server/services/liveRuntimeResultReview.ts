@@ -129,6 +129,14 @@ export async function getLocalLiveRuntimeResultReview(params: {
       stream: CanonicalEventStream.MARKET,
       topicKey: `market:provider-result:${eventSlug}`,
       eventType: "provider.result.ingested",
+      ...(market?.event?.externalEventId
+        ? {
+            payload: {
+              path: ["sourceEventId"],
+              equals: market.event.externalEventId,
+            },
+          }
+        : {}),
     },
     orderBy: { id: "desc" },
   });
@@ -178,6 +186,13 @@ export async function getLocalLiveRuntimeResultReview(params: {
   const preflightPayload = (settlementPreflightEvent?.payload ?? {}) as JsonObject;
   const approvalPayload = (settlementApprovalEvent?.payload ?? {}) as JsonObject;
   const providerResultPayload = (providerResultEvent?.payload ?? {}) as JsonObject;
+  const settlementEvidenceRequired =
+    market?.status === "CLOSED" ||
+    market?.status === "RESOLVED" ||
+    providerResultEvent != null ||
+    settlementPreflightEvent != null ||
+    settlementApprovalEvent != null ||
+    settlementExecutedEvent != null;
   const checks = {
     phaseAuditAvailable: phaseAudit != null,
     selectedMarketKnown: typeof selectedMarketId === "string",
@@ -193,12 +208,27 @@ export async function getLocalLiveRuntimeResultReview(params: {
     providerQuotaNotUsed: true,
     exactConfirmationRedacted: true,
   };
-  const p0 = Object.entries(checks)
+  const requiredChecks = settlementEvidenceRequired
+    ? checks
+    : {
+        phaseAuditAvailable: checks.phaseAuditAvailable,
+        selectedMarketKnown: checks.selectedMarketKnown,
+        selectedMarketFound: checks.selectedMarketFound,
+        selectedMarketMatchesEvent: checks.selectedMarketMatchesEvent,
+        activeExecutionNotAttemptedByReview: checks.activeExecutionNotAttemptedByReview,
+        providerQuotaNotUsed: checks.providerQuotaNotUsed,
+        exactConfirmationRedacted: checks.exactConfirmationRedacted,
+      };
+  const p0 = Object.entries(requiredChecks)
     .filter(([, value]) => value !== true)
     .map(([key]) => key);
+  const awaitingFinalResult = p0.length === 0 && !settlementEvidenceRequired;
+  const status = p0.length > 0 ? "needs_attention" : awaitingFinalResult ? "awaiting_result" : "ready";
   const settlementAlreadyExecuted = settlementExecutedEvent != null;
   const executionDecision = settlementAlreadyExecuted
     ? "already_executed"
+    : awaitingFinalResult
+      ? "awaiting_final_result"
     : market?.status === "CLOSED"
       ? "eligible_for_exact_confirmation_review"
       : "wait_for_or_apply_market_close_before_execution";
@@ -215,7 +245,7 @@ export async function getLocalLiveRuntimeResultReview(params: {
     settlementExecutedEvent: compactEvent(settlementExecutedEvent, "settlement"),
   };
   const reviewSnapshot = {
-    status: p0.length === 0 ? "ready" : "needs_attention",
+    status,
     eventSlug,
     selectedMarketId,
     winningOutcomeId,
@@ -235,7 +265,7 @@ export async function getLocalLiveRuntimeResultReview(params: {
   const resultDigest = stringValue(preflightPayload.resultDigest);
   const trustedResultDigest = stringValue(providerResultPayload.trustedResultDigest);
   const reviewRecord =
-    market && selectedMarketId
+    market && selectedMarketId && settlementEvidenceRequired
       ? await prisma.officialResultReview.upsert({
           where: {
             reviewKey: stableReviewKey([eventSlug, selectedMarketId, resultDigest ?? trustedResultDigest]),
@@ -295,7 +325,7 @@ export async function getLocalLiveRuntimeResultReview(params: {
   return {
     generatedAt: new Date().toISOString(),
     scope: "holiwyn-local-live-runtime-result-review",
-    status: p0.length === 0 ? "ready" : "needs_attention",
+    status,
     providerQuotaUsed: false,
     eventSlug,
     selectedMarket: market
@@ -351,6 +381,8 @@ export async function getLocalLiveRuntimeResultReview(params: {
     runtimeTruth: {
       readOnlyRoute: true,
       devOnlyRoute: true,
+      settlementEvidenceRequired,
+      awaitingFinalResult,
       canonicalProviderResultAuditAvailable: providerResultEvent != null,
       canonicalSettlementPreflightAuditAvailable: settlementPreflightEvent != null,
       canonicalSettlementApprovalAuditAvailable: settlementApprovalEvent != null,
@@ -368,7 +400,9 @@ export async function getLocalLiveRuntimeResultReview(params: {
       p0,
       p1: [
         "Result review is now available through a local backend route, but installed official-result polling remains future work.",
-        "Execution still requires CLOSED market status and exact operator confirmation outside this read-only route.",
+        awaitingFinalResult
+          ? "The active market is awaiting a matching final provider result; no approval or execution evidence is expected yet."
+          : "Execution still requires CLOSED market status and exact operator confirmation outside this read-only route.",
       ],
       p2: [
         "Operator review UI and multi-event settlement queue remain future work.",

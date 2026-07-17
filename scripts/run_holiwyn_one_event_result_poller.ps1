@@ -80,6 +80,29 @@ function Read-JsonFile {
   return Get-Content -Raw -LiteralPath $resolved | ConvertFrom-Json
 }
 
+function Get-CachedResultCompatibility {
+  $liveRuntime = Read-JsonFile "docs/mobile/harness/odds-api-live-runtime/one-event-live-runtime-summary.redacted.json"
+  $trustedResult = Read-JsonFile $ResultPath
+  $expectedProviderEventId = if ($liveRuntime -and $liveRuntime.event) { "$($liveRuntime.event.providerEventId)" } else { $null }
+  $expectedEventTitle = if ($liveRuntime -and $liveRuntime.event) { "$($liveRuntime.event.title)" } else { $null }
+  $resultProviderEventId = if ($trustedResult) { "$($trustedResult.sourceEventId)" } else { $null }
+  $resultEventTitle = if ($trustedResult) { "$($trustedResult.eventTitle)" } else { $null }
+  $compatible = [bool](
+    $expectedProviderEventId -and
+    $resultProviderEventId -and
+    $expectedProviderEventId.Equals($resultProviderEventId, [System.StringComparison]::Ordinal)
+  )
+  return [ordered]@{
+    checked = $true
+    compatible = $compatible
+    expectedProviderEventId = $expectedProviderEventId
+    expectedEventTitle = $expectedEventTitle
+    resultProviderEventId = $resultProviderEventId
+    resultEventTitle = $resultEventTitle
+    reason = if ($compatible) { "provider_event_identity_matches" } elseif (-not $trustedResult) { "trusted_result_missing" } else { "trusted_result_provider_event_mismatch" }
+  }
+}
+
 function Write-JsonFile {
   param(
     [Parameter(Mandatory = $true)] [object]$Value,
@@ -226,6 +249,7 @@ $iteration = 0
 $liveResultIngestionRunCount = 0
 $loopPass = $true
 $failure = $null
+$cachedResultCompatibility = Get-CachedResultCompatibility
 
 try {
   do {
@@ -244,20 +268,55 @@ try {
       $ingestCommand += " --live --maxCredits=$MaxCreditsPerResultIngestion --minRemaining=$MinRemaining"
       $liveResultIngestionRunCount += 1
     }
-    $ingestResult = Invoke-CheckedCommand -Label "poll-$iteration-result-ingestion" -Command $ingestCommand
-    $ingestSummary = Read-JsonFile $ingestSummaryPath
+    $awaitingMatchingFinalResult = [bool](-not $runLiveThisCycle -and -not $cachedResultCompatibility.compatible)
+    if ($awaitingMatchingFinalResult) {
+      $ingestResult = [ordered]@{
+        label = "poll-$iteration-result-ingestion"
+        command = "skipped: cached trusted result does not match current provider event"
+        exitCode = 0
+        pass = $true
+        startedAt = $cycleStartedAt.ToString("o")
+        finishedAt = (Get-Date).ToUniversalTime().ToString("o")
+        outputTail = @("awaiting matching final provider result")
+      }
+      $ingestSummary = [ordered]@{
+        pass = $true
+        mode = "awaiting_result"
+        trustedResult = $null
+      }
+    } else {
+      $ingestResult = Invoke-CheckedCommand -Label "poll-$iteration-result-ingestion" -Command $ingestCommand
+      $ingestSummary = Read-JsonFile $ingestSummaryPath
+    }
 
     $settlementResult = $null
     $settlementSummary = $null
     if ($RunResultSettlement) {
-      $settlementSummaryPath = Join-ArtifactPath "one-event-result-settlement-run-summary.redacted.json"
-      $settlementInnerSummaryPath = Join-ArtifactPath "one-event-result-settlement-summary.redacted.json"
-      $settlementCommand = "npm run mobile:one-event-result-settlement-run -- --eventSlug=$EventSlug --result=$ResultPath --summaryPath=$settlementSummaryPath --settlementOutput=$settlementInnerSummaryPath"
-      if ($RunApprovedResultSettlement) {
-        $settlementCommand += " --autoExecuteApproved --approval=$ResultSettlementApprovalPath --writeAuditEvent"
+      if ($awaitingMatchingFinalResult) {
+        $settlementResult = [ordered]@{
+          label = "poll-$iteration-result-settlement"
+          command = "skipped: no matching final provider result"
+          exitCode = 0
+          pass = $true
+          startedAt = $cycleStartedAt.ToString("o")
+          finishedAt = (Get-Date).ToUniversalTime().ToString("o")
+          outputTail = @("settlement remains safely idle")
+        }
+        $settlementSummary = [ordered]@{
+          pass = $true
+          action = "awaiting_final_result"
+          settlementDigest = $null
+        }
+      } else {
+        $settlementSummaryPath = Join-ArtifactPath "one-event-result-settlement-run-summary.redacted.json"
+        $settlementInnerSummaryPath = Join-ArtifactPath "one-event-result-settlement-summary.redacted.json"
+        $settlementCommand = "npm run mobile:one-event-result-settlement-run -- --eventSlug=$EventSlug --result=$ResultPath --summaryPath=$settlementSummaryPath --settlementOutput=$settlementInnerSummaryPath"
+        if ($RunApprovedResultSettlement) {
+          $settlementCommand += " --autoExecuteApproved --approval=$ResultSettlementApprovalPath --writeAuditEvent"
+        }
+        $settlementResult = Invoke-CheckedCommand -Label "poll-$iteration-result-settlement" -Command $settlementCommand
+        $settlementSummary = Read-JsonFile $settlementSummaryPath
       }
-      $settlementResult = Invoke-CheckedCommand -Label "poll-$iteration-result-settlement" -Command $settlementCommand
-      $settlementSummary = Read-JsonFile $settlementSummaryPath
     }
 
     $cycle = [ordered]@{
@@ -267,6 +326,8 @@ try {
       resultIngestion = $ingestResult
       resultIngestionPass = [bool]($ingestSummary -and $ingestSummary.pass -eq $true)
       resultIngestionMode = if ($ingestSummary) { $ingestSummary.mode } else { $null }
+      awaitingMatchingFinalResult = $awaitingMatchingFinalResult
+      cachedResultCompatibility = $cachedResultCompatibility
       liveResultIngestionRan = [bool]$runLiveThisCycle
       liveResultIngestionRunCount = $liveResultIngestionRunCount
       liveResultIngestionSkippedReason = if ($RunLiveResultIngestion -and -not $runLiveThisCycle) {
@@ -325,15 +386,17 @@ $summary = [ordered]@{
     resultSettlementEnabled = [bool]$RunResultSettlement
     resultSettlementApprovedMode = [bool]$RunApprovedResultSettlement
     resultSettlementApprovalPath = if ($RunApprovedResultSettlement) { $ResultSettlementApprovalPath } else { $null }
+    cachedResultCompatibility = $cachedResultCompatibility
     defaultModeUsesQuota = $false
   }
   runtimeTruth = [ordered]@{
     resultPollingRunnerAvailable = $true
     resultPollingContinuousWhileRunnerRuns = [bool]($Continuous -or $cycles.Count -gt 1)
-    resultPollingMode = if ($RunLiveResultIngestion) { "quota-capped live provider scores polling by cadence" } else { "provider-shaped replay polling; no provider quota spent" }
+    resultPollingMode = if ($RunLiveResultIngestion) { "quota-capped live provider scores polling by cadence" } elseif (-not $cachedResultCompatibility.compatible) { "safe idle polling while awaiting a matching final provider result; no provider quota spent" } else { "provider-shaped replay polling; no provider quota spent" }
     liveResultIngestionQuotaCappedWhileRunning = [bool]($RunLiveResultIngestion -and $liveResultIngestionRunCount -gt 0)
     settlementSchedulerContinuousWhileRunnerRuns = [bool]($RunResultSettlement -and ($Continuous -or $cycles.Count -gt 1))
-    settlementSchedulerMode = if (-not $RunResultSettlement) { "disabled for warm local polling; run settlement proof separately" } elseif ($RunApprovedResultSettlement) { "approved trusted-result scheduler; waits until CLOSED before execution" } else { "trusted result scheduler dry-run while poller runs" }
+    settlementSchedulerMode = if (-not $RunResultSettlement) { "disabled for warm local polling; run settlement proof separately" } elseif (-not $cachedResultCompatibility.compatible -and -not $RunLiveResultIngestion) { "safe idle: awaiting matching final provider result before settlement review" } elseif ($RunApprovedResultSettlement) { "approved trusted-result scheduler; waits until CLOSED before execution" } else { "trusted result scheduler dry-run while poller runs" }
+    awaitingMatchingFinalResult = [bool](-not $cachedResultCompatibility.compatible -and -not $RunLiveResultIngestion)
     activeTesterSettlementExecution = $false
     installedOsService = $false
     fakeTokenOnly = $true

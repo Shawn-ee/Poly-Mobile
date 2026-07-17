@@ -18,7 +18,7 @@ export async function GET() {
   const status = await getLocalLiveRuntimeSettlementQueue();
 
   return NextResponse.json(status, {
-    status: status.status === "ready" ? 200 : 503,
+    status: status.status === "needs_attention" ? 503 : 200,
     headers: {
       "Cache-Control": "no-store",
     },

@@ -81,6 +81,24 @@ describe("internal live-runtime result-review route", () => {
     expect(body.status).toBe("needs_attention");
   });
 
+  test("returns 200 while an unresolved active market is awaiting its final result", async () => {
+    getLocalLiveRuntimeResultReview.mockResolvedValue({
+      status: "awaiting_result",
+      providerQuotaUsed: false,
+      runtimeTruth: {
+        settlementEvidenceRequired: false,
+        awaitingFinalResult: true,
+      },
+      gaps: { p0: [] },
+    });
+
+    const res = await GET(new NextRequest("http://localhost/api/internal/live-runtime/result-review"));
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.status).toBe("awaiting_result");
+    expect(body.runtimeTruth.awaitingFinalResult).toBe(true);
+  });
+
   test("requires admin authentication", async () => {
     requireAdmin.mockResolvedValue({ error: "Unauthorized", status: 401 });
 

@@ -1,5 +1,6 @@
 const officialResultReviewFindMany = jest.fn();
 const marketFindMany = jest.fn();
+const eventFindUnique = jest.fn();
 
 jest.mock("@/lib/db", () => ({
   prisma: {
@@ -8,6 +9,9 @@ jest.mock("@/lib/db", () => ({
     },
     market: {
       findMany: (...args: unknown[]) => marketFindMany(...args),
+    },
+    event: {
+      findUnique: (...args: unknown[]) => eventFindUnique(...args),
     },
   },
 }));
@@ -18,6 +22,17 @@ describe("live runtime settlement queue service", () => {
   beforeEach(() => {
     officialResultReviewFindMany.mockReset();
     marketFindMany.mockReset();
+    eventFindUnique.mockReset();
+    eventFindUnique.mockResolvedValue({
+      id: "event-1",
+      slug: "odds-api-single-soccer-test",
+      title: "Spain vs. France",
+      status: "ACTIVE",
+      liveStatus: "pre_match",
+      startTime: new Date("2026-07-14T19:00:00Z"),
+      externalEventId: "provider-event-1",
+      markets: [{ id: "market-1", status: "LIVE", resolvedOutcomeId: null }],
+    });
     officialResultReviewFindMany.mockResolvedValue([
       {
         id: "review-1",
@@ -167,6 +182,7 @@ describe("live runtime settlement queue service", () => {
     expect(JSON.stringify(result)).not.toContain("SETTLE_FROM_RESULT:");
     expect(officialResultReviewFindMany).toHaveBeenCalledWith(
       expect.objectContaining({
+        where: { eventId: "event-1", providerEventId: "provider-event-1" },
         orderBy: { updatedAt: "desc" },
         take: 20,
       }),
@@ -178,15 +194,44 @@ describe("live runtime settlement queue service", () => {
     );
   });
 
-  test("returns needs_attention when no durable review row exists", async () => {
+  test("returns awaiting_result when the current unresolved event has no review rows", async () => {
+    officialResultReviewFindMany.mockResolvedValue([]);
+    marketFindMany.mockResolvedValue([]);
+
+    const result = await getLocalLiveRuntimeSettlementQueue();
+
+    expect(result.status).toBe("awaiting_result");
+    expect(result.gaps.p0).toEqual([]);
+    expect(result.queue.itemCount).toBe(0);
+    expect(result.runtimeTruth).toMatchObject({
+      settlementEvidenceRequired: false,
+      awaitingFinalResult: true,
+      operatorQueueAvailable: true,
+    });
+  });
+
+  test("returns needs_attention when a closed current event has no review rows", async () => {
+    eventFindUnique.mockResolvedValueOnce({
+      id: "event-1",
+      slug: "odds-api-single-soccer-test",
+      title: "Spain vs. France",
+      status: "ACTIVE",
+      liveStatus: "final",
+      startTime: new Date("2026-07-14T19:00:00Z"),
+      externalEventId: "provider-event-1",
+      markets: [{ id: "market-1", status: "CLOSED", resolvedOutcomeId: null }],
+    });
     officialResultReviewFindMany.mockResolvedValue([]);
     marketFindMany.mockResolvedValue([]);
 
     const result = await getLocalLiveRuntimeSettlementQueue();
 
     expect(result.status).toBe("needs_attention");
-    expect(result.gaps.p0).toContain("durableReviewRowsFound");
-    expect(result.queue.itemCount).toBe(0);
+    expect(result.gaps.p0).toContain("reviewStateKnown");
+    expect(result.runtimeTruth).toMatchObject({
+      settlementEvidenceRequired: true,
+      awaitingFinalResult: false,
+    });
   });
 
   test("returns approved execution command only after market is closed and eligible", async () => {

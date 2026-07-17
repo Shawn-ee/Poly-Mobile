@@ -121,6 +121,25 @@ describe("internal live-runtime settlement-queue route", () => {
     expect(body.status).toBe("needs_attention");
   });
 
+  test("returns 200 with an empty queue while the current event awaits a final result", async () => {
+    getLocalLiveRuntimeSettlementQueue.mockResolvedValue({
+      status: "awaiting_result",
+      providerQuotaUsed: false,
+      queue: { itemCount: 0, items: [] },
+      runtimeTruth: {
+        settlementEvidenceRequired: false,
+        awaitingFinalResult: true,
+      },
+      gaps: { p0: [] },
+    });
+
+    const res = await GET();
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.status).toBe("awaiting_result");
+    expect(body.queue.itemCount).toBe(0);
+  });
+
   test("requires admin authentication", async () => {
     requireAdmin.mockResolvedValue({ error: "Unauthorized", status: 401 });
 

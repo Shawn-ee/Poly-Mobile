@@ -10807,6 +10807,23 @@ Future migration concern:
 - Temporary mock/static data: none added. Focused tests mock Prisma and settlement service only.
 - Remaining gaps: installed official-result polling, dedicated production settlement-operator role model, production operator UI, and production service ownership remain P1.
 
+## Cycle ZCJ - Operator Controls Status Contract Correction
+
+- Closed or narrowed: local runtime status no longer reports `authenticated_operator_controls_missing` after the authenticated session, approval, guarded execution, two-person-or-admin policy, and `OperatorAuditEvent` pieces have landed.
+- Fields required by local runtime tooling: `operatorControlBoundary.mode=local_dev_guarded_operator_controls`, `statusProjectionReadOnly=true`, `authenticatedControls.available=true`, `approvalRouteAvailable=true`, `executionRouteAvailable=true`, `operatorAuditTableAvailable=true`, `twoPersonOrAdminPolicyAvailable=true`, `productionAuthRequirements.version=2`, `status=local_operator_controls_implemented_production_workflow_incomplete`, and `p1Gap=production_operator_workflow_incomplete`.
+- Route mismatch: none for local internal tooling. These remain local/dev internal routes, not public mobile routes or production operator UI.
+- Schema mismatch: local audit rows use existing `OperatorAuditEvent` and `OfficialResultReview`. Production still needs a dedicated settlement-operator role/permission model.
+- Temporary mock/static data: none added. Status projection remains read-only and does not execute settlement or expose exact confirmation strings.
+- Remaining gaps: production operator UI, dedicated settlement-operator role model, installed official-result polling, and production service ownership remain P1.
+
+### ZCJ Current-Event Result Scoping
+
+- Closed: treating the reusable local event slug alone as evidence for the current provider event.
+- Required identity: current result evidence must match `Event.externalEventId` / provider `sourceEventId`; settlement-review markets must belong to the current `Event.id`.
+- Healthy unresolved shape: `status=awaiting_result`, `settlementEvidenceRequired=false`, `awaitingFinalResult=true`, empty settlement queue, zero P0 gaps, no provider quota, and no execution attempt.
+- Preserved full-evidence shape: once a matching final result exists, canonical result, preflight, approval, CLOSED-market, and exact-confirmation guards are still mandatory.
+- Remaining gap: the one-event slug is reusable. Per-provider-event slugging remains P2, while explicit provider/event identity checks are the current safety boundary.
+
 ## Cycle CASHOUTS23B - Spain vs France Close-Position Cashout
 
 - Closed or narrowed: cashout ticket now refreshes the current backend quote before opening, so close-position Max uses owned shares and SELL pricing uses the current bid instead of wallet balance or stale display price.

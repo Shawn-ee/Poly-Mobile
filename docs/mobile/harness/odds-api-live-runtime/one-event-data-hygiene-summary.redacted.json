@@ -1,17 +1,17 @@
 {
   "pass": true,
-  "generatedAt": "2026-07-15T06:55:19.246Z",
+  "generatedAt": "2026-07-17T08:49:37.279Z",
   "scope": "odds-api-one-event-data-hygiene",
   "mode": "apply",
   "event": {
     "id": "bdd748d4-8784-459d-a612-a54903892c89",
     "slug": "odds-api-single-soccer-test",
-    "title": "Argentina vs. England",
-    "externalEventId": "ced22494ae0bbb8cc4f7108bf6f493df",
-    "startTime": "2026-07-15T19:00:00.000Z"
+    "title": "Chapecoense vs. Bahia",
+    "externalEventId": "e64cfcc03ee00f71d21b9c99e9c37d2d",
+    "startTime": "2026-07-17T22:30:00.000Z"
   },
   "policy": {
-    "mobileVisibleMarketTitlePrefix": "Argentina vs. England:",
+    "mobileVisibleMarketTitlePrefix": "Chapecoense vs. Bahia:",
     "referenceSources": [
       "sportsbook-odds",
       "contract-fixture"
@@ -20,16 +20,16 @@
     "providerQuotaUsed": false
   },
   "before": {
-    "totalProviderMarketCount": 22,
-    "visibleProviderMarketCount": 19,
+    "totalProviderMarketCount": 26,
+    "visibleProviderMarketCount": 20,
     "staleVisibleMarketCount": 0,
     "staleVisibleMarkets": []
   },
   "after": {
-    "totalProviderMarketCount": 22,
-    "visibleProviderMarketCount": 19,
+    "totalProviderMarketCount": 26,
+    "visibleProviderMarketCount": 20,
     "staleVisibleMarketCount": 0,
-    "validVisibleMarketCount": 19
+    "validVisibleMarketCount": 20
   },
   "checks": {
     "eventLoaded": true,

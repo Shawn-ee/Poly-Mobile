@@ -56,8 +56,8 @@ function Resolve-CurrentExpectedEvent {
   $liveRuntime = Read-JsonFile -Path (Join-Path $repoRoot "docs\mobile\harness\odds-api-live-runtime\one-event-live-runtime-summary.redacted.json")
   $title = Get-FirstJsonValue -Values @(
     $HomeExpectedTitle,
-    $readiness.testerReady.event.title,
     $liveRuntime.event.title,
+    $readiness.testerReady.event.title,
     "Argentina vs. England"
   )
   $parts = $title -split "\s+vs\.\s+", 2
@@ -182,6 +182,11 @@ function Wait-HierarchyContains {
       continue
     }
     if ($RestartUrl -and $raw -match [regex]::Escape("Play Store") -and $raw -match [regex]::Escape("OneDrive")) {
+      Start-Link -Url $RestartUrl
+      Start-Sleep -Seconds 6
+      continue
+    }
+    if ($RestartUrl -and $raw -notmatch [regex]::Escape("host.exp.exponent")) {
       Start-Link -Url $RestartUrl
       Start-Sleep -Seconds 6
       continue
@@ -391,7 +396,6 @@ function Dismiss-ExpoDeveloperMenu {
     if ($afterRaw -notmatch [regex]::Escape("This is the developer menu") -and $afterRaw -notmatch [regex]::Escape("SDK version")) {
       return $afterPath
     }
-    & $adb -s $Device shell input keyevent KEYCODE_BACK | Out-Null
     Start-Sleep -Seconds 1
   }
 
@@ -424,9 +428,8 @@ function Get-JsonField {
 
 function Start-Link {
   param([string]$Url)
-  $escapedUrl = $Url.Replace("'", "'\''")
   & $adb -s $Device shell am force-stop com.android.chrome | Out-Null
-  & $adb -s $Device shell "am start -p host.exp.exponent -a android.intent.action.VIEW -d '$escapedUrl'" | Out-Null
+  & $adb -s $Device shell am start -W -p host.exp.exponent -a android.intent.action.VIEW -d $Url | Out-Null
 }
 
 function Write-JsonNoBom {
@@ -577,9 +580,17 @@ try {
   Assert-Contains -Path $ticketReadyXml -Expected @('$25', "Swipe to buy", "place-mock-order", "swipe-submit-gesture-required", "ticket-line-$LineValue")
 
   & $adb -s $Device shell input swipe 540 2070 540 980 4000 | Out-Null
-  Start-Sleep -Seconds 7
+  $afterSubmitXml = Wait-HierarchyContains -NamePrefix "cycle-$Cycle-after-submit" -Expected @(
+    "Portfolio",
+    "position-card-",
+    "portfolio-position-cash-out-"
+  ) -TimeoutSeconds 60 -IntervalSeconds 2
+  $canonicalAfterSubmitXml = Join-Path $resolvedHierarchyOutputDir "cycle-$Cycle-after-submit.xml"
+  if ($afterSubmitXml -ne $canonicalAfterSubmitXml) {
+    Copy-Item -LiteralPath $afterSubmitXml -Destination $canonicalAfterSubmitXml -Force
+    $afterSubmitXml = $canonicalAfterSubmitXml
+  }
   Save-Screenshot -Name "cycle-$Cycle-after-submit.png" | Out-Null
-  $afterSubmitXml = Save-Hierarchy -Name "cycle-$Cycle-after-submit.xml"
   Assert-Contains -Path $afterSubmitXml -Expected @("Portfolio", "portfolio-market-type-$LineMarketType", "portfolio-line-$LineValue")
   Assert-Contains -Path $afterSubmitXml -Expected @("position-card-", "portfolio-position-cash-out-", "portfolio-position-source-badge")
   Assert-NotContains -Path $afterSubmitXml -Unexpected @("Order Book", "event-detail-open-order-book", "Chat")

@@ -1240,13 +1240,13 @@ describe("live runtime status service", () => {
       productionBlockers: expect.arrayContaining([
         "installed_unattended_runtime_service_missing",
         "live_provider_refresh_loop_not_running_by_default",
-        "authenticated_operator_controls_missing",
+        "production_operator_workflow_incomplete",
         "installed_official_result_polling_missing",
         "production_auto_settlement_execution_not_enabled",
       ]),
       requiredBeforeProduction: expect.arrayContaining([
         "install_or_host_provider_maker_lifecycle_workers_as_owned_services",
-        "add_authenticated_operator_controls_for_result_review_and_settlement",
+        "add production operator UI and dedicated settlement-operator role governance",
       ]),
       p0: [],
       p1: expect.arrayContaining([
@@ -1257,24 +1257,30 @@ describe("live runtime status service", () => {
     });
     expect(status.operatorControlBoundary).toMatchObject({
       checked: true,
-      mode: "local_dev_read_only_operator_controls",
+      mode: "local_dev_guarded_operator_controls",
       devOnly: true,
-      readOnly: true,
+      statusProjectionReadOnly: true,
+      readOnly: false,
       noProviderQuota: true,
       publicMobileRoute: false,
       productionOperatorWorkflowReady: false,
       authenticatedControls: {
         requiredForProduction: true,
-        available: false,
+        available: true,
         sessionRouteAvailable: true,
         roleChecksAvailable: true,
         durableOperatorIdentityAvailable: true,
-        twoPersonApprovalAvailable: false,
+        approvalRouteAvailable: true,
+        executionRouteAvailable: true,
+        operatorAuditTableAvailable: true,
+        twoPersonOrAdminPolicyAvailable: true,
+        dedicatedProductionRoleModelAvailable: false,
+        productionOperatorUiAvailable: false,
       },
       productionAuthRequirements: {
-        version: 1,
-        status: "session_route_implemented",
-        p1Gap: "authenticated_operator_controls_missing",
+        version: 2,
+        status: "local_operator_controls_implemented_production_workflow_incomplete",
+        p1Gap: "production_operator_workflow_incomplete",
         mustRemainServerOwned: true,
         publicMobileRouteAllowed: false,
         providerQuotaRequired: false,
@@ -1409,14 +1415,17 @@ describe("live runtime status service", () => {
         providerQuotaRequired: false,
       },
       productionBlockers: expect.arrayContaining([
-        "authenticated_operator_controls_missing",
         "production_operator_ui_not_present",
+        "dedicated_settlement_operator_role_model_missing",
       ]),
       requiredBeforeProduction: expect.arrayContaining([
         "enforce dedicated settlement-operator role model in production auth",
       ]),
       p0: [],
-      p1: expect.arrayContaining(["authenticated_operator_controls_missing", "production_operator_ui_not_present"]),
+      p1: expect.arrayContaining([
+        "production_operator_ui_not_present",
+        "dedicated_settlement_operator_role_model_missing",
+      ]),
       note: expect.stringContaining("read-only"),
     });
     expect(JSON.stringify(status.operatorControlBoundary)).not.toContain("SETTLE_FROM_RESULT:");

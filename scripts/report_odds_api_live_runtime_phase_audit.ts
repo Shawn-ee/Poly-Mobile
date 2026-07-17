@@ -423,6 +423,45 @@ async function main() {
     localResultReview.body && typeof localResultReview.body === "object"
       ? (localResultReview.body as JsonObject)
       : null;
+  const localResultReviewP0 = getPath(localResultReviewBody, ["gaps", "p0"]);
+  const localResultReviewCommonSafe =
+    !!localResultReviewBody &&
+    localResultReview.ok === true &&
+    getPath(localResultReviewBody, ["providerQuotaUsed"]) === false &&
+    getPath(localResultReviewBody, ["runtimeTruth", "readOnlyRoute"]) === true &&
+    getPath(localResultReviewBody, ["runtimeTruth", "devOnlyRoute"]) === true &&
+    getPath(localResultReviewBody, ["runtimeTruth", "activeTesterSettlementExecutionAttempted"]) === false &&
+    getPath(localResultReviewBody, ["runtimeTruth", "providerQuotaUsed"]) === false &&
+    getPath(localResultReviewBody, ["executionDecision", "exactConfirmationRedacted"]) === true &&
+    getPath(localResultReviewBody, ["executionDecision", "activeMarketExecutionAttemptedByThisRoute"]) === false &&
+    Array.isArray(localResultReviewP0) &&
+    localResultReviewP0.length === 0 &&
+    !JSON.stringify(localResultReviewBody).includes("SETTLE_FROM_RESULT:") &&
+    !JSON.stringify(localResultReviewBody).includes("THE_ODDS_API_KEY");
+  const localResultReviewAwaitingResult =
+    localResultReviewCommonSafe &&
+    getPath(localResultReviewBody, ["status"]) === "awaiting_result" &&
+    getPath(localResultReviewBody, ["runtimeTruth", "settlementEvidenceRequired"]) === false &&
+    getPath(localResultReviewBody, ["runtimeTruth", "awaitingFinalResult"]) === true &&
+    getPath(localResultReviewBody, ["executionDecision", "operatorDecision"]) === "awaiting_final_result" &&
+    getPath(localResultReviewBody, ["executionDecision", "exactConfirmationRequiredKnown"]) === false;
+  const localResultReviewEvidenceReady =
+    localResultReviewCommonSafe &&
+    getPath(localResultReviewBody, ["status"]) === "ready" &&
+    getPath(localResultReviewBody, ["runtimeTruth", "settlementEvidenceRequired"]) !== false &&
+    getPath(localResultReviewBody, ["runtimeTruth", "awaitingFinalResult"]) !== true &&
+    getPath(localResultReviewBody, ["runtimeTruth", "canonicalProviderResultAuditAvailable"]) === true &&
+    getPath(localResultReviewBody, ["runtimeTruth", "canonicalSettlementPreflightAuditAvailable"]) === true &&
+    getPath(localResultReviewBody, ["runtimeTruth", "canonicalSettlementApprovalAuditAvailable"]) === true &&
+    typeof getPath(localResultReviewBody, ["runtimeTruth", "canonicalSettlementBlockedAuditAvailable"]) === "boolean" &&
+    getPath(localResultReviewBody, ["runtimeTruth", "durableOfficialResultReviewRecordAvailable"]) === true &&
+    getPath(localResultReviewBody, ["officialResultReview", "exactConfirmationStored"]) === false &&
+    getPath(localResultReviewBody, ["officialResultReview", "providerQuotaUsed"]) === false &&
+    getPath(localResultReviewBody, ["officialResultReview", "activeMarketExecutionAttempted"]) === false &&
+    getPath(localResultReviewBody, ["executionDecision", "exactConfirmationRequiredKnown"]) === true &&
+    typeof getPath(localResultReviewBody, ["executionDecision", "settlementAlreadyExecuted"]) === "boolean" &&
+    typeof getPath(localResultReviewBody, ["executionDecision", "repeatExecutionBlocked"]) === "boolean";
+  const localResultReviewApiReady = localResultReviewAwaitingResult || localResultReviewEvidenceReady;
   const localSettlementQueue = await fetchJson(
     `${baseUrl}/api/internal/live-runtime/settlement-queue`,
     internalOperatorFetchInit,
@@ -431,6 +470,55 @@ async function main() {
     localSettlementQueue.body && typeof localSettlementQueue.body === "object"
       ? (localSettlementQueue.body as JsonObject)
       : null;
+  const localSettlementQueueP0 = getPath(localSettlementQueueBody, ["gaps", "p0"]);
+  const localSettlementQueueCommonSafe =
+    !!localSettlementQueueBody &&
+    localSettlementQueue.ok === true &&
+    getPath(localSettlementQueueBody, ["providerQuotaUsed"]) === false &&
+    getPath(localSettlementQueueBody, ["runtimeTruth", "readOnlyRoute"]) === true &&
+    getPath(localSettlementQueueBody, ["runtimeTruth", "devOnlyRoute"]) === true &&
+    getPath(localSettlementQueueBody, ["runtimeTruth", "usesDurableOfficialResultReviewRows"]) === true &&
+    getPath(localSettlementQueueBody, ["runtimeTruth", "operatorQueueAvailable"]) === true &&
+    getPath(localSettlementQueueBody, ["runtimeTruth", "redactedOperatorExecutionPlanAvailable"]) === true &&
+    getPath(localSettlementQueueBody, ["runtimeTruth", "structuredOperatorExecutionPlanAvailable"]) === true &&
+    getPath(localSettlementQueueBody, ["runtimeTruth", "exactConfirmationStringsExposed"]) === false &&
+    getPath(localSettlementQueueBody, ["runtimeTruth", "exactConfirmationStored"]) === false &&
+    getPath(localSettlementQueueBody, ["runtimeTruth", "activeMarketExecutionAttempted"]) === false &&
+    Array.isArray(localSettlementQueueP0) &&
+    localSettlementQueueP0.length === 0 &&
+    !JSON.stringify(localSettlementQueueBody).includes("SETTLE_FROM_RESULT:") &&
+    !JSON.stringify(localSettlementQueueBody).includes("THE_ODDS_API_KEY");
+  const localSettlementQueueAwaitingResult =
+    localSettlementQueueCommonSafe &&
+    getPath(localSettlementQueueBody, ["status"]) === "awaiting_result" &&
+    getPath(localSettlementQueueBody, ["runtimeTruth", "settlementEvidenceRequired"]) === false &&
+    getPath(localSettlementQueueBody, ["runtimeTruth", "awaitingFinalResult"]) === true &&
+    getPath(localSettlementQueueBody, ["queue", "itemCount"]) === 0;
+  const localSettlementQueueEvidenceReady =
+    localSettlementQueueCommonSafe &&
+    getPath(localSettlementQueueBody, ["status"]) === "ready" &&
+    getPath(localSettlementQueueBody, ["runtimeTruth", "settlementEvidenceRequired"]) !== false &&
+    getPath(localSettlementQueueBody, ["runtimeTruth", "awaitingFinalResult"]) !== true &&
+    getPath(localSettlementQueueBody, ["runtimeTruth", "durableApprovalEvidenceAvailable"]) === true &&
+    getPath(localSettlementQueueBody, ["queue", "itemCount"]) !== 0 &&
+    typeof getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorAction", "label"]) === "string" &&
+    typeof getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorAction", "nextCommand"]) === "string" &&
+    getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorAction", "exactConfirmationExposed"]) === false &&
+    getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorAction", "providerQuotaRequired"]) === false &&
+    getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorExecutionPlan", "version"]) === 1 &&
+    getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorExecutionPlan", "providerQuotaRequired"]) === false &&
+    getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorExecutionPlan", "exactConfirmationExposed"]) === false &&
+    getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorExecutionPlan", "exactConfirmationStored"]) === false &&
+    getPath(localSettlementQueueBody, ["queue", "items", "0", "approvalEvidence", "durableReviewRowAvailable"]) === true &&
+    getPath(localSettlementQueueBody, ["queue", "items", "0", "approvalEvidence", "canonicalApprovalEventAvailable"]) === true &&
+    getPath(localSettlementQueueBody, ["queue", "items", "0", "approvalEvidence", "exactConfirmationStored"]) === false &&
+    getPath(localSettlementQueueBody, ["queue", "items", "0", "approvalEvidence", "exactConfirmationRedacted"]) === true &&
+    getPath(localSettlementQueueBody, ["queue", "items", "0", "executionEvidence", "durableReviewRowAvailable"]) === true &&
+    getPath(localSettlementQueueBody, ["queue", "items", "0", "executionEvidence", "exactConfirmationStored"]) === false &&
+    getPath(localSettlementQueueBody, ["queue", "items", "0", "executionEvidence", "exactConfirmationRedacted"]) === true &&
+    getPath(localSettlementQueueBody, ["checks", "canonicalApprovalEvidenceForApprovedReviews"]) === true &&
+    getPath(localSettlementQueueBody, ["checks", "canonicalExecutionEvidenceForExecutedReviews"]) === true;
+  const localSettlementQueueApiReady = localSettlementQueueAwaitingResult || localSettlementQueueEvidenceReady;
   const completionChecks = entries.liveRuntimeCompletionAudit
     ? (getPath(entries.liveRuntimeCompletionAudit, ["checks"]) as JsonObject | null)
     : null;
@@ -502,8 +590,8 @@ async function main() {
         getPath(runtimeStatusCapabilities, ["repeatedSupervisorCycles"]) === true &&
         getPath(runtimeStatusCapabilities, ["makerReseedWhileSupervisorRuns"]) === true &&
         getPath(runtimeStatusCapabilities, ["lifecycleSchedulerWhileSupervisorRuns"]) === true &&
-        getPath(runtimeStatusCapabilities, ["resultIngestionWhileSupervisorRuns"]) === true &&
-        getPath(runtimeStatusCapabilities, ["resultSettlementSchedulerWhileSupervisorRuns"]) === true &&
+        getPath(runtimeStatusCapabilities, ["resultIngestionWhileSupervisorRuns"]) === false &&
+        getPath(runtimeStatusCapabilities, ["resultSettlementSchedulerWhileSupervisorRuns"]) === false &&
         getPath(runtimeStatusCapabilities, ["resultPollingBackgroundProof"]) === true &&
         getPath(runtimeStatusCapabilities, ["resultPollingContinuousWhileRunnerRuns"]) === true &&
         getPath(runtimeStatusCapabilities, ["resultSettlementSchedulerWhilePollerRuns"]) === true &&
@@ -522,7 +610,7 @@ async function main() {
         getPath(runtimeStatusContinuityAnswer, ["installedUnattendedService"]) === false,
       evidence: [PATHS.runtimeStatus, PATHS.continuousSupervisor, PATHS.continuousResultPoller],
       notes:
-        "This prevents narrow latest supervisor proof runs from hiding previously proven repeated maker reseed, lifecycle scheduling, result ingestion, result-poller behavior, or the current stopped/running loop truth.",
+        "This keeps provider-cache checks, maker reseeding, and lifecycle scheduling in the supervisor while requiring result ingestion and guarded settlement scheduling through the dedicated lifecycle-aware result poller. It also preserves the current stopped/running loop truth.",
     }),
     requirement({
       id: "one-command-runtime-loop-proof",
@@ -629,34 +717,10 @@ async function main() {
         "Local result-review API exposes redacted canonical provider-result, settlement-preflight, and settlement-approval evidence without spending quota or exposing exact settlement confirmation.",
       achieved:
         getPath(completionChecks, ["localResultReviewApiKnown"]) === true ||
-        (!!localResultReviewBody &&
-        localResultReview.ok === true &&
-        getPath(localResultReviewBody, ["status"]) === "ready" &&
-        getPath(localResultReviewBody, ["providerQuotaUsed"]) === false &&
-        getPath(localResultReviewBody, ["runtimeTruth", "readOnlyRoute"]) === true &&
-        getPath(localResultReviewBody, ["runtimeTruth", "devOnlyRoute"]) === true &&
-        getPath(localResultReviewBody, ["runtimeTruth", "canonicalProviderResultAuditAvailable"]) === true &&
-        getPath(localResultReviewBody, ["runtimeTruth", "canonicalSettlementPreflightAuditAvailable"]) === true &&
-        getPath(localResultReviewBody, ["runtimeTruth", "canonicalSettlementApprovalAuditAvailable"]) === true &&
-        typeof getPath(localResultReviewBody, ["runtimeTruth", "canonicalSettlementBlockedAuditAvailable"]) === "boolean" &&
-        getPath(localResultReviewBody, ["runtimeTruth", "durableOfficialResultReviewRecordAvailable"]) === true &&
-        getPath(localResultReviewBody, ["officialResultReview", "exactConfirmationStored"]) === false &&
-        getPath(localResultReviewBody, ["officialResultReview", "providerQuotaUsed"]) === false &&
-        getPath(localResultReviewBody, ["officialResultReview", "activeMarketExecutionAttempted"]) === false &&
-        getPath(localResultReviewBody, ["runtimeTruth", "activeTesterSettlementExecutionAttempted"]) === false &&
-        getPath(localResultReviewBody, ["runtimeTruth", "providerQuotaUsed"]) === false &&
-        getPath(localResultReviewBody, ["executionDecision", "exactConfirmationRequiredKnown"]) === true &&
-        getPath(localResultReviewBody, ["executionDecision", "exactConfirmationRedacted"]) === true &&
-        typeof getPath(localResultReviewBody, ["executionDecision", "settlementAlreadyExecuted"]) === "boolean" &&
-        typeof getPath(localResultReviewBody, ["executionDecision", "repeatExecutionBlocked"]) === "boolean" &&
-        getPath(localResultReviewBody, ["executionDecision", "activeMarketExecutionAttemptedByThisRoute"]) === false &&
-        Array.isArray(getPath(localResultReviewBody, ["gaps", "p0"])) &&
-        (getPath(localResultReviewBody, ["gaps", "p0"]) as unknown[]).length === 0 &&
-        !JSON.stringify(localResultReviewBody).includes("SETTLE_FROM_RESULT:") &&
-        !JSON.stringify(localResultReviewBody).includes("THE_ODDS_API_KEY")),
+        localResultReviewApiReady,
       evidence: [`${baseUrl}/api/internal/live-runtime/result-review`],
       notes:
-        "This narrows the official-result operator-review gap by exposing the canonical result/preflight/approval/blocked trail through a dev-only backend route instead of only shell proof scripts. It is read-only, intentionally redacts exact execution confirmation strings, and exposes repeat-execution guard fields without settling the active event.",
+        "This accepts an unresolved active event as awaiting_result without manufacturing final-result evidence. Once matching final-result evidence exists or the market closes, the full canonical preflight/approval review chain is required. The route spends no quota, redacts exact confirmation strings, and never settles the active event.",
     }),
     requirement({
       id: "local-settlement-queue-api-ready",
@@ -665,45 +729,10 @@ async function main() {
         "Local settlement queue API exposes durable official-result review rows and safe next actions without spending quota or exposing exact settlement confirmation.",
       achieved:
         getPath(completionChecks, ["localSettlementQueueApiKnown"]) === true ||
-        (!!localSettlementQueueBody &&
-        localSettlementQueue.ok === true &&
-        getPath(localSettlementQueueBody, ["status"]) === "ready" &&
-        getPath(localSettlementQueueBody, ["providerQuotaUsed"]) === false &&
-        getPath(localSettlementQueueBody, ["runtimeTruth", "readOnlyRoute"]) === true &&
-        getPath(localSettlementQueueBody, ["runtimeTruth", "devOnlyRoute"]) === true &&
-        getPath(localSettlementQueueBody, ["runtimeTruth", "usesDurableOfficialResultReviewRows"]) === true &&
-        getPath(localSettlementQueueBody, ["runtimeTruth", "operatorQueueAvailable"]) === true &&
-        getPath(localSettlementQueueBody, ["runtimeTruth", "redactedOperatorExecutionPlanAvailable"]) === true &&
-        getPath(localSettlementQueueBody, ["runtimeTruth", "structuredOperatorExecutionPlanAvailable"]) === true &&
-        getPath(localSettlementQueueBody, ["runtimeTruth", "durableApprovalEvidenceAvailable"]) === true &&
-        getPath(localSettlementQueueBody, ["runtimeTruth", "exactConfirmationStringsExposed"]) === false &&
-        getPath(localSettlementQueueBody, ["runtimeTruth", "exactConfirmationStored"]) === false &&
-        getPath(localSettlementQueueBody, ["runtimeTruth", "activeMarketExecutionAttempted"]) === false &&
-        getPath(localSettlementQueueBody, ["queue", "itemCount"]) !== 0 &&
-        typeof getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorAction", "label"]) === "string" &&
-        typeof getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorAction", "nextCommand"]) === "string" &&
-        getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorAction", "exactConfirmationExposed"]) === false &&
-        getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorAction", "providerQuotaRequired"]) === false &&
-        getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorExecutionPlan", "version"]) === 1 &&
-        getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorExecutionPlan", "providerQuotaRequired"]) === false &&
-        getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorExecutionPlan", "exactConfirmationExposed"]) === false &&
-        getPath(localSettlementQueueBody, ["queue", "items", "0", "operatorExecutionPlan", "exactConfirmationStored"]) === false &&
-        getPath(localSettlementQueueBody, ["queue", "items", "0", "approvalEvidence", "durableReviewRowAvailable"]) === true &&
-        getPath(localSettlementQueueBody, ["queue", "items", "0", "approvalEvidence", "canonicalApprovalEventAvailable"]) === true &&
-        getPath(localSettlementQueueBody, ["queue", "items", "0", "approvalEvidence", "exactConfirmationStored"]) === false &&
-        getPath(localSettlementQueueBody, ["queue", "items", "0", "approvalEvidence", "exactConfirmationRedacted"]) === true &&
-        getPath(localSettlementQueueBody, ["queue", "items", "0", "executionEvidence", "durableReviewRowAvailable"]) === true &&
-        getPath(localSettlementQueueBody, ["queue", "items", "0", "executionEvidence", "exactConfirmationStored"]) === false &&
-        getPath(localSettlementQueueBody, ["queue", "items", "0", "executionEvidence", "exactConfirmationRedacted"]) === true &&
-        getPath(localSettlementQueueBody, ["checks", "canonicalApprovalEvidenceForApprovedReviews"]) === true &&
-        getPath(localSettlementQueueBody, ["checks", "canonicalExecutionEvidenceForExecutedReviews"]) === true &&
-        Array.isArray(getPath(localSettlementQueueBody, ["gaps", "p0"])) &&
-        (getPath(localSettlementQueueBody, ["gaps", "p0"]) as unknown[]).length === 0 &&
-        !JSON.stringify(localSettlementQueueBody).includes("SETTLE_FROM_RESULT:") &&
-        !JSON.stringify(localSettlementQueueBody).includes("THE_ODDS_API_KEY")),
+        localSettlementQueueApiReady,
       evidence: [`${baseUrl}/api/internal/live-runtime/settlement-queue`],
       notes:
-        "This narrows the operator-review/multi-event queue gap by exposing durable pending settlement work plus a redacted safe operator plan through a dev-only read-only backend route. It does not execute settlement or reveal exact confirmation strings.",
+        "The queue is scoped to the current provider event. An unresolved event with no matching final result has a healthy empty awaiting_result queue; once evidence exists, durable review rows and redacted operator plans are required. It does not execute settlement or reveal exact confirmation strings.",
     }),
     requirement({
       id: "local-lifecycle-api-ready",
@@ -928,13 +957,12 @@ async function main() {
       achieved:
         pass(entries.settlementReadiness) &&
         pass(entries.manualSettlement) &&
-        pass(entries.resultIngestion) &&
-        pass(entries.resultSettlement) &&
-        pass(entries.resultSettlementRun) &&
         pass(entries.settlementPreflight) &&
         pass(entries.settlementAuditEvent) &&
         pass(entries.settlementApprovalAuditEvent) &&
         pass(entries.resultReviewTrail) &&
+        localResultReviewApiReady &&
+        localSettlementQueueApiReady &&
         getPath(entries.settlementPreflight, ["executionPreflight", "dryRunPreviewPass"]) === true &&
         getPath(entries.settlementPreflight, ["executionPreflight", "executionRequiresMarketStatus"]) === "CLOSED" &&
         getPath(entries.settlementAuditEvent, ["checks", "canonicalEventTypeMatches"]) === true &&
@@ -975,7 +1003,7 @@ async function main() {
         "docs/mobile/EVENT_LIFECYCLE_RUNBOOK.md",
       ],
       notes:
-        "Provider-shaped score ingestion can produce trusted result JSON in replay mode, write durable canonical result-ingestion audit evidence, and the local scheduler can dry-run that result. A dedicated local result poller now repeats ingestion plus settlement scheduling and has start/status/stop background process proof. Settlement preflight reports current execution eligibility and blockers. Trusted-result execution is blocked unless the market is CLOSED. Explicit operator/proof runs can write durable canonical settlement preflight and approval audit events, the result review trail report stitches provider result evidence, settlement preflight evidence, and approval evidence into one read-only operator view, the active settlement readiness report states the exact current execution decision without mutating the active event, and closed-state eligibility is proven by temporarily closing/restoring the active selected market without executing settlement. Live score ingestion is explicit and quota-guarded through the command, poller, or supervisor controls; installed unattended official result polling remains P1.",
+        "Provider-shaped score ingestion, canonical audit evidence, guarded settlement scheduling, and disposable execution are proven. For the current upcoming event, the result-review and settlement-queue routes must either expose the complete redacted evidence chain or report a healthy event-scoped awaiting_result state; they may not reuse historical result evidence. Trusted-result execution remains blocked unless the market is CLOSED and exactly approved. Installed unattended official-result polling remains P1.",
     }),
     requirement({
       id: "settlement-execution-disposable",

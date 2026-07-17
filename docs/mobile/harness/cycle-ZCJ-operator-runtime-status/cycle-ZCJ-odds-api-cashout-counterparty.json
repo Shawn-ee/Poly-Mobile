@@ -1,0 +1,82 @@
+{
+  "pass": true,
+  "liquidityPurpose": "cashout-sell-fill",
+  "routeContract": {
+    "mobileFlow": "Portfolio cashout/generic Sell ticket -> /api/orders SELL -> Portfolio History",
+    "expectedRestingSide": "BUY",
+    "source": "local-mvp-internal-liquidity"
+  },
+  "eventSlug": "odds-api-single-soccer-test",
+  "market": {
+    "id": "3a617175-3792-437f-9f6a-b21a22860699",
+    "title": "Chapecoense vs. Bahia: Total Goals 2.5",
+    "marketType": "total_goals",
+    "marketGroupKey": "totals",
+    "period": "regulation",
+    "line": "2.5",
+    "referenceSource": "sportsbook-odds",
+    "externalMarketId": "e64cfcc03ee00f71d21b9c99e9c37d2d:betmgm:totals:2.5",
+    "conditionId": "odds-api-5c4eb598c1d6a8fc07b3e4a9"
+  },
+  "outcome": {
+    "id": "dbe95da1-41b1-46be-9e78-e45a5b6408bc",
+    "name": "Over +2.5",
+    "side": "over",
+    "referenceTokenId": "odds-api-760d63e916546c48a66dafaa",
+    "referenceOutcomeLabel": "Over +2.5"
+  },
+  "cleanupOnly": false,
+  "maker": {
+    "id": "e2c2381c-8cfd-4a2b-bd87-7157dc43c0bb",
+    "username": "mobile_route_fill_maker_e53c82ca"
+  },
+  "cleanup": {
+    "resetSelectedMarketState": {
+      "requested": false,
+      "canonicalEventsPreserved": true,
+      "deletedFills": 0,
+      "deletedTrades": 0,
+      "deletedOrders": 0,
+      "deletedPositions": 0,
+      "collateralReset": false
+    },
+    "enabled": false,
+    "proofUserPrefix": "holiwyn-mobile-",
+    "canceledProofBids": [],
+    "cleanupBlockingBids": false,
+    "canceledBlockingBids": [],
+    "cleanupBlockingMarketBids": true,
+    "cleanupBlockingMarketBidsForcedByPurpose": false,
+    "canceledBlockingMarketBids": [],
+    "cleanupProofAsks": true,
+    "canceledProofAsks": [],
+    "cleanupBlockingAsks": true,
+    "canceledBlockingAsks": [
+      {
+        "id": "f6dde1c0-46f4-46d8-8cf3-3f7b8f898583",
+        "username": "mobile_route_fill_maker_61195974",
+        "previousStatus": "PARTIAL",
+        "price": "0.58",
+        "remaining": "56.9",
+        "canceledStatus": "CANCELED"
+      }
+    ]
+  },
+  "makerOrder": {
+    "id": "fec93b39-183f-40e1-8ab5-1c4de55d223a",
+    "marketId": "3a617175-3792-437f-9f6a-b21a22860699",
+    "outcomeId": "dbe95da1-41b1-46be-9e78-e45a5b6408bc",
+    "side": "BUY",
+    "price": "0.58",
+    "size": "80",
+    "remaining": "80",
+    "reservedNotional": "46.4",
+    "status": "OPEN"
+  },
+  "seededAsk": {
+    "side": "BUY",
+    "price": "0.58",
+    "size": "80",
+    "intendedMobileTaker": "SELL/cashout route-backed totals position"
+  }
+}

@@ -77,12 +77,12 @@ function Invoke-CapturedCommand {
 }
 
 function Invoke-RuntimeManager {
-  param([string[]]$Args)
+  param([string[]]$ManagerArgs)
   $startedAt = (Get-Date).ToUniversalTime()
-  $output = & powershell -NoProfile -ExecutionPolicy Bypass -File scripts/manage_holiwyn_internal_tester_runtime.ps1 @Args 2>&1
+  $output = & powershell -NoProfile -ExecutionPolicy Bypass -File scripts/manage_holiwyn_internal_tester_runtime.ps1 @ManagerArgs 2>&1
   return [ordered]@{
     label = "internal-tester-runtime-manager"
-    args = @($Args)
+    args = @($ManagerArgs)
     exitCode = $LASTEXITCODE
     pass = [bool]($LASTEXITCODE -eq 0)
     startedAt = $startedAt.ToString("o")
@@ -127,7 +127,7 @@ while ($iteration -lt $maxLoopCount) {
   $iteration += 1
   $iterationStartedAt = (Get-Date).ToUniversalTime()
 
-  $statusResult = Invoke-RuntimeManager -Args @(
+  $statusResult = Invoke-RuntimeManager -ManagerArgs @(
     "-Action", "status",
     "-BackendPort", "$BackendPort",
     "-ExpoPort", "$ExpoPort",
@@ -141,7 +141,7 @@ while ($iteration -lt $maxLoopCount) {
   $startResult = $null
   $readyAfter = $readyBefore
   if (-not $baseRuntimeReady -and -not $DryRun) {
-    $startResult = Invoke-RuntimeManager -Args @(
+    $startResult = Invoke-RuntimeManager -ManagerArgs @(
       "-Action", "start",
       "-BackendPort", "$BackendPort",
       "-ExpoPort", "$ExpoPort",
@@ -212,10 +212,16 @@ if ($StopLoopProcessesAfterRun -and -not $DryRun) {
 }
 
 $failedIterations = @($iterations | Where-Object { $_.runtimePassAfterIteration -ne $true })
+$cleanupFailed = [bool](
+  $StopLoopProcessesAfterRun -and (
+    ($cleanup.supervisor -and -not $cleanup.supervisor.pass) -or
+    ($cleanup.resultPoller -and -not $cleanup.resultPoller.pass)
+  )
+)
 $summary = [ordered]@{
   generatedAt = (Get-Date).ToUniversalTime().ToString("o")
   scope = "holiwyn-internal-tester-watchdog"
-  pass = [bool]($failedIterations.Count -eq 0)
+  pass = [bool]($failedIterations.Count -eq 0 -and -not $cleanupFailed)
   startedAt = $startedAt.ToString("o")
   completedAt = (Get-Date).ToUniversalTime().ToString("o")
   maxIterations = if ($Continuous) { 0 } else { $MaxIterations }
@@ -243,7 +249,10 @@ $summary = [ordered]@{
     fakeTokenOnly = $true
   }
   gaps = [ordered]@{
-    p0 = @($failedIterations | ForEach-Object { "watchdog_iteration_$($_.iteration)_not_ready" })
+    p0 = @(
+      $failedIterations | ForEach-Object { "watchdog_iteration_$($_.iteration)_not_ready" }
+      if ($cleanupFailed) { "managed_loop_cleanup_failed" }
+    )
     p1 = @("This is a foreground/local watchdog proof, not an installed OS service.", "The supervisor proof is repeated foreground execution; installed unattended service ownership remains future work.")
     p2 = @("Multi-event runtime watchdog policies remain future work.")
   }

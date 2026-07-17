@@ -16923,3 +16923,24 @@ Known limitations:
   - `npm run mobile:live-runtime-completion-audit`
 - Result: completion audit passed with `runtimeCapabilityMatrixKnown=true`, `completionRequirements.runtimeLaunch.pass=true`, and `gaps.p0=[]`.
 - Known limitations: production service ownership and production official-result auto-settlement remain P1.
+
+## Cycle ZCJ - Operator Controls Status Contract Correction
+
+- Feature/runtime worked on: backend live-runtime operator-control truth for the One Event Live Pipeline.
+- Frontend components touched: none.
+- Backend/routes touched: `GET /api/internal/live-runtime/status` projection only; `GET /api/internal/operator/session` service contract wording/capability projection.
+- Important functions/services touched: `src/server/services/liveRuntimeStatus.ts`, `src/server/services/liveRuntimeOperatorSession.ts`, `scripts/report_holiwyn_live_runtime_completion_audit.ts`, and focused status/operator tests.
+- User/runtime interactions supported: internal operators and audits now see that local guarded operator controls exist: authenticated session, approval route, exact-confirmed CLOSED-market execution route, two-person-or-admin policy, exact-confirmation redaction, and `OperatorAuditEvent` evidence. The status no longer reports the stale blocker `authenticated_operator_controls_missing`.
+- State transitions: none. This cycle does not call The Odds API, start loops, place orders, approve settlement, execute settlement, mutate markets, or expose exact confirmation strings.
+- API/data dependencies: reads the same local phase-audit/status evidence as before. `productionAuthRequirements.version` is now `2`, with `status=local_operator_controls_implemented_production_workflow_incomplete` and `p1Gap=production_operator_workflow_incomplete`.
+- Proof needed: focused status/operator tests, phase audit, completion audit, root typecheck, Jest CI, mobile typecheck, secret scan, GitHub CI.
+- Known limitations: production operator UI, dedicated settlement-operator role model, installed official-result polling, installed service ownership, and production monitoring remain P1/P2. Local exact-confirmed execution remains guarded by CLOSED market, approval, admin/two-person policy, and operator-held exact confirmation.
+
+### ZCJ Runtime And Device Closure
+
+- Current-event result state: `liveRuntimeResultReview` binds provider-result evidence to the current event external ID. `liveRuntimeSettlementQueue` scopes durable reviews to the current event/markets and excludes historical rows created under the reused local slug.
+- Active upcoming event behavior: no matching final result returns healthy `awaiting_result` from both internal routes. No `OfficialResultReview` is invented, the queue is empty, and active settlement is not attempted.
+- Loop ownership: provider-cache verification, shifted maker reseeding, and lifecycle checks remain in the supervisor. Result ingestion and guarded settlement scheduling are delegated to the dedicated result poller.
+- Process safety: supervisor/poller managers validate PID start time plus command line, clear stale state after stop, and make repeated stop calls idempotent. The watchdog now fails if managed-loop cleanup fails.
+- Mobile harness: the S23 runner dismisses the Expo developer sheet without navigating to the launcher, prefers the current live-runtime event over stale readiness titles, waits for Portfolio state after submission, and preserves canonical after-submit XML.
+- Device result: S23 completed buy and close-position cashout on `Chapecoense vs. Bahia: Total Goals 2.5`; Max used 43.1 owned shares, not wallet cash.
